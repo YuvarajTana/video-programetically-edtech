@@ -59,6 +59,7 @@ export const Captions: React.FC<{text?: string}> = ({text}) => {
   const layout = useLayout();
   const {chrome, color, font} = useTheme();
   if (!text) return null;
+  const isLongPortraitCaption = layout.isPortrait && text.length > 140;
 
   return (
     <div
@@ -66,7 +67,10 @@ export const Captions: React.FC<{text?: string}> = ({text}) => {
         position: 'absolute',
         left: layout.safe,
         right: layout.safe,
-        bottom: layout.safe * 0.9,
+        // Portrait platform controls occupy the lowest part of the frame.
+        // Keep captions above that region instead of merely inside the
+        // composition's structural safe area.
+        bottom: layout.isPortrait ? layout.safe * 1.6 : layout.safe * 0.9,
         display: 'flex',
         justifyContent: 'center',
         pointerEvents: 'none',
@@ -81,7 +85,7 @@ export const Captions: React.FC<{text?: string}> = ({text}) => {
           border: `2px solid ${color.line}`,
           fontFamily: font.body,
           fontWeight: 600,
-          fontSize: type.small,
+          fontSize: isLongPortraitCaption ? type.micro : type.small,
           lineHeight: 1.35,
           color: color.text,
           textAlign: 'center',
