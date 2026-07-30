@@ -22,6 +22,13 @@ const value = (name) => {
   return index === -1 ? null : argv[index + 1];
 };
 const valueFlags = ['voice', 'speed', 'model', 'language', 'python'];
+for (const flag of valueFlags) {
+  const index = argv.indexOf(`--${flag}`);
+  if (index !== -1 && (!argv[index + 1] || argv[index + 1].startsWith('--'))) {
+    console.error(`--${flag} requires a value`);
+    process.exit(1);
+  }
+}
 const refs = positionals(argv, valueFlags);
 
 if (argv.includes('--help') || refs.length !== 1) {
@@ -132,6 +139,12 @@ if (!existsSync(requestPath)) {
 }
 
 const request = JSON.parse(readFileSync(requestPath, 'utf8'));
+if (!request.audioConfigured) {
+  console.error(
+    `video ${ref} does not declare spec.audio; add audio: '${request.audio}' so Remotion embeds the generated track`,
+  );
+  process.exit(1);
+}
 const voice = {
   ...request.voice,
   ...(value('voice') ? {preset: value('voice')} : {}),

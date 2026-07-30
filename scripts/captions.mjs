@@ -53,6 +53,7 @@ for (const c of comps.filter(videoComposition)) {
         schemaVersion: 1,
         ref,
         audio: spec.audio ?? `audio/${spec.channel}/${spec.slug}/master.wav`,
+        audioConfigured: Boolean(spec.audio),
         durationSeconds:
           spec.scenes.reduce((total, scene) => total + scene.durationInFrames, 0) /
           fps,

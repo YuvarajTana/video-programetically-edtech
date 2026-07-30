@@ -285,6 +285,19 @@ measured two-pass loudness normalization, verifies duration and peak levels,
 and writes the final track to the `public/` path declared by `spec.audio`.
 Intermediate clips and raw masters are ignored by Git.
 
+Produce and verify every configured delivery in one command:
+
+```bash
+npm run produce -- tech/context-vs-harness-engineering
+```
+
+This runs type checking, spec validation, local voice generation, every required
+video and cover render, packaging, and a final ready-state check. It writes a
+machine-readable run report to `out/<channel>/<slug>/production.json`.
+
+Reuse an already generated master with `--skip-voice`, or intentionally create
+a silent production with `--silent`.
+
 For a separately recorded voiceover, mux it after rendering:
 
 ```bash
@@ -321,6 +334,7 @@ scripts/
   package.mjs
   captions.mjs
   voice.mjs
+  produce.mjs
   qa.mjs
 ```
 
