@@ -385,6 +385,57 @@ Each job supports `skipVoice`, `silent`, `force`, and voice overrides:
 }
 ```
 
+## Controlled publishing
+
+Publishing is a separate, review-gated command. Without `--execute`, it only
+prints the exact package, metadata, and platform options:
+
+```bash
+npm run publish -- tech/context-vs-harness-engineering \
+  --delivery youtube-short
+```
+
+YouTube uses an OAuth access token from the environment and defaults to
+`private`. The uploader creates a resumable session and sends 8 MB chunks:
+
+```bash
+export YOUTUBE_ACCESS_TOKEN='...'
+npm run publish -- tech/context-vs-harness-engineering \
+  --delivery youtube-short \
+  --privacy private \
+  --execute
+```
+
+Instagram must fetch the Reel from a public HTTPS URL; the Graph API cannot read
+the local package directly. Set the current Graph version explicitly:
+
+```bash
+export META_ACCESS_TOKEN='...'
+export INSTAGRAM_ACCOUNT_ID='...'
+export META_GRAPH_VERSION='vNN.N'
+
+npm run publish -- tech/context-vs-harness-engineering \
+  --delivery instagram-reel \
+  --video-url https://your-cdn.example/video.mp4
+
+# After reviewing the dry run:
+npm run publish -- tech/context-vs-harness-engineering \
+  --delivery instagram-reel \
+  --video-url https://your-cdn.example/video.mp4 \
+  --execute
+```
+
+The Instagram adapter creates a Reel container, polls until processing reports
+`FINISHED`, then publishes it. Successful IDs, URLs, timestamps, and failures
+are recorded in `out/<channel>/<slug>/publishing.json`; access tokens are never
+written. An unchanged delivery cannot be published twice unless `--force` is
+provided.
+
+Protocol references:
+[YouTube resumable uploads](https://developers.google.com/youtube/v3/guides/using_resumable_upload_protocol)
+and
+[Meta's Instagram API collection](https://www.postman.com/meta/instagram/documentation/23987686-9386f468-7714-490f-9bfc-9442db5c8f00).
+
 For a separately recorded voiceover, mux it after rendering:
 
 ```bash
@@ -420,6 +471,7 @@ scripts/
   voice.mjs
   produce.mjs
   queue.mjs
+  publish.mjs
   qa.mjs
 ```
 
