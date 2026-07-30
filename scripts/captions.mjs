@@ -38,6 +38,10 @@ for (const c of comps.filter(videoComposition)) {
   const base = join('out', spec.channel, spec.slug);
   mkdirSync(base, {recursive: true});
   const fps = spec.fps ?? 30;
+  writeFileSync(
+    join(base, 'spec.json'),
+    `${JSON.stringify(spec, null, 2)}\n`,
+  );
   writeFileSync(join(base, 'captions.srt'), toSrt(spec, fps));
   writeFileSync(
     join(base, 'chapters.txt'),

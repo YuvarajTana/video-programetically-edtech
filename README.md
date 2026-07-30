@@ -436,6 +436,58 @@ Protocol references:
 and
 [Meta's Instagram API collection](https://www.postman.com/meta/instagram/documentation/23987686-9386f468-7714-490f-9bfc-9442db5c8f00).
 
+## Optional cloud rendering
+
+Local rendering remains the default. For larger batches, the same compositions
+can render on Remotion Lambda and download into the normal `out/` paths.
+
+One-time AWS setup follows Remotion's Lambda setup guide. After configuring AWS
+credentials and policies, deploy a compatible function:
+
+```bash
+npx remotion lambda functions deploy \
+  --region ap-south-1 \
+  --memory 3009 \
+  --disk 2048 \
+  --timeout 240
+```
+
+Record the returned function name, then configure the adapter:
+
+```bash
+export REMOTION_LAMBDA_REGION='ap-south-1'
+export REMOTION_LAMBDA_FUNCTION_NAME='remotion-render-...'
+# Optional; the adapter discovers or creates the Remotion bucket if omitted.
+export REMOTION_LAMBDA_BUCKET_NAME='remotionlambda-...'
+export REMOTION_LAMBDA_CONCURRENCY='10'
+```
+
+Prepare voice and timing assets locally, then review the remote job plan:
+
+```bash
+npm run voice -- tech/context-vs-harness-engineering
+npm run cloud:render -- tech/context-vs-harness-engineering
+```
+
+Submit only after reviewing it:
+
+```bash
+npm run cloud:render -- tech/context-vs-harness-engineering --execute
+```
+
+The command validates the spec, deploys the current bundle and `public/` assets,
+renders each unique video profile plus every cover, downloads private outputs,
+and runs the normal packager. Progress, render IDs, output sizes, and estimated
+billing duration are recorded in `out/<channel>/<slug>/cloud.json`; AWS
+credentials are not. Use `--serve-url` only when intentionally reusing an
+already deployed, current site.
+
+See the official
+[Remotion Lambda setup](https://www.remotion.dev/docs/lambda/setup) and
+[`renderMediaOnLambda()` reference](https://www.remotion.dev/docs/lambda/rendermediaonlambda).
+Cloud rendering incurs AWS costs and may require a Remotion license for your
+usage.
+
 For a separately recorded voiceover, mux it after rendering:
 
 ```bash
@@ -472,6 +524,7 @@ scripts/
   produce.mjs
   queue.mjs
   publish.mjs
+  cloud-render.mjs
   qa.mjs
 ```
 

@@ -15,18 +15,20 @@
     "produce": "node scripts/produce.mjs",
     "queue": "node scripts/queue.mjs",
     "publish": "node scripts/publish.mjs",
+    "cloud:render": "node scripts/cloud-render.mjs",
     "new": "node scripts/new-video.mjs",
     "qa": "node scripts/qa.mjs",
     "fonts": "node scripts/gen-fonts.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@remotion/bundler": "^4.0.500",
-    "@remotion/cli": "^4.0.500",
-    "@remotion/renderer": "^4.0.500",
+    "@remotion/bundler": "4.0.501",
+    "@remotion/cli": "4.0.501",
+    "@remotion/lambda": "4.0.501",
+    "@remotion/renderer": "4.0.501",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "remotion": "^4.0.500"
+    "remotion": "4.0.501"
   },
   "devDependencies": {
     "@fontsource/fraunces": "^5.0.0",
