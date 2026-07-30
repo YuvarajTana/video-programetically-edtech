@@ -119,6 +119,16 @@ export type BigStatScene = Base & {
   note?: string;
 };
 
+export type CountingScene = Base & {
+  type: 'counting';
+  kicker?: string;
+  /** The numeral and the quantity of countable dots shown on screen. */
+  number: number;
+  /** Written form, for example "Seven". */
+  word: string;
+  prompt?: string;
+};
+
 export type ColorSwatch = {
   name: string;
   hex: string;
@@ -185,6 +195,7 @@ export type Scene =
   | CompareScene
   | StatsScene
   | BigStatScene
+  | CountingScene
   | ColorsScene
   | FlashcardsScene
   | CalloutScene

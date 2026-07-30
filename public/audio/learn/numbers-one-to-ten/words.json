@@ -1,0 +1,690 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 80.0,
+  "cues": [
+    {
+      "index": 1,
+      "start": 0.0,
+      "end": 2.325,
+      "text": "Can you count all the way to ten?",
+      "words": [
+        {
+          "text": "Can",
+          "start": 0.0,
+          "end": 0.2798
+        },
+        {
+          "text": "you",
+          "start": 0.2798,
+          "end": 0.5596
+        },
+        {
+          "text": "count",
+          "start": 0.5596,
+          "end": 0.9208
+        },
+        {
+          "text": "all",
+          "start": 0.9208,
+          "end": 1.2006
+        },
+        {
+          "text": "the",
+          "start": 1.2006,
+          "end": 1.4804
+        },
+        {
+          "text": "way",
+          "start": 1.4804,
+          "end": 1.7602
+        },
+        {
+          "text": "to",
+          "start": 1.7602,
+          "end": 1.9887
+        },
+        {
+          "text": "ten?",
+          "start": 1.9887,
+          "end": 2.325
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "start": 3.0,
+      "end": 6.15,
+      "text": "One. One dot. Show me one finger.",
+      "words": [
+        {
+          "text": "One.",
+          "start": 3.0,
+          "end": 3.4738
+        },
+        {
+          "text": "One",
+          "start": 3.4738,
+          "end": 3.868
+        },
+        {
+          "text": "dot.",
+          "start": 3.868,
+          "end": 4.3418
+        },
+        {
+          "text": "Show",
+          "start": 4.3418,
+          "end": 4.7969
+        },
+        {
+          "text": "me",
+          "start": 4.7969,
+          "end": 5.1188
+        },
+        {
+          "text": "one",
+          "start": 5.1188,
+          "end": 5.5129
+        },
+        {
+          "text": "finger.",
+          "start": 5.5129,
+          "end": 6.15
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "start": 9.0,
+      "end": 12.0,
+      "text": "Two. Two dots. Count them: one, two.",
+      "words": [
+        {
+          "text": "Two.",
+          "start": 9.0,
+          "end": 9.4274
+        },
+        {
+          "text": "Two",
+          "start": 9.4274,
+          "end": 9.783
+        },
+        {
+          "text": "dots.",
+          "start": 9.783,
+          "end": 10.2654
+        },
+        {
+          "text": "Count",
+          "start": 10.2654,
+          "end": 10.7244
+        },
+        {
+          "text": "them:",
+          "start": 10.7244,
+          "end": 11.176
+        },
+        {
+          "text": "one,",
+          "start": 11.176,
+          "end": 11.5726
+        },
+        {
+          "text": "two.",
+          "start": 11.5726,
+          "end": 12.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "start": 15.0,
+      "end": 18.1,
+      "text": "Three. Three dots. One, two, three.",
+      "words": [
+        {
+          "text": "Three.",
+          "start": 15.0,
+          "end": 15.5885
+        },
+        {
+          "text": "Three",
+          "start": 15.5885,
+          "end": 16.0974
+        },
+        {
+          "text": "dots.",
+          "start": 16.0974,
+          "end": 16.6321
+        },
+        {
+          "text": "One,",
+          "start": 16.6321,
+          "end": 17.0718
+        },
+        {
+          "text": "two,",
+          "start": 17.0718,
+          "end": 17.5115
+        },
+        {
+          "text": "three.",
+          "start": 17.5115,
+          "end": 18.1
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "start": 21.0,
+      "end": 24.4,
+      "text": "Four. Four dots. One, two, three, four.",
+      "words": [
+        {
+          "text": "Four.",
+          "start": 21.0,
+          "end": 21.5205
+        },
+        {
+          "text": "Four",
+          "start": 21.5205,
+          "end": 21.9635
+        },
+        {
+          "text": "dots.",
+          "start": 21.9635,
+          "end": 22.484
+        },
+        {
+          "text": "One,",
+          "start": 22.484,
+          "end": 22.912
+        },
+        {
+          "text": "two,",
+          "start": 22.912,
+          "end": 23.3399
+        },
+        {
+          "text": "three,",
+          "start": 23.3399,
+          "end": 23.8795
+        },
+        {
+          "text": "four.",
+          "start": 23.8795,
+          "end": 24.4
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "start": 27.0,
+      "end": 30.5,
+      "text": "Five. Five dots. Count all five with me.",
+      "words": [
+        {
+          "text": "Five.",
+          "start": 27.0,
+          "end": 27.5005
+        },
+        {
+          "text": "Five",
+          "start": 27.5005,
+          "end": 27.9265
+        },
+        {
+          "text": "dots.",
+          "start": 27.9265,
+          "end": 28.4271
+        },
+        {
+          "text": "Count",
+          "start": 28.4271,
+          "end": 28.9033
+        },
+        {
+          "text": "all",
+          "start": 28.9033,
+          "end": 29.2723
+        },
+        {
+          "text": "five",
+          "start": 29.2723,
+          "end": 29.6982
+        },
+        {
+          "text": "with",
+          "start": 29.6982,
+          "end": 30.1242
+        },
+        {
+          "text": "me.",
+          "start": 30.1242,
+          "end": 30.5
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "start": 33.0,
+      "end": 36.25,
+      "text": "Six. Six dots. We made it past five!",
+      "words": [
+        {
+          "text": "Six.",
+          "start": 33.0,
+          "end": 33.441
+        },
+        {
+          "text": "Six",
+          "start": 33.441,
+          "end": 33.8079
+        },
+        {
+          "text": "dots.",
+          "start": 33.8079,
+          "end": 34.3057
+        },
+        {
+          "text": "We",
+          "start": 34.3057,
+          "end": 34.6053
+        },
+        {
+          "text": "made",
+          "start": 34.6053,
+          "end": 35.029
+        },
+        {
+          "text": "it",
+          "start": 35.029,
+          "end": 35.3285
+        },
+        {
+          "text": "past",
+          "start": 35.3285,
+          "end": 35.7522
+        },
+        {
+          "text": "five!",
+          "start": 35.7522,
+          "end": 36.25
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "start": 39.0,
+      "end": 42.65,
+      "text": "Seven. Seven dots. Count slowly and point.",
+      "words": [
+        {
+          "text": "Seven.",
+          "start": 39.0,
+          "end": 39.5835
+        },
+        {
+          "text": "Seven",
+          "start": 39.5835,
+          "end": 40.0881
+        },
+        {
+          "text": "dots.",
+          "start": 40.0881,
+          "end": 40.6184
+        },
+        {
+          "text": "Count",
+          "start": 40.6184,
+          "end": 41.1229
+        },
+        {
+          "text": "slowly",
+          "start": 41.1229,
+          "end": 41.6756
+        },
+        {
+          "text": "and",
+          "start": 41.6756,
+          "end": 42.0665
+        },
+        {
+          "text": "point.",
+          "start": 42.0665,
+          "end": 42.65
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "start": 45.0,
+      "end": 47.9,
+      "text": "Eight. Eight dots. Can you find all eight?",
+      "words": [
+        {
+          "text": "Eight.",
+          "start": 45.0,
+          "end": 45.4423
+        },
+        {
+          "text": "Eight",
+          "start": 45.4423,
+          "end": 45.8248
+        },
+        {
+          "text": "dots.",
+          "start": 45.8248,
+          "end": 46.2268
+        },
+        {
+          "text": "Can",
+          "start": 46.2268,
+          "end": 46.523
+        },
+        {
+          "text": "you",
+          "start": 46.523,
+          "end": 46.8193
+        },
+        {
+          "text": "find",
+          "start": 46.8193,
+          "end": 47.1614
+        },
+        {
+          "text": "all",
+          "start": 47.1614,
+          "end": 47.4577
+        },
+        {
+          "text": "eight?",
+          "start": 47.4577,
+          "end": 47.9
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "start": 51.0,
+      "end": 54.85,
+      "text": "Nine. Nine dots. Just one more until ten.",
+      "words": [
+        {
+          "text": "Nine.",
+          "start": 51.0,
+          "end": 51.5401
+        },
+        {
+          "text": "Nine",
+          "start": 51.5401,
+          "end": 51.9998
+        },
+        {
+          "text": "dots.",
+          "start": 51.9998,
+          "end": 52.54
+        },
+        {
+          "text": "Just",
+          "start": 52.54,
+          "end": 52.9997
+        },
+        {
+          "text": "one",
+          "start": 52.9997,
+          "end": 53.3978
+        },
+        {
+          "text": "more",
+          "start": 53.3978,
+          "end": 53.8575
+        },
+        {
+          "text": "until",
+          "start": 53.8575,
+          "end": 54.3714
+        },
+        {
+          "text": "ten.",
+          "start": 54.3714,
+          "end": 54.85
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "start": 57.0,
+      "end": 62.65,
+      "text": "Ten. Ten dots. One, two, three, four, five, six, seven, eight, nine, ten!",
+      "words": [
+        {
+          "text": "Ten.",
+          "start": 57.0,
+          "end": 57.4209
+        },
+        {
+          "text": "Ten",
+          "start": 57.4209,
+          "end": 57.771
+        },
+        {
+          "text": "dots.",
+          "start": 57.771,
+          "end": 58.246
+        },
+        {
+          "text": "One,",
+          "start": 58.246,
+          "end": 58.6366
+        },
+        {
+          "text": "two,",
+          "start": 58.6366,
+          "end": 59.0271
+        },
+        {
+          "text": "three,",
+          "start": 59.0271,
+          "end": 59.5196
+        },
+        {
+          "text": "four,",
+          "start": 59.5196,
+          "end": 59.9643
+        },
+        {
+          "text": "five,",
+          "start": 59.9643,
+          "end": 60.409
+        },
+        {
+          "text": "six,",
+          "start": 60.409,
+          "end": 60.7995
+        },
+        {
+          "text": "seven,",
+          "start": 60.7995,
+          "end": 61.292
+        },
+        {
+          "text": "eight,",
+          "start": 61.292,
+          "end": 61.7844
+        },
+        {
+          "text": "nine,",
+          "start": 61.7844,
+          "end": 62.2291
+        },
+        {
+          "text": "ten!",
+          "start": 62.2291,
+          "end": 62.65
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "start": 63.0,
+      "end": 70.45,
+      "text": "Let us say them together. One, two, three, four, five, six, seven, eight, nine, ten. Fantastic counting!",
+      "words": [
+        {
+          "text": "Let",
+          "start": 63.0,
+          "end": 63.3394
+        },
+        {
+          "text": "us",
+          "start": 63.3394,
+          "end": 63.6165
+        },
+        {
+          "text": "say",
+          "start": 63.6165,
+          "end": 63.9559
+        },
+        {
+          "text": "them",
+          "start": 63.9559,
+          "end": 64.3477
+        },
+        {
+          "text": "together.",
+          "start": 64.3477,
+          "end": 64.9705
+        },
+        {
+          "text": "One,",
+          "start": 64.9705,
+          "end": 65.3491
+        },
+        {
+          "text": "two,",
+          "start": 65.3491,
+          "end": 65.7277
+        },
+        {
+          "text": "three,",
+          "start": 65.7277,
+          "end": 66.205
+        },
+        {
+          "text": "four,",
+          "start": 66.205,
+          "end": 66.6361
+        },
+        {
+          "text": "five,",
+          "start": 66.6361,
+          "end": 67.0671
+        },
+        {
+          "text": "six,",
+          "start": 67.0671,
+          "end": 67.4457
+        },
+        {
+          "text": "seven,",
+          "start": 67.4457,
+          "end": 67.923
+        },
+        {
+          "text": "eight,",
+          "start": 67.923,
+          "end": 68.4004
+        },
+        {
+          "text": "nine,",
+          "start": 68.4004,
+          "end": 68.8314
+        },
+        {
+          "text": "ten.",
+          "start": 68.8314,
+          "end": 69.2394
+        },
+        {
+          "text": "Fantastic",
+          "start": 69.2394,
+          "end": 69.8272
+        },
+        {
+          "text": "counting!",
+          "start": 69.8272,
+          "end": 70.45
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "start": 73.0,
+      "end": 77.9,
+      "text": "Great job! You counted from one to ten. Now try counting backward.",
+      "words": [
+        {
+          "text": "Great",
+          "start": 73.0,
+          "end": 73.4314
+        },
+        {
+          "text": "job!",
+          "start": 73.4314,
+          "end": 73.8332
+        },
+        {
+          "text": "You",
+          "start": 73.8332,
+          "end": 74.1674
+        },
+        {
+          "text": "counted",
+          "start": 74.1674,
+          "end": 74.6779
+        },
+        {
+          "text": "from",
+          "start": 74.6779,
+          "end": 75.0638
+        },
+        {
+          "text": "one",
+          "start": 75.0638,
+          "end": 75.398
+        },
+        {
+          "text": "to",
+          "start": 75.398,
+          "end": 75.6708
+        },
+        {
+          "text": "ten.",
+          "start": 75.6708,
+          "end": 76.0726
+        },
+        {
+          "text": "Now",
+          "start": 76.0726,
+          "end": 76.4068
+        },
+        {
+          "text": "try",
+          "start": 76.4068,
+          "end": 76.741
+        },
+        {
+          "text": "counting",
+          "start": 76.741,
+          "end": 77.2867
+        },
+        {
+          "text": "backward.",
+          "start": 77.2867,
+          "end": 77.9
+        }
+      ]
+    }
+  ]
+}

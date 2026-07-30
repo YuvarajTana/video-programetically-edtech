@@ -1,5 +1,6 @@
 import type {VideoSpec} from '../../types';
 import {moonPhases} from './moon-phases';
+import {numbersOneToTen} from './numbers-one-to-ten';
 import {tenAnimals} from './ten-animals';
 import {tenColors} from './ten-colors';
 import {twentyCountriesCapitals} from './twenty-countries-capitals';
@@ -8,6 +9,7 @@ import {twentyCountriesCapitals} from './twenty-countries-capitals';
 
 export const LEARN_VIDEOS: VideoSpec[] = [
   twentyCountriesCapitals,
+  numbersOneToTen,
   tenAnimals,
   tenColors,
   moonPhases,

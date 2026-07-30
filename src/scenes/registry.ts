@@ -6,6 +6,7 @@ import {Callout} from './Callout';
 import {Code} from './Code';
 import {Colors} from './Colors';
 import {Compare} from './Compare';
+import {Counting} from './Counting';
 import {Flashcards} from './Flashcards';
 import {Flow} from './Flow';
 import {Outro} from './Outro';
@@ -29,6 +30,7 @@ export const SCENES: Record<SceneType, React.FC<{scene: any}>> = {
   compare: Compare,
   stats: Stats,
   bigStat: BigStat,
+  counting: Counting,
   colors: Colors,
   flashcards: Flashcards,
   callout: Callout,
