@@ -11,6 +11,35 @@ import {DELIVERIES} from './deliveries.mjs';
 const checksum = (value) =>
   createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
+const mediaCreditsFor = (spec) => {
+  const assets = [];
+  if (spec.soundtrack?.music) {
+    assets.push({role: 'music', ...spec.soundtrack.music});
+  }
+  for (const effect of spec.soundtrack?.effects ?? []) {
+    assets.push({role: 'sound-effect', ...effect});
+  }
+  return assets.map(
+    ({
+      role,
+      src,
+      credit,
+      license,
+      sourceUrl,
+      startFrame,
+      durationInFrames,
+    }) => ({
+      role,
+      src,
+      credit,
+      license,
+      sourceUrl: sourceUrl ?? null,
+      startFrame: startFrame ?? 0,
+      durationInFrames: durationInFrames ?? null,
+    }),
+  );
+};
+
 const descriptionFor = (spec, channel) => {
   const lines = [spec.summary ?? ''];
   const sources = spec.editorial?.sources ?? [];
@@ -18,6 +47,17 @@ const descriptionFor = (spec, channel) => {
     lines.push('', 'Sources:');
     for (const source of sources) {
       lines.push(`- ${source.title}${source.url ? `: ${source.url}` : ''}`);
+    }
+  }
+  const mediaCredits = mediaCreditsFor(spec);
+  if (mediaCredits.length) {
+    lines.push('', 'Audio credits:');
+    for (const asset of mediaCredits) {
+      lines.push(
+        `- ${asset.role}: ${asset.credit} (${asset.license})${
+          asset.sourceUrl ? `: ${asset.sourceUrl}` : ''
+        }`,
+      );
     }
   }
   lines.push('', channel.handle);
@@ -28,6 +68,7 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
   const base = join(outRoot, spec.channel, spec.slug);
   const deliveries = spec.deliveries ?? channel.defaultDeliveries;
   const files = [];
+  const mediaCredits = mediaCreditsFor(spec);
 
   mkdirSync(base, {recursive: true});
 
@@ -55,6 +96,7 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
       description: descriptionFor(spec, channel),
       hashtags,
       handle: channel.handle,
+      mediaCredits,
     };
     writeFileSync(
       join(deliveryDir, 'metadata.json'),
@@ -88,6 +130,7 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
     template: spec.template,
     sourceChecksum: checksum(spec),
     sources: spec.editorial?.sources ?? [],
+    media: mediaCredits,
     files,
   };
   writeFileSync(join(base, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');

@@ -300,6 +300,44 @@ machine-readable run report to `out/<channel>/<slug>/production.json`.
 Reuse an already generated master with `--skip-voice`, or intentionally create
 a silent production with `--silent`.
 
+### Music and sound effects
+
+Declare traceable audio assets in the video spec. Paths are relative to
+`public/`, and every asset must include its credit and license:
+
+```ts
+soundtrack: {
+  music: {
+    src: 'audio/music/bright-loop.wav',
+    credit: 'Your Studio',
+    license: 'original',
+    volume: 0.16,
+    loop: true,
+    fadeInFrames: 15,
+    fadeOutFrames: 30,
+  },
+  effects: [
+    {
+      src: 'audio/sfx/reveal.wav',
+      credit: 'Your Studio',
+      license: 'original',
+      startFrame: 270,
+      volume: 0.7,
+    },
+  ],
+  ducking: {
+    gain: 0.3,
+    attackFrames: 6,
+    releaseFrames: 12,
+  },
+},
+```
+
+Music is automatically ducked while narrated scenes are active. Validation
+rejects missing files, unsafe paths, invalid timeline cues, and assets without
+credit/license metadata. Packages include the same audio credits in both
+`metadata.json` and `manifest.json`.
+
 For a separately recorded voiceover, mux it after rendering:
 
 ```bash

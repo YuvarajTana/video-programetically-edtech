@@ -191,6 +191,45 @@ export type Scene =
 
 export type SceneType = Scene['type'];
 
+// ------------------------------------------------------------------ audio mix
+
+export type LicensedAudioAsset = {
+  /** Path relative to public/. */
+  src: string;
+  /** Human-readable creator or library attribution. */
+  credit: string;
+  /** License identifier or "original" for project-owned audio. */
+  license: string;
+  sourceUrl?: string;
+  /** Linear gain. 0 is silent and 1 is the source level. */
+  volume?: number;
+};
+
+export type MusicTrack = LicensedAudioAsset & {
+  startFrame?: number;
+  trimBefore?: number;
+  loop?: boolean;
+  fadeInFrames?: number;
+  fadeOutFrames?: number;
+};
+
+export type SoundEffectCue = LicensedAudioAsset & {
+  startFrame: number;
+  trimBefore?: number;
+  durationInFrames?: number;
+};
+
+export type Soundtrack = {
+  music?: MusicTrack;
+  effects?: SoundEffectCue[];
+  ducking?: {
+    /** Music gain while narration is active. Defaults to 0.3. */
+    gain?: number;
+    attackFrames?: number;
+    releaseFrames?: number;
+  };
+};
+
 // ------------------------------------------------------------------ the video
 
 export type VideoSpec = {
@@ -222,6 +261,8 @@ export type VideoSpec = {
   audio?: string;
   /** Override any channel-level local TTS defaults for this video. */
   voice?: Partial<VoiceProfile>;
+  /** Licensed background music, sound effects, and narration ducking. */
+  soundtrack?: Soundtrack;
   /** Burn narration into the frame as captions. On by default for Reels. */
   captions?: boolean;
   scenes: Scene[];

@@ -1,4 +1,5 @@
-import {AbsoluteFill, Audio, Series, staticFile} from 'remotion';
+import {AbsoluteFill, Series} from 'remotion';
+import {AudioMix} from './audio/AudioMix';
 import {Captions, Chrome} from './components/Chrome';
 import {FontGate} from './design/FontGate';
 import {useLayout} from './design/formats';
@@ -46,7 +47,7 @@ const VideoBody: React.FC<{spec: VideoSpec}> = ({spec}) => {
         </Series>
 
         <Chrome />
-        {spec.audio ? <Audio src={staticFile(spec.audio)} /> : null}
+        <AudioMix spec={spec} />
       </FontGate>
     </AbsoluteFill>
   );

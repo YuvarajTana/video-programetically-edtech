@@ -1,4 +1,6 @@
 import {DELIVERIES, refOf} from './deliveries.mjs';
+import {existsSync} from 'node:fs';
+import {resolve, sep} from 'node:path';
 
 const words = (text = '') => text.trim().split(/\s+/).filter(Boolean).length;
 
@@ -104,6 +106,105 @@ export const validateSpec = (spec, channel) => {
     );
     if (spec.channel === 'tech' && hasClaimScene && !spec.editorial?.sources?.length) {
       add('warning', 'editorial.sources', 'add sources for statistics or quantitative claims');
+    }
+  }
+
+  const publicRoot = resolve('public');
+  const validateAudioAsset = (asset, path) => {
+    if (!asset?.src?.trim()) {
+      add('error', `${path}.src`, 'is required');
+      return;
+    }
+    const assetPath = resolve(publicRoot, asset.src);
+    if (!assetPath.startsWith(`${publicRoot}${sep}`)) {
+      add('error', `${path}.src`, 'must stay inside public/');
+    } else if (!existsSync(assetPath)) {
+      add('error', `${path}.src`, `missing public/${asset.src}`);
+    }
+    if (!asset.credit?.trim()) {
+      add('error', `${path}.credit`, 'is required for media traceability');
+    }
+    if (!asset.license?.trim()) {
+      add('error', `${path}.license`, 'is required for media traceability');
+    }
+    if (
+      asset.volume !== undefined &&
+      (!Number.isFinite(asset.volume) || asset.volume < 0 || asset.volume > 1)
+    ) {
+      add('error', `${path}.volume`, 'must be between 0 and 1');
+    }
+  };
+
+  const music = spec.soundtrack?.music;
+  if (music) {
+    validateAudioAsset(music, 'soundtrack.music');
+    if (
+      music.startFrame !== undefined &&
+      (!Number.isInteger(music.startFrame) ||
+        music.startFrame < 0 ||
+        music.startFrame >= totalFrames)
+    ) {
+      add(
+        'error',
+        'soundtrack.music.startFrame',
+        'must be an integer inside the video timeline',
+      );
+    }
+    for (const field of ['trimBefore', 'fadeInFrames', 'fadeOutFrames']) {
+      if (
+        music[field] !== undefined &&
+        (!Number.isInteger(music[field]) || music[field] < 0)
+      ) {
+        add('error', `soundtrack.music.${field}`, 'must be a non-negative integer');
+      }
+    }
+  }
+
+  for (const [index, effect] of (spec.soundtrack?.effects ?? []).entries()) {
+    const path = `soundtrack.effects[${index}]`;
+    validateAudioAsset(effect, path);
+    if (
+      !Number.isInteger(effect.startFrame) ||
+      effect.startFrame < 0 ||
+      effect.startFrame >= totalFrames
+    ) {
+      add('error', `${path}.startFrame`, 'must be an integer inside the video timeline');
+    }
+    if (
+      effect.durationInFrames !== undefined &&
+      (!Number.isInteger(effect.durationInFrames) ||
+        effect.durationInFrames <= 0 ||
+        effect.startFrame + effect.durationInFrames > totalFrames)
+    ) {
+      add('error', `${path}.durationInFrames`, 'must fit inside the video timeline');
+    }
+    if (
+      effect.trimBefore !== undefined &&
+      (!Number.isInteger(effect.trimBefore) || effect.trimBefore < 0)
+    ) {
+      add('error', `${path}.trimBefore`, 'must be a non-negative integer');
+    }
+  }
+
+  const ducking = spec.soundtrack?.ducking;
+  if (ducking) {
+    if (
+      ducking.gain !== undefined &&
+      (!Number.isFinite(ducking.gain) || ducking.gain < 0 || ducking.gain > 1)
+    ) {
+      add('error', 'soundtrack.ducking.gain', 'must be between 0 and 1');
+    }
+    for (const field of ['attackFrames', 'releaseFrames']) {
+      if (
+        ducking[field] !== undefined &&
+        (!Number.isInteger(ducking[field]) || ducking[field] < 0)
+      ) {
+        add(
+          'error',
+          `soundtrack.ducking.${field}`,
+          'must be a non-negative integer',
+        );
+      }
     }
   }
 
