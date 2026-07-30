@@ -13,6 +13,7 @@
     "captions": "node scripts/captions.mjs",
     "voice": "node scripts/voice.mjs",
     "produce": "node scripts/produce.mjs",
+    "queue": "node scripts/queue.mjs",
     "new": "node scripts/new-video.mjs",
     "qa": "node scripts/qa.mjs",
     "fonts": "node scripts/gen-fonts.mjs",

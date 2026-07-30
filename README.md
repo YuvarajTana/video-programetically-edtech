@@ -355,6 +355,36 @@ rejects missing files, unsafe paths, invalid timeline cues, and assets without
 credit/license metadata. Packages include the same audio credits in both
 `metadata.json` and `manifest.json`.
 
+## Batch production queue
+
+Define an ordered queue in JSON and validate it without starting any work:
+
+```bash
+npm run queue -- queues/example.json --dry-run
+```
+
+Run the queue locally:
+
+```bash
+npm run queue -- queues/example.json
+```
+
+Jobs run sequentially to keep memory and Chromium usage predictable. State is
+written atomically after every job to `out/queues/<queue-id>/state.json`.
+Rerunning the command skips completed jobs whose configuration has not changed.
+Use `--restart` to run every job again or `--continue-on-error` to finish the
+remaining jobs after a failure.
+
+Each job supports `skipVoice`, `silent`, `force`, and voice overrides:
+
+```json
+{
+  "id": "tech-episode",
+  "ref": "tech/my-video",
+  "voice": {"preset": "am_adam", "speed": 0.98}
+}
+```
+
 For a separately recorded voiceover, mux it after rendering:
 
 ```bash
@@ -362,9 +392,6 @@ ffmpeg -i out/tech/my-video/renders/portrait.mp4 -i vo.mp3 \
   -c:v copy -c:a aac -b:a 192k -shortest \
   out/tech/my-video/renders/portrait.vo.mp4
 ```
-
-The first implementation still uses scene-level caption cues. Phrase- or
-word-level timing and first-class music/SFX mixing are planned next.
 
 ## Project layout
 
@@ -392,6 +419,7 @@ scripts/
   captions.mjs
   voice.mjs
   produce.mjs
+  queue.mjs
   qa.mjs
 ```
 

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "three-channel-sample",
+  "jobs": [
+    {
+      "id": "tech-reference",
+      "ref": "tech/context-vs-harness-engineering",
+      "skipVoice": true
+    },
+    {
+      "id": "learn-colors",
+      "ref": "learn/ten-colors",
+      "silent": true
+    },
+    {
+      "id": "fun-cloud-elephant",
+      "ref": "fun/cloud-vs-elephant",
+      "silent": true
+    }
+  ]
+}
