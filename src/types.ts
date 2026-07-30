@@ -132,6 +132,21 @@ export type ColorsScene = Base & {
   prompt?: string;
 };
 
+export type FlashcardItem = {
+  label: string;
+  emoji: string;
+  clue?: string;
+  color?: string;
+};
+
+export type FlashcardsScene = Base & {
+  type: 'flashcards';
+  kicker?: string;
+  title?: string;
+  items: FlashcardItem[];
+  prompt?: string;
+};
+
 export type CalloutScene = Base & {
   type: 'callout';
   text: string;
@@ -167,6 +182,7 @@ export type Scene =
   | StatsScene
   | BigStatScene
   | ColorsScene
+  | FlashcardsScene
   | CalloutScene
   | ArrayVizScene
   | OutroScene;

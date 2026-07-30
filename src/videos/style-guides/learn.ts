@@ -48,6 +48,17 @@ export const learnStyleGuide: VideoSpec = {
       prompt: 'Say both colors!',
     },
     {
+      type: 'flashcards',
+      durationInFrames: 100,
+      kicker: 'flashcards',
+      title: 'Lion and Elephant',
+      items: [
+        {label: 'Lion', emoji: '🦁', clue: 'has a big mane', color: '#F5A524'},
+        {label: 'Elephant', emoji: '🐘', clue: 'has a long trunk', color: '#7D91AA'},
+      ],
+      prompt: 'Say both animals!',
+    },
+    {
       type: 'callout',
       durationInFrames: 80,
       text: 'Blue light scatters more than red light.',
