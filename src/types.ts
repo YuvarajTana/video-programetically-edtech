@@ -137,6 +137,7 @@ export type FlashcardItem = {
   emoji: string;
   clue?: string;
   color?: string;
+  rank?: number;
 };
 
 export type FlashcardsScene = Base & {
@@ -145,6 +146,7 @@ export type FlashcardsScene = Base & {
   title?: string;
   items: FlashcardItem[];
   prompt?: string;
+  showCluesInCompact?: boolean;
 };
 
 export type CalloutScene = Base & {

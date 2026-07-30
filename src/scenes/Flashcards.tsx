@@ -41,6 +41,7 @@ export const Flashcards: React.FC<{scene: FlashcardsScene}> = ({scene}) => {
             <div
               key={item.label}
               style={{
+                position: 'relative',
                 minHeight: compact ? (layout.isLandscape ? 230 : 158) : layout.isLandscape ? 470 : 430,
                 padding: compact
                   ? `${space.sm}px ${space.xs}px`
@@ -58,6 +59,30 @@ export const Flashcards: React.FC<{scene: FlashcardsScene}> = ({scene}) => {
                 ...fadeUp(frame, at, 24, compact ? 30 : 52),
               }}
             >
+              {item.rank ? (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: compact ? space.xs : space.md,
+                    left: compact ? space.xs : space.md,
+                    minWidth: compact ? 48 : 66,
+                    height: compact ? 48 : 66,
+                    padding: `0 ${compact ? 8 : 12}px`,
+                    borderRadius: radius.pill,
+                    backgroundColor: itemColor,
+                    color: '#FFFFFF',
+                    display: 'grid',
+                    placeItems: 'center',
+                    fontFamily: font.mono,
+                    fontWeight: 800,
+                    fontSize: compact ? type.nano : type.micro,
+                    boxShadow: `0 8px 24px ${itemColor}33`,
+                  }}
+                >
+                  #{item.rank}
+                </div>
+              ) : null}
+
               <div
                 style={{
                   width: compact ? (layout.isLandscape ? 100 : 88) : layout.isLandscape ? 250 : 220,
@@ -96,13 +121,14 @@ export const Flashcards: React.FC<{scene: FlashcardsScene}> = ({scene}) => {
                 >
                   {item.label}
                 </div>
-                {!compact && item.clue ? (
+                {(!compact || scene.showCluesInCompact) && item.clue ? (
                   <div
                     style={{
-                      marginTop: space.sm,
+                      marginTop: compact ? space.xs : space.sm,
                       fontFamily: font.body,
                       fontWeight: 650,
-                      fontSize: type.small,
+                      fontSize: compact ? type.nano : type.small,
+                      lineHeight: compact ? 1.15 : 1.4,
                       color: color.textDim,
                     }}
                   >
