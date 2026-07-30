@@ -37,6 +37,17 @@ export const learnStyleGuide: VideoSpec = {
       accent: 'info',
     },
     {
+      type: 'colors',
+      durationInFrames: 100,
+      kicker: 'colors',
+      title: 'Red and Blue',
+      items: [
+        {name: 'Red', hex: '#EF3340', example: 'an apple', emoji: '🍎'},
+        {name: 'Blue', hex: '#2F80ED', example: 'a butterfly', emoji: '🦋'},
+      ],
+      prompt: 'Say both colors!',
+    },
+    {
       type: 'callout',
       durationInFrames: 80,
       text: 'Blue light scatters more than red light.',

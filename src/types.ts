@@ -117,6 +117,21 @@ export type BigStatScene = Base & {
   note?: string;
 };
 
+export type ColorSwatch = {
+  name: string;
+  hex: string;
+  example?: string;
+  emoji?: string;
+};
+
+export type ColorsScene = Base & {
+  type: 'colors';
+  kicker?: string;
+  title?: string;
+  items: ColorSwatch[];
+  prompt?: string;
+};
+
 export type CalloutScene = Base & {
   type: 'callout';
   text: string;
@@ -151,6 +166,7 @@ export type Scene =
   | CompareScene
   | StatsScene
   | BigStatScene
+  | ColorsScene
   | CalloutScene
   | ArrayVizScene
   | OutroScene;

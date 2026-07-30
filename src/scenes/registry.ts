@@ -4,6 +4,7 @@ import {ArrayViz} from './ArrayViz';
 import {BigStat} from './BigStat';
 import {Callout} from './Callout';
 import {Code} from './Code';
+import {Colors} from './Colors';
 import {Compare} from './Compare';
 import {Flow} from './Flow';
 import {Outro} from './Outro';
@@ -27,6 +28,7 @@ export const SCENES: Record<SceneType, React.FC<{scene: any}>> = {
   compare: Compare,
   stats: Stats,
   bigStat: BigStat,
+  colors: Colors,
   callout: Callout,
   arrayViz: ArrayViz,
   outro: Outro,
