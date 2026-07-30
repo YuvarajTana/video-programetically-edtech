@@ -166,11 +166,30 @@ if (!finalPath.startsWith(`${publicRoot}${sep}`)) {
   console.error(`audio path must stay inside public/: ${request.audio}`);
   process.exit(1);
 }
+const wordTimingsPath = request.wordTimingsConfigured
+  ? resolve(publicRoot, request.wordTimings)
+  : null;
+if (
+  wordTimingsPath &&
+  !wordTimingsPath.startsWith(`${publicRoot}${sep}`)
+) {
+  console.error(
+    `word timings path must stay inside public/: ${request.wordTimings}`,
+  );
+  process.exit(1);
+}
 
 const finalParts = parse(finalPath);
 const rawPath = join(finalParts.dir, `${finalParts.name}-raw.wav`);
 const pendingPath = join(finalParts.dir, `${finalParts.name}.pending.wav`);
+const pendingWordTimingsPath = wordTimingsPath
+  ? join(
+      dirname(wordTimingsPath),
+      `${parse(wordTimingsPath).name}.pending.json`,
+    )
+  : null;
 mkdirSync(dirname(finalPath), {recursive: true});
+if (wordTimingsPath) mkdirSync(dirname(wordTimingsPath), {recursive: true});
 
 const srtPath = join(base, 'captions.srt');
 const generatorHash = createHash('sha256')
@@ -193,6 +212,7 @@ const cacheDirectory = resolve(
 );
 const cacheAudioPath = join(cacheDirectory, `${cacheKey}.wav`);
 const cacheMetadataPath = join(cacheDirectory, `${cacheKey}.json`);
+const cacheWordTimingsPath = join(cacheDirectory, `${cacheKey}.words.json`);
 mkdirSync(cacheDirectory, {recursive: true});
 
 const verifyAudio = (path) => {
@@ -223,7 +243,55 @@ const verifyAudio = (path) => {
   return {duration, loudness};
 };
 
-const writeAudioReport = ({duration, loudness, correctionDb, cacheHit}) => {
+const verifyWordTimings = (path) => {
+  if (!path) return null;
+  if (!existsSync(path)) {
+    console.error(`missing word timings ${path}`);
+    process.exit(1);
+  }
+  const data = JSON.parse(readFileSync(path, 'utf8'));
+  if (data.schemaVersion !== 1 || !Array.isArray(data.cues)) {
+    console.error(`invalid word timings ${path}`);
+    process.exit(1);
+  }
+
+  let previous = 0;
+  let words = 0;
+  for (const cue of data.cues) {
+    if (!Array.isArray(cue.words)) {
+      console.error(`invalid word timings cue in ${path}`);
+      process.exit(1);
+    }
+    for (const word of cue.words) {
+      if (
+        !word.text ||
+        !Number.isFinite(word.start) ||
+        !Number.isFinite(word.end) ||
+        word.start < previous - 0.001 ||
+        word.end <= word.start ||
+        word.end > request.durationSeconds + 0.05
+      ) {
+        console.error(`invalid word timing in ${path}`);
+        process.exit(1);
+      }
+      previous = word.end;
+      words++;
+    }
+  }
+  if (!words) {
+    console.error(`word timings contain no words: ${path}`);
+    process.exit(1);
+  }
+  return {cues: data.cues.length, words};
+};
+
+const writeAudioReport = ({
+  duration,
+  loudness,
+  correctionDb,
+  cacheHit,
+  wordTimingStats,
+}) => {
   writeFileSync(
     join(base, 'audio.json'),
     JSON.stringify(
@@ -243,6 +311,12 @@ const writeAudioReport = ({duration, loudness, correctionDb, cacheHit}) => {
           key: cacheKey,
           hit: cacheHit,
         },
+        wordTimings: wordTimingStats
+          ? {
+              path: request.wordTimings,
+              ...wordTimingStats,
+            }
+          : null,
       },
       null,
       2,
@@ -253,16 +327,24 @@ const writeAudioReport = ({duration, loudness, correctionDb, cacheHit}) => {
 if (
   !argv.includes('--force') &&
   existsSync(cacheAudioPath) &&
-  existsSync(cacheMetadataPath)
+  existsSync(cacheMetadataPath) &&
+  (!wordTimingsPath || existsSync(cacheWordTimingsPath))
 ) {
   console.log(`· cache hit ${cacheKey.slice(0, 12)}`);
   const cacheMetadata = JSON.parse(readFileSync(cacheMetadataPath, 'utf8'));
   const verified = verifyAudio(cacheAudioPath);
+  const wordTimingStats = verifyWordTimings(
+    wordTimingsPath ? cacheWordTimingsPath : null,
+  );
   copyFileSync(cacheAudioPath, finalPath);
+  if (wordTimingsPath) {
+    copyFileSync(cacheWordTimingsPath, wordTimingsPath);
+  }
   writeAudioReport({
     ...verified,
     correctionDb: Number(cacheMetadata.correctionDb ?? 0),
     cacheHit: true,
+    wordTimingStats,
   });
   console.log(`✓ voice ${ref}`);
   console.log(`  ${request.audio}`);
@@ -277,25 +359,25 @@ const python = availablePython();
 console.log(
   `· tts ${voice.model} ${voice.preset} speed=${voice.speed} language=${voice.language}`,
 );
-run(
-  python,
-  [
-    'scripts/local-tts-from-srt.py',
-    '--srt',
-    srtPath,
-    '--out',
-    rawPath,
-    '--voice',
-    voice.preset,
-    '--speed',
-    String(voice.speed),
-    '--model',
-    voice.model,
-    '--language',
-    voice.language,
-  ],
-  {stdio: 'inherit'},
-);
+const ttsArgs = [
+  'scripts/local-tts-from-srt.py',
+  '--srt',
+  srtPath,
+  '--out',
+  rawPath,
+  '--voice',
+  voice.preset,
+  '--speed',
+  String(voice.speed),
+  '--model',
+  voice.model,
+  '--language',
+  voice.language,
+];
+if (pendingWordTimingsPath) {
+  ttsArgs.push('--timings', pendingWordTimingsPath);
+}
+run(python, ttsArgs, {stdio: 'inherit'});
 
 console.log('· loudness pass 1');
 const measured = measureLoudness(rawPath, voice);
@@ -382,10 +464,17 @@ if (loudnessError > 0.2) {
 }
 
 const verified = verifyAudio(pendingPath);
+const wordTimingStats = verifyWordTimings(pendingWordTimingsPath);
 renameSync(pendingPath, finalPath);
+if (wordTimingsPath && pendingWordTimingsPath) {
+  renameSync(pendingWordTimingsPath, wordTimingsPath);
+}
 const cacheAudioPendingPath = `${cacheAudioPath}.pending`;
 const cacheMetadataPendingPath = `${cacheMetadataPath}.pending`;
 copyFileSync(finalPath, cacheAudioPendingPath);
+if (wordTimingsPath) {
+  copyFileSync(wordTimingsPath, `${cacheWordTimingsPath}.pending`);
+}
 writeFileSync(
   cacheMetadataPendingPath,
   JSON.stringify(
@@ -403,11 +492,15 @@ writeFileSync(
   ),
 );
 renameSync(cacheAudioPendingPath, cacheAudioPath);
+if (wordTimingsPath) {
+  renameSync(`${cacheWordTimingsPath}.pending`, cacheWordTimingsPath);
+}
 renameSync(cacheMetadataPendingPath, cacheMetadataPath);
 writeAudioReport({
   ...verified,
   correctionDb,
   cacheHit: false,
+  wordTimingStats,
 });
 
 console.log(`✓ voice ${ref}`);

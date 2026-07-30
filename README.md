@@ -287,6 +287,12 @@ Normalized tracks are cached by narration, model, voice settings, and generator
 version, so unchanged voiceovers are reused. Pass `--force` to synthesize again.
 The cache, intermediate clips, and raw masters are ignored by Git.
 
+New video specs also declare a `captionTimings` path. Voice generation writes
+per-word timing JSON there from each cue's actual synthesized duration. During
+rendering, captions show a short word group and animate the currently spoken
+word using frame-derived timing. The packaged file is named
+`captions.words.json`; regular SRT captions remain available for platforms.
+
 Produce and verify every configured delivery in one command:
 
 ```bash

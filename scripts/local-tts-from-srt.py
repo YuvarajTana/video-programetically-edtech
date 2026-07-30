@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import json
 import math
 import re
 from pathlib import Path
@@ -80,6 +81,44 @@ def apply_fade(audio, sample_rate):
     return audio
 
 
+def word_timings(text, start_seconds, duration_seconds):
+    words = re.findall(r"\S+", text)
+
+    if not words:
+        return []
+
+    weights = []
+    for word in words:
+        spoken_characters = len(re.sub(r"[^A-Za-z0-9]", "", word))
+        weight = max(1.0, math.sqrt(max(1, spoken_characters)))
+        if re.search(r"[,;:]$", word):
+            weight += 0.2
+        if re.search(r"[.!?]$", word):
+            weight += 0.35
+        weights.append(weight)
+
+    total_weight = sum(weights)
+    cursor = start_seconds
+    result = []
+
+    for index, (word, weight) in enumerate(zip(words, weights)):
+        end = (
+            start_seconds + duration_seconds
+            if index == len(words) - 1
+            else cursor + duration_seconds * (weight / total_weight)
+        )
+        result.append(
+            {
+                "text": word,
+                "start": round(cursor, 4),
+                "end": round(end, 4),
+            }
+        )
+        cursor = end
+
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--srt", required=True)
@@ -88,6 +127,7 @@ def main():
     parser.add_argument("--speed", type=float, default=0.98)
     parser.add_argument("--model", default="mlx-community/Kokoro-82M-bf16")
     parser.add_argument("--language", default="a")
+    parser.add_argument("--timings")
     args = parser.parse_args()
 
     srt_path = Path(args.srt)
@@ -105,6 +145,7 @@ def main():
     sample_rate = 24000
     total_seconds = max(cue["end"] for cue in cues)
     master = np.zeros(math.ceil(total_seconds * sample_rate), dtype=np.float32)
+    timing_cues = []
 
     clips_directory = output_path.parent / "clips"
     clips_directory.mkdir(parents=True, exist_ok=True)
@@ -152,6 +193,15 @@ def main():
         end_sample = start_sample + len(audio)
 
         master[start_sample:end_sample] += audio
+        timing_cues.append(
+            {
+                "index": index,
+                "start": round(cue["start"], 4),
+                "end": round(cue["start"] + duration, 4),
+                "text": cue["text"],
+                "words": word_timings(cue["text"], cue["start"], duration),
+            }
+        )
 
         print(
             f"{index:02d}: {cue['start']:.1f}s "
@@ -165,6 +215,23 @@ def main():
 
     sf.write(output_path, master, sample_rate)
     print(f"Wrote {output_path}")
+
+    if args.timings:
+        timings_path = Path(args.timings)
+        timings_path.parent.mkdir(parents=True, exist_ok=True)
+        timings_path.write_text(
+            json.dumps(
+                {
+                    "schemaVersion": 1,
+                    "durationSeconds": round(total_seconds, 4),
+                    "cues": timing_cues,
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        print(f"Wrote {timings_path}")
 
 
 if __name__ == "__main__":

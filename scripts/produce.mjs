@@ -157,6 +157,20 @@ if (!has('silent')) {
     console.error(`missing public/${voiceRequest.audio}`);
     process.exit(1);
   }
+  if (voiceRequest.wordTimingsConfigured) {
+    const wordTimingsPath = resolve(publicRoot, voiceRequest.wordTimings);
+    if (
+      !wordTimingsPath.startsWith(`${publicRoot}${sep}`) ||
+      !existsSync(wordTimingsPath)
+    ) {
+      writeReport('failed', {
+        failedStage: 'audio-preflight',
+        error: `missing public/${voiceRequest.wordTimings}`,
+      });
+      console.error(`missing public/${voiceRequest.wordTimings}`);
+      process.exit(1);
+    }
+  }
 }
 
 runStage('render', process.execPath, ['scripts/render.mjs', ref]);

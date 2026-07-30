@@ -261,6 +261,8 @@ export type VideoSpec = {
   audio?: string;
   /** Override any channel-level local TTS defaults for this video. */
   voice?: Partial<VoiceProfile>;
+  /** Word timing JSON generated beside the voice track, relative to public/. */
+  captionTimings?: string;
   /** Licensed background music, sound effects, and narration ducking. */
   soundtrack?: Soundtrack;
   /** Burn narration into the frame as captions. On by default for Reels. */

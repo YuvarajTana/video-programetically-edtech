@@ -10,3 +10,4 @@ __pycache__/
 public/audio/**/clips/
 public/audio/**/*-raw.wav
 public/audio/**/*.pending.wav
+public/audio/**/*.pending.json

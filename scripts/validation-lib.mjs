@@ -110,6 +110,12 @@ export const validateSpec = (spec, channel) => {
   }
 
   const publicRoot = resolve('public');
+  if (spec.captionTimings) {
+    const captionTimingsPath = resolve(publicRoot, spec.captionTimings);
+    if (!captionTimingsPath.startsWith(`${publicRoot}${sep}`)) {
+      add('error', 'captionTimings', 'must stay inside public/');
+    }
+  }
   const validateAudioAsset = (asset, path) => {
     if (!asset?.src?.trim()) {
       add('error', `${path}.src`, 'is required');

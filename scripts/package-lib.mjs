@@ -5,7 +5,7 @@ import {
   mkdirSync,
   writeFileSync,
 } from 'node:fs';
-import {join, relative} from 'node:path';
+import {join, relative, resolve, sep} from 'node:path';
 import {DELIVERIES} from './deliveries.mjs';
 
 const checksum = (value) =>
@@ -82,9 +82,24 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
     const coverPath = join(deliveryDir, 'cover.png');
     const captionsPath = join(base, 'captions.srt');
     const packagedCaptionsPath = join(deliveryDir, 'captions.srt');
+    const publicRoot = resolve('public');
+    const requestedWordTimingsSource = spec.captionTimings
+      ? resolve(publicRoot, spec.captionTimings)
+      : null;
+    const wordTimingsSource =
+      requestedWordTimingsSource?.startsWith(`${publicRoot}${sep}`)
+        ? requestedWordTimingsSource
+        : null;
+    const packagedWordTimingsPath = join(
+      deliveryDir,
+      'captions.words.json',
+    );
 
     if (existsSync(renderPath)) copyFileSync(renderPath, videoPath);
     if (existsSync(captionsPath)) copyFileSync(captionsPath, packagedCaptionsPath);
+    if (wordTimingsSource && existsSync(wordTimingsSource)) {
+      copyFileSync(wordTimingsSource, packagedWordTimingsPath);
+    }
 
     const hashtags = channel.defaultHashtags[delivery.platform];
     const metadata = {
@@ -117,6 +132,9 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
       cover: existsSync(coverPath) ? relative(base, coverPath) : null,
       captions: existsSync(packagedCaptionsPath)
         ? relative(base, packagedCaptionsPath)
+        : null,
+      wordTimings: existsSync(packagedWordTimingsPath)
+        ? relative(base, packagedWordTimingsPath)
         : null,
       metadata: relative(base, join(deliveryDir, 'metadata.json')),
     });

@@ -40,12 +40,12 @@ const VideoBody: React.FC<{spec: VideoSpec}> = ({spec}) => {
                 name={scene.id ?? scene.type}
               >
                 <Component scene={scene} />
-                {showCaptions ? <Captions text={scene.narration} /> : null}
               </Series.Sequence>
             );
           })}
         </Series>
 
+        {showCaptions ? <Captions spec={spec} /> : null}
         <Chrome />
         <AudioMix spec={spec} />
       </FontGate>

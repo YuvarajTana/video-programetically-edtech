@@ -119,6 +119,7 @@ export const ${camel}: VideoSpec = {
   summary: '',
   deliveries: ${channel.deliveries},
   audio: 'audio/${channelId}/${slug}/master.wav',
+  captionTimings: 'audio/${channelId}/${slug}/words.json',
 ${channelMetadata}
   scenes: [
     {
