@@ -10,6 +10,7 @@ import {getCompositions} from '@remotion/renderer';
 import {mkdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {toSrt, toVoScript} from './captions-lib.mjs';
+import {chaptersFor, toChapterText} from './chapters-lib.mjs';
 import {
   matchesRef,
   positionals,
@@ -39,6 +40,10 @@ for (const c of comps.filter(videoComposition)) {
   const fps = spec.fps ?? 30;
   writeFileSync(join(base, 'captions.srt'), toSrt(spec, fps));
   writeFileSync(
+    join(base, 'chapters.txt'),
+    toChapterText(chaptersFor(spec, fps)),
+  );
+  writeFileSync(
     join(base, 'voiceover.md'),
     toVoScript(
       spec,
@@ -67,7 +72,9 @@ for (const c of comps.filter(videoComposition)) {
       2,
     ),
   );
-  console.log(`· ${ref} captions.srt + voiceover.md + voice.json`);
+  console.log(
+    `· ${ref} captions.srt + chapters.txt + voiceover.md + voice.json`,
+  );
   count++;
 }
 

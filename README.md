@@ -293,6 +293,17 @@ rendering, captions show a short word group and animate the currently spoken
 word using frame-derived timing. The packaged file is named
 `captions.words.json`; regular SRT captions remain available for platforms.
 
+### YouTube chapters
+
+`captions` and `package` also derive `chapters.txt` from scene boundaries.
+The generator starts at `00:00`, keeps every chapter at least 10 seconds long,
+and only emits a list when at least three valid chapters exist. You can override
+an individual scene title with `chapterTitle`.
+
+YouTube delivery descriptions receive the chapter list automatically; Instagram
+metadata does not. This follows YouTube's manual chapter requirements while
+keeping the source of truth in the video spec.
+
 Produce and verify every configured delivery in one command:
 
 ```bash

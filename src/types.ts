@@ -19,6 +19,8 @@ export type Base = {
   durationInFrames: number;
   /** Spoken/on-screen captionline. Drives the .srt and the VO script. */
   narration?: string;
+  /** Optional override for an automatically generated YouTube chapter title. */
+  chapterTitle?: string;
   accent?: Accent;
 };
 

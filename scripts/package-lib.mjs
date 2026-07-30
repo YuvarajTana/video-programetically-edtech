@@ -3,9 +3,11 @@ import {
   copyFileSync,
   existsSync,
   mkdirSync,
+  unlinkSync,
   writeFileSync,
 } from 'node:fs';
 import {join, relative, resolve, sep} from 'node:path';
+import {chaptersFor, toChapterText} from './chapters-lib.mjs';
 import {DELIVERIES} from './deliveries.mjs';
 
 const checksum = (value) =>
@@ -40,7 +42,7 @@ const mediaCreditsFor = (spec) => {
   );
 };
 
-const descriptionFor = (spec, channel) => {
+const descriptionFor = (spec, channel, platform, chapters) => {
   const lines = [spec.summary ?? ''];
   const sources = spec.editorial?.sources ?? [];
   if (sources.length) {
@@ -60,6 +62,9 @@ const descriptionFor = (spec, channel) => {
       );
     }
   }
+  if (platform === 'youtube' && chapters.length) {
+    lines.push('', 'Chapters:', toChapterText(chapters).trim());
+  }
   lines.push('', channel.handle);
   return lines.filter((line, index) => line || index > 0).join('\n').trim();
 };
@@ -69,8 +74,10 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
   const deliveries = spec.deliveries ?? channel.defaultDeliveries;
   const files = [];
   const mediaCredits = mediaCreditsFor(spec);
+  const chapters = chaptersFor(spec);
 
   mkdirSync(base, {recursive: true});
+  writeFileSync(join(base, 'chapters.txt'), toChapterText(chapters));
 
   for (const deliveryId of deliveries) {
     const delivery = DELIVERIES[deliveryId];
@@ -94,11 +101,17 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
       deliveryDir,
       'captions.words.json',
     );
+    const packagedChaptersPath = join(deliveryDir, 'chapters.txt');
 
     if (existsSync(renderPath)) copyFileSync(renderPath, videoPath);
     if (existsSync(captionsPath)) copyFileSync(captionsPath, packagedCaptionsPath);
     if (wordTimingsSource && existsSync(wordTimingsSource)) {
       copyFileSync(wordTimingsSource, packagedWordTimingsPath);
+    }
+    if (delivery.platform === 'youtube' && chapters.length) {
+      copyFileSync(join(base, 'chapters.txt'), packagedChaptersPath);
+    } else if (existsSync(packagedChaptersPath)) {
+      unlinkSync(packagedChaptersPath);
     }
 
     const hashtags = channel.defaultHashtags[delivery.platform];
@@ -108,10 +121,16 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
       delivery: deliveryId,
       platform: delivery.platform,
       title: spec.title,
-      description: descriptionFor(spec, channel),
+      description: descriptionFor(
+        spec,
+        channel,
+        delivery.platform,
+        chapters,
+      ),
       hashtags,
       handle: channel.handle,
       mediaCredits,
+      chapters: delivery.platform === 'youtube' ? chapters : [],
     };
     writeFileSync(
       join(deliveryDir, 'metadata.json'),
@@ -136,6 +155,11 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
       wordTimings: existsSync(packagedWordTimingsPath)
         ? relative(base, packagedWordTimingsPath)
         : null,
+      chapters:
+        delivery.platform === 'youtube' &&
+        existsSync(packagedChaptersPath)
+          ? relative(base, packagedChaptersPath)
+          : null,
       metadata: relative(base, join(deliveryDir, 'metadata.json')),
     });
   }
