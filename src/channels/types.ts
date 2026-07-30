@@ -3,6 +3,16 @@ import type {VideoTheme} from '../themes/types';
 
 export type ChannelId = 'tech' | 'learn' | 'fun';
 
+export type VoiceProfile = {
+  model: string;
+  preset: string;
+  speed: number;
+  language: string;
+  targetLufs: number;
+  truePeakDb: number;
+  loudnessRange: number;
+};
+
 export type ChannelProfile = {
   id: ChannelId;
   label: string;
@@ -13,6 +23,7 @@ export type ChannelProfile = {
   defaultTemplate: string;
   defaultCta: string;
   defaultHashtags: Record<PlatformId, string[]>;
+  voice: VoiceProfile;
   editorial: {
     minSeconds: number;
     maxSeconds: number;

@@ -15,6 +15,15 @@ export const CHANNELS: Record<ChannelId, ChannelProfile> = {
       youtube: ['technology', 'programming', 'ai'],
       instagram: ['tech', 'programming', 'artificialintelligence'],
     },
+    voice: {
+      model: 'mlx-community/Kokoro-82M-bf16',
+      preset: 'am_adam',
+      speed: 0.98,
+      language: 'a',
+      targetLufs: -14,
+      truePeakDb: -1.5,
+      loudnessRange: 11,
+    },
     editorial: {
       minSeconds: 20,
       maxSeconds: 480,
@@ -33,6 +42,15 @@ export const CHANNELS: Record<ChannelId, ChannelProfile> = {
     defaultHashtags: {
       youtube: ['learning', 'students', 'education'],
       instagram: ['learnfast', 'studentlife', 'education'],
+    },
+    voice: {
+      model: 'mlx-community/Kokoro-82M-bf16',
+      preset: 'af_heart',
+      speed: 0.92,
+      language: 'a',
+      targetLufs: -14,
+      truePeakDb: -1.5,
+      loudnessRange: 11,
     },
     editorial: {
       minSeconds: 20,
@@ -55,6 +73,15 @@ export const CHANNELS: Record<ChannelId, ChannelProfile> = {
     defaultHashtags: {
       youtube: ['fun', 'shorts', 'challenge'],
       instagram: ['funreels', 'challenge', 'watchtillend'],
+    },
+    voice: {
+      model: 'mlx-community/Kokoro-82M-bf16',
+      preset: 'af_sky',
+      speed: 1.08,
+      language: 'a',
+      targetLufs: -14,
+      truePeakDb: -1.5,
+      loudnessRange: 11,
     },
     editorial: {
       minSeconds: 8,

@@ -1,8 +1,11 @@
 node_modules/
 out/
 .remotion/
+__pycache__/
+*.py[cod]
 
 # Local TTS intermediates are reproducible build artifacts. Keep only the
 # normalized master tracks that production specs reference.
 public/audio/**/clips/
 public/audio/**/*-raw.wav
+public/audio/**/*.pending.wav

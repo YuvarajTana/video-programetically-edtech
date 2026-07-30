@@ -1,0 +1,316 @@
+#!/usr/bin/env node
+/**
+ * Generate a normalized local Kokoro voice track for one production video.
+ *
+ *   npm run voice -- tech/context-vs-harness-engineering
+ *   npm run voice -- learn/ten-colors --voice af_sky --speed 0.95
+ */
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  writeFileSync,
+} from 'node:fs';
+import {dirname, join, parse, resolve, sep} from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {positionals} from './deliveries.mjs';
+
+const argv = process.argv.slice(2);
+const value = (name) => {
+  const index = argv.indexOf(`--${name}`);
+  return index === -1 ? null : argv[index + 1];
+};
+const valueFlags = ['voice', 'speed', 'model', 'language', 'python'];
+const refs = positionals(argv, valueFlags);
+
+if (argv.includes('--help') || refs.length !== 1) {
+  console.log(
+    'usage: npm run voice -- <channel>/<slug> [--voice preset] [--speed number] [--model id] [--language code] [--python path]',
+  );
+  process.exit(argv.includes('--help') ? 0 : 1);
+}
+
+const ref = refs[0];
+if (!/^(tech|learn|fun)\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(ref)) {
+  console.error('video ref must look like: tech/context-vs-harness-engineering');
+  process.exit(1);
+}
+
+const run = (command, args, options = {}) => {
+  const result = spawnSync(command, args, {
+    cwd: process.cwd(),
+    encoding: 'utf8',
+    ...options,
+  });
+  if (result.error) {
+    console.error(`${command}: ${result.error.message}`);
+    process.exit(1);
+  }
+  if (result.status !== 0) {
+    if (options.stdio !== 'inherit') {
+      if (result.stdout) process.stdout.write(result.stdout);
+      if (result.stderr) process.stderr.write(result.stderr);
+    }
+    process.exit(result.status ?? 1);
+  }
+  return result;
+};
+
+const availablePython = () => {
+  const requested = value('python') ?? process.env.TTS_PYTHON;
+  const candidates = [
+    requested,
+    join('.venv-tts', 'bin', 'python3'),
+    join('.venv-tts', 'bin', 'python'),
+    'python3',
+  ].filter(Boolean);
+
+  for (const candidate of candidates) {
+    const result = spawnSync(candidate, ['--version'], {encoding: 'utf8'});
+    if (!result.error && result.status === 0) return candidate;
+  }
+
+  console.error(
+    'no TTS Python found; create .venv-tts or pass --python /path/to/python3',
+  );
+  process.exit(1);
+};
+
+const parseLoudness = (output) => {
+  const matches = output.match(/\{\s*"input_i"[\s\S]*?\}/g);
+  if (!matches?.length) {
+    console.error('ffmpeg did not return loudness measurements');
+    process.exit(1);
+  }
+  return JSON.parse(matches.at(-1));
+};
+
+const measureLoudness = (path, config) => {
+  const filter = [
+    `loudnorm=I=${config.targetLufs}`,
+    `TP=${config.truePeakDb}`,
+    `LRA=${config.loudnessRange}`,
+    'print_format=json',
+  ].join(':');
+  const result = run('ffmpeg', [
+    '-hide_banner',
+    '-nostats',
+    '-i',
+    path,
+    '-af',
+    filter,
+    '-f',
+    'null',
+    '-',
+  ]);
+  return parseLoudness(`${result.stdout}\n${result.stderr}`);
+};
+
+const probeDuration = (path) => {
+  const result = run('ffprobe', [
+    '-v',
+    'error',
+    '-show_entries',
+    'format=duration',
+    '-of',
+    'default=noprint_wrappers=1:nokey=1',
+    path,
+  ]);
+  return Number(result.stdout.trim());
+};
+
+console.log(`· captions ${ref}`);
+run(process.execPath, ['scripts/captions.mjs', ref], {stdio: 'inherit'});
+
+const [channel, slug] = ref.split('/');
+const base = join('out', channel, slug);
+const requestPath = join(base, 'voice.json');
+if (!existsSync(requestPath)) {
+  console.error(`missing ${requestPath}`);
+  process.exit(1);
+}
+
+const request = JSON.parse(readFileSync(requestPath, 'utf8'));
+const voice = {
+  ...request.voice,
+  ...(value('voice') ? {preset: value('voice')} : {}),
+  ...(value('model') ? {model: value('model')} : {}),
+  ...(value('language') ? {language: value('language')} : {}),
+  ...(value('speed') ? {speed: Number(value('speed'))} : {}),
+};
+
+if (!Number.isFinite(voice.speed) || voice.speed <= 0) {
+  console.error('--speed must be a positive number');
+  process.exit(1);
+}
+
+const publicRoot = resolve('public');
+const finalPath = resolve(publicRoot, request.audio);
+if (!finalPath.startsWith(`${publicRoot}${sep}`)) {
+  console.error(`audio path must stay inside public/: ${request.audio}`);
+  process.exit(1);
+}
+
+const finalParts = parse(finalPath);
+const rawPath = join(finalParts.dir, `${finalParts.name}-raw.wav`);
+const pendingPath = join(finalParts.dir, `${finalParts.name}.pending.wav`);
+mkdirSync(dirname(finalPath), {recursive: true});
+
+const python = availablePython();
+console.log(
+  `· tts ${voice.model} ${voice.preset} speed=${voice.speed} language=${voice.language}`,
+);
+run(
+  python,
+  [
+    'scripts/local-tts-from-srt.py',
+    '--srt',
+    join(base, 'captions.srt'),
+    '--out',
+    rawPath,
+    '--voice',
+    voice.preset,
+    '--speed',
+    String(voice.speed),
+    '--model',
+    voice.model,
+    '--language',
+    voice.language,
+  ],
+  {stdio: 'inherit'},
+);
+
+console.log('· loudness pass 1');
+const measured = measureLoudness(rawPath, voice);
+const normalizeFilter = [
+  `loudnorm=I=${voice.targetLufs}`,
+  `TP=${voice.truePeakDb}`,
+  `LRA=${voice.loudnessRange}`,
+  `measured_I=${measured.input_i}`,
+  `measured_TP=${measured.input_tp}`,
+  `measured_LRA=${measured.input_lra}`,
+  `measured_thresh=${measured.input_thresh}`,
+  `offset=${measured.target_offset}`,
+  'linear=true',
+  'print_format=summary',
+].join(':');
+
+console.log('· loudness pass 2');
+run(
+  'ffmpeg',
+  [
+    '-y',
+    '-hide_banner',
+    '-i',
+    rawPath,
+    '-af',
+    normalizeFilter,
+    '-ar',
+    '48000',
+    '-ac',
+    '2',
+    '-c:a',
+    'pcm_s16le',
+    pendingPath,
+  ],
+  {stdio: 'inherit'},
+);
+
+let finalLoudness = measureLoudness(pendingPath, voice);
+let correctionDb = 0;
+let loudnessError = Math.abs(Number(finalLoudness.input_i) - voice.targetLufs);
+
+// True-peak protection can cause loudnorm to land below its integrated target
+// for peaky synthetic speech. Apply a bounded gain correction through a
+// look-ahead limiter, then verify the actual output again.
+if (loudnessError > 0.2) {
+  correctionDb = voice.targetLufs - Number(finalLoudness.input_i);
+  if (Math.abs(correctionDb) > 6) {
+    console.error(
+      `normalization needs ${correctionDb.toFixed(2)} dB of correction; refusing to apply more than 6 dB`,
+    );
+    process.exit(1);
+  }
+
+  const correctedPath = join(
+    finalParts.dir,
+    `${finalParts.name}.corrected.pending.wav`,
+  );
+  const limiter = 10 ** (voice.truePeakDb / 20);
+  console.log(`· loudness correction ${correctionDb.toFixed(2)} dB`);
+  run(
+    'ffmpeg',
+    [
+      '-y',
+      '-hide_banner',
+      '-i',
+      pendingPath,
+      '-af',
+      `volume=${correctionDb.toFixed(3)}dB,alimiter=limit=${limiter.toFixed(6)}:attack=5:release=50:level=false`,
+      '-ar',
+      '48000',
+      '-ac',
+      '2',
+      '-c:a',
+      'pcm_s16le',
+      correctedPath,
+    ],
+    {stdio: 'inherit'},
+  );
+  finalLoudness = measureLoudness(correctedPath, voice);
+  loudnessError = Math.abs(
+    Number(finalLoudness.input_i) - voice.targetLufs,
+  );
+  renameSync(correctedPath, pendingPath);
+}
+
+const duration = probeDuration(pendingPath);
+const durationError = Math.abs(duration - request.durationSeconds);
+
+if (loudnessError > 0.2) {
+  console.error(
+    `normalized loudness ${finalLoudness.input_i} LUFS misses target ${voice.targetLufs} LUFS`,
+  );
+  process.exit(1);
+}
+if (Number(finalLoudness.input_tp) > voice.truePeakDb + 0.2) {
+  console.error(
+    `true peak ${finalLoudness.input_tp} dBTP exceeds target ${voice.truePeakDb} dBTP`,
+  );
+  process.exit(1);
+}
+if (durationError > 0.05) {
+  console.error(
+    `audio duration ${duration.toFixed(3)}s does not match video ${request.durationSeconds.toFixed(3)}s`,
+  );
+  process.exit(1);
+}
+
+renameSync(pendingPath, finalPath);
+writeFileSync(
+  join(base, 'audio.json'),
+  JSON.stringify(
+    {
+      schemaVersion: 1,
+      ref,
+      path: request.audio,
+      durationSeconds: duration,
+      voice,
+      loudness: {
+        integratedLufs: Number(finalLoudness.input_i),
+        truePeakDb: Number(finalLoudness.input_tp),
+        loudnessRange: Number(finalLoudness.input_lra),
+        correctionDb: Number(correctionDb.toFixed(3)),
+      },
+    },
+    null,
+    2,
+  ),
+);
+
+console.log(`✓ voice ${ref}`);
+console.log(`  ${request.audio}`);
+console.log(
+  `  ${duration.toFixed(2)}s · ${finalLoudness.input_i} LUFS · ${finalLoudness.input_tp} dBTP`,
+);

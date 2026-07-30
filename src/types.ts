@@ -1,4 +1,4 @@
-import type {ChannelId} from './channels/types';
+import type {ChannelId, VoiceProfile} from './channels/types';
 import type {DeliveryId} from './publishing/types';
 import type {Accent} from './themes/types';
 
@@ -220,6 +220,8 @@ export type VideoSpec = {
   };
   /** Optional voiceover track placed in public/. */
   audio?: string;
+  /** Override any channel-level local TTS defaults for this video. */
+  voice?: Partial<VoiceProfile>;
   /** Burn narration into the frame as captions. On by default for Reels. */
   captions?: boolean;
   scenes: Scene[];

@@ -266,7 +266,26 @@ belong in `src/themes/`.
 ## Voiceover
 
 Narration drives burned captions, SRT cues, and the voiceover cue sheet.
-After recording:
+Channel voice defaults live in `src/channels/registry.ts`. Generate a
+scene-aligned Kokoro track locally:
+
+```bash
+source .venv-tts/bin/activate
+npm run voice -- tech/context-vs-harness-engineering
+```
+
+Override the channel preset or speaking speed for one run:
+
+```bash
+npm run voice -- learn/ten-colors --voice af_sky --speed 0.95
+```
+
+The command regenerates captions, synthesizes each cue independently, performs
+measured two-pass loudness normalization, verifies duration and peak levels,
+and writes the final track to the `public/` path declared by `spec.audio`.
+Intermediate clips and raw masters are ignored by Git.
+
+For a separately recorded voiceover, mux it after rendering:
 
 ```bash
 ffmpeg -i out/tech/my-video/renders/portrait.mp4 -i vo.mp3 \
@@ -301,6 +320,7 @@ scripts/
   render.mjs
   package.mjs
   captions.mjs
+  voice.mjs
   qa.mjs
 ```
 

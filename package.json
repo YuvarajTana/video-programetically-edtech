@@ -11,6 +11,7 @@
     "validate": "node scripts/validate.mjs",
     "package": "node scripts/package.mjs",
     "captions": "node scripts/captions.mjs",
+    "voice": "node scripts/voice.mjs",
     "new": "node scripts/new-video.mjs",
     "qa": "node scripts/qa.mjs",
     "fonts": "node scripts/gen-fonts.mjs",

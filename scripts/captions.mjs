@@ -46,7 +46,23 @@ for (const c of comps.filter(videoComposition)) {
       join(base, 'renders', `${preferredRenderProfile(spec, channel)}.mp4`),
     ),
   );
-  console.log(`· ${ref} captions.srt + voiceover.md`);
+  writeFileSync(
+    join(base, 'voice.json'),
+    JSON.stringify(
+      {
+        schemaVersion: 1,
+        ref,
+        audio: spec.audio ?? `audio/${spec.channel}/${spec.slug}/master.wav`,
+        durationSeconds:
+          spec.scenes.reduce((total, scene) => total + scene.durationInFrames, 0) /
+          fps,
+        voice: {...channel.voice, ...(spec.voice ?? {})},
+      },
+      null,
+      2,
+    ),
+  );
+  console.log(`· ${ref} captions.srt + voiceover.md + voice.json`);
   count++;
 }
 

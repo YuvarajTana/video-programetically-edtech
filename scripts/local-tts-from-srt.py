@@ -48,7 +48,7 @@ def read_srt(path: Path):
     return cues
 
 
-def generate_audio(model, text, voice, speed):
+def generate_audio(model, text, voice, speed, language):
     chunks = []
     sample_rate = 24000
 
@@ -56,7 +56,7 @@ def generate_audio(model, text, voice, speed):
         text=text,
         voice=voice,
         speed=speed,
-        lang_code="a",
+        lang_code=language,
     ):
         chunk = np.asarray(result.audio, dtype=np.float32).reshape(-1)
         chunks.append(chunk)
@@ -86,6 +86,8 @@ def main():
     parser.add_argument("--out", required=True)
     parser.add_argument("--voice", default="am_adam")
     parser.add_argument("--speed", type=float, default=0.98)
+    parser.add_argument("--model", default="mlx-community/Kokoro-82M-bf16")
+    parser.add_argument("--language", default="a")
     args = parser.parse_args()
 
     srt_path = Path(args.srt)
@@ -97,8 +99,8 @@ def main():
     if not cues:
         raise RuntimeError(f"No cues found in {srt_path}")
 
-    print("Loading Kokoro...")
-    model = load_model("mlx-community/Kokoro-82M-bf16")
+    print(f"Loading {args.model}...")
+    model = load_model(args.model)
 
     sample_rate = 24000
     total_seconds = max(cue["end"] for cue in cues)
@@ -118,6 +120,7 @@ def main():
                 cue["text"],
                 args.voice,
                 speed,
+                args.language,
             )
 
             if generated_rate != sample_rate:
