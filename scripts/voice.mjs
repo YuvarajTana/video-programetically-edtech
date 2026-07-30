@@ -6,12 +6,14 @@
  *   npm run voice -- learn/ten-colors --voice af_sky --speed 0.95
  */
 import {
+  copyFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
   renameSync,
   writeFileSync,
 } from 'node:fs';
+import {createHash} from 'node:crypto';
 import {dirname, join, parse, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {positionals} from './deliveries.mjs';
@@ -33,7 +35,7 @@ const refs = positionals(argv, valueFlags);
 
 if (argv.includes('--help') || refs.length !== 1) {
   console.log(
-    'usage: npm run voice -- <channel>/<slug> [--voice preset] [--speed number] [--model id] [--language code] [--python path]',
+    'usage: npm run voice -- <channel>/<slug> [--voice preset] [--speed number] [--model id] [--language code] [--python path] [--force]',
   );
   process.exit(argv.includes('--help') ? 0 : 1);
 }
@@ -170,6 +172,107 @@ const rawPath = join(finalParts.dir, `${finalParts.name}-raw.wav`);
 const pendingPath = join(finalParts.dir, `${finalParts.name}.pending.wav`);
 mkdirSync(dirname(finalPath), {recursive: true});
 
+const srtPath = join(base, 'captions.srt');
+const generatorHash = createHash('sha256')
+  .update(readFileSync('scripts/local-tts-from-srt.py'))
+  .digest('hex');
+const cacheKey = createHash('sha256')
+  .update(
+    JSON.stringify({
+      schemaVersion: 1,
+      srt: readFileSync(srtPath, 'utf8'),
+      durationSeconds: request.durationSeconds,
+      voice,
+      generatorHash,
+      normalizationVersion: 1,
+    }),
+  )
+  .digest('hex');
+const cacheDirectory = resolve(
+  process.env.VIDEO_KIT_CACHE_DIR ?? join('.cache', 'video-kit', 'audio'),
+);
+const cacheAudioPath = join(cacheDirectory, `${cacheKey}.wav`);
+const cacheMetadataPath = join(cacheDirectory, `${cacheKey}.json`);
+mkdirSync(cacheDirectory, {recursive: true});
+
+const verifyAudio = (path) => {
+  const loudness = measureLoudness(path, voice);
+  const duration = probeDuration(path);
+  const loudnessError = Math.abs(Number(loudness.input_i) - voice.targetLufs);
+  const durationError = Math.abs(duration - request.durationSeconds);
+
+  if (loudnessError > 0.2) {
+    console.error(
+      `normalized loudness ${loudness.input_i} LUFS misses target ${voice.targetLufs} LUFS`,
+    );
+    process.exit(1);
+  }
+  if (Number(loudness.input_tp) > voice.truePeakDb + 0.2) {
+    console.error(
+      `true peak ${loudness.input_tp} dBTP exceeds target ${voice.truePeakDb} dBTP`,
+    );
+    process.exit(1);
+  }
+  if (durationError > 0.05) {
+    console.error(
+      `audio duration ${duration.toFixed(3)}s does not match video ${request.durationSeconds.toFixed(3)}s`,
+    );
+    process.exit(1);
+  }
+
+  return {duration, loudness};
+};
+
+const writeAudioReport = ({duration, loudness, correctionDb, cacheHit}) => {
+  writeFileSync(
+    join(base, 'audio.json'),
+    JSON.stringify(
+      {
+        schemaVersion: 1,
+        ref,
+        path: request.audio,
+        durationSeconds: duration,
+        voice,
+        loudness: {
+          integratedLufs: Number(loudness.input_i),
+          truePeakDb: Number(loudness.input_tp),
+          loudnessRange: Number(loudness.input_lra),
+          correctionDb: Number(correctionDb.toFixed(3)),
+        },
+        cache: {
+          key: cacheKey,
+          hit: cacheHit,
+        },
+      },
+      null,
+      2,
+    ),
+  );
+};
+
+if (
+  !argv.includes('--force') &&
+  existsSync(cacheAudioPath) &&
+  existsSync(cacheMetadataPath)
+) {
+  console.log(`· cache hit ${cacheKey.slice(0, 12)}`);
+  const cacheMetadata = JSON.parse(readFileSync(cacheMetadataPath, 'utf8'));
+  const verified = verifyAudio(cacheAudioPath);
+  copyFileSync(cacheAudioPath, finalPath);
+  writeAudioReport({
+    ...verified,
+    correctionDb: Number(cacheMetadata.correctionDb ?? 0),
+    cacheHit: true,
+  });
+  console.log(`✓ voice ${ref}`);
+  console.log(`  ${request.audio}`);
+  console.log(
+    `  ${verified.duration.toFixed(2)}s · ${verified.loudness.input_i} LUFS · ${verified.loudness.input_tp} dBTP`,
+  );
+  process.exit(0);
+}
+
+console.log(`· cache miss ${cacheKey.slice(0, 12)}`);
 const python = availablePython();
 console.log(
   `· tts ${voice.model} ${voice.preset} speed=${voice.speed} language=${voice.language}`,
@@ -179,7 +282,7 @@ run(
   [
     'scripts/local-tts-from-srt.py',
     '--srt',
-    join(base, 'captions.srt'),
+    srtPath,
     '--out',
     rawPath,
     '--voice',
@@ -278,52 +381,37 @@ if (loudnessError > 0.2) {
   renameSync(correctedPath, pendingPath);
 }
 
-const duration = probeDuration(pendingPath);
-const durationError = Math.abs(duration - request.durationSeconds);
-
-if (loudnessError > 0.2) {
-  console.error(
-    `normalized loudness ${finalLoudness.input_i} LUFS misses target ${voice.targetLufs} LUFS`,
-  );
-  process.exit(1);
-}
-if (Number(finalLoudness.input_tp) > voice.truePeakDb + 0.2) {
-  console.error(
-    `true peak ${finalLoudness.input_tp} dBTP exceeds target ${voice.truePeakDb} dBTP`,
-  );
-  process.exit(1);
-}
-if (durationError > 0.05) {
-  console.error(
-    `audio duration ${duration.toFixed(3)}s does not match video ${request.durationSeconds.toFixed(3)}s`,
-  );
-  process.exit(1);
-}
-
+const verified = verifyAudio(pendingPath);
 renameSync(pendingPath, finalPath);
+const cacheAudioPendingPath = `${cacheAudioPath}.pending`;
+const cacheMetadataPendingPath = `${cacheMetadataPath}.pending`;
+copyFileSync(finalPath, cacheAudioPendingPath);
 writeFileSync(
-  join(base, 'audio.json'),
+  cacheMetadataPendingPath,
   JSON.stringify(
     {
       schemaVersion: 1,
-      ref,
-      path: request.audio,
-      durationSeconds: duration,
+      key: cacheKey,
+      createdAt: new Date().toISOString(),
+      generatorHash,
       voice,
-      loudness: {
-        integratedLufs: Number(finalLoudness.input_i),
-        truePeakDb: Number(finalLoudness.input_tp),
-        loudnessRange: Number(finalLoudness.input_lra),
-        correctionDb: Number(correctionDb.toFixed(3)),
-      },
+      durationSeconds: verified.duration,
+      correctionDb: Number(correctionDb.toFixed(3)),
     },
     null,
     2,
   ),
 );
+renameSync(cacheAudioPendingPath, cacheAudioPath);
+renameSync(cacheMetadataPendingPath, cacheMetadataPath);
+writeAudioReport({
+  ...verified,
+  correctionDb,
+  cacheHit: false,
+});
 
 console.log(`✓ voice ${ref}`);
 console.log(`  ${request.audio}`);
 console.log(
-  `  ${duration.toFixed(2)}s · ${finalLoudness.input_i} LUFS · ${finalLoudness.input_tp} dBTP`,
+  `  ${verified.duration.toFixed(2)}s · ${verified.loudness.input_i} LUFS · ${verified.loudness.input_tp} dBTP`,
 );

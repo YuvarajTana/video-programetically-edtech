@@ -35,7 +35,7 @@ const value = (name) => {
 
 if (has('help') || refs.length !== 1) {
   console.log(
-    'usage: npm run produce -- <channel>/<slug> [--skip-voice | --silent] [--voice preset] [--speed number] [--model id] [--language code] [--python path]',
+    'usage: npm run produce -- <channel>/<slug> [--skip-voice | --silent] [--voice preset] [--speed number] [--model id] [--language code] [--python path] [--force]',
   );
   process.exit(has('help') ? 0 : 1);
 }
@@ -116,6 +116,7 @@ if (has('silent')) {
     const selected = value(flag);
     if (selected !== null) voiceArgs.push(`--${flag}`, selected);
   }
+  if (has('force')) voiceArgs.push('--force');
   runStage('voice', process.execPath, voiceArgs);
 }
 

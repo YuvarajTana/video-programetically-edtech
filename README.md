@@ -283,7 +283,9 @@ npm run voice -- learn/ten-colors --voice af_sky --speed 0.95
 The command regenerates captions, synthesizes each cue independently, performs
 measured two-pass loudness normalization, verifies duration and peak levels,
 and writes the final track to the `public/` path declared by `spec.audio`.
-Intermediate clips and raw masters are ignored by Git.
+Normalized tracks are cached by narration, model, voice settings, and generator
+version, so unchanged voiceovers are reused. Pass `--force` to synthesize again.
+The cache, intermediate clips, and raw masters are ignored by Git.
 
 Produce and verify every configured delivery in one command:
 
