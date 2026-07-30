@@ -1,8 +1,9 @@
 import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
-import {accents, color, font, radius, space, tint, type} from '../design/tokens';
+import {radius, space, tint, type} from '../design/tokens';
 import {EASE, EASE_IO, fadeUp} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import type {ArchitectureScene, ArchNode} from '../types';
 
 type Placed = ArchNode & {x: number; y: number; w: number; h: number; group: number};
@@ -20,7 +21,8 @@ export const Architecture: React.FC<{scene: ArchitectureScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useVideoConfig();
   const layout = useLayout();
-  const accent = accents[scene.accent ?? 'teal'];
+  const {accents, color, font} = useTheme();
+  const accent = accents[scene.accent ?? 'success'];
 
   const boxW = layout.isLandscape ? layout.contentW * 0.88 : layout.contentW;
   const boxH = layout.isLandscape ? layout.contentH * 0.62 : layout.contentH * 0.56;
@@ -112,7 +114,7 @@ export const Architecture: React.FC<{scene: ArchitectureScene}> = ({scene}) => {
   }
 
   return (
-    <Frame kicker={scene.kicker} title={scene.title} accent={scene.accent ?? 'teal'}>
+    <Frame kicker={scene.kicker} title={scene.title} accent={scene.accent ?? 'success'}>
       <div style={{position: 'relative', width: boxW, height: boxH}}>
         <svg
           width={boxW}

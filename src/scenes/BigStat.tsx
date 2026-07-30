@@ -1,15 +1,17 @@
 import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Body, Kicker, Small} from '../components/Text';
-import {accents, color, font, space} from '../design/tokens';
+import {space} from '../design/tokens';
 import {fadeUp, pop} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import type {BigStatScene} from '../types';
 
 export const BigStat: React.FC<{scene: BigStatScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const layout = useLayout();
-  const a = accents[scene.accent ?? 'amber'];
+  const {accents, color, font} = useTheme();
+  const a = accents[scene.accent ?? 'primary'];
 
   return (
     <Frame>

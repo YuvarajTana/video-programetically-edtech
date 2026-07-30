@@ -1,34 +1,37 @@
 #!/usr/bin/env node
 /**
- * Batch renderer.
+ * Channel-aware batch renderer.
  *
- *   npm run render                        every video, every format it declares
- *   npm run render -- cdn-to-container    one video, every format
- *   npm run render -- selection-sort --format reel
- *   npm run render -- --still             covers only, no video
- *
- * The bundle is built once and reused across every composition, which is most of
- * the speed win when you are producing a 16:9 and a 9:16 cut of the same video.
+ *   npm run render
+ *   npm run render -- tech/selection-sort
+ *   npm run render -- tech/selection-sort --profile portrait
+ *   npm run render -- tech/selection-sort --still
  */
 import {bundle} from '@remotion/bundler';
 import {getCompositions, renderMedia, renderStill} from '@remotion/renderer';
 import {mkdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {FORMATS} from './formats.mjs';
 import {toSrt, toVoScript} from './captions-lib.mjs';
+import {
+  coverComposition,
+  matchesRef,
+  positionals,
+  preferredRenderProfile,
+  videoComposition,
+} from './deliveries.mjs';
+import {packageSpec} from './package-lib.mjs';
+import {validateCollection} from './validation-lib.mjs';
 
 const argv = process.argv.slice(2);
 const flag = (name) => {
-  const i = argv.indexOf(`--${name}`);
-  return i === -1 ? null : (argv[i + 1] ?? true);
+  const index = argv.indexOf(`--${name}`);
+  return index === -1 ? null : (argv[index + 1] ?? true);
 };
 const has = (name) => argv.includes(`--${name}`);
-const slugs = argv.filter((a) => !a.startsWith('--') && argv[argv.indexOf(a) - 1] !== '--format');
-
-const OUT = 'out';
-const onlyFormat = flag('format');
+const refs = positionals(argv, ['profile', 'format']);
+const onlyProfile = flag('profile') ?? flag('format');
 const stillsOnly = has('still');
-const coverFrame = Number(flag('cover') ?? 40);
+const outRoot = 'out';
 
 const browserExecutable = process.env.REMOTION_BROWSER_EXECUTABLE || null;
 const concurrency = process.env.RENDER_CONCURRENCY
@@ -36,58 +39,95 @@ const concurrency = process.env.RENDER_CONCURRENCY
   : null;
 const chromeMode = process.env.REMOTION_CHROME_MODE || undefined;
 
-mkdirSync(OUT, {recursive: true});
-
 console.log('· bundling');
 const serveUrl = await bundle({
   entryPoint: join(process.cwd(), 'src/index.ts'),
   onProgress: () => {},
 });
+const compositions = await getCompositions(serveUrl, {
+  browserExecutable,
+  chromeMode,
+});
 
-const compositions = await getCompositions(serveUrl, {browserExecutable, chromeMode});
-
-const wanted = compositions.filter((c) => {
-  const [slug, formatId] = c.id.split('--');
-  if (slugs.length && !slugs.includes(slug)) return false;
-  if (onlyFormat && formatId !== onlyFormat) return false;
+const productionVideos = compositions.filter((composition) => {
+  if (!videoComposition(composition)) return false;
+  const {spec} = composition.props ?? {};
+  if (!spec || spec.kind === 'style-guide') return false;
+  if (!matchesRef(spec, refs)) return false;
+  if (onlyProfile && composition.id.split('--')[2] !== onlyProfile) return false;
   return true;
 });
 
-if (!wanted.length) {
-  console.error('no compositions matched. available:');
-  compositions.forEach((c) => console.error('   ' + c.id));
+const selectedRefs = new Set(
+  productionVideos.map(({props}) => `${props.spec.channel}/${props.spec.slug}`),
+);
+const productionCovers = compositions.filter((composition) => {
+  if (!coverComposition(composition)) return false;
+  const {spec, delivery} = composition.props ?? {};
+  if (!spec || !selectedRefs.has(`${spec.channel}/${spec.slug}`)) return false;
+  if (onlyProfile && delivery.renderProfile !== onlyProfile) return false;
+  return true;
+});
+
+if (!productionVideos.length && !productionCovers.length) {
+  console.error('no production compositions matched');
   process.exit(1);
 }
 
-const writtenCaptions = new Set();
+const uniqueEntries = [];
+const seenSpecs = new Set();
+for (const composition of productionVideos) {
+  const {spec, channel} = composition.props;
+  const ref = `${spec.channel}/${spec.slug}`;
+  if (seenSpecs.has(ref)) continue;
+  seenSpecs.add(ref);
+  uniqueEntries.push({spec, channel});
+}
 
-for (const comp of wanted) {
-  const [slug, formatId] = comp.id.split('--');
-  const target = FORMATS[formatId]?.target ?? formatId;
-  const label = `${slug}.${target}`;
+const validation = validateCollection(uniqueEntries);
+const errors = validation.flatMap((result) =>
+  result.issues.filter((item) => item.severity === 'error'),
+);
+if (errors.length) {
+  for (const result of validation) {
+    for (const item of result.issues.filter((entry) => entry.severity === 'error')) {
+      console.error(`error ${result.ref} ${item.path}: ${item.message}`);
+    }
+  }
+  process.exit(1);
+}
 
-  // Cover frame, used as the YouTube thumbnail base and the Reel cover.
-  const coverPath = join(OUT, `${label}.cover.png`);
+for (const composition of productionCovers) {
+  const {spec, delivery} = composition.props;
+  const base = join(outRoot, spec.channel, spec.slug, delivery.id);
+  mkdirSync(base, {recursive: true});
+  const output = join(base, 'cover.png');
   await renderStill({
-    composition: comp,
+    composition,
     serveUrl,
-    output: coverPath,
-    frame: Math.min(coverFrame, comp.durationInFrames - 1),
+    output,
+    frame: 0,
     browserExecutable,
     chromeMode,
     overwrite: true,
   });
-  console.log(`· cover  ${coverPath}`);
+  console.log(`· cover  ${output}`);
+}
 
-  if (!stillsOnly) {
-    const videoPath = join(OUT, `${label}.mp4`);
+if (!stillsOnly) {
+  for (const composition of productionVideos) {
+    const {spec} = composition.props;
+    const renderProfile = composition.id.split('--')[2];
+    const renderDir = join(outRoot, spec.channel, spec.slug, 'renders');
+    mkdirSync(renderDir, {recursive: true});
+    const output = join(renderDir, `${renderProfile}.mp4`);
     let last = -1;
     await renderMedia({
-      composition: comp,
+      composition,
       serveUrl,
       codec: 'h264',
       crf: 18,
-      outputLocation: videoPath,
+      outputLocation: output,
       browserExecutable,
       chromeMode,
       concurrency,
@@ -95,23 +135,38 @@ for (const comp of wanted) {
         const pct = Math.floor(progress * 100);
         if (pct >= last + 10) {
           last = pct;
-          process.stdout.write(`\r· render ${label} ${pct}%   `);
+          process.stdout.write(
+            `\r· render ${spec.channel}/${spec.slug} ${renderProfile} ${pct}%   `,
+          );
         }
       },
     });
-    process.stdout.write(`\r· render ${label} 100%\n`);
-    console.log(`· video  ${videoPath}`);
-  }
-
-  // Captions and the VO script are per-video, not per-format.
-  const spec = comp.props?.spec;
-  if (spec && !writtenCaptions.has(slug)) {
-    writtenCaptions.add(slug);
-    const fps = spec.fps ?? 30;
-    writeFileSync(join(OUT, `${slug}.srt`), toSrt(spec, fps));
-    writeFileSync(join(OUT, `${slug}.vo.md`), toVoScript(spec, fps));
-    console.log(`· subs   ${join(OUT, `${slug}.srt`)}`);
+    process.stdout.write(
+      `\r· render ${spec.channel}/${spec.slug} ${renderProfile} 100%\n`,
+    );
+    console.log(`· video  ${output}`);
   }
 }
 
-console.log('\ndone →', OUT);
+for (const {spec, channel} of uniqueEntries) {
+  const base = join(outRoot, spec.channel, spec.slug);
+  mkdirSync(base, {recursive: true});
+  const fps = spec.fps ?? 30;
+  writeFileSync(join(base, 'captions.srt'), toSrt(spec, fps));
+  writeFileSync(
+    join(base, 'voiceover.md'),
+    toVoScript(
+      spec,
+      fps,
+      join(
+        base,
+        'renders',
+        `${onlyProfile ?? preferredRenderProfile(spec, channel)}.mp4`,
+      ),
+    ),
+  );
+  packageSpec({spec, channel, outRoot});
+  console.log(`· package ${spec.channel}/${spec.slug}`);
+}
+
+console.log(`\ndone → ${outRoot}`);

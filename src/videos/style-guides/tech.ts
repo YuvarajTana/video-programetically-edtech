@@ -1,4 +1,4 @@
-import type {VideoSpec} from '../types';
+import type {VideoSpec} from '../../types';
 
 /**
  * Living style guide: one scene of every type, in order.
@@ -7,10 +7,12 @@ import type {VideoSpec} from '../types';
  * is the fastest way to see what a design change did to every scene at once.
  */
 export const styleGuide: VideoSpec = {
+  channel: 'tech',
   slug: 'style-guide',
   title: 'Scene kit reference',
-  handle: '@AIDataDynamics',
-  formats: ['youtube', 'reel'],
+  template: 'style-guide',
+  kind: 'style-guide',
+  deliveries: ['youtube-long', 'instagram-reel'],
   captions: false,
   scenes: [
     {type: 'title', durationInFrames: 70, kicker: 'Reference', title: 'Scene Kit', subtitle: 'Every scene type, in order.'},
@@ -42,10 +44,10 @@ export const styleGuide: VideoSpec = {
       kicker: 'architecture',
       title: 'System diagram',
       nodes: [
-        {id: 'a', label: 'Client', sub: 'web', col: 0, row: 0, accent: 'violet'},
-        {id: 'b', label: 'API', sub: 'fastapi', col: 1, row: 0, accent: 'teal'},
+        {id: 'a', label: 'Client', sub: 'web', col: 0, row: 0, accent: 'info'},
+        {id: 'b', label: 'API', sub: 'fastapi', col: 1, row: 0, accent: 'success'},
         {id: 'c', label: 'Worker', sub: 'celery', col: 1, row: 1},
-        {id: 'd', label: 'DB', sub: 'postgres', col: 0, row: 1, accent: 'coral'},
+        {id: 'd', label: 'DB', sub: 'postgres', col: 0, row: 1, accent: 'attention'},
       ],
       edges: [
         {from: 'a', to: 'b'},
@@ -76,8 +78,8 @@ export const styleGuide: VideoSpec = {
       title: 'Command demo',
       host: 'yuvaraj@m4',
       entries: [
-        {cmd: 'npm run render -- cdn-to-container', out: ['bundling…', 'rendering 900 frames']},
-        {cmd: 'ls out/', out: ['cdn-to-container.yt.mp4', 'cdn-to-container.reel.mp4']},
+        {cmd: 'npm run render -- tech/cdn-to-container', out: ['bundling…', 'rendering 900 frames']},
+        {cmd: 'ls out/tech/cdn-to-container/', out: ['renders/', 'youtube-long/', 'instagram-reel/']},
       ],
     },
     {
@@ -102,6 +104,6 @@ export const styleGuide: VideoSpec = {
     {type: 'bigStat', durationInFrames: 80, kicker: 'bigStat', value: 'O(n²)', label: 'headline number', note: 'supporting note'},
     {type: 'callout', durationInFrames: 80, text: 'One sentence worth remembering.', attribution: 'attribution'},
     {type: 'arrayViz', durationInFrames: 200, algorithm: 'bubble', values: [5, 1, 4, 2, 8, 3]},
-    {type: 'outro', durationInFrames: 80, recap: ['line one', 'line two'], handle: '@AIDataDynamics', tagline: 'tagline', cta: 'Follow for more'},
+    {type: 'outro', durationInFrames: 80, recap: ['line one', 'line two'], tagline: 'tagline'},
   ],
 };

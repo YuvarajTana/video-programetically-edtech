@@ -1,7 +1,8 @@
 import type {CSSProperties, ReactNode} from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
-import {accents, color, space} from '../design/tokens';
-import type {Accent} from '../design/tokens';
+import {space} from '../design/tokens';
+import {useTheme} from '../themes';
+import type {Accent} from '../themes';
 import {fadeUp, sceneFade} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {H2, Kicker} from './Text';
@@ -21,10 +22,11 @@ export const Frame: React.FC<{
   /** Suppress the automatic scene fade, e.g. for the first scene of a video. */
   noFade?: boolean;
   style?: CSSProperties;
-}> = ({children, kicker, title, accent = 'amber', align = 'center', noFade, style}) => {
+}> = ({children, kicker, title, accent = 'primary', align = 'center', noFade, style}) => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useVideoConfig();
   const layout = useLayout();
+  const {accents, color, frameBackground} = useTheme();
   const hasHeader = Boolean(kicker || title);
 
   return (
@@ -38,7 +40,7 @@ export const Frame: React.FC<{
     >
       <AbsoluteFill
         style={{
-          background: `radial-gradient(120% 80% at 50% 0%, ${color.surface}55 0%, transparent 60%)`,
+          background: frameBackground,
         }}
       />
 

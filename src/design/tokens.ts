@@ -1,51 +1,11 @@
 /**
- * The AIDataDynamics design language.
+ * Structural tokens shared by every channel.
  *
- * Every value here is expressed against a 1080px short edge. All three delivery
- * formats (YouTube 1920x1080, Reel 1080x1920, Square 1080x1080) share that short
- * edge, so type and spacing stay identical across formats and only the *layout
- * direction* changes. Never hardcode a size in a scene — pull it from here.
+ * Colors and font roles live in src/themes. Values here are expressed against
+ * a 1080px short edge, so type and spacing stay stable across aspect ratios.
  */
 
-export const color = {
-  bg: '#0a0e0c',
-  bgDeep: '#060907',
-  surface: '#141f1a',
-  surfaceHi: '#1b2a24',
-  line: '#26362f',
-  lineHi: '#33473f',
-  text: '#E9E7E2',
-  textDim: '#B6BEB9',
-  muted: '#7E8C86',
-
-  amber: '#F5A524',
-  teal: '#2DD4BF',
-  coral: '#FF6B5B',
-  violet: '#A78BFA',
-} as const;
-
-export type Accent = 'amber' | 'teal' | 'coral' | 'violet';
-
-export const accents: Record<Accent, string> = {
-  amber: color.amber,
-  teal: color.teal,
-  coral: color.coral,
-  violet: color.violet,
-};
-
-/** Semantic roles so scenes never pick a colour arbitrarily. */
-export const role = {
-  primary: 'amber' as Accent,
-  success: 'teal' as Accent,
-  danger: 'coral' as Accent,
-  info: 'violet' as Accent,
-};
-
-export const font = {
-  display: "'Fraunces', Georgia, serif",
-  body: "'Hanken Grotesk', system-ui, sans-serif",
-  mono: "'JetBrains Mono', ui-monospace, monospace",
-} as const;
+export type {Accent} from '../themes/types';
 
 /** Type scale, in px on a 1080 short edge. */
 export const type = {

@@ -2,15 +2,21 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Body, H1, Small} from '../components/Text';
-import {accents, color, font, space, type} from '../design/tokens';
+import {space, type} from '../design/tokens';
 import {fadeUp, pop} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useChannel} from '../channels';
+import {useTheme} from '../themes';
 import type {OutroScene} from '../types';
 
 export const Outro: React.FC<{scene: OutroScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const layout = useLayout();
-  const a = accents[scene.accent ?? 'amber'];
+  const channel = useChannel();
+  const {accents, color, font} = useTheme();
+  const a = accents[scene.accent ?? 'primary'];
+  const handle = scene.handle ?? channel.handle;
+  const cta = scene.cta ?? channel.defaultCta;
 
   return (
     <Frame>
@@ -39,9 +45,9 @@ export const Outro: React.FC<{scene: OutroScene}> = ({scene}) => {
           </Card>
         ) : null}
 
-        {scene.handle ? (
+        {handle ? (
           <div style={pop(frame, 18, 28, 0.9)}>
-            <H1 style={{color: a, fontSize: type.h1}}>{scene.handle}</H1>
+            <H1 style={{color: a, fontSize: type.h1}}>{handle}</H1>
           </div>
         ) : null}
         {scene.tagline ? (
@@ -49,7 +55,7 @@ export const Outro: React.FC<{scene: OutroScene}> = ({scene}) => {
             {scene.tagline}
           </Body>
         ) : null}
-        {scene.cta ? (
+        {cta ? (
           <Small
             style={{
               marginTop: space.xl,
@@ -60,7 +66,7 @@ export const Outro: React.FC<{scene: OutroScene}> = ({scene}) => {
               ...fadeUp(frame, 34, 22, 18),
             }}
           >
-            {scene.cta}
+            {cta}
           </Small>
         ) : null}
       </div>

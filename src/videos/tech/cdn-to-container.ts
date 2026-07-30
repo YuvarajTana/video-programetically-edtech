@@ -1,11 +1,23 @@
-import type {VideoSpec} from '../types';
+import type {VideoSpec} from '../../types';
 
 export const cdnToContainer: VideoSpec = {
+  channel: 'tech',
   slug: 'cdn-to-container',
   title: 'What happens between the browser and your container',
+  template: 'system-design-walkthrough',
   summary: 'The five hops a request takes on AWS, and where the latency actually goes.',
-  handle: '@AIDataDynamics',
-  formats: ['youtube', 'reel'],
+  deliveries: ['youtube-long', 'instagram-reel'],
+  audience: {level: 'intermediate'},
+  editorial: {
+    language: 'en',
+    objective: 'Explain the request path from browser to container and database.',
+    sources: [
+      {
+        title: 'Amazon CloudFront caching behavior',
+        url: 'https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/ConfiguringCaching.html',
+      },
+    ],
+  },
   scenes: [
     {
       type: 'title',
@@ -13,21 +25,21 @@ export const cdnToContainer: VideoSpec = {
       kicker: 'Cloud, visually',
       title: 'Browser to Container',
       subtitle: 'The five hops every request takes — and where the time goes.',
-      narration: 'Every request takes five hops before your code runs. Here they are.',
+      narration: 'Every request takes five hops before your code runs.',
     },
     {
       type: 'architecture',
       durationInFrames: 210,
       kicker: 'Request path',
       title: 'One GET, five hops',
-      accent: 'teal',
+      accent: 'success',
       nodes: [
-        {id: 'browser', label: 'Browser', sub: 'client', col: 0, row: 0, accent: 'violet'},
+        {id: 'browser', label: 'Browser', sub: 'client', col: 0, row: 0, accent: 'info'},
         {id: 'dns', label: 'Route 53', sub: 'dns', col: 1, row: 0},
-        {id: 'cdn', label: 'CloudFront', sub: 'edge cache', col: 2, row: 0, accent: 'amber'},
+        {id: 'cdn', label: 'CloudFront', sub: 'edge cache', col: 2, row: 0, accent: 'primary'},
         {id: 'alb', label: 'ALB', sub: 'load balancer', col: 1, row: 1},
-        {id: 'ecs', label: 'ECS Fargate', sub: 'your container', col: 2, row: 1, accent: 'teal'},
-        {id: 'rds', label: 'RDS', sub: 'postgres', col: 0, row: 1, accent: 'coral'},
+        {id: 'ecs', label: 'ECS Fargate', sub: 'your container', col: 2, row: 1, accent: 'success'},
+        {id: 'rds', label: 'RDS', sub: 'postgres', col: 0, row: 1, accent: 'attention'},
       ],
       edges: [
         {from: 'browser', to: 'dns', label: 'resolve'},
@@ -46,9 +58,9 @@ export const cdnToContainer: VideoSpec = {
       kicker: 'Latency budget',
       title: 'Where the milliseconds go',
       cards: [
-        {label: 'edge hit', value: '~15 ms', note: 'never reaches your origin', accent: 'amber'},
-        {label: 'origin hop', value: '~90 ms', note: 'ALB plus container cold path', accent: 'teal'},
-        {label: 'db query', value: '~40 ms', note: 'the part you actually control', accent: 'coral'},
+        {label: 'edge hit', value: '~15 ms', note: 'never reaches your origin', accent: 'primary'},
+        {label: 'origin hop', value: '~90 ms', note: 'ALB plus container cold path', accent: 'success'},
+        {label: 'db query', value: '~40 ms', note: 'the part you actually control', accent: 'attention'},
       ],
       narration: 'An edge hit is six times cheaper than reaching your origin at all.',
     },
@@ -58,7 +70,7 @@ export const cdnToContainer: VideoSpec = {
       title: 'Cache what you can',
       lang: 'terraform',
       filename: 'cloudfront.tf',
-      accent: 'teal',
+      accent: 'success',
       lines: [
         'default_cache_behavior {',
         '  target_origin_id       = "alb-origin"',
@@ -77,7 +89,7 @@ export const cdnToContainer: VideoSpec = {
     {
       type: 'callout',
       durationInFrames: 100,
-      accent: 'amber',
+      accent: 'primary',
       text: 'The fastest request is the one your origin never sees.',
       attribution: 'the entire point of a CDN',
       narration: 'The fastest request is the one your origin never sees.',
@@ -86,9 +98,7 @@ export const cdnToContainer: VideoSpec = {
       type: 'outro',
       durationInFrames: 90,
       recap: ['browser → dns → edge', '  edge hit  → done', '  edge miss → alb → container → db'],
-      handle: '@AIDataDynamics',
       tagline: 'Cloud concepts, drawn out.',
-      cta: 'Follow for more',
       narration: 'Five hops. Cache the first three away.',
     },
   ],

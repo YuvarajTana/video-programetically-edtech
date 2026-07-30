@@ -2,21 +2,23 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {H3, Small} from '../components/Text';
-import {accents, color, font, space, type} from '../design/tokens';
+import {space, type} from '../design/tokens';
 import {fadeUp, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import type {FlowScene} from '../types';
 
-const ROTATION = ['amber', 'coral', 'teal', 'violet'] as const;
+const ROTATION = ['primary', 'attention', 'success', 'info'] as const;
 
 /** Linear sequence with connectors — user journeys, request lifecycles, pipelines. */
 export const Flow: React.FC<{scene: FlowScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const layout = useLayout();
+  const {accents, color, font} = useTheme();
   const horizontal = layout.isLandscape;
 
   return (
-    <Frame kicker={scene.kicker} title={scene.title} accent={scene.accent ?? 'amber'}>
+    <Frame kicker={scene.kicker} title={scene.title} accent={scene.accent ?? 'primary'}>
       <div
         style={{
           display: 'flex',

@@ -2,17 +2,20 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Body, H3} from '../components/Text';
-import {accents, color, font, space, type} from '../design/tokens';
+import {space, type} from '../design/tokens';
 import {fadeUp, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
+import type {Accent} from '../themes';
 import type {CompareScene} from '../types';
 
 const Column: React.FC<{
   side: CompareScene['left'];
-  fallback: 'coral' | 'teal';
+  fallback: Accent;
   frame: number;
   at: number;
 }> = ({side, fallback, frame, at}) => {
+  const {accents, color, font} = useTheme();
   const key = side.accent ?? fallback;
   const a = accents[key];
   return (
@@ -37,9 +40,10 @@ const Column: React.FC<{
 export const Compare: React.FC<{scene: CompareScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const layout = useLayout();
+  const {color, font} = useTheme();
 
   return (
-    <Frame kicker={scene.kicker} title={scene.title} accent={scene.accent ?? 'amber'}>
+    <Frame kicker={scene.kicker} title={scene.title} accent={scene.accent ?? 'primary'}>
       <div
         style={{
           display: 'flex',
@@ -49,7 +53,7 @@ export const Compare: React.FC<{scene: CompareScene}> = ({scene}) => {
           width: layout.isLandscape ? layout.contentW * 0.88 : layout.contentW,
         }}
       >
-        <Column side={scene.left} fallback="coral" frame={frame} at={stagger(0, 12, 6)} />
+        <Column side={scene.left} fallback="attention" frame={frame} at={stagger(0, 12, 6)} />
         <div
           style={{
             display: 'flex',
@@ -64,7 +68,7 @@ export const Compare: React.FC<{scene: CompareScene}> = ({scene}) => {
         >
           VS
         </div>
-        <Column side={scene.right} fallback="teal" frame={frame} at={stagger(1, 12, 6)} />
+        <Column side={scene.right} fallback="success" frame={frame} at={stagger(1, 12, 6)} />
       </div>
     </Frame>
   );

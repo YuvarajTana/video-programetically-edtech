@@ -1,11 +1,18 @@
-import type {VideoSpec} from '../types';
+import type {VideoSpec} from '../../types';
 
 export const selectionSort: VideoSpec = {
+  channel: 'tech',
   slug: 'selection-sort',
   title: 'Selection Sort, visually',
+  template: 'algorithm-visualized',
   summary: 'Find the smallest, swap it to the front, repeat — and why that costs O(n²).',
-  handle: '@AIDataDynamics',
-  formats: ['youtube', 'reel'],
+  deliveries: ['youtube-long', 'instagram-reel'],
+  audience: {level: 'beginner'},
+  editorial: {
+    language: 'en',
+    objective: 'Show how selection sort moves the minimum value into place.',
+    sources: [{title: 'Selection sort algorithm and comparison complexity'}],
+  },
   scenes: [
     {
       type: 'title',
@@ -13,16 +20,16 @@ export const selectionSort: VideoSpec = {
       kicker: 'Algorithms, visually',
       title: 'Selection Sort',
       subtitle: 'The simplest sort you will ever write. Also one of the slowest.',
-      narration: 'Selection sort — the simplest sorting algorithm, and one of the slowest.',
+      narration: 'Selection sort: simple to understand, slow to run.',
     },
     {
       type: 'steps',
       durationInFrames: 120,
       kicker: 'The whole idea',
       items: [
-        {label: 'Find the smallest', detail: 'Scan everything that is left', accent: 'coral'},
-        {label: 'Swap it to the front', detail: 'One swap per pass, no more', accent: 'amber'},
-        {label: 'Repeat with the rest', detail: 'The sorted part grows from the left', accent: 'teal'},
+        {label: 'Find the smallest', detail: 'Scan everything that is left', accent: 'attention'},
+        {label: 'Swap it to the front', detail: 'One swap per pass, no more', accent: 'primary'},
+        {label: 'Repeat with the rest', detail: 'The sorted part grows from the left', accent: 'success'},
       ],
       footnote: 'That is the entire algorithm.',
       narration: 'Find the smallest, swap it to the front, repeat with what is left.',
@@ -47,9 +54,7 @@ export const selectionSort: VideoSpec = {
       type: 'outro',
       durationInFrames: 90,
       recap: ['for each slot:', '  find the smallest of what is left', '  swap it in'],
-      handle: '@AIDataDynamics',
       tagline: 'One algorithm at a time.',
-      cta: 'Follow for more',
       narration: 'Selection sort in three lines.',
     },
   ],

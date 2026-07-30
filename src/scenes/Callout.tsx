@@ -1,15 +1,17 @@
 import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {H1, Small} from '../components/Text';
-import {accents, radius, space, tint} from '../design/tokens';
+import {radius, space, tint} from '../design/tokens';
 import {fadeUp, pop} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import type {CalloutScene} from '../types';
 
 export const Callout: React.FC<{scene: CalloutScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const layout = useLayout();
-  const key = scene.accent ?? 'coral';
+  const {accents} = useTheme();
+  const key = scene.accent ?? 'attention';
   const a = accents[key];
 
   return (

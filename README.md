@@ -1,225 +1,308 @@
-# AIDataDynamics Video Kit
+# Programmatic Video Kit
 
-Spec-driven Remotion kit. You write a **video as data**; the kit renders a
-YouTube 16:9 cut and an Instagram/Shorts 9:16 cut from that one source, plus
-covers, subtitles and a voiceover script.
+A typed, multi-channel Remotion system. Write a video as data once, then render
+and package it for YouTube and Instagram.
+
+The engine serves three independent content brands:
+
+- **Tech** — visual explanations of technology, AI, and programming.
+- **Learn** — quick, age-appropriate lessons for kids and students.
+- **Fun** — energetic, short, entertaining, and loop-friendly videos.
+
+Each channel owns its theme, handles, editorial rules, platform defaults, and
+CTA. Scene rendering, responsive layout, captions, validation, and packaging
+remain shared.
 
 ```bash
 npm install
-npm run studio                       # interactive editor, localhost:3000
-npm run render                       # everything, every format
-npm run render -- cdn-to-container   # one video, both cuts
-npm run new -- how-jwt-works "How JWT refresh actually works"
+npm run studio
+npm run validate
+npm run render -- tech/selection-sort
 ```
 
----
+## Core model
 
-## The idea
-
-A video is a `VideoSpec`: metadata plus an ordered list of scenes.
+A production video is a typed `VideoSpec`:
 
 ```ts
-export const myVideo: VideoSpec = {
-  slug: 'my-video',
-  title: 'My video',
-  handle: '@AIDataDynamics',
-  formats: ['youtube', 'reel'],
+export const example: VideoSpec = {
+  channel: 'tech',
+  slug: 'how-rag-works',
+  title: 'How RAG works',
+  template: 'concept-explainer',
+  summary: 'Retrieval, context, and generation in one visual walkthrough.',
+  deliveries: ['youtube-long', 'instagram-reel'],
+  audience: {level: 'beginner'},
+  editorial: {
+    language: 'en',
+    objective: 'Explain how retrieved context changes an LLM response.',
+    sources: [{title: 'Source title', url: 'https://example.com'}],
+  },
   scenes: [
-    {type: 'title', durationInFrames: 80, title: 'Hook', narration: 'Spoken line.'},
-    {type: 'architecture', durationInFrames: 210, nodes: [...], edges: [...]},
-    {type: 'outro', durationInFrames: 90, handle: '@AIDataDynamics'},
+    {
+      type: 'title',
+      durationInFrames: 80,
+      title: 'How RAG works',
+      narration: 'RAG gives a model relevant context before it answers.',
+    },
+    {
+      type: 'flow',
+      durationInFrames: 180,
+      steps: [
+        {label: 'Question'},
+        {label: 'Retrieve'},
+        {label: 'Generate'},
+      ],
+      narration: 'A question retrieves matching material and sends it to the model.',
+    },
+    {
+      type: 'outro',
+      durationInFrames: 90,
+      narration: 'Retrieve first, generate second.',
+    },
   ],
 };
 ```
 
-No JSX in a video file, ever. If a video needs something the scene kit cannot
-express, **add a scene type** rather than hand-rolling markup — that is the
-mechanism that keeps forty videos looking like one channel instead of forty
-one-off projects.
+Video files contain data, not custom JSX. If several videos need a visual the
+scene kit cannot express, add a reusable scene type.
 
----
+## Channels and themes
+
+Channel configuration lives in `src/channels/registry.ts`.
+
+| Channel | Default deliveries | Editorial focus |
+| --- | --- | --- |
+| `tech` | YouTube 16:9 + Instagram Reel | precision, sources, visual mental models |
+| `learn` | YouTube Short + Instagram Reel | age band, objective, review status |
+| `fun` | YouTube Short + Instagram Reel | speed, surprise, loopability |
+
+Themes live in `src/themes/`. Scenes use semantic accent roles:
+
+- `primary`
+- `secondary`
+- `success`
+- `attention`
+- `info`
+
+The same scene therefore uses Tech, Learn, or Fun colors automatically.
+
+The Learn and Fun channel names and handles are placeholders. Update them once
+the public accounts are chosen:
+
+```ts
+// src/channels/registry.ts
+handle: '@LearnChannel'
+handle: '@FunChannel'
+```
+
+## Deliveries versus render profiles
+
+Publishing destinations are separate from aspect ratios.
+
+| Delivery | Platform | Render profile | Size |
+| --- | --- | --- | --- |
+| `youtube-long` | YouTube | `landscape` | 1920×1080 |
+| `youtube-short` | YouTube | `portrait` | 1080×1920 |
+| `instagram-reel` | Instagram | `portrait` | 1080×1920 |
+| `instagram-feed` | Instagram | `square` | 1080×1080 |
+
+If a spec requests both a YouTube Short and an Instagram Reel, the portrait
+video is rendered once and packaged twice with platform-specific metadata and
+covers.
+
+Composition IDs use:
+
+```text
+<channel>--<slug>--<render-profile>
+<channel>--<slug>--<delivery>--cover
+```
+
+Examples:
+
+```text
+tech--selection-sort--landscape
+learn--style-guide--portrait
+tech--selection-sort--instagram-reel--cover
+```
+
+## Authoring commands
+
+Create a video:
+
+```bash
+npm run new -- --channel tech --template concept-explainer \
+  how-jwt-works "How JWT refresh works"
+
+npm run new -- --channel learn --template quick-quiz \
+  why-leaves-are-green "Why are leaves green?"
+
+npm run new -- --channel fun --template this-or-that \
+  ocean-or-space "Ocean or space?"
+```
+
+The scaffold is written to `src/videos/<channel>/` and registered in that
+channel's registry.
+
+Validate before rendering:
+
+```bash
+npm run validate
+npm run validate -- tech/how-jwt-works
+npm run validate -- --studio
+```
+
+Validation checks structure, delivery IDs, duplicate scenes, diagram
+references, narration speed, duration, hook length, and channel-specific
+editorial requirements.
+
+Render:
+
+```bash
+npm run render
+npm run render -- tech/selection-sort
+npm run render -- tech/selection-sort --profile portrait
+npm run render -- tech/selection-sort --still
+```
+
+`--still` renders dedicated platform covers without rendering MP4 files.
+`--format` remains an alias for `--profile` during migration.
+
+Regenerate captions without rendering:
+
+```bash
+npm run captions
+npm run captions -- tech/selection-sort
+```
+
+Rebuild publish packages from existing renders:
+
+```bash
+npm run package
+npm run package -- tech/selection-sort
+```
+
+## Output packages
+
+Outputs are organized by channel and topic:
+
+```text
+out/
+  tech/
+    selection-sort/
+      renders/
+        landscape.mp4
+        portrait.mp4
+      youtube-long/
+        video.mp4
+        cover.png
+        captions.srt
+        metadata.json
+      instagram-reel/
+        video.mp4
+        cover.png
+        captions.srt
+        metadata.json
+      captions.srt
+      voiceover.md
+      spec.json
+      manifest.json
+```
+
+`manifest.json` records the source checksum, sources, deliveries, packaged
+files, and whether each delivery is ready, cover-only, or incomplete.
+
+Uploading is intentionally separate from rendering. The package is reviewable
+before credentials or platform APIs are introduced.
 
 ## Scene types
 
 | Type | Use it for |
 | --- | --- |
-| `title` | Opener / hook |
-| `steps` | Numbered mental model, "the whole idea" |
-| `flow` | User journeys, request lifecycles, pipelines |
-| `architecture` | System design and infra diagrams, with an animated request packet |
-| `code` | Annotated snippets with a moving spotlight |
-| `terminal` | CLI demos with typed commands |
+| `title` | opener and hook |
+| `steps` | numbered mental model |
+| `flow` | journey, lifecycle, or pipeline |
+| `architecture` | system diagrams with animated request traces |
+| `code` | annotated source snippets |
+| `terminal` | typed command demonstrations |
 | `compare` | A versus B |
-| `stats` | Two to four metric cards |
-| `bigStat` | One headline number or formula |
-| `callout` | A single sentence worth remembering |
-| `arrayViz` | Algorithm visualisation (selection, bubble) |
-| `outro` | Recap block, handle, CTA |
+| `stats` | two to four metric cards |
+| `bigStat` | headline number, answer, or formula |
+| `callout` | one memorable sentence |
+| `arrayViz` | selection and bubble sort |
+| `outro` | recap and channel-driven CTA |
 
-`style-guide.ts` renders one of each, in order. It is a living reference —
-render stills from it after any change to tokens or shared components to see
-what you did to every scene at once:
+## Style guides and visual QA
+
+Style guides appear in Studio but are excluded from production batch renders:
+
+```text
+tech--style-guide--landscape
+learn--style-guide--portrait
+fun--style-guide--portrait
+```
+
+Render representative frames:
 
 ```bash
-node scripts/qa.mjs style-guide--reel 40 120 200 320 440 570 660 750 830 910 1080 1200
+npm run qa -- learn--style-guide--portrait 40 120 220 340
+npm run qa -- fun--style-guide--portrait 30 100 180 260
 ```
 
----
+QA stills are written to `out/qa/`.
 
-## How one source produces two aspect ratios
+## Adding a scene
 
-All three delivery formats share a **1080px short edge**:
+1. Add the typed scene variant in `src/types.ts`.
+2. Build the component inside `src/scenes/`.
+3. Use `useTheme()` for channel colors and fonts.
+4. Use `useLayout()` for aspect-aware layout.
+5. Register it in `src/scenes/registry.ts`.
+6. Add it to relevant channel style guides.
 
-| Format | Size | Short edge |
-| --- | --- | --- |
-| `youtube` | 1920×1080 | 1080 |
-| `reel` | 1080×1920 | 1080 |
-| `square` | 1080×1080 | 1080 |
+Structural sizing belongs in `src/design/tokens.ts`; brand color and typography
+belong in `src/themes/`.
 
-So the type scale and spacing scale in `src/design/tokens.ts` are absolute and
-identical everywhere — 84px stays 84px in both cuts and reads the same size on
-screen. Only **layout direction** changes, and scenes get that from `useLayout()`:
+## Voiceover
 
-```tsx
-const layout = useLayout();
-<div style={{flexDirection: layout.isLandscape ? 'row' : 'column'}} />
-```
-
-Cards sit side by side at 16:9 and stack at 9:16. Diagrams keep their grid and
-just get differently-shaped cells. Captions are burned in for vertical cuts by
-default and off for YouTube, where real subtitles are uploaded instead.
-
-Every composition is registered as `<slug>--<format>`, which is what Studio
-lists and what the render script keys off.
-
----
-
-## Design system
-
-`src/design/tokens.ts` is the only place a colour, size or spacing value is
-defined. Scenes import from it and never hardcode.
-
-- **Type** — Fraunces (display), Hanken Grotesk (body), JetBrains Mono (code/labels)
-- **Surface** — `#0a0e0c` background, `#141f1a` panels, `#26362f` hairlines
-- **Accents** — amber `#F5A524` primary, teal `#2DD4BF` success/settled, coral `#FF6B5B` attention, violet `#A78BFA` external
-- **Safe area** — 80px, enforced by `<Frame>`; content never crosses it
-- **Motion** — `src/design/anim.ts` is the whole vocabulary: `fadeUp`, `slideIn`, `pop`, `drawWidth`, `stagger`, `pulse`, all on one easing curve
-
-Scenes use the `anim.ts` helpers rather than bespoke `interpolate()` calls. That
-trades a little Remotion Studio keyframe-editability for consistency across
-twelve scene types and every future video — the right trade for a channel kit.
-When you *do* want to tune one moment by hand in Studio, inline an
-`interpolate()` in that element's `style` prop.
-
-### Fonts are inlined
-
-`src/design/fontFaces.ts` is generated by `npm run fonts` and contains the woff2
-files as base64 data URIs. This removes the network from the render loop
-entirely, which is what makes renders reproducible on CI and inside sandboxes.
-`FontGate` then holds the render — via `delayRender` in a `useState` initialiser,
-not at module scope — until every face has rasterised.
-
-> Module-scope `delayRender()` renders stills fine and then times out on video.
-> The handle has to be created inside the component lifecycle. This bit me; it is
-> commented in `FontGate.tsx` so it does not bite again.
-
----
-
-## Outputs
-
-`npm run render` writes into `out/`:
-
-```
-cdn-to-container.yt.mp4          1920x1080
-cdn-to-container.yt.cover.png    thumbnail base
-cdn-to-container.reel.mp4        1080x1920
-cdn-to-container.reel.cover.png  reel cover
-cdn-to-container.srt             subtitles, from the narration fields
-cdn-to-container.vo.md           timed voiceover script + mux command
-```
-
-The `narration` on each scene does triple duty: burned-in caption, `.srt` cue,
-and a line in the VO script with its exact timecode. They cannot drift apart
-because they are one field.
-
-### Voiceover
-
-Render silent, record against `*.vo.md`, then mux:
+Narration drives burned captions, SRT cues, and the voiceover cue sheet.
+After recording:
 
 ```bash
-ffmpeg -i out/my-video.reel.mp4 -i vo.mp3 \
+ffmpeg -i out/tech/my-video/renders/portrait.mp4 -i vo.mp3 \
   -c:v copy -c:a aac -b:a 192k -shortest \
-  out/my-video.reel.vo.mp4
+  out/tech/my-video/renders/portrait.vo.mp4
 ```
 
----
-
-## Local rendering (M4 Pro)
-
-Remotion downloads its own Chrome Headless Shell on first run, so nothing extra
-is needed:
-
-```bash
-npm run render
-```
-
-Concurrency defaults to your core count. To tune:
-
-```bash
-RENDER_CONCURRENCY=8 npm run render
-```
-
-For a very long video, render in chunks and concatenate — cut on scene
-boundaries so no seam lands inside a fade:
-
-```bash
-npx remotion render src/index.ts my-video--reel out/a.mp4 --frames=0-899
-npx remotion render src/index.ts my-video--reel out/b.mp4 --frames=900-1799
-printf "file 'a.mp4'\nfile 'b.mp4'\n" > out/list.txt
-ffmpeg -f concat -safe 0 -i out/list.txt -c copy out/final.mp4
-```
-
-### Rendering in a restricted environment
-
-If Chrome cannot be downloaded (locked-down CI, sandboxes), point Remotion at an
-existing Chromium:
-
-```bash
-export REMOTION_BROWSER_EXECUTABLE=/path/to/chrome
-export REMOTION_CHROME_MODE=chrome-for-testing
-export RENDER_CONCURRENCY=1
-npm run render
-```
-
----
-
-## Adding a scene type
-
-Three edits, in this order:
-
-1. `src/types.ts` — add the `Base &` variant and union it into `Scene`
-2. `src/scenes/YourScene.tsx` — build it inside `<Frame>`, pull every value from tokens, read `useLayout()` for direction
-3. `src/scenes/registry.ts` — bind the type string to the component
-
-Then add one to `style-guide.ts` so it is covered by the visual reference.
-
----
+The first implementation still uses scene-level caption cues. Phrase- or
+word-level timing and first-class music/SFX mixing are planned next.
 
 ## Project layout
 
-```
+```text
 src/
-  design/     tokens, formats/useLayout, motion vocabulary, fonts
-  components/ Frame, Card, Text primitives, Chrome (watermark, captions)
-  scenes/     one file per scene type + registry
-  lib/        algorithm traces for arrayViz
-  videos/     one file per video + registry
-  Video.tsx   spec → Series
-  Root.tsx    registers every video × format
+  channels/       channel identity, defaults, editorial policy
+  themes/         Tech, Learn, and Fun visual systems
+  publishing/     delivery-to-render-profile mapping
+  design/         shared size, spacing, layout, and animation tokens
+  components/     shared primitives
+  scenes/         reusable visual scenes
+  videos/
+    tech/          production Tech specs
+    learn/         production Learn specs
+    fun/           production Fun specs
+    style-guides/  non-production visual references
+  Cover.tsx        dedicated platform cover
+  Video.tsx        spec-to-scenes renderer
+  Root.tsx         compositions
 scripts/
-  render.mjs      batch render, bundles once
-  captions.mjs    .srt + VO script without rendering
-  new-video.mjs   scaffold and auto-register a video
-  gen-fonts.mjs   regenerate inlined fonts
-  qa.mjs          render arbitrary frames as stills
+  new-video.mjs
+  validate.mjs
+  render.mjs
+  package.mjs
+  captions.mjs
+  qa.mjs
 ```
+
+The broader roadmap and later audio/media/publishing phases are documented in
+[`docs/three-channel-plan.md`](docs/three-channel-plan.md).

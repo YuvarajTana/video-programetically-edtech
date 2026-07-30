@@ -2,20 +2,22 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Kicker, Small} from '../components/Text';
-import {accents, color, font, space, type} from '../design/tokens';
+import {space, type} from '../design/tokens';
 import {fadeUp, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import type {StatsScene} from '../types';
 
-const ROTATION = ['amber', 'teal', 'coral', 'violet'] as const;
+const ROTATION = ['primary', 'success', 'attention', 'info'] as const;
 
 export const Stats: React.FC<{scene: StatsScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const layout = useLayout();
+  const {accents, color, font} = useTheme();
   const row = layout.isLandscape || scene.cards.length <= 2;
 
   return (
-    <Frame kicker={scene.kicker} title={scene.title} accent={scene.accent ?? 'amber'}>
+    <Frame kicker={scene.kicker} title={scene.title} accent={scene.accent ?? 'primary'}>
       <div
         style={{
           display: 'flex',

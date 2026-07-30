@@ -1,5 +1,27 @@
 # Three-Channel Video Kit Plan
 
+## Implementation Status — 2026-07-30
+
+Implemented on `feature/three-channel-kit`:
+
+- Channel profiles and distinct Tech, Learn, and Fun themes.
+- Semantic accent roles across the shared scene library.
+- Channel-aware specs, composition IDs, scaffolding, and registries.
+- Production/style-guide separation with a style guide for every channel.
+- Delivery targets separated from reusable landscape/portrait/square renders.
+- Dedicated platform covers without burned-in caption bars.
+- Channel/topic/platform output directories, metadata, source checksums, and
+  publish manifests.
+- Structural and channel-specific editorial validation.
+
+Still intentionally deferred to later phases:
+
+- New Learn- and Fun-specific scene types.
+- First-class voiceover generation, background music, SFX, ducking, and
+  word-timed captions.
+- Automated YouTube and Instagram uploads.
+- Final public names and handles for the Learn and Fun channels.
+
 ## Goal
 
 Turn the current single-brand tech explainer kit into one programmatic video

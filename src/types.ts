@@ -1,4 +1,6 @@
-import type {Accent} from './design/tokens';
+import type {ChannelId} from './channels/types';
+import type {DeliveryId} from './publishing/types';
+import type {Accent} from './themes/types';
 
 /**
  * A video in this kit is data, not a React tree.
@@ -158,16 +160,30 @@ export type SceneType = Scene['type'];
 // ------------------------------------------------------------------ the video
 
 export type VideoSpec = {
+  /** Selects brand, audience defaults, theme, handles, and delivery defaults. */
+  channel: ChannelId;
   /** URL-safe id. Becomes the composition id and the output filename. */
   slug: string;
   title: string;
+  /** Content pattern used by the scaffold and editorial validation. */
+  template: string;
+  /** Keep visual references available in Studio but out of production renders. */
+  kind?: 'video' | 'style-guide';
   /** One line for the YouTube description / carousel caption. */
   summary?: string;
   fps?: number;
-  /** Which cuts to produce. Defaults to YouTube + Reel. */
-  formats?: ('youtube' | 'reel' | 'square')[];
-  /** Shown in the persistent corner watermark. */
-  handle?: string;
+  /** Platform packages to produce. Defaults come from the channel profile. */
+  deliveries?: DeliveryId[];
+  audience?: {
+    ageBand?: string;
+    level?: 'beginner' | 'intermediate' | 'advanced';
+  };
+  editorial?: {
+    language?: string;
+    objective?: string;
+    sources?: {title: string; url?: string}[];
+    safetyStatus?: 'draft' | 'reviewed' | 'approved';
+  };
   /** Optional voiceover track placed in public/. */
   audio?: string;
   /** Burn narration into the frame as captions. On by default for Reels. */

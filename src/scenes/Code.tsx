@@ -2,9 +2,10 @@ import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Small} from '../components/Text';
-import {accents, color, font, radius, space, tint, type} from '../design/tokens';
+import {radius, space, tint, type} from '../design/tokens';
 import {EASE, fadeUp} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import type {CodeScene} from '../types';
 
 const LINE_H = 1.72;
@@ -18,7 +19,8 @@ export const Code: React.FC<{scene: CodeScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useVideoConfig();
   const layout = useLayout();
-  const a = accents[scene.accent ?? 'teal'];
+  const {accents, color, font} = useTheme();
+  const a = accents[scene.accent ?? 'success'];
 
   const revealPer = 3;
   const revealEnd = scene.lines.length * revealPer + 10;
@@ -35,7 +37,7 @@ export const Code: React.FC<{scene: CodeScene}> = ({scene}) => {
   const fontSize = layout.isLandscape ? type.small : 34;
 
   return (
-    <Frame kicker={scene.kicker ?? scene.lang ?? 'code'} title={scene.title} accent={scene.accent ?? 'teal'}>
+    <Frame kicker={scene.kicker ?? scene.lang ?? 'code'} title={scene.title} accent={scene.accent ?? 'success'}>
       <Card
         style={{
           width: layout.isLandscape ? layout.contentW * 0.82 : layout.contentW,

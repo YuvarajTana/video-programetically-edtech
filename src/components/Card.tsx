@@ -1,6 +1,7 @@
 import type {CSSProperties, ReactNode} from 'react';
-import {accents, color, radius, space, stroke, tint} from '../design/tokens';
-import type {Accent} from '../design/tokens';
+import {radius, space, stroke, tint} from '../design/tokens';
+import {useTheme} from '../themes';
+import type {Accent} from '../themes';
 
 /**
  * The one surface in the system. Everything that needs to sit above the
@@ -14,6 +15,7 @@ export const Card: React.FC<{
   style?: CSSProperties;
   glow?: boolean;
 }> = ({children, accent, edge = 'none', style, glow}) => {
+  const {accents, color} = useTheme();
   const a = accent ? accents[accent] : undefined;
   return (
     <div

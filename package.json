@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Spec-driven Remotion kit for AIDataDynamics — one source, YouTube + Reel output.",
+  "description": "Multi-channel, spec-driven Remotion kit for Tech, Learn, and Fun video brands.",
   "scripts": {
     "studio": "remotion studio src/index.ts",
     "render": "node scripts/render.mjs",
     "render:all": "node scripts/render.mjs --all",
+    "validate": "node scripts/validate.mjs",
+    "package": "node scripts/package.mjs",
     "captions": "node scripts/captions.mjs",
     "new": "node scripts/new-video.mjs",
+    "qa": "node scripts/qa.mjs",
     "fonts": "node scripts/gen-fonts.mjs",
     "typecheck": "tsc --noEmit"
   },

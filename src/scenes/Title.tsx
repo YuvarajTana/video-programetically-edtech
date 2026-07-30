@@ -1,16 +1,18 @@
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Body, Display, Kicker} from '../components/Text';
-import {accents, color, space} from '../design/tokens';
+import {space} from '../design/tokens';
 import {drawWidth, fadeUp, pop, sceneFade} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import type {TitleScene} from '../types';
 
 export const Title: React.FC<{scene: TitleScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useVideoConfig();
   const layout = useLayout();
-  const a = accents[scene.accent ?? 'amber'];
+  const {accents, color} = useTheme();
+  const a = accents[scene.accent ?? 'primary'];
 
   return (
     <Frame noFade>

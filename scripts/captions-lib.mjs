@@ -39,7 +39,11 @@ export const toSrt = (spec, fps = 30) => {
   );
 };
 
-export const toVoScript = (spec, fps = 30) => {
+export const toVoScript = (
+  spec,
+  fps = 30,
+  renderPath = `out/${spec.channel}/${spec.slug}/renders/portrait.mp4`,
+) => {
   const rows = offsets(spec).map((o) => {
     const secs = (o.scene.durationInFrames / fps).toFixed(1);
     const at = (o.start / fps).toFixed(1);
@@ -58,9 +62,9 @@ export const toVoScript = (spec, fps = 30) => {
     '## Mux a recorded voiceover',
     '',
     '```bash',
-    `ffmpeg -i out/${spec.slug}.reel.mp4 -i vo.mp3 \\`,
+    `ffmpeg -i ${renderPath} -i vo.mp3 \\`,
     '  -c:v copy -c:a aac -b:a 192k -shortest \\',
-    `  out/${spec.slug}.reel.vo.mp4`,
+    `  out/${spec.channel}/${spec.slug}/renders/portrait.vo.mp4`,
     '```',
     '',
   ].join('\n');

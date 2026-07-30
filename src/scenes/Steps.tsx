@@ -2,19 +2,21 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Body, H3, Small} from '../components/Text';
-import {accents, color, font, space, type} from '../design/tokens';
+import {space, type} from '../design/tokens';
 import {fadeIn, slideIn, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import type {StepsScene} from '../types';
 
-const ROTATION = ['coral', 'amber', 'teal', 'violet'] as const;
+const ROTATION = ['attention', 'primary', 'success', 'info'] as const;
 
 export const Steps: React.FC<{scene: StepsScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const layout = useLayout();
+  const {accents, color, font} = useTheme();
 
   return (
-    <Frame kicker={scene.kicker} accent={scene.accent ?? 'amber'} align="center">
+    <Frame kicker={scene.kicker} accent={scene.accent ?? 'primary'} align="center">
       <div
         style={{
           display: 'flex',

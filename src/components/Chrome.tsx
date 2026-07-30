@@ -1,21 +1,25 @@
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
-import {color, font, space, tint, type} from '../design/tokens';
+import {space, tint, type} from '../design/tokens';
 import {useLayout} from '../design/formats';
+import {useChannel} from '../channels';
+import {useTheme} from '../themes';
 
 /**
  * Channel furniture that persists across every scene: the handle watermark and
  * a hairline progress bar. Deliberately quiet — it should register without ever
  * competing with the content.
  */
-export const Chrome: React.FC<{handle?: string}> = ({handle}) => {
+export const Chrome: React.FC = () => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useVideoConfig();
   const layout = useLayout();
+  const channel = useChannel();
+  const {accents, chrome, color, font} = useTheme();
   const pct = Math.min(1, frame / Math.max(1, durationInFrames - 1));
 
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
-      {handle ? (
+      {channel.handle ? (
         <div
           style={{
             position: 'absolute',
@@ -28,7 +32,7 @@ export const Chrome: React.FC<{handle?: string}> = ({handle}) => {
             textTransform: 'uppercase',
           }}
         >
-          {handle}
+          {channel.handle}
         </div>
       ) : null}
 
@@ -37,10 +41,10 @@ export const Chrome: React.FC<{handle?: string}> = ({handle}) => {
           position: 'absolute',
           left: 0,
           bottom: 0,
-          height: 5,
+          height: chrome.progressHeight,
           width: `${pct * 100}%`,
-          backgroundColor: color.amber,
-          opacity: 0.85,
+          backgroundColor: accents.primary,
+          opacity: chrome.progressOpacity,
         }}
       />
     </AbsoluteFill>
@@ -48,11 +52,12 @@ export const Chrome: React.FC<{handle?: string}> = ({handle}) => {
 };
 
 /**
- * Burned-in caption bar. Most reels are watched muted, so the narration line
+ * Burned-in caption bar. Most portrait social video is watched muted, so the narration line
  * doubles as the on-screen caption rather than being VO-only.
  */
 export const Captions: React.FC<{text?: string}> = ({text}) => {
   const layout = useLayout();
+  const {chrome, color, font} = useTheme();
   if (!text) return null;
 
   return (
@@ -71,8 +76,8 @@ export const Captions: React.FC<{text?: string}> = ({text}) => {
         style={{
           maxWidth: layout.isLandscape ? layout.contentW * 0.7 : layout.contentW,
           padding: `${space.sm}px ${space.lg}px`,
-          borderRadius: 14,
-          backgroundColor: `${color.bgDeep}D9`,
+          borderRadius: chrome.captionRadius,
+          backgroundColor: tint(color.bgDeep, 'strong'),
           border: `2px solid ${color.line}`,
           fontFamily: font.body,
           fontWeight: 600,

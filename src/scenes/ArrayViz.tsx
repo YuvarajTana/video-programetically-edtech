@@ -1,8 +1,9 @@
 import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
-import {accents, color, font, radius, space, tint, type} from '../design/tokens';
+import {radius, space, tint, type} from '../design/tokens';
 import {EASE, EASE_IO} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import {DEFAULT_TEMPO, buildTrace, stepAt} from '../lib/sortTrace';
 import type {ArrayVizScene} from '../types';
 
@@ -22,6 +23,7 @@ export const ArrayViz: React.FC<{scene: ArrayVizScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useVideoConfig();
   const layout = useLayout();
+  const {accents, color, font} = useTheme();
 
   const trace = buildTrace(scene.algorithm, scene.values, scene.tempo ?? DEFAULT_TEMPO);
 
@@ -79,9 +81,9 @@ export const ArrayViz: React.FC<{scene: ArrayVizScene}> = ({scene}) => {
   };
 
   const roleColor: Record<string, string> = {
-    locked: color.teal,
-    keep: color.amber,
-    check: color.coral,
+    locked: accents.success,
+    keep: accents.primary,
+    check: accents.attention,
     idle: color.muted,
   };
 
@@ -93,18 +95,18 @@ export const ArrayViz: React.FC<{scene: ArrayVizScene}> = ({scene}) => {
   const noteColor = traceFrame < 0
     ? color.muted
     : done
-      ? color.teal
+      ? accents.success
       : step.kind === 'lock'
-        ? color.teal
+        ? accents.success
         : step.kind === 'swap'
-          ? color.amber
+          ? accents.primary
           : color.text;
 
   return (
     <Frame
       kicker={`${scene.algorithm} sort`}
       title={scene.title ?? `Pass ${inTrace ? step.pass : done ? trace.passes : 1} of ${trace.passes}`}
-      accent="amber"
+      accent="primary"
     >
       <div
         style={{
@@ -233,9 +235,9 @@ export const ArrayViz: React.FC<{scene: ArrayVizScene}> = ({scene}) => {
 
       <div style={{display: 'flex', gap: space.lg, marginTop: space.md}}>
         {[
-          {c: color.coral, t: 'looking at'},
-          {c: color.amber, t: 'holding'},
-          {c: color.teal, t: 'settled'},
+          {c: accents.attention, t: 'looking at'},
+          {c: accents.primary, t: 'holding'},
+          {c: accents.success, t: 'settled'},
         ].map((l) => (
           <div key={l.t} style={{display: 'flex', alignItems: 'center', gap: space.xs}}>
             <div style={{width: 18, height: 18, borderRadius: 6, backgroundColor: l.c}} />

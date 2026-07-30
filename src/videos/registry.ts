@@ -1,9 +1,19 @@
 import type {VideoSpec} from '../types';
-import {cdnToContainer} from './cdn-to-container';
-import {selectionSort} from './selection-sort';
-import {styleGuide} from './style-guide';
+import type {ChannelId} from '../channels';
+import {FUN_VIDEOS} from './fun/registry';
+import {LEARN_VIDEOS} from './learn/registry';
+import {STYLE_GUIDES} from './style-guides/registry';
+import {TECH_VIDEOS} from './tech/registry';
 
-/** Add a new video here and it appears in Studio and in the render script. */
-export const VIDEOS: VideoSpec[] = [cdnToContainer, selectionSort, styleGuide];
+/** Production content. Style guides are deliberately excluded from batch renders. */
+export const VIDEOS: VideoSpec[] = [
+  ...TECH_VIDEOS,
+  ...LEARN_VIDEOS,
+  ...FUN_VIDEOS,
+];
 
-export const bySlug = (slug: string) => VIDEOS.find((v) => v.slug === slug);
+/** Everything visible in Remotion Studio. */
+export const STUDIO_VIDEOS: VideoSpec[] = [...VIDEOS, ...STYLE_GUIDES];
+
+export const byRef = (channel: ChannelId, slug: string) =>
+  VIDEOS.find((video) => video.channel === channel && video.slug === slug);

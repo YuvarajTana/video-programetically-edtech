@@ -1,18 +1,28 @@
 import {AbsoluteFill, Audio, Series, staticFile} from 'remotion';
 import {Captions, Chrome} from './components/Chrome';
 import {FontGate} from './design/FontGate';
-import {color} from './design/tokens';
 import {useLayout} from './design/formats';
+import type {FormatId} from './design/formats';
 import {SCENES} from './scenes/registry';
 import type {VideoSpec} from './types';
+import {ChannelProvider} from './channels';
+import type {ChannelProfile} from './channels';
+import {useTheme} from './themes';
 
 /**
  * Turns a spec into frames. Nothing video-specific lives here — if you find
  * yourself wanting to special-case a particular video in this file, that is a
  * sign the scene kit is missing a scene type.
  */
-export const Video: React.FC<{spec: VideoSpec}> = ({spec}) => {
+type VideoProps = {
+  spec: VideoSpec;
+  channel: ChannelProfile;
+  renderProfile: FormatId;
+};
+
+const VideoBody: React.FC<{spec: VideoSpec}> = ({spec}) => {
   const layout = useLayout();
+  const {color} = useTheme();
   // Captions default on for vertical cuts, which are overwhelmingly watched muted.
   const showCaptions = spec.captions ?? !layout.isLandscape;
 
@@ -35,9 +45,15 @@ export const Video: React.FC<{spec: VideoSpec}> = ({spec}) => {
           })}
         </Series>
 
-        <Chrome handle={spec.handle} />
+        <Chrome />
         {spec.audio ? <Audio src={staticFile(spec.audio)} /> : null}
       </FontGate>
     </AbsoluteFill>
   );
 };
+
+export const Video: React.FC<VideoProps> = ({spec, channel}) => (
+  <ChannelProvider channel={channel}>
+    <VideoBody spec={spec} />
+  </ChannelProvider>
+);

@@ -1,9 +1,10 @@
 import {interpolate, useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
-import {accents, color, font, space, type} from '../design/tokens';
+import {space, type} from '../design/tokens';
 import {fadeUp} from '../design/anim';
 import {useLayout} from '../design/formats';
+import {useTheme} from '../themes';
 import type {TerminalScene} from '../types';
 
 const CPS = 1.6; // characters per frame while "typing"
@@ -11,7 +12,8 @@ const CPS = 1.6; // characters per frame while "typing"
 export const Terminal: React.FC<{scene: TerminalScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const layout = useLayout();
-  const a = accents[scene.accent ?? 'teal'];
+  const {accents, color, font} = useTheme();
+  const a = accents[scene.accent ?? 'success'];
   const fontSize = layout.isLandscape ? type.small : 32;
 
   // Walk the entries and give each a start frame based on how long the one
@@ -26,7 +28,7 @@ export const Terminal: React.FC<{scene: TerminalScene}> = ({scene}) => {
   });
 
   return (
-    <Frame kicker="terminal" title={scene.title} accent={scene.accent ?? 'teal'}>
+    <Frame kicker="terminal" title={scene.title} accent={scene.accent ?? 'success'}>
       <Card
         style={{
           width: layout.isLandscape ? layout.contentW * 0.8 : layout.contentW,
@@ -45,7 +47,7 @@ export const Terminal: React.FC<{scene: TerminalScene}> = ({scene}) => {
             backgroundColor: color.surfaceHi,
           }}
         >
-          {[color.coral, color.amber, color.teal].map((c) => (
+          {[accents.attention, accents.primary, accents.success].map((c) => (
             <div key={c} style={{width: 12, height: 12, borderRadius: 999, backgroundColor: c}} />
           ))}
           <span

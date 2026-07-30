@@ -10,9 +10,14 @@ import {getCompositions} from '@remotion/renderer';
 import {mkdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {toSrt, toVoScript} from './captions-lib.mjs';
+import {
+  matchesRef,
+  positionals,
+  preferredRenderProfile,
+  videoComposition,
+} from './deliveries.mjs';
 
-const slugs = process.argv.slice(2).filter((a) => !a.startsWith('--'));
-mkdirSync('out', {recursive: true});
+const refs = positionals(process.argv.slice(2));
 
 const serveUrl = await bundle({entryPoint: join(process.cwd(), 'src/index.ts')});
 const comps = await getCompositions(serveUrl, {
@@ -21,15 +26,31 @@ const comps = await getCompositions(serveUrl, {
 });
 
 const seen = new Set();
-for (const c of comps) {
-  const slug = c.id.split('--')[0];
-  if (seen.has(slug)) continue;
-  if (slugs.length && !slugs.includes(slug)) continue;
+let count = 0;
+for (const c of comps.filter(videoComposition)) {
   const spec = c.props?.spec;
-  if (!spec) continue;
-  seen.add(slug);
+  const channel = c.props?.channel;
+  if (!spec || !channel || spec.kind === 'style-guide' || !matchesRef(spec, refs)) continue;
+  const ref = `${spec.channel}/${spec.slug}`;
+  if (seen.has(ref)) continue;
+  seen.add(ref);
+  const base = join('out', spec.channel, spec.slug);
+  mkdirSync(base, {recursive: true});
   const fps = spec.fps ?? 30;
-  writeFileSync(join('out', `${slug}.srt`), toSrt(spec, fps));
-  writeFileSync(join('out', `${slug}.vo.md`), toVoScript(spec, fps));
-  console.log(`· ${slug}.srt + ${slug}.vo.md`);
+  writeFileSync(join(base, 'captions.srt'), toSrt(spec, fps));
+  writeFileSync(
+    join(base, 'voiceover.md'),
+    toVoScript(
+      spec,
+      fps,
+      join(base, 'renders', `${preferredRenderProfile(spec, channel)}.mp4`),
+    ),
+  );
+  console.log(`· ${ref} captions.srt + voiceover.md`);
+  count++;
+}
+
+if (!count) {
+  console.error('no production video specs matched');
+  process.exit(1);
 }
