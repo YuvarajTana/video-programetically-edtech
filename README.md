@@ -153,8 +153,21 @@ npm run validate -- --studio
 ```
 
 Validation checks structure, delivery IDs, duplicate scenes, diagram
-references, narration speed, duration, hook length, and channel-specific
-editorial requirements.
+references, narration speed, duration, hook length, quiz timing, audio paths,
+and channel-specific editorial requirements. It reads the spec registries
+directly through Node's native TypeScript support, so it needs no bundling or
+browser and finishes in well under a second (Node 22.18+).
+
+Run the unit tests:
+
+```bash
+npm test
+```
+
+The suite covers spec validation, chapter generation, caption/SRT output, and
+delivery mapping, and re-validates every registered spec. CI
+(`.github/workflows/ci.yml`) runs type checking, the tests, and full spec
+validation on every push and pull request.
 
 Render:
 
@@ -230,7 +243,13 @@ before credentials or platform APIs are introduced.
 | `bigStat` | headline number, answer, or formula |
 | `callout` | one memorable sentence |
 | `arrayViz` | selection and bubble sort |
+| `quiz` | question, options, thinking pause, answer reveal |
 | `outro` | recap and channel-driven CTA |
+
+A quiz reveals its answer at `revealAtFrame` (default: 60% through the scene).
+Validation warns when the reveal comes without a thinking pause or leaves less
+than a second to show the answer. The `quick-quiz` and
+`guess-before-the-reveal` templates scaffold a quiz scene automatically.
 
 ## Style guides and visual QA
 

@@ -1,5 +1,20 @@
 # Three-Channel Video Kit Plan
 
+## Implementation Status — 2026-08-14
+
+Newly implemented:
+
+- `quiz` scene (question, options, thinking pause, answer reveal) with
+  reveal-timing validation — the first Phase 3 Learn-specific scene.
+- Browser-free `validate`, `captions`, and `package`: specs load straight from
+  the TypeScript registries via Node 22 type stripping, so no bundling or
+  headless Chrome is needed outside actual rendering.
+- Unit test suite (`npm test`, node:test) for validation, chapters, captions,
+  and delivery mapping, plus a check that every registered spec stays valid.
+- GitHub Actions CI running type checks, tests, and full spec validation
+  (the first slice of Phase 5).
+- Audio/caption-timing path-safety and fps validation.
+
 ## Implementation Status — 2026-07-30
 
 Implemented on `feature/three-channel-kit`:
