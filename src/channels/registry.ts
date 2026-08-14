@@ -1,4 +1,9 @@
-import {funTheme, learnTheme, techTheme} from '../themes';
+// Import concrete theme modules rather than the themes barrel so this
+// registry's import chain stays free of JSX. Node-based tooling (validate,
+// captions, package, tests) imports it directly without bundling.
+import {funTheme} from '../themes/fun';
+import {learnTheme} from '../themes/learn';
+import {techTheme} from '../themes/tech';
 import type {ChannelId, ChannelProfile} from './types';
 
 export const CHANNELS: Record<ChannelId, ChannelProfile> = {

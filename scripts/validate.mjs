@@ -1,35 +1,19 @@
 #!/usr/bin/env node
-import {bundle} from '@remotion/bundler';
-import {getCompositions} from '@remotion/renderer';
-import {join} from 'node:path';
-import {matchesRef, positionals, videoComposition} from './deliveries.mjs';
+/**
+ * Validate specs straight from the registries. No bundling, no browser —
+ * fast enough to run before every render and inside CI.
+ */
+import {matchesRef, positionals} from './deliveries.mjs';
+import {loadSpecs} from './spec-loader.mjs';
 import {validateCollection} from './validation-lib.mjs';
 
 const argv = process.argv.slice(2);
 const refs = positionals(argv);
 const includeStyleGuides = argv.includes('--studio');
 
-const serveUrl = await bundle({
-  entryPoint: join(process.cwd(), 'src/index.ts'),
-  onProgress: () => {},
-});
-const compositions = await getCompositions(serveUrl, {
-  browserExecutable: process.env.REMOTION_BROWSER_EXECUTABLE || null,
-  chromeMode: process.env.REMOTION_CHROME_MODE || undefined,
-});
-
-const entries = [];
-const seen = new Set();
-for (const composition of compositions.filter(videoComposition)) {
-  const {spec, channel} = composition.props ?? {};
-  if (!spec || !channel) continue;
-  if (!includeStyleGuides && spec.kind === 'style-guide') continue;
-  if (!matchesRef(spec, refs)) continue;
-  const key = `${spec.kind ?? 'video'}:${spec.channel}/${spec.slug}`;
-  if (seen.has(key)) continue;
-  seen.add(key);
-  entries.push({spec, channel});
-}
+const entries = (await loadSpecs({includeStyleGuides})).filter(({spec}) =>
+  matchesRef(spec, refs),
+);
 
 if (!entries.length) {
   console.error('no video specs matched');
