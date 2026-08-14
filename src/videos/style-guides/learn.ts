@@ -28,12 +28,16 @@ export const learnStyleGuide: VideoSpec = {
       footnote: 'One idea per scene, with friendly language.',
     },
     {
-      type: 'bigStat',
-      durationInFrames: 80,
-      kicker: 'Quick check',
-      value: '3… 2… 1…',
-      label: 'Which color scatters most?',
-      note: 'Pause before the answer reveal.',
+      type: 'quiz',
+      durationInFrames: 150,
+      question: 'Which color scatters most?',
+      options: [
+        {label: 'Red', emoji: '🔴'},
+        {label: 'Blue', emoji: '🔵'},
+        {label: 'Green', emoji: '🟢'},
+      ],
+      answerIndex: 1,
+      explanation: 'Blue waves are short, so air bounces them everywhere.',
       accent: 'info',
     },
     {

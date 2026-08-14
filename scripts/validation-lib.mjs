@@ -15,6 +15,10 @@ export const validateSpec = (spec, channel) => {
   }
   const fps = spec.fps ?? 30;
 
+  if (spec.fps !== undefined && (!Number.isInteger(spec.fps) || spec.fps < 1 || spec.fps > 120)) {
+    add('error', 'fps', 'must be an integer between 1 and 120');
+  }
+
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(spec.slug ?? '')) {
     add('error', 'slug', 'must be lowercase kebab-case');
   }
@@ -53,6 +57,38 @@ export const validateSpec = (spec, channel) => {
           'warning',
           `${path}.narration`,
           `${Math.round(wpm)} WPM exceeds ${channel.editorial.maxNarrationWpm} WPM for ${channel.id}`,
+        );
+      }
+    }
+
+    if (scene.type === 'quiz') {
+      const optionCount = Array.isArray(scene.options) ? scene.options.length : 0;
+      if (optionCount < 2 || optionCount > 4) {
+        add('error', `${path}.options`, 'must contain two to four options');
+      }
+      if (
+        !Number.isInteger(scene.answerIndex) ||
+        scene.answerIndex < 0 ||
+        scene.answerIndex >= optionCount
+      ) {
+        add('error', `${path}.answerIndex`, 'must point at one of the options');
+      }
+      // Keep the roadmap's "short pause before revealing quiz answers" honest.
+      const reveal = scene.revealAtFrame ?? Math.round(scene.durationInFrames * 0.6);
+      const minPauseFrames = Math.round(1.5 * fps);
+      const minRevealHoldFrames = Math.round(1 * fps);
+      if (!Number.isInteger(reveal) || reveal < minPauseFrames) {
+        add(
+          'warning',
+          `${path}.revealAtFrame`,
+          `answer reveals before a ${(minPauseFrames / fps).toFixed(1)}s thinking pause`,
+        );
+      }
+      if (reveal > scene.durationInFrames - minRevealHoldFrames) {
+        add(
+          'warning',
+          `${path}.revealAtFrame`,
+          `leave at least ${(minRevealHoldFrames / fps).toFixed(1)}s to show the answer`,
         );
       }
     }
@@ -110,6 +146,12 @@ export const validateSpec = (spec, channel) => {
   }
 
   const publicRoot = resolve('public');
+  if (spec.audio) {
+    const audioPath = resolve(publicRoot, spec.audio);
+    if (!audioPath.startsWith(`${publicRoot}${sep}`)) {
+      add('error', 'audio', 'must stay inside public/');
+    }
+  }
   if (spec.captionTimings) {
     const captionTimingsPath = resolve(publicRoot, spec.captionTimings);
     if (!captionTimingsPath.startsWith(`${publicRoot}${sep}`)) {

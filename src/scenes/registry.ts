@@ -10,6 +10,7 @@ import {Counting} from './Counting';
 import {Flashcards} from './Flashcards';
 import {Flow} from './Flow';
 import {Outro} from './Outro';
+import {Quiz} from './Quiz';
 import {Stats} from './Stats';
 import {Steps} from './Steps';
 import {Terminal} from './Terminal';
@@ -33,6 +34,7 @@ export const SCENES: Record<SceneType, React.FC<{scene: any}>> = {
   counting: Counting,
   colors: Colors,
   flashcards: Flashcards,
+  quiz: Quiz,
   callout: Callout,
   arrayViz: ArrayViz,
   outro: Outro,

@@ -161,6 +161,28 @@ export type FlashcardsScene = Base & {
   showCluesInCompact?: boolean;
 };
 
+export type QuizOption = {
+  label: string;
+  emoji?: string;
+};
+
+export type QuizScene = Base & {
+  type: 'quiz';
+  kicker?: string;
+  question: string;
+  /** Two to four choices. */
+  options: QuizOption[];
+  /** Index into options of the correct answer. */
+  answerIndex: number;
+  /** One line shown with the reveal, e.g. the reason the answer is right. */
+  explanation?: string;
+  /**
+   * Frame at which the answer is revealed. Defaults to 60% of the scene so
+   * viewers get a thinking pause. Validation enforces a minimum pause.
+   */
+  revealAtFrame?: number;
+};
+
 export type CalloutScene = Base & {
   type: 'callout';
   text: string;
@@ -198,6 +220,7 @@ export type Scene =
   | CountingScene
   | ColorsScene
   | FlashcardsScene
+  | QuizScene
   | CalloutScene
   | ArrayVizScene
   | OutroScene;

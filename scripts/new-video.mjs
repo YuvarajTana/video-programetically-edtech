@@ -86,7 +86,20 @@ const channelMetadata =
   },`;
 
 const middleScene =
-  channelId === 'fun'
+  template === 'quick-quiz' || template === 'guess-before-the-reveal'
+    ? `    {
+      type: 'quiz',
+      durationInFrames: 150,
+      question: 'TODO: the question',
+      options: [
+        {label: 'Option A', emoji: '🅰️'},
+        {label: 'Option B', emoji: '🅱️'},
+      ],
+      answerIndex: 0,
+      explanation: 'TODO: why the answer is right',
+      narration: '',
+    },`
+    : channelId === 'fun'
     ? `    {
       type: 'compare',
       durationInFrames: 90,
