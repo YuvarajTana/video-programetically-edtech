@@ -43,6 +43,15 @@ export const funStyleGuide: VideoSpec = {
       },
     },
     {
+      type: 'countdown',
+      durationInFrames: 100,
+      kicker: 'countdown',
+      from: 3,
+      reveal: 'Both win',
+      revealEmoji: '⚡🌋',
+      accent: 'attention',
+    },
+    {
       type: 'bigStat',
       durationInFrames: 70,
       kicker: 'The reveal',

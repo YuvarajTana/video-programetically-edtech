@@ -7,10 +7,13 @@ import {Chart} from './Chart';
 import {Code} from './Code';
 import {Colors} from './Colors';
 import {Compare} from './Compare';
+import {Countdown} from './Countdown';
 import {Counting} from './Counting';
 import {Flashcards} from './Flashcards';
 import {Flow} from './Flow';
 import {KineticText} from './KineticText';
+import {LabeledDiagram} from './LabeledDiagram';
+import {NumberLine} from './NumberLine';
 import {Outro} from './Outro';
 import {Quiz} from './Quiz';
 import {Stats} from './Stats';
@@ -37,6 +40,9 @@ export const SCENES: Record<SceneType, React.FC<{scene: any}>> = {
   chart: Chart,
   timeline: Timeline,
   kineticText: KineticText,
+  countdown: Countdown,
+  numberLine: NumberLine,
+  labeledDiagram: LabeledDiagram,
   counting: Counting,
   colors: Colors,
   flashcards: Flashcards,

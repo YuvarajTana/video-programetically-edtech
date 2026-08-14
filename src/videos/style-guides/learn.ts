@@ -63,6 +63,32 @@ export const learnStyleGuide: VideoSpec = {
       prompt: 'Say both animals!',
     },
     {
+      type: 'numberLine',
+      durationInFrames: 110,
+      kicker: 'numberLine',
+      title: 'Three plus two',
+      min: 0,
+      max: 10,
+      marks: [
+        {value: 3, label: 'start', accent: 'info'},
+        {value: 5, label: '3 + 2', accent: 'success'},
+      ],
+      jump: {from: 3, to: 5, accent: 'primary'},
+    },
+    {
+      type: 'labeledDiagram',
+      durationInFrames: 110,
+      kicker: 'labeledDiagram',
+      title: 'Parts of a sunflower',
+      emoji: '🌻',
+      labels: [
+        {text: 'Petals', detail: 'catch the light', side: 'left', accent: 'attention'},
+        {text: 'Seeds', detail: 'grow in the middle', side: 'right', accent: 'info'},
+        {text: 'Stem', detail: 'carries the water', side: 'left', accent: 'success'},
+      ],
+      prompt: 'Can you point to each part?',
+    },
+    {
       type: 'callout',
       durationInFrames: 80,
       text: 'Blue light scatters more than red light.',

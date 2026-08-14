@@ -178,6 +178,81 @@ export const validateSpec = (spec, channel) => {
       }
     }
 
+    if (scene.type === 'countdown') {
+      if (!Number.isInteger(scene.from) || scene.from < 2 || scene.from > 10) {
+        add('error', `${path}.from`, 'must count down from 2–10');
+      }
+      if (!scene.reveal?.trim()) {
+        add('error', `${path}.reveal`, 'is required — a countdown needs a payoff');
+      }
+      // Mirrors countdownRevealFrames() in src/scenes/Countdown.tsx.
+      const revealFrames =
+        scene.revealFrames ?? Math.round(scene.durationInFrames * 0.4);
+      if (
+        scene.revealFrames !== undefined &&
+        (!Number.isInteger(scene.revealFrames) ||
+          scene.revealFrames <= 0 ||
+          scene.revealFrames >= scene.durationInFrames)
+      ) {
+        add('error', `${path}.revealFrames`, 'must fit inside the scene');
+      } else if (Number.isInteger(scene.from) && scene.from >= 2) {
+        const perNumber = (scene.durationInFrames - revealFrames) / scene.from;
+        const minBeatFrames = Math.round(0.3 * fps);
+        if (perNumber < minBeatFrames) {
+          add(
+            'warning',
+            `${path}.from`,
+            `each number shows for ${perNumber.toFixed(0)} frames; give the countdown more time`,
+          );
+        }
+      }
+    }
+
+    if (scene.type === 'numberLine') {
+      const {min, max} = scene;
+      const step = scene.step ?? 1;
+      if (!Number.isFinite(min) || !Number.isFinite(max) || min >= max) {
+        add('error', `${path}.min`, 'min must be less than max');
+      }
+      if (!Number.isFinite(step) || step <= 0) {
+        add('error', `${path}.step`, 'must be a positive number');
+      } else if (Number.isFinite(min) && Number.isFinite(max) && min < max) {
+        const tickCount = Math.floor((max - min) / step) + 1;
+        if (tickCount > 21) {
+          add('warning', `${path}.step`, `${tickCount} ticks will be unreadable; keep it to 21`);
+        }
+      }
+      const inRange = (value) => value >= min && value <= max;
+      for (const [markIndex, mark] of (scene.marks ?? []).entries()) {
+        if (!Number.isFinite(mark.value) || !inRange(mark.value)) {
+          add('error', `${path}.marks[${markIndex}].value`, 'must sit on the line');
+        }
+      }
+      if (scene.jump && (!inRange(scene.jump.from) || !inRange(scene.jump.to))) {
+        add('error', `${path}.jump`, 'must start and land on the line');
+      }
+    }
+
+    if (scene.type === 'labeledDiagram') {
+      if (!scene.emoji?.trim()) {
+        add('error', `${path}.emoji`, 'is required — the emoji is the illustration');
+      }
+      const labelCount = Array.isArray(scene.labels) ? scene.labels.length : 0;
+      if (labelCount < 1) {
+        add('error', `${path}.labels`, 'needs at least one label');
+      } else if (labelCount > 6) {
+        add('warning', `${path}.labels`, `${labelCount} labels will be cramped; keep it to six`);
+      }
+      for (const [labelIndex, label] of (scene.labels ?? []).entries()) {
+        if (!label.text?.trim()) {
+          add('error', `${path}.labels[${labelIndex}].text`, 'is required');
+        }
+        if (!['left', 'right'].includes(label.side)) {
+          add('error', `${path}.labels[${labelIndex}].side`, 'must be "left" or "right"');
+        }
+      }
+    }
+
     if (scene.type === 'architecture') {
       const ids = new Set(scene.nodes.map((node) => node.id));
       for (const edge of scene.edges) {

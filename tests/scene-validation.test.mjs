@@ -122,3 +122,118 @@ test('kineticText warns when beats flash by too fast to read', () => {
   );
   assert.ok(warningsOf(issues).some((issue) => issue.message.includes('readable')));
 });
+
+// ------------------------------------------------------------- countdown
+
+const countdown = (overrides = {}) => ({
+  type: 'countdown',
+  durationInFrames: 100,
+  from: 3,
+  reveal: 'Both win',
+  ...overrides,
+});
+
+test('a well-formed countdown passes', () => {
+  assert.deepEqual(validateSpec(withScene(countdown()), makeChannel()), []);
+});
+
+test('countdown bounds from, reveal, and revealFrames', () => {
+  for (const from of [1, 11, 2.5]) {
+    const issues = validateSpec(withScene(countdown({from})), makeChannel());
+    assert.ok(errorsOf(issues).some((issue) => issue.path.endsWith('from')), `from ${from}`);
+  }
+  const noReveal = validateSpec(withScene(countdown({reveal: ''})), makeChannel());
+  assert.ok(errorsOf(noReveal).some((issue) => issue.path.endsWith('reveal')));
+
+  const badReveal = validateSpec(
+    withScene(countdown({revealFrames: 100})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(badReveal).some((issue) => issue.path.endsWith('revealFrames')));
+});
+
+test('countdown warns when numbers flash too fast', () => {
+  const issues = validateSpec(
+    withScene(countdown({from: 10, durationInFrames: 60})),
+    makeChannel(),
+  );
+  assert.ok(warningsOf(issues).some((issue) => issue.message.includes('more time')));
+});
+
+// ------------------------------------------------------------ numberLine
+
+const numberLine = (overrides = {}) => ({
+  type: 'numberLine',
+  durationInFrames: 110,
+  min: 0,
+  max: 10,
+  marks: [{value: 3}, {value: 5}],
+  jump: {from: 3, to: 5},
+  ...overrides,
+});
+
+test('a well-formed numberLine passes', () => {
+  assert.deepEqual(validateSpec(withScene(numberLine()), makeChannel()), []);
+});
+
+test('numberLine rejects bad ranges, off-line marks, and off-line jumps', () => {
+  const backwards = validateSpec(
+    withScene(numberLine({min: 10, max: 0})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(backwards).some((issue) => issue.path.endsWith('min')));
+
+  const offLine = validateSpec(
+    withScene(numberLine({marks: [{value: 42}]})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(offLine).some((issue) => issue.path.includes('marks[0]')));
+
+  const badJump = validateSpec(
+    withScene(numberLine({jump: {from: 3, to: 99}})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(badJump).some((issue) => issue.path.endsWith('jump')));
+
+  const badStep = validateSpec(withScene(numberLine({step: 0})), makeChannel());
+  assert.ok(errorsOf(badStep).some((issue) => issue.path.endsWith('step')));
+});
+
+test('numberLine warns when ticks get too dense', () => {
+  const issues = validateSpec(
+    withScene(numberLine({min: 0, max: 100, marks: []})),
+    makeChannel(),
+  );
+  assert.ok(warningsOf(issues).some((issue) => issue.message.includes('ticks')));
+});
+
+// -------------------------------------------------------- labeledDiagram
+
+const diagram = (overrides = {}) => ({
+  type: 'labeledDiagram',
+  durationInFrames: 110,
+  emoji: '🌻',
+  labels: [
+    {text: 'Petals', side: 'left'},
+    {text: 'Stem', side: 'right'},
+  ],
+  ...overrides,
+});
+
+test('a well-formed labeledDiagram passes', () => {
+  assert.deepEqual(validateSpec(withScene(diagram()), makeChannel()), []);
+});
+
+test('labeledDiagram requires emoji, labels, and valid sides', () => {
+  const noEmoji = validateSpec(withScene(diagram({emoji: ' '})), makeChannel());
+  assert.ok(errorsOf(noEmoji).some((issue) => issue.path.endsWith('emoji')));
+
+  const noLabels = validateSpec(withScene(diagram({labels: []})), makeChannel());
+  assert.ok(errorsOf(noLabels).some((issue) => issue.path.endsWith('labels')));
+
+  const badSide = validateSpec(
+    withScene(diagram({labels: [{text: 'X', side: 'top'}]})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(badSide).some((issue) => issue.path.endsWith('side')));
+});

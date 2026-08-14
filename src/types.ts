@@ -215,6 +215,60 @@ export type KineticTextScene = Base & {
   beats: KineticBeat[];
 };
 
+export type CountdownScene = Base & {
+  type: 'countdown';
+  kicker?: string;
+  /** Counts down from this number to 1. Keep it between 2 and 10. */
+  from: number;
+  /** Shown when the countdown lands. */
+  reveal: string;
+  revealEmoji?: string;
+  /**
+   * Frames reserved for the reveal. Defaults to 40% of the scene; the
+   * numbers split the rest evenly.
+   */
+  revealFrames?: number;
+};
+
+export type NumberLineMark = {
+  value: number;
+  label?: string;
+  accent?: Accent;
+};
+
+export type NumberLineScene = Base & {
+  type: 'numberLine';
+  kicker?: string;
+  title?: string;
+  min: number;
+  max: number;
+  /** Tick spacing. Defaults to 1. */
+  step?: number;
+  /** Values marked on the line, revealed in order. */
+  marks: NumberLineMark[];
+  /** An animated hop, e.g. from 3 to 5 to show adding two. */
+  jump?: {from: number; to: number; accent?: Accent};
+};
+
+export type DiagramLabel = {
+  text: string;
+  detail?: string;
+  /** Which side of the illustration the label sits on. */
+  side: 'left' | 'right';
+  emoji?: string;
+  accent?: Accent;
+};
+
+export type LabeledDiagramScene = Base & {
+  type: 'labeledDiagram';
+  kicker?: string;
+  title?: string;
+  /** The illustration: one large emoji (or a short emoji cluster). */
+  emoji: string;
+  labels: DiagramLabel[];
+  prompt?: string;
+};
+
 export type QuizOption = {
   label: string;
   emoji?: string;
@@ -278,6 +332,9 @@ export type Scene =
   | ChartScene
   | TimelineScene
   | KineticTextScene
+  | CountdownScene
+  | NumberLineScene
+  | LabeledDiagramScene
   | CalloutScene
   | ArrayVizScene
   | OutroScene;

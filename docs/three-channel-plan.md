@@ -12,6 +12,12 @@ Newly implemented:
   with sequenced marker reveals.
 - `kineticText` scene: beat-by-beat kinetic typography for the Fun channel,
   with per-beat holds and readability validation.
+- `countdown` scene (Fun): punch-in numbers with tick rings and a reveal,
+  with pacing validation.
+- `numberLine` scene (Learn): ticks, marked values, and an animated hop for
+  early arithmetic, with range/step validation.
+- `labeledDiagram` scene (Learn): a large emoji illustration with connected,
+  sequenced callout labels.
 - Browser-free `validate`, `captions`, and `package`: specs load straight from
   the TypeScript registries via Node 22 type stripping, so no bundling or
   headless Chrome is needed outside actual rendering.

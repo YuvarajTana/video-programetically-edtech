@@ -244,6 +244,9 @@ before credentials or platform APIs are introduced.
 | `chart` | animated column chart for magnitude comparisons |
 | `timeline` | ordered events on a spine, revealed in sequence |
 | `kineticText` | phrase-by-phrase kinetic typography for hooks and reveals |
+| `countdown` | 3… 2… 1… with a payoff reveal |
+| `numberLine` | ticks, marked values, and an animated hop for arithmetic |
+| `labeledDiagram` | emoji illustration with connected callout labels |
 | `callout` | one memorable sentence |
 | `arrayViz` | selection and bubble sort |
 | `quiz` | question, options, thinking pause, answer reveal |
