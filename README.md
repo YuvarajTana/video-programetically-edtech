@@ -241,10 +241,19 @@ before credentials or platform APIs are introduced.
 | `compare` | A versus B |
 | `stats` | two to four metric cards |
 | `bigStat` | headline number, answer, or formula |
+| `chart` | animated column chart for magnitude comparisons |
+| `timeline` | ordered events on a spine, revealed in sequence |
+| `kineticText` | phrase-by-phrase kinetic typography for hooks and reveals |
 | `callout` | one memorable sentence |
 | `arrayViz` | selection and bubble sort |
 | `quiz` | question, options, thinking pause, answer reveal |
 | `outro` | recap and channel-driven CTA |
+
+Chart bars share one hue because they encode magnitude — identity lives in the
+label under each bar, and `highlightIndex` spotlights the bar the narration is
+about while muting the rest. Kinetic beats hold the screen for `holdFrames`
+each (beats without one split the remaining time evenly); validation warns when
+a beat is too short to read.
 
 A quiz reveals its answer at `revealAtFrame` (default: 60% through the scene).
 Validation warns when the reveal comes without a thinking pause or leaves less

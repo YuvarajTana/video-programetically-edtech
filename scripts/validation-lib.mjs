@@ -93,6 +93,91 @@ export const validateSpec = (spec, channel) => {
       }
     }
 
+    if (scene.type === 'chart') {
+      const barCount = Array.isArray(scene.bars) ? scene.bars.length : 0;
+      if (barCount < 2) {
+        add('error', `${path}.bars`, 'needs at least two bars; use bigStat for one number');
+      } else if (barCount > 6) {
+        add('warning', `${path}.bars`, `${barCount} bars will be cramped; keep it to six`);
+      }
+      for (const [barIndex, bar] of (scene.bars ?? []).entries()) {
+        if (!Number.isFinite(bar.value) || bar.value < 0) {
+          add('error', `${path}.bars[${barIndex}].value`, 'must be a non-negative number');
+        }
+        if (!bar.label?.trim()) {
+          add('error', `${path}.bars[${barIndex}].label`, 'is required — bars are identified by label, not color');
+        }
+      }
+      if (
+        scene.highlightIndex !== undefined &&
+        (!Number.isInteger(scene.highlightIndex) ||
+          scene.highlightIndex < 0 ||
+          scene.highlightIndex >= barCount)
+      ) {
+        add('error', `${path}.highlightIndex`, 'must point at one of the bars');
+      }
+    }
+
+    if (scene.type === 'timeline') {
+      const eventCount = Array.isArray(scene.events) ? scene.events.length : 0;
+      if (eventCount < 2) {
+        add('error', `${path}.events`, 'needs at least two events');
+      } else if (eventCount > 6) {
+        add('warning', `${path}.events`, `${eventCount} events will be cramped; keep it to six`);
+      }
+      for (const [eventIndex, event] of (scene.events ?? []).entries()) {
+        if (!event.time?.trim()) {
+          add('error', `${path}.events[${eventIndex}].time`, 'is required');
+        }
+        if (!event.label?.trim()) {
+          add('error', `${path}.events[${eventIndex}].label`, 'is required');
+        }
+      }
+    }
+
+    if (scene.type === 'kineticText') {
+      const beats = Array.isArray(scene.beats) ? scene.beats : [];
+      if (beats.length === 0) {
+        add('error', `${path}.beats`, 'needs at least one beat');
+      }
+      let explicit = 0;
+      let flexible = 0;
+      for (const [beatIndex, beat] of beats.entries()) {
+        if (!beat.text?.trim()) {
+          add('error', `${path}.beats[${beatIndex}].text`, 'is required');
+        }
+        if (beat.holdFrames === undefined) {
+          flexible++;
+        } else if (!Number.isInteger(beat.holdFrames) || beat.holdFrames <= 0) {
+          add('error', `${path}.beats[${beatIndex}].holdFrames`, 'must be a positive integer');
+        } else {
+          explicit += beat.holdFrames;
+        }
+      }
+      if (beats.length > 0 && explicit > scene.durationInFrames) {
+        add('error', `${path}.beats`, 'explicit holdFrames exceed the scene duration');
+      } else if (beats.length > 0) {
+        // Mirrors beatWindows() in src/scenes/KineticText.tsx.
+        const share = flexible
+          ? (scene.durationInFrames - explicit) / flexible
+          : Infinity;
+        const minReadableFrames = Math.round(0.35 * fps);
+        const shortest = Math.min(
+          share,
+          ...beats
+            .filter((beat) => Number.isInteger(beat.holdFrames) && beat.holdFrames > 0)
+            .map((beat) => beat.holdFrames),
+        );
+        if (shortest < minReadableFrames) {
+          add(
+            'warning',
+            `${path}.beats`,
+            `shortest beat is ${shortest.toFixed(0)} frames; keep beats at ${minReadableFrames}+ to stay readable`,
+          );
+        }
+      }
+    }
+
     if (scene.type === 'architecture') {
       const ids = new Set(scene.nodes.map((node) => node.id));
       for (const edge of scene.edges) {

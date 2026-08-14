@@ -6,6 +6,12 @@ Newly implemented:
 
 - `quiz` scene (question, options, thinking pause, answer reveal) with
   reveal-timing validation — the first Phase 3 Learn-specific scene.
+- `chart` scene: single-hue animated column chart with a highlight/mute
+  pattern, direct labels, and value/label validation.
+- `timeline` scene: horizontal spine in landscape, vertical in portrait,
+  with sequenced marker reveals.
+- `kineticText` scene: beat-by-beat kinetic typography for the Fun channel,
+  with per-beat holds and readability validation.
 - Browser-free `validate`, `captions`, and `package`: specs load straight from
   the TypeScript registries via Node 22 type stripping, so no bundling or
   headless Chrome is needed outside actual rendering.

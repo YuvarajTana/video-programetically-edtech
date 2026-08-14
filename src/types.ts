@@ -161,6 +161,60 @@ export type FlashcardsScene = Base & {
   showCluesInCompact?: boolean;
 };
 
+export type ChartBar = {
+  label: string;
+  value: number;
+  /** Overrides the scene hue for this bar only. Prefer highlightIndex. */
+  accent?: Accent;
+};
+
+export type ChartScene = Base & {
+  type: 'chart';
+  kicker?: string;
+  title?: string;
+  /**
+   * Bars share one hue (the scene accent) because they encode magnitude, not
+   * identity — identity lives in the label under each bar. Use highlightIndex
+   * to spotlight one bar and mute the rest.
+   */
+  bars: ChartBar[];
+  /** Rendered after each value, e.g. "%", "ms", "×". */
+  unit?: string;
+  highlightIndex?: number;
+  footnote?: string;
+};
+
+export type TimelineEvent = {
+  /** Marker caption, e.g. a year, version, or step time. */
+  time: string;
+  label: string;
+  detail?: string;
+  accent?: Accent;
+};
+
+export type TimelineScene = Base & {
+  type: 'timeline';
+  kicker?: string;
+  title?: string;
+  events: TimelineEvent[];
+};
+
+export type KineticBeat = {
+  text: string;
+  accent?: Accent;
+  /**
+   * Frames this beat holds the screen. Beats without an explicit hold split
+   * the remaining scene time evenly.
+   */
+  holdFrames?: number;
+};
+
+export type KineticTextScene = Base & {
+  type: 'kineticText';
+  /** Short punchy phrases shown one after another, filling the frame. */
+  beats: KineticBeat[];
+};
+
 export type QuizOption = {
   label: string;
   emoji?: string;
@@ -221,6 +275,9 @@ export type Scene =
   | ColorsScene
   | FlashcardsScene
   | QuizScene
+  | ChartScene
+  | TimelineScene
+  | KineticTextScene
   | CalloutScene
   | ArrayVizScene
   | OutroScene;

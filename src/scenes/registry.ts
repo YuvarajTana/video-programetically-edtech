@@ -3,17 +3,20 @@ import {Architecture} from './Architecture';
 import {ArrayViz} from './ArrayViz';
 import {BigStat} from './BigStat';
 import {Callout} from './Callout';
+import {Chart} from './Chart';
 import {Code} from './Code';
 import {Colors} from './Colors';
 import {Compare} from './Compare';
 import {Counting} from './Counting';
 import {Flashcards} from './Flashcards';
 import {Flow} from './Flow';
+import {KineticText} from './KineticText';
 import {Outro} from './Outro';
 import {Quiz} from './Quiz';
 import {Stats} from './Stats';
 import {Steps} from './Steps';
 import {Terminal} from './Terminal';
+import {Timeline} from './Timeline';
 import {Title} from './Title';
 
 /**
@@ -31,6 +34,9 @@ export const SCENES: Record<SceneType, React.FC<{scene: any}>> = {
   compare: Compare,
   stats: Stats,
   bigStat: BigStat,
+  chart: Chart,
+  timeline: Timeline,
+  kineticText: KineticText,
   counting: Counting,
   colors: Colors,
   flashcards: Flashcards,

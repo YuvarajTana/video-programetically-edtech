@@ -18,6 +18,15 @@ export const funStyleGuide: VideoSpec = {
       accent: 'primary',
     },
     {
+      type: 'kineticText',
+      durationInFrames: 84,
+      beats: [
+        {text: 'Wait'},
+        {text: 'for it', accent: 'attention'},
+        {text: 'BOOM', accent: 'primary', holdFrames: 36},
+      ],
+    },
+    {
       type: 'compare',
       durationInFrames: 90,
       kicker: 'Pick a side',
