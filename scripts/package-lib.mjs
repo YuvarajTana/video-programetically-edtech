@@ -3,12 +3,15 @@ import {
   copyFileSync,
   existsSync,
   mkdirSync,
+  readFileSync,
   unlinkSync,
   writeFileSync,
 } from 'node:fs';
 import {join, relative, resolve, sep} from 'node:path';
 import {chaptersFor, toChapterText} from './chapters-lib.mjs';
 import {DELIVERIES} from './deliveries.mjs';
+import {assertMediaFile} from './media-qa.mjs';
+import {buildMasterTimeline} from '../shared/master-timeline.mjs';
 
 const checksum = (value) =>
   createHash('sha256').update(JSON.stringify(value)).digest('hex');
@@ -83,9 +86,35 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
   const files = [];
   const mediaCredits = mediaCreditsFor(spec);
   const chapters = chaptersFor(spec);
+  const publicRoot = resolve('public');
+  const requestedWordTimingsSource = spec.captionTimings
+    ? resolve(publicRoot, spec.captionTimings)
+    : null;
+  const wordTimingsSource =
+    requestedWordTimingsSource?.startsWith(`${publicRoot}${sep}`)
+      ? requestedWordTimingsSource
+      : null;
+  const wordTimings = wordTimingsSource && existsSync(wordTimingsSource)
+    ? JSON.parse(readFileSync(wordTimingsSource, 'utf8'))
+    : null;
+  const mastered = buildMasterTimeline({
+    spec,
+    timings: wordTimings,
+    locale: spec.editorial?.language ?? 'en-US',
+    audioMode: spec.audio
+      ? 'voiceover'
+      : spec.soundtrack?.music
+        ? 'music-only'
+        : 'silent',
+  });
+  const masterTimelinePath = join(base, 'master-timeline.json');
 
   mkdirSync(base, {recursive: true});
   writeFileSync(join(base, 'chapters.txt'), toChapterText(chapters));
+  writeFileSync(
+    masterTimelinePath,
+    JSON.stringify(mastered.timeline, null, 2) + '\n',
+  );
 
   for (const deliveryId of deliveries) {
     const delivery = DELIVERIES[deliveryId];
@@ -97,25 +126,28 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
     const coverPath = join(deliveryDir, 'cover.png');
     const captionsPath = join(base, 'captions.srt');
     const packagedCaptionsPath = join(deliveryDir, 'captions.srt');
-    const publicRoot = resolve('public');
-    const requestedWordTimingsSource = spec.captionTimings
-      ? resolve(publicRoot, spec.captionTimings)
-      : null;
-    const wordTimingsSource =
-      requestedWordTimingsSource?.startsWith(`${publicRoot}${sep}`)
-        ? requestedWordTimingsSource
-        : null;
     const packagedWordTimingsPath = join(
       deliveryDir,
       'captions.words.json',
     );
+    const packagedMasterTimelinePath = join(deliveryDir, 'master-timeline.json');
     const packagedChaptersPath = join(deliveryDir, 'chapters.txt');
+    const expectedDurationSeconds =
+      spec.scenes.reduce((total, scene) => total + scene.durationInFrames, 0) /
+      (spec.fps ?? 30);
+    const requireAudio = Boolean(
+      spec.audio || spec.soundtrack?.music || spec.soundtrack?.effects?.length,
+    );
+    const mediaQa = existsSync(renderPath)
+      ? assertMediaFile(renderPath, {expectedDurationSeconds, requireAudio})
+      : null;
 
     if (existsSync(renderPath)) copyFileSync(renderPath, videoPath);
     if (existsSync(captionsPath)) copyFileSync(captionsPath, packagedCaptionsPath);
     if (wordTimingsSource && existsSync(wordTimingsSource)) {
       copyFileSync(wordTimingsSource, packagedWordTimingsPath);
     }
+    copyFileSync(masterTimelinePath, packagedMasterTimelinePath);
     if (delivery.platform === 'youtube' && chapters.length) {
       copyFileSync(join(base, 'chapters.txt'), packagedChaptersPath);
     } else if (existsSync(packagedChaptersPath)) {
@@ -163,12 +195,14 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
       wordTimings: existsSync(packagedWordTimingsPath)
         ? relative(base, packagedWordTimingsPath)
         : null,
+      masterTimeline: relative(base, packagedMasterTimelinePath),
       chapters:
         delivery.platform === 'youtube' &&
         existsSync(packagedChaptersPath)
           ? relative(base, packagedChaptersPath)
           : null,
       metadata: relative(base, join(deliveryDir, 'metadata.json')),
+      qa: mediaQa,
     });
   }
 
@@ -181,6 +215,7 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
     sourceChecksum: checksum(spec),
     sources: spec.editorial?.sources ?? [],
     media: mediaCredits,
+    masterTimeline: relative(base, masterTimelinePath),
     files,
   };
   writeFileSync(join(base, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');

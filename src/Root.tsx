@@ -6,6 +6,11 @@ import {DELIVERIES, deliveriesFor, renderProfilesFor} from './publishing/deliver
 import {STUDIO_VIDEOS} from './videos/registry';
 import {Video} from './Video';
 import {totalFrames} from './types';
+import {
+  calculateManagedMetadata,
+  managedDefaults,
+  MANAGED_COMPOSITION_IDS,
+} from './managed';
 
 /**
  * Every video is registered once per unique render profile, plus one cover per
@@ -13,6 +18,22 @@ import {totalFrames} from './types';
  */
 export const RemotionRoot: React.FC = () => (
   <>
+    {FORMAT_IDS.map((formatId) => {
+      const format = FORMATS[formatId];
+      return (
+        <Composition
+          key={MANAGED_COMPOSITION_IDS[formatId]}
+          id={MANAGED_COMPOSITION_IDS[formatId]}
+          component={Video}
+          durationInFrames={90}
+          fps={30}
+          width={format.width}
+          height={format.height}
+          defaultProps={{...managedDefaults, renderProfile: formatId}}
+          calculateMetadata={calculateManagedMetadata}
+        />
+      );
+    })}
     {STUDIO_VIDEOS.flatMap((spec) => {
       const channel = getChannel(spec.channel);
       const videoCompositions = renderProfilesFor(spec, channel)

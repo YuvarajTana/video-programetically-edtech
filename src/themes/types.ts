@@ -19,7 +19,7 @@ export type ThemeFonts = {
 };
 
 export type VideoTheme = {
-  id: 'tech' | 'learn' | 'fun';
+  id: string;
   color: ThemeColors;
   accents: Record<Accent, string>;
   font: ThemeFonts;

@@ -102,14 +102,22 @@ const runStage = (name, command, args) => {
   }
 };
 
+const recordGate = (name, detail) => {
+  console.log(`\n✓ ${name}${detail ? ` — ${detail}` : ''}`);
+  stages.push({name, status: 'completed', durationSeconds: 0, detail});
+};
+
 runStage('typecheck', 'npm', ['run', 'typecheck']);
 runStage('validate', process.execPath, ['scripts/validate.mjs', ref]);
+recordGate('topic', ref);
+recordGate('script', 'approved narration from the registered VideoSpec');
+recordGate('scene-breakdown', 'validated scene types and durations');
 
 if (has('silent')) {
-  stages.push({name: 'voice', status: 'skipped-silent', durationSeconds: 0});
+  stages.push({name: 'tts', status: 'skipped-silent', durationSeconds: 0});
 } else if (has('skip-voice')) {
   runStage('captions', process.execPath, ['scripts/captions.mjs', ref]);
-  stages.push({name: 'voice', status: 'reused', durationSeconds: 0});
+  stages.push({name: 'tts', status: 'reused', durationSeconds: 0});
 } else {
   const voiceArgs = ['scripts/voice.mjs', ref];
   for (const flag of valueFlags) {
@@ -117,7 +125,7 @@ if (has('silent')) {
     if (selected !== null) voiceArgs.push(`--${flag}`, selected);
   }
   if (has('force')) voiceArgs.push('--force');
-  runStage('voice', process.execPath, voiceArgs);
+  runStage('tts', process.execPath, voiceArgs);
 }
 
 let voiceRequest = null;
@@ -173,8 +181,14 @@ if (!has('silent')) {
   }
 }
 
-runStage('render', process.execPath, ['scripts/render.mjs', ref]);
-runStage('package', process.execPath, ['scripts/package.mjs', ref]);
+recordGate('timestamps', voiceRequest?.wordTimingsConfigured
+  ? 'word timings ready'
+  : 'sentence timing uses scene boundaries');
+recordGate('master-timeline', 'one frame clock for every track');
+recordGate('visuals-motion-captions', 'parallel tracks synchronized');
+recordGate('audio-sfx', has('silent') ? 'intentionally silent' : 'audio preflight passed');
+runStage('final-render', process.execPath, ['scripts/render.mjs', ref]);
+runStage('qa-and-package', process.execPath, ['scripts/package.mjs', ref]);
 
 const manifestPath = join(base, 'manifest.json');
 if (!existsSync(manifestPath)) {

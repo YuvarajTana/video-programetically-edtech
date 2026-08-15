@@ -14,6 +14,7 @@ export const validateSpec = (spec, channel) => {
     return issues;
   }
   const fps = spec.fps ?? 30;
+  const publicRoot = resolve('public');
 
   if (spec.fps !== undefined && (!Number.isInteger(spec.fps) || spec.fps < 1 || spec.fps > 120)) {
     add('error', 'fps', 'must be an integer between 1 and 120');
@@ -263,6 +264,19 @@ export const validateSpec = (spec, channel) => {
         if (!ids.has(traceId)) add('error', `${path}.trace`, `unknown node "${traceId}"`);
       }
     }
+
+    if (scene.type === 'motionCanvas') {
+      for (const [elementIndex, element] of (scene.elements ?? []).entries()) {
+        if (element.kind !== 'image') continue;
+        const imagePath = resolve(publicRoot, element.src ?? '');
+        const imageIssuePath = `${path}.elements[${elementIndex}].src`;
+        if (!imagePath.startsWith(`${publicRoot}${sep}`)) {
+          add('error', imageIssuePath, 'must stay inside public/');
+        } else if (!existsSync(imagePath)) {
+          add('error', imageIssuePath, `missing public/${element.src}`);
+        }
+      }
+    }
   });
 
   if (spec.kind !== 'style-guide') {
@@ -279,7 +293,12 @@ export const validateSpec = (spec, channel) => {
       );
     }
 
-    const hookSeconds = spec.scenes[0].durationInFrames / fps;
+    const firstScene = spec.scenes[0];
+    const hookFrames =
+      firstScene.type === 'motionCanvas' && Number.isInteger(firstScene.hookEndFrame)
+        ? firstScene.hookEndFrame
+        : firstScene.durationInFrames;
+    const hookSeconds = hookFrames / fps;
     if (hookSeconds > 3.2) {
       add('warning', 'scenes[0]', `hook lasts ${hookSeconds.toFixed(1)}s; target 3.2s or less`);
     }
@@ -305,7 +324,6 @@ export const validateSpec = (spec, channel) => {
     }
   }
 
-  const publicRoot = resolve('public');
   const validateLicensedAsset = (asset, path) => {
     if (!asset?.src?.trim()) {
       add('error', `${path}.src`, 'is required');

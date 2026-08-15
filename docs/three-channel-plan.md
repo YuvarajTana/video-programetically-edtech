@@ -345,7 +345,9 @@ Build only the scenes needed by the first production batch.
 
 Shared first:
 
-- `image` / `videoClip` with crop, fit, attribution, and deterministic timing
+- `image` inside `motionCanvas` with cover/contain fitting, attribution, focal
+  point, and deterministic zoom/pan timing (implemented); standalone
+  `videoClip` remains planned
 - `kineticText`
 - `quiz` with question, pause, and answer reveal
 - `formula` / worked example

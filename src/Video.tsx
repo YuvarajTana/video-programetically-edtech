@@ -9,6 +9,8 @@ import type {VideoSpec} from './types';
 import {ChannelProvider} from './channels';
 import type {ChannelProfile} from './channels';
 import {useTheme} from './themes';
+import {isIndicLocale, languageFor} from '../shared/languages';
+import {useResolvedMotionCanvasSpec, useWordTimings} from './timing/wordTimings';
 
 /**
  * Turns a spec into frames. Nothing video-specific lives here — if you find
@@ -24,14 +26,24 @@ type VideoProps = {
 const VideoBody: React.FC<{spec: VideoSpec}> = ({spec}) => {
   const layout = useLayout();
   const {color} = useTheme();
+  const timings = useWordTimings(spec.captionTimings);
+  const timedSpec = useResolvedMotionCanvasSpec(spec, timings);
   // Captions default on for vertical cuts, which are overwhelmingly watched muted.
   const showCaptions = spec.captions ?? !layout.isLandscape;
 
   return (
-    <AbsoluteFill style={{backgroundColor: color.bg}}>
+    <AbsoluteFill
+      lang={spec.editorial?.language ?? 'en-US'}
+      style={{backgroundColor: color.bg}}
+    >
+      {isIndicLocale(spec.editorial?.language ?? 'en-US') ? (
+        <style>
+          {`[lang]:not([lang^="en"]) * { letter-spacing: normal !important; text-transform: none !important; }`}
+        </style>
+      ) : null}
       <FontGate>
         <Series>
-          {spec.scenes.map((scene, i) => {
+          {timedSpec.scenes.map((scene, i) => {
             const Component = SCENES[scene.type];
             return (
               <Series.Sequence
@@ -45,16 +57,33 @@ const VideoBody: React.FC<{spec: VideoSpec}> = ({spec}) => {
           })}
         </Series>
 
-        {showCaptions ? <Captions spec={spec} /> : null}
+        {showCaptions ? <Captions spec={timedSpec} /> : null}
         <Chrome />
-        <AudioMix spec={spec} />
+        <AudioMix spec={timedSpec} />
       </FontGate>
     </AbsoluteFill>
   );
 };
 
-export const Video: React.FC<VideoProps> = ({spec, channel}) => (
-  <ChannelProvider channel={channel}>
-    <VideoBody spec={spec} />
-  </ChannelProvider>
-);
+export const Video: React.FC<VideoProps> = ({spec, channel}) => {
+  const locale = spec.editorial?.language ?? 'en-US';
+  const language = languageFor(locale);
+  const localizedChannel = isIndicLocale(locale)
+    ? {
+        ...channel,
+        theme: {
+          ...channel.theme,
+          font: {
+            ...channel.theme.font,
+            display: language.fontFamily,
+            body: language.fontFamily,
+          },
+        },
+      }
+    : channel;
+  return (
+    <ChannelProvider channel={localizedChannel}>
+      <VideoBody spec={spec} />
+    </ChannelProvider>
+  );
+};

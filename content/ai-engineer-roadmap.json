@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "series": {
+    "id": "python-to-ai-engineer",
+    "title": "Python to AI Engineer",
+    "channel": "tech",
+    "audience": "Beginner developers progressing toward production AI engineering",
+    "defaultLocale": "en-US"
+  },
+  "phases": [
+    {
+      "id": "python-fundamentals",
+      "title": "Python Fundamentals",
+      "goal": "Build a reliable mental model of Python syntax, data, control flow, and reusable programs.",
+      "topics": [
+        {"id": "python.how-python-runs", "slug": "how-python-runs", "title": "How Python Runs Your Code", "objective": "Explain source code, bytecode, the interpreter, and runtime errors.", "level": "beginner", "recommendedPreset": "reel-concept"},
+        {"id": "python.variables-and-types", "slug": "python-variables-and-types", "title": "Python Variables and Data Types", "objective": "Distinguish names, values, mutability, and common built-in types.", "level": "beginner", "recommendedPreset": "reel-code"},
+        {"id": "python.operators", "slug": "python-operators", "title": "Python Operators Without Confusion", "objective": "Use arithmetic, comparison, logical, identity, and membership operators correctly.", "level": "beginner", "recommendedPreset": "reel-code"},
+        {"id": "python.control-flow", "slug": "python-control-flow", "title": "If, Elif, Else and Loops", "objective": "Trace decisions and repetition through a Python program.", "level": "beginner", "recommendedPreset": "reel-code"},
+        {"id": "python.functions", "slug": "python-functions", "title": "Python Functions and Parameters", "objective": "Explain function inputs, return values, scope, and reusable behavior.", "level": "beginner", "recommendedPreset": "reel-code"},
+        {"id": "python.collections", "slug": "python-collections", "title": "Lists, Tuples, Sets and Dictionaries", "objective": "Choose the correct Python collection for ordering, uniqueness, and key-value lookup.", "level": "beginner", "recommendedPreset": "reel-compare"},
+        {"id": "python.comprehensions", "slug": "python-comprehensions", "title": "Python Comprehensions", "objective": "Build readable list, set, and dictionary comprehensions without hiding logic.", "level": "beginner", "recommendedPreset": "reel-code"},
+        {"id": "python.modules-packages", "slug": "python-modules-and-packages", "title": "Python Modules and Packages", "objective": "Explain imports, module boundaries, packages, and reusable project structure.", "level": "beginner", "recommendedPreset": "reel-concept"},
+        {"id": "python.errors", "slug": "python-errors-and-exceptions", "title": "Python Errors and Exceptions", "objective": "Differentiate syntax errors, runtime exceptions, handling, and cleanup.", "level": "beginner", "recommendedPreset": "reel-code"},
+        {"id": "python.files-json", "slug": "python-files-and-json", "title": "Files, Paths and JSON in Python", "objective": "Read and write files safely and serialize structured data as JSON.", "level": "beginner", "recommendedPreset": "reel-code"},
+        {"id": "python.oop", "slug": "python-oop-fundamentals", "title": "Python OOP Fundamentals", "objective": "Explain classes, instances, methods, inheritance, and composition.", "level": "beginner", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "python.environments", "slug": "python-virtual-environments", "title": "Virtual Environments and Dependencies", "objective": "Isolate dependencies and make Python projects reproducible.", "level": "beginner", "recommendedPreset": "reel-code"}
+      ]
+    },
+    {
+      "id": "python-advanced",
+      "title": "Advanced Python",
+      "goal": "Write idiomatic, concurrent, testable, and maintainable Python for production services.",
+      "topics": [
+        {"id": "python.decorators", "slug": "python-decorators", "title": "Python Decorators Explained", "objective": "Show how decorators wrap callables and add reusable behavior.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "python.iterators-generators", "slug": "iterators-and-generators", "title": "Iterators and Generators", "objective": "Explain lazy iteration, yield, and memory-efficient data pipelines.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "python.context-managers", "slug": "python-context-managers", "title": "Python Context Managers", "objective": "Use with, resource cleanup, and custom context managers safely.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "python.type-hints", "slug": "python-type-hints", "title": "Type Hints That Actually Help", "objective": "Use annotations, protocols, generics, and static checking effectively.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "python.dataclasses-pydantic", "slug": "dataclasses-vs-pydantic", "title": "Dataclasses vs Pydantic", "objective": "Choose between internal data containers and validated boundary models.", "level": "intermediate", "recommendedPreset": "reel-compare"},
+        {"id": "python.async-await", "slug": "python-async-await", "title": "Async and Await in Python", "objective": "Explain event loops, coroutines, awaiting I/O, and when async improves throughput.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "python.concurrency", "slug": "threads-processes-and-asyncio", "title": "Threads vs Processes vs Asyncio", "objective": "Choose concurrency based on I/O-bound and CPU-bound workloads.", "level": "intermediate", "recommendedPreset": "reel-compare"},
+        {"id": "python.testing", "slug": "python-testing-with-pytest", "title": "Testing Python with Pytest", "objective": "Structure unit tests, fixtures, mocks, and integration tests.", "level": "intermediate", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "python.logging", "slug": "production-python-logging", "title": "Production Logging in Python", "objective": "Create structured, contextual, and actionable application logs.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "python.performance", "slug": "python-performance-basics", "title": "Python Performance Basics", "objective": "Measure bottlenecks before optimizing memory, algorithms, and I/O.", "level": "intermediate", "recommendedPreset": "reel-concept"}
+      ]
+    },
+    {
+      "id": "backend-data",
+      "title": "FastAPI and MySQL",
+      "goal": "Build secure asynchronous APIs backed by well-designed relational data.",
+      "topics": [
+        {"id": "fastapi.request-lifecycle", "slug": "fastapi-request-lifecycle", "title": "How a FastAPI Request Works", "objective": "Trace routing, validation, dependency injection, execution, and response serialization.", "level": "intermediate", "recommendedPreset": "reel-concept"},
+        {"id": "fastapi.pydantic", "slug": "fastapi-pydantic-validation", "title": "FastAPI Validation with Pydantic", "objective": "Validate request and response boundaries with explicit schemas.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "fastapi.dependencies", "slug": "fastapi-dependency-injection", "title": "FastAPI Dependency Injection", "objective": "Reuse authentication, database, and service dependencies cleanly.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "fastapi.async", "slug": "async-fastapi-endpoints", "title": "Async FastAPI Endpoints", "objective": "Use asynchronous endpoints without blocking the event loop.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "fastapi.auth", "slug": "fastapi-authentication", "title": "Authentication in FastAPI", "objective": "Explain password hashing, tokens, authorization, and secure dependencies.", "level": "intermediate", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "fastapi.background-streaming", "slug": "fastapi-background-tasks-and-streaming", "title": "Background Tasks, SSE and WebSockets", "objective": "Choose the right pattern for deferred and real-time FastAPI work.", "level": "advanced", "recommendedPreset": "reel-compare"},
+        {"id": "mysql.data-modeling", "slug": "mysql-data-modeling", "title": "MySQL Data Modeling", "objective": "Design tables, relationships, constraints, and normalized data.", "level": "intermediate", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "mysql.joins", "slug": "mysql-joins", "title": "SQL Joins Visually Explained", "objective": "Trace inner, left, and self joins across related tables.", "level": "intermediate", "recommendedPreset": "reel-concept"},
+        {"id": "mysql.indexes", "slug": "mysql-indexes", "title": "How MySQL Indexes Work", "objective": "Explain index lookup, selectivity, composite indexes, and tradeoffs.", "level": "advanced", "recommendedPreset": "reel-concept"},
+        {"id": "mysql.transactions", "slug": "mysql-transactions", "title": "MySQL Transactions and Isolation", "objective": "Explain atomic changes, rollback, locking, and isolation anomalies.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "backend.sqlalchemy", "slug": "async-sqlalchemy-with-fastapi", "title": "Async SQLAlchemy with FastAPI", "objective": "Manage sessions, transactions, repositories, and async queries safely.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"}
+      ]
+    },
+    {
+      "id": "llm-fundamentals",
+      "title": "LLM Fundamentals",
+      "goal": "Understand how language models represent input, generate output, and fail.",
+      "topics": [
+        {"id": "llm.tokens-context", "slug": "tokens-and-context-windows", "title": "Tokens and Context Windows", "objective": "Explain tokenization, context limits, latency, and cost.", "level": "beginner", "recommendedPreset": "reel-concept"},
+        {"id": "llm.prompts", "slug": "prompts-and-system-prompts", "title": "Prompts vs System Prompts", "objective": "Separate task instructions from application-level behavior and constraints.", "level": "beginner", "recommendedPreset": "reel-compare"},
+        {"id": "llm.inference", "slug": "llm-inference", "title": "How LLM Inference Works", "objective": "Trace next-token prediction through the generation loop.", "level": "beginner", "recommendedPreset": "reel-concept"},
+        {"id": "llm.sampling", "slug": "temperature-top-p-and-top-k", "title": "Temperature, Top-p and Top-k", "objective": "Explain how decoding controls alter token selection.", "level": "intermediate", "recommendedPreset": "reel-compare"},
+        {"id": "llm.embeddings", "slug": "embeddings-explained", "title": "Embeddings and Semantic Similarity", "objective": "Explain vector representations, distance, and similarity search.", "level": "intermediate", "recommendedPreset": "reel-concept"},
+        {"id": "llm.hallucinations", "slug": "why-llms-hallucinate", "title": "Why LLMs Hallucinate", "objective": "Explain probabilistic generation and practical reliability controls.", "level": "intermediate", "recommendedPreset": "reel-concept"},
+        {"id": "llm.structured-output", "slug": "structured-llm-output", "title": "Structured Output and Tool Calling", "objective": "Constrain model output into schemas and validated application actions.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "llm.guardrails-evals", "slug": "llm-guardrails-and-evaluations", "title": "LLM Guardrails and Evaluations", "objective": "Separate preventive controls from measurable quality evaluation.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"}
+      ]
+    },
+    {
+      "id": "rag",
+      "title": "RAG Systems",
+      "goal": "Ground model responses in retrievable, attributable, and evaluated knowledge.",
+      "topics": [
+        {"id": "rag.fundamentals", "slug": "rag-fundamentals", "title": "How RAG Works", "objective": "Trace ingestion, retrieval, context assembly, and grounded generation.", "level": "intermediate", "recommendedPreset": "reel-concept"},
+        {"id": "rag.chunking", "slug": "rag-chunking-strategies", "title": "RAG Chunking Strategies", "objective": "Choose chunk boundaries, overlap, and metadata for retrieval quality.", "level": "intermediate", "recommendedPreset": "reel-compare"},
+        {"id": "rag.vector-databases", "slug": "vector-databases-for-rag", "title": "Vector Databases for RAG", "objective": "Explain indexing, filtering, similarity queries, and persistence.", "level": "intermediate", "recommendedPreset": "reel-concept"},
+        {"id": "rag.hybrid-reranking", "slug": "hybrid-search-and-reranking", "title": "Hybrid Search and Reranking", "objective": "Combine lexical and semantic retrieval, then rerank candidates.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "rag.citations", "slug": "grounded-answers-with-citations", "title": "Grounded Answers with Citations", "objective": "Connect claims to retrieved evidence and expose uncertainty.", "level": "advanced", "recommendedPreset": "reel-code"},
+        {"id": "rag.evaluation", "slug": "evaluating-rag-systems", "title": "How to Evaluate RAG", "objective": "Measure retrieval relevance, faithfulness, completeness, and end-to-end usefulness.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "rag.production", "slug": "production-rag-architecture", "title": "Production RAG Architecture", "objective": "Design ingestion, serving, observability, caching, access control, and evaluation loops.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"}
+      ]
+    },
+    {
+      "id": "agents",
+      "title": "AI Agents and Agentic RAG",
+      "goal": "Build agents that select tools, manage state, recover from failure, and retrieve iteratively.",
+      "topics": [
+        {"id": "agents.fundamentals", "slug": "ai-agent-fundamentals", "title": "How AI Agents Work", "objective": "Explain goals, state, reasoning, tools, observations, and stopping conditions.", "level": "intermediate", "recommendedPreset": "reel-concept"},
+        {"id": "agents.tools", "slug": "ai-agent-tools", "title": "Tools and Function Calling", "objective": "Design constrained tools, schemas, results, and error handling for agents.", "level": "intermediate", "recommendedPreset": "reel-code"},
+        {"id": "agents.memory", "slug": "ai-agent-memory", "title": "AI Agent Memory", "objective": "Separate working context, episodic memory, semantic memory, and durable state.", "level": "advanced", "recommendedPreset": "reel-compare"},
+        {"id": "agents.planning", "slug": "planning-and-reflection-in-ai-agents", "title": "Planning and Reflection in AI Agents", "objective": "Explain when agents should plan, act, inspect, and revise.", "level": "advanced", "recommendedPreset": "reel-concept"},
+        {"id": "agents.agentic-rag", "slug": "agentic-rag", "title": "How Agentic RAG Works", "objective": "Show how an agent reformulates, retrieves, evaluates, and repeats before answering.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "agents.orchestration", "slug": "ai-agent-orchestration", "title": "Orchestrating AI Agents", "objective": "Compare sequential, parallel, supervisor, and event-driven agent workflows.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "agents.multi-agent", "slug": "multi-agent-systems", "title": "Multi-Agent Systems", "objective": "Decide when role specialization improves a workflow and when it adds overhead.", "level": "advanced", "recommendedPreset": "reel-compare"},
+        {"id": "agents.reliability", "slug": "reliable-ai-agents", "title": "Reliable AI Agents", "objective": "Use budgets, permissions, idempotency, tests, retries, and human review.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "agents.context-vs-harness", "slug": "context-vs-harness-engineering", "title": "Context vs Harness Engineering", "objective": "Separate what the model sees from how the surrounding agent system executes and recovers.", "level": "advanced", "recommendedPreset": "reel-compare"}
+      ]
+    },
+    {
+      "id": "model-engineering",
+      "title": "Small Models and Fine-Tuning",
+      "goal": "Choose, adapt, evaluate, and deploy models for a concrete product constraint.",
+      "topics": [
+        {"id": "models.slm", "slug": "small-language-models", "title": "Small Language Models", "objective": "Explain where smaller models win on cost, latency, privacy, and specialization.", "level": "advanced", "recommendedPreset": "reel-concept"},
+        {"id": "models.rag-vs-finetuning", "slug": "rag-vs-fine-tuning", "title": "RAG vs Fine-Tuning", "objective": "Choose retrieval or adaptation based on knowledge, behavior, cost, and update frequency.", "level": "advanced", "recommendedPreset": "reel-compare"},
+        {"id": "models.dataset", "slug": "fine-tuning-dataset-design", "title": "Fine-Tuning Dataset Design", "objective": "Create representative, clean, diverse, and leakage-resistant training examples.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "models.lora", "slug": "lora-and-parameter-efficient-fine-tuning", "title": "LoRA and Parameter-Efficient Fine-Tuning", "objective": "Explain adapters, rank, training efficiency, and deployment tradeoffs.", "level": "advanced", "recommendedPreset": "reel-concept"},
+        {"id": "models.eval-deploy", "slug": "evaluate-and-deploy-fine-tuned-models", "title": "Evaluating and Deploying Fine-Tuned Models", "objective": "Compare the adapted model against baselines before safe deployment.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"}
+      ]
+    },
+    {
+      "id": "edge-physical-ai",
+      "title": "Edge AI and Physical AI",
+      "goal": "Run intelligent systems under real-world latency, compute, sensing, and safety constraints.",
+      "topics": [
+        {"id": "edge.fundamentals", "slug": "edge-ai-fundamentals", "title": "Edge AI Fundamentals", "objective": "Explain local inference, latency, privacy, connectivity, and device constraints.", "level": "advanced", "recommendedPreset": "reel-concept"},
+        {"id": "edge.quantization", "slug": "model-quantization", "title": "Model Quantization", "objective": "Explain lower-precision weights, memory savings, speed, and quality tradeoffs.", "level": "advanced", "recommendedPreset": "reel-concept"},
+        {"id": "edge.on-device", "slug": "on-device-ai-pipeline", "title": "Building an On-Device AI Pipeline", "objective": "Trace capture, preprocessing, inference, postprocessing, and telemetry on constrained hardware.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "physical.fundamentals", "slug": "physical-ai-fundamentals", "title": "Physical AI Fundamentals", "objective": "Connect perception, world models, planning, control, and feedback.", "level": "advanced", "recommendedPreset": "reel-concept"},
+        {"id": "physical.perception-action", "slug": "perception-to-action-loop", "title": "The Perception-to-Action Loop", "objective": "Trace sensor input through estimation, planning, actuation, and feedback.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "physical.safety", "slug": "safety-for-physical-ai", "title": "Safety for Physical AI", "objective": "Explain simulation, constraints, redundancy, monitoring, and safe fallback behavior.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},
+        {"id": "capstone.production-ai", "slug": "production-ai-engineer-capstone", "title": "AI Engineer Capstone Architecture", "objective": "Combine FastAPI, MySQL, RAG, agents, evaluation, and deployment into one production system.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"}
+      ]
+    }
+  ]
+}

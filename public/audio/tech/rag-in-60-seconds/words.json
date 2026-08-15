@@ -1,0 +1,769 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 60.0,
+  "cues": [
+    {
+      "index": 1,
+      "start": 0.0,
+      "end": 52.85,
+      "text": "An LLM cannot answer from private documents it never saw. RAG lets it retrieve evidence before answering. First, before anyone asks, documents are split into useful chunks. An embedding model converts each chunk into a vector, and a vector database stores the vector with its original text. A user asks, \u201cWhat is our refund policy?\u201d The same embedding model creates a query vector. Retrieval compares it with stored vectors and selects the most relevant chunks. The system does not train the language model again. It builds a prompt with instructions, the question, and retrieved evidence. The LLM reads that context and generates an answer grounded in those chunks, ideally with citations. If evidence is missing, it should say so. RAG can reduce unsupported answers, but does not guarantee truth. Poor chunks, weak retrieval, or stale documents can still fail. Remember the flow: index documents, retrieve evidence, augment the prompt, then generate.",
+      "words": [
+        {
+          "text": "An",
+          "start": 0.0,
+          "end": 0.2205
+        },
+        {
+          "text": "LLM",
+          "start": 0.2205,
+          "end": 0.4905
+        },
+        {
+          "text": "cannot",
+          "start": 0.4905,
+          "end": 0.8724
+        },
+        {
+          "text": "answer",
+          "start": 0.8724,
+          "end": 1.2543
+        },
+        {
+          "text": "from",
+          "start": 1.2543,
+          "end": 1.5662
+        },
+        {
+          "text": "private",
+          "start": 1.5662,
+          "end": 1.9787
+        },
+        {
+          "text": "documents",
+          "start": 1.9787,
+          "end": 2.4464
+        },
+        {
+          "text": "it",
+          "start": 2.4464,
+          "end": 2.6669
+        },
+        {
+          "text": "never",
+          "start": 2.6669,
+          "end": 3.0155
+        },
+        {
+          "text": "saw.",
+          "start": 3.0155,
+          "end": 3.3401
+        },
+        {
+          "text": "RAG",
+          "start": 3.3401,
+          "end": 3.6102
+        },
+        {
+          "text": "lets",
+          "start": 3.6102,
+          "end": 3.922
+        },
+        {
+          "text": "it",
+          "start": 3.922,
+          "end": 4.1425
+        },
+        {
+          "text": "retrieve",
+          "start": 4.1425,
+          "end": 4.5835
+        },
+        {
+          "text": "evidence",
+          "start": 4.5835,
+          "end": 5.0244
+        },
+        {
+          "text": "before",
+          "start": 5.0244,
+          "end": 5.4064
+        },
+        {
+          "text": "answering.",
+          "start": 5.4064,
+          "end": 5.9287
+        },
+        {
+          "text": "First,",
+          "start": 5.9287,
+          "end": 6.3085
+        },
+        {
+          "text": "before",
+          "start": 6.3085,
+          "end": 6.6904
+        },
+        {
+          "text": "anyone",
+          "start": 6.6904,
+          "end": 7.0723
+        },
+        {
+          "text": "asks,",
+          "start": 7.0723,
+          "end": 7.4153
+        },
+        {
+          "text": "documents",
+          "start": 7.4153,
+          "end": 7.883
+        },
+        {
+          "text": "are",
+          "start": 7.883,
+          "end": 8.153
+        },
+        {
+          "text": "split",
+          "start": 8.153,
+          "end": 8.5017
+        },
+        {
+          "text": "into",
+          "start": 8.5017,
+          "end": 8.8135
+        },
+        {
+          "text": "useful",
+          "start": 8.8135,
+          "end": 9.1954
+        },
+        {
+          "text": "chunks.",
+          "start": 9.1954,
+          "end": 9.6319
+        },
+        {
+          "text": "An",
+          "start": 9.6319,
+          "end": 9.8524
+        },
+        {
+          "text": "embedding",
+          "start": 9.8524,
+          "end": 10.3201
+        },
+        {
+          "text": "model",
+          "start": 10.3201,
+          "end": 10.6687
+        },
+        {
+          "text": "converts",
+          "start": 10.6687,
+          "end": 11.1097
+        },
+        {
+          "text": "each",
+          "start": 11.1097,
+          "end": 11.4215
+        },
+        {
+          "text": "chunk",
+          "start": 11.4215,
+          "end": 11.7701
+        },
+        {
+          "text": "into",
+          "start": 11.7701,
+          "end": 12.082
+        },
+        {
+          "text": "a",
+          "start": 12.082,
+          "end": 12.2379
+        },
+        {
+          "text": "vector,",
+          "start": 12.2379,
+          "end": 12.651
+        },
+        {
+          "text": "and",
+          "start": 12.651,
+          "end": 12.921
+        },
+        {
+          "text": "a",
+          "start": 12.921,
+          "end": 13.0769
+        },
+        {
+          "text": "vector",
+          "start": 13.0769,
+          "end": 13.4588
+        },
+        {
+          "text": "database",
+          "start": 13.4588,
+          "end": 13.8998
+        },
+        {
+          "text": "stores",
+          "start": 13.8998,
+          "end": 14.2817
+        },
+        {
+          "text": "the",
+          "start": 14.2817,
+          "end": 14.5518
+        },
+        {
+          "text": "vector",
+          "start": 14.5518,
+          "end": 14.9337
+        },
+        {
+          "text": "with",
+          "start": 14.9337,
+          "end": 15.2455
+        },
+        {
+          "text": "its",
+          "start": 15.2455,
+          "end": 15.5155
+        },
+        {
+          "text": "original",
+          "start": 15.5155,
+          "end": 15.9565
+        },
+        {
+          "text": "text.",
+          "start": 15.9565,
+          "end": 16.3229
+        },
+        {
+          "text": "A",
+          "start": 16.3229,
+          "end": 16.4788
+        },
+        {
+          "text": "user",
+          "start": 16.4788,
+          "end": 16.7906
+        },
+        {
+          "text": "asks,",
+          "start": 16.7906,
+          "end": 17.1336
+        },
+        {
+          "text": "\u201cWhat",
+          "start": 17.1336,
+          "end": 17.4454
+        },
+        {
+          "text": "is",
+          "start": 17.4454,
+          "end": 17.6659
+        },
+        {
+          "text": "our",
+          "start": 17.6659,
+          "end": 17.936
+        },
+        {
+          "text": "refund",
+          "start": 17.936,
+          "end": 18.3179
+        },
+        {
+          "text": "policy?\u201d",
+          "start": 18.3179,
+          "end": 18.6998
+        },
+        {
+          "text": "The",
+          "start": 18.6998,
+          "end": 18.9698
+        },
+        {
+          "text": "same",
+          "start": 18.9698,
+          "end": 19.2817
+        },
+        {
+          "text": "embedding",
+          "start": 19.2817,
+          "end": 19.7494
+        },
+        {
+          "text": "model",
+          "start": 19.7494,
+          "end": 20.098
+        },
+        {
+          "text": "creates",
+          "start": 20.098,
+          "end": 20.5105
+        },
+        {
+          "text": "a",
+          "start": 20.5105,
+          "end": 20.6664
+        },
+        {
+          "text": "query",
+          "start": 20.6664,
+          "end": 21.0151
+        },
+        {
+          "text": "vector.",
+          "start": 21.0151,
+          "end": 21.4515
+        },
+        {
+          "text": "Retrieval",
+          "start": 21.4515,
+          "end": 21.9193
+        },
+        {
+          "text": "compares",
+          "start": 21.9193,
+          "end": 22.3602
+        },
+        {
+          "text": "it",
+          "start": 22.3602,
+          "end": 22.5807
+        },
+        {
+          "text": "with",
+          "start": 22.5807,
+          "end": 22.8926
+        },
+        {
+          "text": "stored",
+          "start": 22.8926,
+          "end": 23.2745
+        },
+        {
+          "text": "vectors",
+          "start": 23.2745,
+          "end": 23.687
+        },
+        {
+          "text": "and",
+          "start": 23.687,
+          "end": 23.957
+        },
+        {
+          "text": "selects",
+          "start": 23.957,
+          "end": 24.3695
+        },
+        {
+          "text": "the",
+          "start": 24.3695,
+          "end": 24.6395
+        },
+        {
+          "text": "most",
+          "start": 24.6395,
+          "end": 24.9514
+        },
+        {
+          "text": "relevant",
+          "start": 24.9514,
+          "end": 25.3923
+        },
+        {
+          "text": "chunks.",
+          "start": 25.3923,
+          "end": 25.8288
+        },
+        {
+          "text": "The",
+          "start": 25.8288,
+          "end": 26.0989
+        },
+        {
+          "text": "system",
+          "start": 26.0989,
+          "end": 26.4808
+        },
+        {
+          "text": "does",
+          "start": 26.4808,
+          "end": 26.7926
+        },
+        {
+          "text": "not",
+          "start": 26.7926,
+          "end": 27.0626
+        },
+        {
+          "text": "train",
+          "start": 27.0626,
+          "end": 27.4113
+        },
+        {
+          "text": "the",
+          "start": 27.4113,
+          "end": 27.6813
+        },
+        {
+          "text": "language",
+          "start": 27.6813,
+          "end": 28.1223
+        },
+        {
+          "text": "model",
+          "start": 28.1223,
+          "end": 28.4709
+        },
+        {
+          "text": "again.",
+          "start": 28.4709,
+          "end": 28.8741
+        },
+        {
+          "text": "It",
+          "start": 28.8741,
+          "end": 29.0946
+        },
+        {
+          "text": "builds",
+          "start": 29.0946,
+          "end": 29.4765
+        },
+        {
+          "text": "a",
+          "start": 29.4765,
+          "end": 29.6324
+        },
+        {
+          "text": "prompt",
+          "start": 29.6324,
+          "end": 30.0143
+        },
+        {
+          "text": "with",
+          "start": 30.0143,
+          "end": 30.3261
+        },
+        {
+          "text": "instructions,",
+          "start": 30.3261,
+          "end": 30.8974
+        },
+        {
+          "text": "the",
+          "start": 30.8974,
+          "end": 31.1675
+        },
+        {
+          "text": "question,",
+          "start": 31.1675,
+          "end": 31.6396
+        },
+        {
+          "text": "and",
+          "start": 31.6396,
+          "end": 31.9097
+        },
+        {
+          "text": "retrieved",
+          "start": 31.9097,
+          "end": 32.3774
+        },
+        {
+          "text": "evidence.",
+          "start": 32.3774,
+          "end": 32.8729
+        },
+        {
+          "text": "The",
+          "start": 32.8729,
+          "end": 33.143
+        },
+        {
+          "text": "LLM",
+          "start": 33.143,
+          "end": 33.413
+        },
+        {
+          "text": "reads",
+          "start": 33.413,
+          "end": 33.7617
+        },
+        {
+          "text": "that",
+          "start": 33.7617,
+          "end": 34.0735
+        },
+        {
+          "text": "context",
+          "start": 34.0735,
+          "end": 34.486
+        },
+        {
+          "text": "and",
+          "start": 34.486,
+          "end": 34.756
+        },
+        {
+          "text": "generates",
+          "start": 34.756,
+          "end": 35.2238
+        },
+        {
+          "text": "an",
+          "start": 35.2238,
+          "end": 35.4443
+        },
+        {
+          "text": "answer",
+          "start": 35.4443,
+          "end": 35.8262
+        },
+        {
+          "text": "grounded",
+          "start": 35.8262,
+          "end": 36.2671
+        },
+        {
+          "text": "in",
+          "start": 36.2671,
+          "end": 36.4876
+        },
+        {
+          "text": "those",
+          "start": 36.4876,
+          "end": 36.8363
+        },
+        {
+          "text": "chunks,",
+          "start": 36.8363,
+          "end": 37.2493
+        },
+        {
+          "text": "ideally",
+          "start": 37.2493,
+          "end": 37.6618
+        },
+        {
+          "text": "with",
+          "start": 37.6618,
+          "end": 37.9737
+        },
+        {
+          "text": "citations.",
+          "start": 37.9737,
+          "end": 38.496
+        },
+        {
+          "text": "If",
+          "start": 38.496,
+          "end": 38.7165
+        },
+        {
+          "text": "evidence",
+          "start": 38.7165,
+          "end": 39.1574
+        },
+        {
+          "text": "is",
+          "start": 39.1574,
+          "end": 39.3779
+        },
+        {
+          "text": "missing,",
+          "start": 39.3779,
+          "end": 39.8216
+        },
+        {
+          "text": "it",
+          "start": 39.8216,
+          "end": 40.0421
+        },
+        {
+          "text": "should",
+          "start": 40.0421,
+          "end": 40.424
+        },
+        {
+          "text": "say",
+          "start": 40.424,
+          "end": 40.6941
+        },
+        {
+          "text": "so.",
+          "start": 40.6941,
+          "end": 40.9691
+        },
+        {
+          "text": "RAG",
+          "start": 40.9691,
+          "end": 41.2392
+        },
+        {
+          "text": "can",
+          "start": 41.2392,
+          "end": 41.5092
+        },
+        {
+          "text": "reduce",
+          "start": 41.5092,
+          "end": 41.8911
+        },
+        {
+          "text": "unsupported",
+          "start": 41.8911,
+          "end": 42.4082
+        },
+        {
+          "text": "answers,",
+          "start": 42.4082,
+          "end": 42.8519
+        },
+        {
+          "text": "but",
+          "start": 42.8519,
+          "end": 43.1219
+        },
+        {
+          "text": "does",
+          "start": 43.1219,
+          "end": 43.4338
+        },
+        {
+          "text": "not",
+          "start": 43.4338,
+          "end": 43.7038
+        },
+        {
+          "text": "guarantee",
+          "start": 43.7038,
+          "end": 44.1715
+        },
+        {
+          "text": "truth.",
+          "start": 44.1715,
+          "end": 44.5747
+        },
+        {
+          "text": "Poor",
+          "start": 44.5747,
+          "end": 44.8865
+        },
+        {
+          "text": "chunks,",
+          "start": 44.8865,
+          "end": 45.2996
+        },
+        {
+          "text": "weak",
+          "start": 45.2996,
+          "end": 45.6115
+        },
+        {
+          "text": "retrieval,",
+          "start": 45.6115,
+          "end": 46.1104
+        },
+        {
+          "text": "or",
+          "start": 46.1104,
+          "end": 46.3309
+        },
+        {
+          "text": "stale",
+          "start": 46.3309,
+          "end": 46.6795
+        },
+        {
+          "text": "documents",
+          "start": 46.6795,
+          "end": 47.1472
+        },
+        {
+          "text": "can",
+          "start": 47.1472,
+          "end": 47.4173
+        },
+        {
+          "text": "still",
+          "start": 47.4173,
+          "end": 47.7659
+        },
+        {
+          "text": "fail.",
+          "start": 47.7659,
+          "end": 48.1323
+        },
+        {
+          "text": "Remember",
+          "start": 48.1323,
+          "end": 48.5733
+        },
+        {
+          "text": "the",
+          "start": 48.5733,
+          "end": 48.8433
+        },
+        {
+          "text": "flow:",
+          "start": 48.8433,
+          "end": 49.1863
+        },
+        {
+          "text": "index",
+          "start": 49.1863,
+          "end": 49.5349
+        },
+        {
+          "text": "documents,",
+          "start": 49.5349,
+          "end": 50.0339
+        },
+        {
+          "text": "retrieve",
+          "start": 50.0339,
+          "end": 50.4748
+        },
+        {
+          "text": "evidence,",
+          "start": 50.4748,
+          "end": 50.947
+        },
+        {
+          "text": "augment",
+          "start": 50.947,
+          "end": 51.3595
+        },
+        {
+          "text": "the",
+          "start": 51.3595,
+          "end": 51.6295
+        },
+        {
+          "text": "prompt,",
+          "start": 51.6295,
+          "end": 52.0426
+        },
+        {
+          "text": "then",
+          "start": 52.0426,
+          "end": 52.3544
+        },
+        {
+          "text": "generate.",
+          "start": 52.3544,
+          "end": 52.85
+        }
+      ]
+    }
+  ]
+}

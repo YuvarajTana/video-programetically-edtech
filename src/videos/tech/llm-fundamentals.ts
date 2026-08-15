@@ -21,6 +21,22 @@ export const llmFundamentals: VideoSpec = {
   // Generated locally by `npm run voice -- tech/llm-fundamentals`.
   audio: 'audio/tech/llm-fundamentals/master.wav',
   captionTimings: 'audio/tech/llm-fundamentals/words.json',
+  soundtrack: {
+    music: {
+      src: 'audio/music/quiet-circuit-ambient.m4a',
+      credit: 'Video Kit — Quiet Circuit Ambient',
+      license: 'Original project-generated instrumental',
+      volume: 0.24,
+      loop: false,
+      fadeInFrames: 75,
+      fadeOutFrames: 120,
+    },
+    ducking: {
+      gain: 0.55,
+      attackFrames: 12,
+      releaseFrames: 24,
+    },
+  },
 
   editorial: {
     language: 'en',
@@ -37,8 +53,8 @@ export const llmFundamentals: VideoSpec = {
         url: 'https://doi.org/10.6028/NIST.AI.600-1',
       },
       {
-        title: 'OpenAI API — Realtime system messages',
-        url: 'https://platform.openai.com/docs/api-reference/realtime-server-events/input_audio_buffer/committed',
+        title: 'OpenAI Model Spec — Instructions and levels of authority',
+        url: 'https://model-spec.openai.com/2025-10-27.html#instructions-and-levels-of-authority',
       },
     ],
   },

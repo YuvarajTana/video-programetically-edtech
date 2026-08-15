@@ -14,6 +14,7 @@ import {Flashcards} from './Flashcards';
 import {Flow} from './Flow';
 import {KineticText} from './KineticText';
 import {LabeledDiagram} from './LabeledDiagram';
+import {MotionCanvas} from './MotionCanvas';
 import {NumberLine} from './NumberLine';
 import {Outro} from './Outro';
 import {Photo} from './Photo';
@@ -53,5 +54,6 @@ export const SCENES: Record<SceneType, React.FC<{scene: any}>> = {
   quiz: Quiz,
   callout: Callout,
   arrayViz: ArrayViz,
+  motionCanvas: MotionCanvas,
   outro: Outro,
 };
