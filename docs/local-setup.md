@@ -12,6 +12,7 @@ every other step degrades gracefully without it.
 | npm | ships with Node | dependency install |
 | ffmpeg + ffprobe | any recent | voiceover loudness pipeline only |
 | Python | 3.10+ on Apple Silicon | local Kokoro TTS only |
+| uv (`brew install uv`) | any recent | optional IndicTrans2 translation and My Voice engines |
 
 Check your Node version first — `node --version` must print `v22.18` or later.
 On older Node, `npm run validate` and `npm test` fail with TypeScript syntax
@@ -33,14 +34,38 @@ npm ci
 
 ```bash
 npm run typecheck   # tsc over the whole project
-npm test            # 50 unit tests (validation, chapters, captions, packaging)
+npm test            # both suites: spec/pipeline units (.mjs) and studio/server units (.ts)
 npm run validate    # validates every production spec in ~0.3s
 ```
 
-All three are the same checks CI runs. If they pass, authoring and validation
-work end to end.
+All three are the same checks CI runs (CI also builds the browser studio).
+If they pass, authoring and validation work end to end.
 
-## 4. Open Remotion Studio
+## 4. Browser production studio (optional)
+
+The full point-and-click pipeline — projects, AI-assisted scripts, voice
+routes, rendering, QA, and downloadable packages — runs locally:
+
+```bash
+npm run app:build
+npm run app          # serves UI + API at http://127.0.0.1:4311
+npm run app:dev      # hot-reload UI on :4310, API on :4311
+```
+
+Studio state lives in SQLite under `.video-kit/` (gitignored). AI script
+generation needs `OPENAI_API_KEY` in `.env` (copy `.env.example`); everything
+else in the studio works without it. Optional extras, each installed only when
+you want the feature:
+
+```bash
+npm run ai:setup     # IndicTrans2 translation env (Indian languages)
+npm run voice:setup  # local English "My Voice" engine
+```
+
+See the README's "Local Video Production Studio" section for the full
+walkthrough of the studio workflow.
+
+## 5. Open Remotion Studio
 
 ```bash
 npm run studio
@@ -55,7 +80,7 @@ theme.
 Fonts are pre-baked into `src/design/fontFaces.ts`, so no font setup is
 needed. Only re-run `npm run fonts` if you swap the faces in `public/fonts/`.
 
-## 5. Render
+## 6. Render
 
 ```bash
 npm run render -- tech/selection-sort              # all profiles for one video
@@ -67,7 +92,7 @@ npm run qa -- learn--style-guide--portrait 40 220  # single frames to out/qa/
 Outputs land in `out/<channel>/<slug>/`. Rendering uses the same
 auto-downloaded headless Chrome as Studio; nothing extra to install.
 
-## 6. Author a new video
+## 7. Author a new video
 
 ```bash
 npm run new -- --channel learn --template quick-quiz why-is-rain-wet "Why is rain wet?"
@@ -79,7 +104,7 @@ Specs are data files in `src/videos/<channel>/`. Learn videos must declare
 `audience.ageBand`, `editorial.objective`, and a `safetyStatus` of
 `reviewed`/`approved` before validation passes — that gate is intentional.
 
-## 7. Voiceover (optional — Apple Silicon Mac only)
+## 8. Voiceover (optional — Apple Silicon Mac only)
 
 The Kokoro TTS pipeline runs on MLX. One-time setup:
 
@@ -102,7 +127,7 @@ unchanged narration is reused. On non-Mac machines, skip this step: render
 silent (`npm run produce -- <ref> --silent`) or mux a separately recorded
 track with the ffmpeg command in the README.
 
-## 8. Full production run
+## 9. Full production run
 
 ```bash
 npm run produce -- tech/context-vs-harness-engineering              # everything
@@ -114,7 +139,7 @@ npm run queue -- queues/example.json --dry-run                      # batches
 `produce` chains typecheck → validate → voice → renders → covers → packaging
 and writes a run report to `out/<channel>/<slug>/production.json`.
 
-## 9. Publishing credentials (optional)
+## 10. Publishing credentials (optional)
 
 ```bash
 cp .env.example .env   # fill in tokens; .env is gitignored

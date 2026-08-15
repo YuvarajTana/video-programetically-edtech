@@ -147,15 +147,21 @@ blocks new narration and invalidates intermediate cache data.
 
 Cloud voice cloning is not enabled in the current production chooser.
 
+## CLI quick start
+
+Everything the browser studio does is also scriptable. The spec-driven CLI
+workflow needs only:
+
 ```bash
 npm install
-npm run studio
+npm run studio      # Remotion Studio (composition preview)
 npm run validate
 npm run render -- tech/selection-sort
 ```
 
-Requires Node 22.18+. Full machine setup, including the optional voiceover and
-publishing pieces, is documented in [`docs/local-setup.md`](docs/local-setup.md).
+Requires Node 22.18+. Full machine setup, including the browser studio and the
+optional voiceover and publishing pieces, is documented in
+[`docs/local-setup.md`](docs/local-setup.md).
 
 ## Core model
 

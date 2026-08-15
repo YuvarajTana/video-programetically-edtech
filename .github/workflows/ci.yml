@@ -26,6 +26,9 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      - name: Build studio app
+        run: npm run app:build
+
       # Spec validation reads the registries directly — no bundling or browser.
       - name: Validate all specs and style guides
         run: npm run validate -- --studio
