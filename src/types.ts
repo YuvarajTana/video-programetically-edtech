@@ -176,6 +176,172 @@ export type ArrayVizScene = Base & {
   tempo?: {compare: number; swap: number; lock: number};
 };
 
+export type MotionCanvasPosition = {
+  /** Horizontal position as a percentage of the safe canvas. */
+  x: number;
+  /** Vertical position as a percentage of the safe canvas. */
+  y: number;
+};
+
+export type MotionCanvasElement =
+  | (MotionCanvasPosition & {
+      id: string;
+      kind: 'text';
+      text: string;
+      role?: 'headline' | 'label' | 'payoff' | 'cta';
+      width?: number;
+    })
+  | (MotionCanvasPosition & {
+      id: string;
+      kind: 'search';
+      query: string;
+      width?: number;
+      typewriter?: boolean;
+    })
+  | (MotionCanvasPosition & {
+      id: string;
+      kind: 'code';
+      code: string;
+      label?: string;
+      width?: number;
+      typewriter?: boolean;
+      /** Show a stable gutter so runtime actions can point at exact lines. */
+      lineNumbers?: boolean;
+    })
+  | (MotionCanvasPosition & {
+      id: string;
+      kind: 'dot';
+      label: string;
+      size?: number;
+      tone?: 'accent' | 'positive' | 'negative' | 'neutral';
+    })
+  | (MotionCanvasPosition & {
+      id: string;
+      kind: 'cluster';
+      label: string;
+      width?: number;
+      height?: number;
+    })
+  | (MotionCanvasPosition & {
+      id: string;
+      kind: 'shape';
+      /** Semantic geometry keeps diagrams from becoming collections of circles. */
+      shape:
+        | 'circle'
+        | 'square'
+        | 'rounded-square'
+        | 'diamond'
+        | 'triangle'
+        | 'hexagon'
+        | 'pill'
+        | 'ring'
+        | 'database'
+        | 'document';
+      label?: string;
+      sublabel?: string;
+      width?: number;
+      height?: number;
+      tone?: 'accent' | 'positive' | 'negative' | 'neutral';
+      /** Deterministic, frame-derived idle choreography. */
+      animation?: 'none' | 'float' | 'rotate' | 'wobble' | 'breathe';
+    })
+  | {
+      id: string;
+      kind: 'connector';
+      from: string;
+      to: string;
+      label?: string;
+      dashed?: boolean;
+      arrow?: boolean;
+    }
+  | (MotionCanvasPosition & {
+      id: string;
+      kind: 'mascot';
+      expression: 'curious' | 'surprised' | 'thinking' | 'happy';
+      label?: string;
+    })
+  | (MotionCanvasPosition & {
+      id: string;
+      kind: 'image';
+      /** Public-relative path beneath images/ or generated/. */
+      src: string;
+      /** Short description used by the editor and browser preview. */
+      alt: string;
+      /** Width and height as percentages of the safe motion canvas. */
+      width?: number;
+      height?: number;
+      fit?: 'cover' | 'contain';
+      radius?: number;
+      caption?: string;
+      credit?: string;
+      /** Finite, seek-safe motion applied inside the image frame. */
+      motion?:
+        | 'none'
+        | 'ken-burns-in'
+        | 'ken-burns-out'
+        | 'pan-left'
+        | 'pan-right';
+      /** Focal point percentages used by object-position. */
+      focalX?: number;
+      focalY?: number;
+    });
+
+export type MotionCanvasAction = {
+  target: string;
+  type:
+    | 'reveal'
+    | 'draw'
+    | 'highlight'
+    | 'hide'
+    | 'pulse'
+    | 'travel'
+    | 'spin'
+    | 'bounce'
+    | 'focus-line'
+    | 'execute-line';
+  /** One-based line used by focus-line and execute-line actions. */
+  line?: number;
+  /** Concise explanation displayed beside the active code line. */
+  note?: string;
+  /** Runtime value or terminal result produced by this line. */
+  output?: string;
+  /** Scene-relative preview fallback used before narration timings exist. */
+  atFrame: number;
+  durationFrames?: number;
+  /**
+   * Repositions this action from the generated narration timing file. The
+   * fallback frame remains deterministic when voice has not been generated.
+   */
+  anchor?: {
+    phrase: string;
+    occurrence?: number;
+    offsetFrames?: number;
+  };
+};
+
+export type MotionCanvasScene = Base & {
+  type: 'motionCanvas';
+  /** Complete art-direction preset for the canvas, panels, type, and connectors. */
+  style: 'whiteboard-light' | 'midnight-code' | 'electric-grid';
+  motion?: {
+    intensity: 'calm' | 'dynamic';
+    ambient?: boolean;
+  };
+  /** Seek-safe effects. Every value is derived from the current Remotion frame. */
+  effects?: {
+    camera?: 'none' | 'push-in' | 'drift';
+    particles?: 'none' | 'data-stream';
+    glow?: 'none' | 'soft' | 'strong';
+    scanlines?: boolean;
+    vignette?: boolean;
+  };
+  headline?: string;
+  /** End of the opening hook inside a continuous motion canvas. */
+  hookEndFrame?: number;
+  elements: MotionCanvasElement[];
+  actions: MotionCanvasAction[];
+};
+
 export type OutroScene = Base & {
   type: 'outro';
   handle?: string;
@@ -200,6 +366,7 @@ export type Scene =
   | FlashcardsScene
   | CalloutScene
   | ArrayVizScene
+  | MotionCanvasScene
   | OutroScene;
 
 export type SceneType = Scene['type'];

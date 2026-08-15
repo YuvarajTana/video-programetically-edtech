@@ -13,6 +13,140 @@ Each channel owns its theme, handles, editorial rules, platform defaults, and
 CTA. Scene rendering, responsive layout, captions, validation, and packaging
 remain shared.
 
+## Local Video Production Studio
+
+The browser studio lets you create, preview, voice, render, and download videos
+without editing TypeScript. Projects, templates, themes, categories, immutable
+revisions, job history, and artifact metadata are stored locally in SQLite.
+
+```bash
+npm install
+npm run app:build
+npm run app
+```
+
+Open [http://127.0.0.1:4311](http://127.0.0.1:4311). The production server
+serves both the interface and API. For interface development with hot reload,
+use:
+
+```bash
+npm run app:dev
+```
+
+By default, the development interface runs at `http://127.0.0.1:4310` and
+proxies API calls to the local server on port `4311`. Both ports can be changed
+in `.env` with `VIDEO_KIT_WEB_PORT` and `VIDEO_KIT_PORT`; Vite reads the same
+file as the backend, so the proxy stays aligned.
+
+### AI-assisted script generation
+
+Script generation is a runtime backend integration with the OpenAI Responses
+API. The browser never receives the API key. Create a local environment file,
+add an API key, and restart the Studio:
+
+```bash
+cp .env.example .env
+```
+
+```dotenv
+OPENAI_API_KEY=your_api_key_here
+OPENAI_SCRIPT_MODEL=gpt-5.6-sol
+```
+
+```bash
+npm run app:dev
+```
+
+Open **New video**, choose a 60-second Reel or a 5, 10, 15, 20, 25, or
+30-minute long-form video, and then
+choose **Generate with AI** or **Paste my script**. AI drafts use structured
+scene output plus the committed teaching context in
+`content/script-generation/context.json`. The context defines the Python-to-AI
+curriculum, runtime-first teaching style, pacing, examples, and visual grammar.
+Drafts remain fully editable and cannot be submitted to production until the
+manual-review checkbox is selected. Under **Choose the audio**, select either:
+
+- **Voiceover** — Kokoro, an approved My Voice profile, or finished uploaded narration.
+- **Music only · visual explanation** — no TTS or spoken captions; the approved
+  ideas are communicated by titles, diagrams, labels, code, and animation.
+
+Music-only AI drafts use shorter planning copy and require every scene to work
+without speech. The three bundled original tracks are **Quiet Circuit** (calm),
+**Momentum Grid** (technical and energetic), and **Playful Orbit** (kids and
+fun). Each can be previewed before selection, loops automatically when needed,
+and carries its license credit into the production manifest.
+
+The final CTA creates an immutable project revision, resolves the selected
+audio route, and queues rendering, QA, and packaging.
+
+OpenAI API billing is separate from ChatGPT subscriptions. Do not commit `.env`
+or place an API key in frontend code.
+
+Studio data lives under `.video-kit/`; generated render inputs live under
+`public/generated/`. Both are intentionally ignored by Git. Existing videos in
+`src/videos/` appear in the studio as read-only examples and can be cloned into
+editable projects without changing their source files.
+
+Every Studio and CLI production now follows one canonical path:
+
+```text
+TOPIC → SCRIPT → SCENE BREAKDOWN → TTS → WORD/SENTENCE TIMESTAMPS
+      → MASTER TIMELINE → VISUALS + MOTION + CAPTIONS
+      → AUDIO + SFX → FINAL RENDER → QA
+```
+
+Topic, approved script, and scene breakdown are pre-production gates. The job
+then freezes word/sentence timing and motion anchors into
+`master-timeline.json`. Remotion renders visuals, diagrams, code, animation,
+captions, music, and sound effects against that single frame clock. Music-only
+jobs use the same path while marking TTS and spoken timestamps as intentionally
+skipped.
+
+English voice generation can use the existing `.venv-tts` Kokoro setup or an
+explicitly approved local **My Voice** profile. Music-only rendering is
+available directly from the New video workflow. Successful jobs include
+delivery-specific MP4s and covers, the approved script, scene breakdown,
+captions, optional audio and word timings, the master timeline, a manifest,
+checksums, and a downloadable ZIP package.
+
+### Indian languages and My Voice
+
+The studio supports English, Hindi, Tamil, Telugu, Kannada, Malayalam, and
+Bengali. Any variant can become the master. Translations are field-level
+drafts, preserve glossary terms, expose the English pivot for Indic-to-Indic
+translation, and require approval before production.
+
+Install the separate Python 3.11 environment for local IndicTrans2 translation:
+
+```bash
+brew install uv ffmpeg
+npm run ai:setup
+```
+
+Install the local English **My Voice** engine separately:
+
+```bash
+npm run voice:setup
+```
+
+Models download into `.video-kit/models/` on first use. Open **Voice & audio**
+to attest ownership and adulthood, record the consent phrase, provide a clean
+6–15 second English reference, generate a preview, listen to it, and accept it.
+Only then does **My Voice** appear in the New video voice chooser. It synthesizes
+the approved scene narration; it never copies the reference recording into a
+finished video and never silently falls back to Kokoro.
+
+The Chatterbox route currently supports English. Indian-language voice cloning
+is withheld from the production chooser until its reference validation and
+pronunciation quality meet the same standard; complete uploaded narration is
+still supported for those locales.
+
+Recordings are normalized to private mono 24 kHz WAV files beneath
+`.video-kit/voices/`. They are not public assets or package contents. Revocation
+blocks new narration and invalidates intermediate cache data.
+
+Cloud voice cloning is not enabled in the current production chooser.
+
 ```bash
 npm install
 npm run studio
@@ -66,6 +200,38 @@ export const example: VideoSpec = {
 
 Video files contain data, not custom JSX. If several videos need a visual the
 scene kit cannot express, add a reusable scene type.
+
+### Photos and PNG graphics
+
+In the browser editor, open a scene and choose **Add photo to this scene** in
+the inspector. PNG, JPEG, and WebP files up to 15 MB are copied into the local,
+gitignored `public/generated/project-assets/` store. A regular scene is safely
+converted to a motion canvas when its first photo is added. Each photo can use
+cover or contain fitting plus a finite slow zoom or pan, and the same result is
+shown in the live preview and final render.
+
+Source-authored motion canvases can use the same element directly:
+
+```ts
+{
+  id: 'retrieval-photo',
+  kind: 'image',
+  src: 'images/rag/retrieval.png',
+  alt: 'Documents flowing into a retrieval system',
+  x: 50,
+  y: 57,
+  width: 82,
+  height: 58,
+  fit: 'cover',
+  motion: 'ken-burns-in',
+  focalX: 50,
+  focalY: 45,
+}
+```
+
+Tracked assets belong beneath `public/images/`; Studio uploads belong beneath
+`public/generated/`. Absolute paths, traversal paths, SVG, and MIME-spoofed
+uploads are rejected.
 
 ## Channels and themes
 
@@ -127,6 +293,76 @@ tech--selection-sort--instagram-reel--cover
 ```
 
 ## Authoring commands
+
+### Python to AI Engineer series
+
+The committed curriculum in `content/ai-engineer-roadmap.json` is the source of
+truth for the learning order. It currently covers Python fundamentals,
+advanced Python, FastAPI, MySQL, LLM fundamentals, RAG, agents, Agentic RAG,
+agent orchestration, small language models, fine-tuning, Edge AI, Physical AI,
+and a production capstone.
+
+List the complete path, inspect one topic, or find the next lesson:
+
+```bash
+npm run roadmap
+npm run roadmap -- show python.async-await
+npm run roadmap -- next python.async-await
+```
+
+Scaffold a roadmap topic using its recommended video preset:
+
+```bash
+npm run topic:new -- --topic python.decorators
+npm run topic:new -- --topic python.async-await
+npm run topic:new -- --topic agents.agentic-rag --preset youtube-deep-dive
+```
+
+Use `--dry-run` to inspect the selected paths, runtime, deliveries, and preset
+without writing files:
+
+```bash
+npm run topic:new -- --topic python.async-await --dry-run
+```
+
+Each scaffold creates two tracked files:
+
+```text
+content/scripts/tech/<slug>.md  # timed writing and production brief
+src/videos/tech/<slug>.ts       # render-ready VideoSpec scene structure
+```
+
+The source spec is registered automatically. Replace every `TODO:` marker,
+verify the code examples, and add primary documentation sources before voice
+generation.
+
+| Preset | Runtime | Best for | Default outputs |
+| --- | ---: | --- | --- |
+| `reel-concept` | 59s | mental models and flows | YouTube Short + Instagram Reel |
+| `reel-code` | 59s | async/await, decorators, syntax and runtime behavior | YouTube Short + Instagram Reel |
+| `reel-compare` | 59s | two commonly confused engineering choices | YouTube Short + Instagram Reel |
+| `youtube-deep-dive` | 5m | architecture, implementation and production tradeoffs | YouTube 16:9 + Instagram Reel |
+
+The content-authoring path feeds the same master production pipeline:
+
+```text
+roadmap → scaffold → write/verify → topic → script → scene breakdown
+        → TTS → timestamps → master timeline → render tracks → QA
+```
+
+```bash
+npm run validate -- tech/python-async-await
+npm run voice -- tech/python-async-await
+npm run render -- tech/python-async-await
+npm run qa -- tech--python-async-await--portrait 45 300 900 1500
+npm run package -- tech/python-async-await
+```
+
+The same four presets are seeded into the browser studio template library as
+`tech-reel-concept`, `tech-reel-code`, `tech-reel-compare`, and
+`tech-youtube-deep-dive`.
+
+### Ad-hoc videos
 
 Create a video:
 

@@ -81,6 +81,22 @@ def apply_fade(audio, sample_rate):
     return audio
 
 
+def compress_audio_to_fit(audio, target_seconds, sample_rate):
+    target_samples = max(1, math.floor(target_seconds * sample_rate))
+
+    if len(audio) <= target_samples:
+        return audio
+
+    source_positions = np.arange(len(audio), dtype=np.float64)
+    target_positions = np.linspace(
+        0,
+        len(audio) - 1,
+        target_samples,
+        dtype=np.float64,
+    )
+    return np.interp(target_positions, source_positions, audio).astype(np.float32)
+
+
 def word_timings(text, start_seconds, duration_seconds):
     words = re.findall(r"\S+", text)
 
@@ -125,16 +141,34 @@ def main():
     parser.add_argument("--out", required=True)
     parser.add_argument("--voice", default="am_adam")
     parser.add_argument("--speed", type=float, default=0.98)
+    parser.add_argument(
+        "--max-speed",
+        type=float,
+        help="Hard ceiling for automatic timing fit. Use the same value as --speed for true-speed narration.",
+    )
     parser.add_argument("--model", default="mlx-community/Kokoro-82M-bf16")
     parser.add_argument("--language", default="a")
     parser.add_argument("--timings")
+    parser.add_argument("--speech-map")
     args = parser.parse_args()
+
+    if args.max_speed is not None and args.max_speed < args.speed:
+        raise RuntimeError("--max-speed must be greater than or equal to --speed")
 
     srt_path = Path(args.srt)
     output_path = Path(args.out)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     cues = read_srt(srt_path)
+
+    if args.speech_map:
+        speech_map = json.loads(Path(args.speech_map).read_text(encoding="utf-8"))
+        if not isinstance(speech_map, list) or len(speech_map) != len(cues):
+            raise RuntimeError("Speech map must contain one string for every SRT cue")
+        for cue, speech_text in zip(cues, speech_map):
+            if not isinstance(speech_text, str) or not speech_text.strip():
+                raise RuntimeError("Speech map entries must be non-empty strings")
+            cue["speech_text"] = speech_text.strip()
 
     if not cues:
         raise RuntimeError(f"No cues found in {srt_path}")
@@ -155,10 +189,10 @@ def main():
         target_seconds = max(0.25, available_seconds - 0.18)
         speed = args.speed
 
-        for attempt in range(4):
+        for attempt in range(8):
             audio, generated_rate = generate_audio(
                 model,
-                cue["text"],
+                cue.get("speech_text", cue["text"]),
                 args.voice,
                 speed,
                 args.language,
@@ -174,14 +208,33 @@ def main():
             if duration <= target_seconds:
                 break
 
-            speed *= (duration / target_seconds) * 1.02
+            required_speed = speed * (duration / target_seconds) * 1.04
+            speed_ceiling = args.max_speed if args.max_speed is not None else 2.5
+            speed = min(speed_ceiling, max(speed + 0.05, required_speed))
 
         duration = len(audio) / sample_rate
 
         if duration > available_seconds:
-            raise RuntimeError(
-                f"Cue {index} is {duration:.2f}s but only "
-                f"{available_seconds:.2f}s is available"
+            if args.max_speed is not None:
+                raise RuntimeError(
+                    f"Cue {index} needs {duration:.2f}s but only "
+                    f"{available_seconds:.2f}s is available at the requested "
+                    f"maximum speed {args.max_speed:.2f}. Shorten the narration "
+                    "or increase the scene duration."
+                )
+            compression_ratio = duration / available_seconds
+            if compression_ratio > 1.15:
+                raise RuntimeError(
+                    f"Cue {index} is {duration:.2f}s but only "
+                    f"{available_seconds:.2f}s is available. Shorten this "
+                    "scene narration or increase its duration."
+                )
+            fitted_seconds = max(0.05, available_seconds - 0.02)
+            audio = compress_audio_to_fit(audio, fitted_seconds, sample_rate)
+            duration = len(audio) / sample_rate
+            print(
+                f"{index:02d}: applied final {compression_ratio:.3f}x "
+                "timing fit"
             )
 
         audio = apply_fade(audio, sample_rate)

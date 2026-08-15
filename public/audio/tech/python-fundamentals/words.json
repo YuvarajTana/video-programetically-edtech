@@ -1,0 +1,4010 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 300.0,
+  "cues": [
+    {
+      "index": 1,
+      "start": 0.0,
+      "end": 2.575,
+      "text": "Python turns readable ideas into running programs.",
+      "words": [
+        {
+          "text": "Python",
+          "start": 0.0,
+          "end": 0.3589
+        },
+        {
+          "text": "turns",
+          "start": 0.3589,
+          "end": 0.6865
+        },
+        {
+          "text": "readable",
+          "start": 0.6865,
+          "end": 1.101
+        },
+        {
+          "text": "ideas",
+          "start": 1.101,
+          "end": 1.4286
+        },
+        {
+          "text": "into",
+          "start": 1.4286,
+          "end": 1.7216
+        },
+        {
+          "text": "running",
+          "start": 1.7216,
+          "end": 2.1093
+        },
+        {
+          "text": "programs.",
+          "start": 2.1093,
+          "end": 2.575
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "start": 3.0,
+      "end": 17.2,
+      "text": "In five minutes, you will see how Python executes a file, how names connect to typed objects, how collections organize data, and how control flow, functions, imports, and exceptions combine into one small working program.",
+      "words": [
+        {
+          "text": "In",
+          "start": 3.0,
+          "end": 3.2554
+        },
+        {
+          "text": "five",
+          "start": 3.2554,
+          "end": 3.6166
+        },
+        {
+          "text": "minutes,",
+          "start": 3.6166,
+          "end": 4.1306
+        },
+        {
+          "text": "you",
+          "start": 4.1306,
+          "end": 4.4434
+        },
+        {
+          "text": "will",
+          "start": 4.4434,
+          "end": 4.8046
+        },
+        {
+          "text": "see",
+          "start": 4.8046,
+          "end": 5.1174
+        },
+        {
+          "text": "how",
+          "start": 5.1174,
+          "end": 5.4302
+        },
+        {
+          "text": "Python",
+          "start": 5.4302,
+          "end": 5.8726
+        },
+        {
+          "text": "executes",
+          "start": 5.8726,
+          "end": 6.3834
+        },
+        {
+          "text": "a",
+          "start": 6.3834,
+          "end": 6.564
+        },
+        {
+          "text": "file,",
+          "start": 6.564,
+          "end": 6.9613
+        },
+        {
+          "text": "how",
+          "start": 6.9613,
+          "end": 7.2741
+        },
+        {
+          "text": "names",
+          "start": 7.2741,
+          "end": 7.678
+        },
+        {
+          "text": "connect",
+          "start": 7.678,
+          "end": 8.1558
+        },
+        {
+          "text": "to",
+          "start": 8.1558,
+          "end": 8.4112
+        },
+        {
+          "text": "typed",
+          "start": 8.4112,
+          "end": 8.815
+        },
+        {
+          "text": "objects,",
+          "start": 8.815,
+          "end": 9.329
+        },
+        {
+          "text": "how",
+          "start": 9.329,
+          "end": 9.6418
+        },
+        {
+          "text": "collections",
+          "start": 9.6418,
+          "end": 10.2408
+        },
+        {
+          "text": "organize",
+          "start": 10.2408,
+          "end": 10.7516
+        },
+        {
+          "text": "data,",
+          "start": 10.7516,
+          "end": 11.1489
+        },
+        {
+          "text": "and",
+          "start": 11.1489,
+          "end": 11.4617
+        },
+        {
+          "text": "how",
+          "start": 11.4617,
+          "end": 11.7745
+        },
+        {
+          "text": "control",
+          "start": 11.7745,
+          "end": 12.2524
+        },
+        {
+          "text": "flow,",
+          "start": 12.2524,
+          "end": 12.6497
+        },
+        {
+          "text": "functions,",
+          "start": 12.6497,
+          "end": 13.2276
+        },
+        {
+          "text": "imports,",
+          "start": 13.2276,
+          "end": 13.7415
+        },
+        {
+          "text": "and",
+          "start": 13.7415,
+          "end": 14.0544
+        },
+        {
+          "text": "exceptions",
+          "start": 14.0544,
+          "end": 14.6255
+        },
+        {
+          "text": "combine",
+          "start": 14.6255,
+          "end": 15.1033
+        },
+        {
+          "text": "into",
+          "start": 15.1033,
+          "end": 15.4645
+        },
+        {
+          "text": "one",
+          "start": 15.4645,
+          "end": 15.7773
+        },
+        {
+          "text": "small",
+          "start": 15.7773,
+          "end": 16.1811
+        },
+        {
+          "text": "working",
+          "start": 16.1811,
+          "end": 16.659
+        },
+        {
+          "text": "program.",
+          "start": 16.659,
+          "end": 17.2
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "start": 18.0,
+      "end": 47.0,
+      "text": "When you run a Python file, Python first reads and parses the source. Invalid grammar stops with a Syntax Error before execution begins. A Python implementation compiles valid code into a code object. In C Python, that object contains bytecode instructions, and the interpreter evaluates them inside execution frames. Statements bind names, call functions, and create effects such as printed output. Bytecode is an implementation detail, so keep the portable model: parse valid source, create executable instructions, then execute them.",
+      "words": [
+        {
+          "text": "When",
+          "start": 18.0,
+          "end": 18.3127
+        },
+        {
+          "text": "you",
+          "start": 18.3127,
+          "end": 18.5836
+        },
+        {
+          "text": "run",
+          "start": 18.5836,
+          "end": 18.8544
+        },
+        {
+          "text": "a",
+          "start": 18.8544,
+          "end": 19.0107
+        },
+        {
+          "text": "Python",
+          "start": 19.0107,
+          "end": 19.3938
+        },
+        {
+          "text": "file,",
+          "start": 19.3938,
+          "end": 19.7377
+        },
+        {
+          "text": "Python",
+          "start": 19.7377,
+          "end": 20.1208
+        },
+        {
+          "text": "first",
+          "start": 20.1208,
+          "end": 20.4704
+        },
+        {
+          "text": "reads",
+          "start": 20.4704,
+          "end": 20.82
+        },
+        {
+          "text": "and",
+          "start": 20.82,
+          "end": 21.0909
+        },
+        {
+          "text": "parses",
+          "start": 21.0909,
+          "end": 21.4739
+        },
+        {
+          "text": "the",
+          "start": 21.4739,
+          "end": 21.7447
+        },
+        {
+          "text": "source.",
+          "start": 21.7447,
+          "end": 22.1824
+        },
+        {
+          "text": "Invalid",
+          "start": 22.1824,
+          "end": 22.5961
+        },
+        {
+          "text": "grammar",
+          "start": 22.5961,
+          "end": 23.0098
+        },
+        {
+          "text": "stops",
+          "start": 23.0098,
+          "end": 23.3595
+        },
+        {
+          "text": "with",
+          "start": 23.3595,
+          "end": 23.6722
+        },
+        {
+          "text": "a",
+          "start": 23.6722,
+          "end": 23.8285
+        },
+        {
+          "text": "Syntax",
+          "start": 23.8285,
+          "end": 24.2116
+        },
+        {
+          "text": "Error",
+          "start": 24.2116,
+          "end": 24.5612
+        },
+        {
+          "text": "before",
+          "start": 24.5612,
+          "end": 24.9442
+        },
+        {
+          "text": "execution",
+          "start": 24.9442,
+          "end": 25.4133
+        },
+        {
+          "text": "begins.",
+          "start": 25.4133,
+          "end": 25.851
+        },
+        {
+          "text": "A",
+          "start": 25.851,
+          "end": 26.0074
+        },
+        {
+          "text": "Python",
+          "start": 26.0074,
+          "end": 26.3904
+        },
+        {
+          "text": "implementation",
+          "start": 26.3904,
+          "end": 26.9754
+        },
+        {
+          "text": "compiles",
+          "start": 26.9754,
+          "end": 27.4177
+        },
+        {
+          "text": "valid",
+          "start": 27.4177,
+          "end": 27.7673
+        },
+        {
+          "text": "code",
+          "start": 27.7673,
+          "end": 28.0801
+        },
+        {
+          "text": "into",
+          "start": 28.0801,
+          "end": 28.3928
+        },
+        {
+          "text": "a",
+          "start": 28.3928,
+          "end": 28.5492
+        },
+        {
+          "text": "code",
+          "start": 28.5492,
+          "end": 28.8619
+        },
+        {
+          "text": "object.",
+          "start": 28.8619,
+          "end": 29.2996
+        },
+        {
+          "text": "In",
+          "start": 29.2996,
+          "end": 29.5207
+        },
+        {
+          "text": "C",
+          "start": 29.5207,
+          "end": 29.6771
+        },
+        {
+          "text": "Python,",
+          "start": 29.6771,
+          "end": 30.0914
+        },
+        {
+          "text": "that",
+          "start": 30.0914,
+          "end": 30.4041
+        },
+        {
+          "text": "object",
+          "start": 30.4041,
+          "end": 30.7871
+        },
+        {
+          "text": "contains",
+          "start": 30.7871,
+          "end": 31.2294
+        },
+        {
+          "text": "bytecode",
+          "start": 31.2294,
+          "end": 31.6716
+        },
+        {
+          "text": "instructions,",
+          "start": 31.6716,
+          "end": 32.2446
+        },
+        {
+          "text": "and",
+          "start": 32.2446,
+          "end": 32.5154
+        },
+        {
+          "text": "the",
+          "start": 32.5154,
+          "end": 32.7862
+        },
+        {
+          "text": "interpreter",
+          "start": 32.7862,
+          "end": 33.3048
+        },
+        {
+          "text": "evaluates",
+          "start": 33.3048,
+          "end": 33.7739
+        },
+        {
+          "text": "them",
+          "start": 33.7739,
+          "end": 34.0866
+        },
+        {
+          "text": "inside",
+          "start": 34.0866,
+          "end": 34.4696
+        },
+        {
+          "text": "execution",
+          "start": 34.4696,
+          "end": 34.9387
+        },
+        {
+          "text": "frames.",
+          "start": 34.9387,
+          "end": 35.3765
+        },
+        {
+          "text": "Statements",
+          "start": 35.3765,
+          "end": 35.8709
+        },
+        {
+          "text": "bind",
+          "start": 35.8709,
+          "end": 36.1837
+        },
+        {
+          "text": "names,",
+          "start": 36.1837,
+          "end": 36.5646
+        },
+        {
+          "text": "call",
+          "start": 36.5646,
+          "end": 36.8773
+        },
+        {
+          "text": "functions,",
+          "start": 36.8773,
+          "end": 37.3776
+        },
+        {
+          "text": "and",
+          "start": 37.3776,
+          "end": 37.6485
+        },
+        {
+          "text": "create",
+          "start": 37.6485,
+          "end": 38.0315
+        },
+        {
+          "text": "effects",
+          "start": 38.0315,
+          "end": 38.4452
+        },
+        {
+          "text": "such",
+          "start": 38.4452,
+          "end": 38.7579
+        },
+        {
+          "text": "as",
+          "start": 38.7579,
+          "end": 38.979
+        },
+        {
+          "text": "printed",
+          "start": 38.979,
+          "end": 39.3927
+        },
+        {
+          "text": "output.",
+          "start": 39.3927,
+          "end": 39.8305
+        },
+        {
+          "text": "Bytecode",
+          "start": 39.8305,
+          "end": 40.2727
+        },
+        {
+          "text": "is",
+          "start": 40.2727,
+          "end": 40.4939
+        },
+        {
+          "text": "an",
+          "start": 40.4939,
+          "end": 40.715
+        },
+        {
+          "text": "implementation",
+          "start": 40.715,
+          "end": 41.3
+        },
+        {
+          "text": "detail,",
+          "start": 41.3,
+          "end": 41.7143
+        },
+        {
+          "text": "so",
+          "start": 41.7143,
+          "end": 41.9355
+        },
+        {
+          "text": "keep",
+          "start": 41.9355,
+          "end": 42.2482
+        },
+        {
+          "text": "the",
+          "start": 42.2482,
+          "end": 42.519
+        },
+        {
+          "text": "portable",
+          "start": 42.519,
+          "end": 42.9613
+        },
+        {
+          "text": "model:",
+          "start": 42.9613,
+          "end": 43.3422
+        },
+        {
+          "text": "parse",
+          "start": 43.3422,
+          "end": 43.6918
+        },
+        {
+          "text": "valid",
+          "start": 43.6918,
+          "end": 44.0414
+        },
+        {
+          "text": "source,",
+          "start": 44.0414,
+          "end": 44.4557
+        },
+        {
+          "text": "create",
+          "start": 44.4557,
+          "end": 44.8387
+        },
+        {
+          "text": "executable",
+          "start": 44.8387,
+          "end": 45.3332
+        },
+        {
+          "text": "instructions,",
+          "start": 45.3332,
+          "end": 45.9061
+        },
+        {
+          "text": "then",
+          "start": 45.9061,
+          "end": 46.2189
+        },
+        {
+          "text": "execute",
+          "start": 46.2189,
+          "end": 46.6325
+        },
+        {
+          "text": "them.",
+          "start": 46.6325,
+          "end": 47.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "start": 48.0,
+      "end": 73.6,
+      "text": "A variable is a name bound to an object. The object carries its type; the name does not. Writing count equals three binds count to an integer object. Reassigning count changes the binding, not the old integer. Integers, floats, booleans, strings, and none are common values. Lists and dictionaries are mutable, so their contents can change in place. Assignment does not automatically copy an object, which is why two names can observe the same mutable list.",
+      "words": [
+        {
+          "text": "A",
+          "start": 48.0,
+          "end": 48.1543
+        },
+        {
+          "text": "variable",
+          "start": 48.1543,
+          "end": 48.5907
+        },
+        {
+          "text": "is",
+          "start": 48.5907,
+          "end": 48.8089
+        },
+        {
+          "text": "a",
+          "start": 48.8089,
+          "end": 48.9632
+        },
+        {
+          "text": "name",
+          "start": 48.9632,
+          "end": 49.2718
+        },
+        {
+          "text": "bound",
+          "start": 49.2718,
+          "end": 49.6168
+        },
+        {
+          "text": "to",
+          "start": 49.6168,
+          "end": 49.835
+        },
+        {
+          "text": "an",
+          "start": 49.835,
+          "end": 50.0532
+        },
+        {
+          "text": "object.",
+          "start": 50.0532,
+          "end": 50.4852
+        },
+        {
+          "text": "The",
+          "start": 50.4852,
+          "end": 50.7524
+        },
+        {
+          "text": "object",
+          "start": 50.7524,
+          "end": 51.1303
+        },
+        {
+          "text": "carries",
+          "start": 51.1303,
+          "end": 51.5386
+        },
+        {
+          "text": "its",
+          "start": 51.5386,
+          "end": 51.8058
+        },
+        {
+          "text": "type;",
+          "start": 51.8058,
+          "end": 52.1453
+        },
+        {
+          "text": "the",
+          "start": 52.1453,
+          "end": 52.4125
+        },
+        {
+          "text": "name",
+          "start": 52.4125,
+          "end": 52.7211
+        },
+        {
+          "text": "does",
+          "start": 52.7211,
+          "end": 53.0297
+        },
+        {
+          "text": "not.",
+          "start": 53.0297,
+          "end": 53.3509
+        },
+        {
+          "text": "Writing",
+          "start": 53.3509,
+          "end": 53.7592
+        },
+        {
+          "text": "count",
+          "start": 53.7592,
+          "end": 54.1042
+        },
+        {
+          "text": "equals",
+          "start": 54.1042,
+          "end": 54.4821
+        },
+        {
+          "text": "three",
+          "start": 54.4821,
+          "end": 54.8271
+        },
+        {
+          "text": "binds",
+          "start": 54.8271,
+          "end": 55.1721
+        },
+        {
+          "text": "count",
+          "start": 55.1721,
+          "end": 55.5172
+        },
+        {
+          "text": "to",
+          "start": 55.5172,
+          "end": 55.7354
+        },
+        {
+          "text": "an",
+          "start": 55.7354,
+          "end": 55.9536
+        },
+        {
+          "text": "integer",
+          "start": 55.9536,
+          "end": 56.3618
+        },
+        {
+          "text": "object.",
+          "start": 56.3618,
+          "end": 56.7937
+        },
+        {
+          "text": "Reassigning",
+          "start": 56.7937,
+          "end": 57.3055
+        },
+        {
+          "text": "count",
+          "start": 57.3055,
+          "end": 57.6505
+        },
+        {
+          "text": "changes",
+          "start": 57.6505,
+          "end": 58.0587
+        },
+        {
+          "text": "the",
+          "start": 58.0587,
+          "end": 58.3259
+        },
+        {
+          "text": "binding,",
+          "start": 58.3259,
+          "end": 58.765
+        },
+        {
+          "text": "not",
+          "start": 58.765,
+          "end": 59.0323
+        },
+        {
+          "text": "the",
+          "start": 59.0323,
+          "end": 59.2995
+        },
+        {
+          "text": "old",
+          "start": 59.2995,
+          "end": 59.5668
+        },
+        {
+          "text": "integer.",
+          "start": 59.5668,
+          "end": 60.029
+        },
+        {
+          "text": "Integers,",
+          "start": 60.029,
+          "end": 60.4963
+        },
+        {
+          "text": "floats,",
+          "start": 60.4963,
+          "end": 60.9051
+        },
+        {
+          "text": "booleans,",
+          "start": 60.9051,
+          "end": 61.3723
+        },
+        {
+          "text": "strings,",
+          "start": 61.3723,
+          "end": 61.8114
+        },
+        {
+          "text": "and",
+          "start": 61.8114,
+          "end": 62.0787
+        },
+        {
+          "text": "none",
+          "start": 62.0787,
+          "end": 62.3872
+        },
+        {
+          "text": "are",
+          "start": 62.3872,
+          "end": 62.6545
+        },
+        {
+          "text": "common",
+          "start": 62.6545,
+          "end": 63.0324
+        },
+        {
+          "text": "values.",
+          "start": 63.0324,
+          "end": 63.4644
+        },
+        {
+          "text": "Lists",
+          "start": 63.4644,
+          "end": 63.8094
+        },
+        {
+          "text": "and",
+          "start": 63.8094,
+          "end": 64.0766
+        },
+        {
+          "text": "dictionaries",
+          "start": 64.0766,
+          "end": 64.6111
+        },
+        {
+          "text": "are",
+          "start": 64.6111,
+          "end": 64.8784
+        },
+        {
+          "text": "mutable,",
+          "start": 64.8784,
+          "end": 65.3175
+        },
+        {
+          "text": "so",
+          "start": 65.3175,
+          "end": 65.5357
+        },
+        {
+          "text": "their",
+          "start": 65.5357,
+          "end": 65.8807
+        },
+        {
+          "text": "contents",
+          "start": 65.8807,
+          "end": 66.3171
+        },
+        {
+          "text": "can",
+          "start": 66.3171,
+          "end": 66.5843
+        },
+        {
+          "text": "change",
+          "start": 66.5843,
+          "end": 66.9623
+        },
+        {
+          "text": "in",
+          "start": 66.9623,
+          "end": 67.1805
+        },
+        {
+          "text": "place.",
+          "start": 67.1805,
+          "end": 67.5795
+        },
+        {
+          "text": "Assignment",
+          "start": 67.5795,
+          "end": 68.0674
+        },
+        {
+          "text": "does",
+          "start": 68.0674,
+          "end": 68.376
+        },
+        {
+          "text": "not",
+          "start": 68.376,
+          "end": 68.6433
+        },
+        {
+          "text": "automatically",
+          "start": 68.6433,
+          "end": 69.1996
+        },
+        {
+          "text": "copy",
+          "start": 69.1996,
+          "end": 69.5082
+        },
+        {
+          "text": "an",
+          "start": 69.5082,
+          "end": 69.7264
+        },
+        {
+          "text": "object,",
+          "start": 69.7264,
+          "end": 70.1352
+        },
+        {
+          "text": "which",
+          "start": 70.1352,
+          "end": 70.4802
+        },
+        {
+          "text": "is",
+          "start": 70.4802,
+          "end": 70.6984
+        },
+        {
+          "text": "why",
+          "start": 70.6984,
+          "end": 70.9656
+        },
+        {
+          "text": "two",
+          "start": 70.9656,
+          "end": 71.2329
+        },
+        {
+          "text": "names",
+          "start": 71.2329,
+          "end": 71.5779
+        },
+        {
+          "text": "can",
+          "start": 71.5779,
+          "end": 71.8451
+        },
+        {
+          "text": "observe",
+          "start": 71.8451,
+          "end": 72.2534
+        },
+        {
+          "text": "the",
+          "start": 72.2534,
+          "end": 72.5206
+        },
+        {
+          "text": "same",
+          "start": 72.5206,
+          "end": 72.8292
+        },
+        {
+          "text": "mutable",
+          "start": 72.8292,
+          "end": 73.2374
+        },
+        {
+          "text": "list.",
+          "start": 73.2374,
+          "end": 73.6
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "start": 78.0,
+      "end": 107.65,
+      "text": "Choose a collection by its job. A list keeps an ordered, mutable sequence and supports indexing. A tuple is ordered, but its structure cannot be reassigned after creation, so it suits fixed records. A set stores unique elements and works well for membership checks or removing duplicates; do not depend on display order. A dictionary maps unique keys to values and preserves insertion order. Use lists for sequences, tuples for fixed groupings, sets for uniqueness, and dictionaries for labeled lookup.",
+      "words": [
+        {
+          "text": "Choose",
+          "start": 78.0,
+          "end": 78.4092
+        },
+        {
+          "text": "a",
+          "start": 78.4092,
+          "end": 78.5762
+        },
+        {
+          "text": "collection",
+          "start": 78.5762,
+          "end": 79.1045
+        },
+        {
+          "text": "by",
+          "start": 79.1045,
+          "end": 79.3407
+        },
+        {
+          "text": "its",
+          "start": 79.3407,
+          "end": 79.6301
+        },
+        {
+          "text": "job.",
+          "start": 79.6301,
+          "end": 79.9779
+        },
+        {
+          "text": "A",
+          "start": 79.9779,
+          "end": 80.1449
+        },
+        {
+          "text": "list",
+          "start": 80.1449,
+          "end": 80.479
+        },
+        {
+          "text": "keeps",
+          "start": 80.479,
+          "end": 80.8525
+        },
+        {
+          "text": "an",
+          "start": 80.8525,
+          "end": 81.0888
+        },
+        {
+          "text": "ordered,",
+          "start": 81.0888,
+          "end": 81.5642
+        },
+        {
+          "text": "mutable",
+          "start": 81.5642,
+          "end": 82.0061
+        },
+        {
+          "text": "sequence",
+          "start": 82.0061,
+          "end": 82.4786
+        },
+        {
+          "text": "and",
+          "start": 82.4786,
+          "end": 82.768
+        },
+        {
+          "text": "supports",
+          "start": 82.768,
+          "end": 83.2404
+        },
+        {
+          "text": "indexing.",
+          "start": 83.2404,
+          "end": 83.7714
+        },
+        {
+          "text": "A",
+          "start": 83.7714,
+          "end": 83.9384
+        },
+        {
+          "text": "tuple",
+          "start": 83.9384,
+          "end": 84.312
+        },
+        {
+          "text": "is",
+          "start": 84.312,
+          "end": 84.5482
+        },
+        {
+          "text": "ordered,",
+          "start": 84.5482,
+          "end": 85.0236
+        },
+        {
+          "text": "but",
+          "start": 85.0236,
+          "end": 85.3129
+        },
+        {
+          "text": "its",
+          "start": 85.3129,
+          "end": 85.6023
+        },
+        {
+          "text": "structure",
+          "start": 85.6023,
+          "end": 86.1034
+        },
+        {
+          "text": "cannot",
+          "start": 86.1034,
+          "end": 86.5126
+        },
+        {
+          "text": "be",
+          "start": 86.5126,
+          "end": 86.7488
+        },
+        {
+          "text": "reassigned",
+          "start": 86.7488,
+          "end": 87.2771
+        },
+        {
+          "text": "after",
+          "start": 87.2771,
+          "end": 87.6506
+        },
+        {
+          "text": "creation,",
+          "start": 87.6506,
+          "end": 88.1565
+        },
+        {
+          "text": "so",
+          "start": 88.1565,
+          "end": 88.3928
+        },
+        {
+          "text": "it",
+          "start": 88.3928,
+          "end": 88.629
+        },
+        {
+          "text": "suits",
+          "start": 88.629,
+          "end": 89.0025
+        },
+        {
+          "text": "fixed",
+          "start": 89.0025,
+          "end": 89.3761
+        },
+        {
+          "text": "records.",
+          "start": 89.3761,
+          "end": 89.8765
+        },
+        {
+          "text": "A",
+          "start": 89.8765,
+          "end": 90.0435
+        },
+        {
+          "text": "set",
+          "start": 90.0435,
+          "end": 90.3329
+        },
+        {
+          "text": "stores",
+          "start": 90.3329,
+          "end": 90.7421
+        },
+        {
+          "text": "unique",
+          "start": 90.7421,
+          "end": 91.1513
+        },
+        {
+          "text": "elements",
+          "start": 91.1513,
+          "end": 91.6237
+        },
+        {
+          "text": "and",
+          "start": 91.6237,
+          "end": 91.9131
+        },
+        {
+          "text": "works",
+          "start": 91.9131,
+          "end": 92.2866
+        },
+        {
+          "text": "well",
+          "start": 92.2866,
+          "end": 92.6207
+        },
+        {
+          "text": "for",
+          "start": 92.6207,
+          "end": 92.91
+        },
+        {
+          "text": "membership",
+          "start": 92.91,
+          "end": 93.4383
+        },
+        {
+          "text": "checks",
+          "start": 93.4383,
+          "end": 93.8475
+        },
+        {
+          "text": "or",
+          "start": 93.8475,
+          "end": 94.0837
+        },
+        {
+          "text": "removing",
+          "start": 94.0837,
+          "end": 94.5562
+        },
+        {
+          "text": "duplicates;",
+          "start": 94.5562,
+          "end": 95.1179
+        },
+        {
+          "text": "do",
+          "start": 95.1179,
+          "end": 95.3541
+        },
+        {
+          "text": "not",
+          "start": 95.3541,
+          "end": 95.6434
+        },
+        {
+          "text": "depend",
+          "start": 95.6434,
+          "end": 96.0526
+        },
+        {
+          "text": "on",
+          "start": 96.0526,
+          "end": 96.2889
+        },
+        {
+          "text": "display",
+          "start": 96.2889,
+          "end": 96.7308
+        },
+        {
+          "text": "order.",
+          "start": 96.7308,
+          "end": 97.1628
+        },
+        {
+          "text": "A",
+          "start": 97.1628,
+          "end": 97.3299
+        },
+        {
+          "text": "dictionary",
+          "start": 97.3299,
+          "end": 97.8581
+        },
+        {
+          "text": "maps",
+          "start": 97.8581,
+          "end": 98.1922
+        },
+        {
+          "text": "unique",
+          "start": 98.1922,
+          "end": 98.6014
+        },
+        {
+          "text": "keys",
+          "start": 98.6014,
+          "end": 98.9355
+        },
+        {
+          "text": "to",
+          "start": 98.9355,
+          "end": 99.1718
+        },
+        {
+          "text": "values",
+          "start": 99.1718,
+          "end": 99.5809
+        },
+        {
+          "text": "and",
+          "start": 99.5809,
+          "end": 99.8703
+        },
+        {
+          "text": "preserves",
+          "start": 99.8703,
+          "end": 100.3714
+        },
+        {
+          "text": "insertion",
+          "start": 100.3714,
+          "end": 100.8726
+        },
+        {
+          "text": "order.",
+          "start": 100.8726,
+          "end": 101.3046
+        },
+        {
+          "text": "Use",
+          "start": 101.3046,
+          "end": 101.5939
+        },
+        {
+          "text": "lists",
+          "start": 101.5939,
+          "end": 101.9674
+        },
+        {
+          "text": "for",
+          "start": 101.9674,
+          "end": 102.2568
+        },
+        {
+          "text": "sequences,",
+          "start": 102.2568,
+          "end": 102.7913
+        },
+        {
+          "text": "tuples",
+          "start": 102.7913,
+          "end": 103.2005
+        },
+        {
+          "text": "for",
+          "start": 103.2005,
+          "end": 103.4899
+        },
+        {
+          "text": "fixed",
+          "start": 103.4899,
+          "end": 103.8634
+        },
+        {
+          "text": "groupings,",
+          "start": 103.8634,
+          "end": 104.3979
+        },
+        {
+          "text": "sets",
+          "start": 104.3979,
+          "end": 104.732
+        },
+        {
+          "text": "for",
+          "start": 104.732,
+          "end": 105.0214
+        },
+        {
+          "text": "uniqueness,",
+          "start": 105.0214,
+          "end": 105.583
+        },
+        {
+          "text": "and",
+          "start": 105.583,
+          "end": 105.8724
+        },
+        {
+          "text": "dictionaries",
+          "start": 105.8724,
+          "end": 106.451
+        },
+        {
+          "text": "for",
+          "start": 106.451,
+          "end": 106.7404
+        },
+        {
+          "text": "labeled",
+          "start": 106.7404,
+          "end": 107.1823
+        },
+        {
+          "text": "lookup.",
+          "start": 107.1823,
+          "end": 107.65
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "start": 108.0,
+      "end": 135.75,
+      "text": "Control flow decides which statements run and how often. An if chain evaluates conditions from top to bottom and enters the first matching branch. A for loop asks an iterable for each item and runs its indented body once per item. Here, score receives each number. Only values at least seventy reach print, producing seventy-two and ninety-one. Indentation defines Python\u2019s blocks; it is not decoration. Use while when repetition depends on a condition rather than a known collection.",
+      "words": [
+        {
+          "text": "Control",
+          "start": 108.0,
+          "end": 108.4254
+        },
+        {
+          "text": "flow",
+          "start": 108.4254,
+          "end": 108.7469
+        },
+        {
+          "text": "decides",
+          "start": 108.7469,
+          "end": 109.1723
+        },
+        {
+          "text": "which",
+          "start": 109.1723,
+          "end": 109.5318
+        },
+        {
+          "text": "statements",
+          "start": 109.5318,
+          "end": 110.0403
+        },
+        {
+          "text": "run",
+          "start": 110.0403,
+          "end": 110.3187
+        },
+        {
+          "text": "and",
+          "start": 110.3187,
+          "end": 110.5972
+        },
+        {
+          "text": "how",
+          "start": 110.5972,
+          "end": 110.8757
+        },
+        {
+          "text": "often.",
+          "start": 110.8757,
+          "end": 111.2915
+        },
+        {
+          "text": "An",
+          "start": 111.2915,
+          "end": 111.5188
+        },
+        {
+          "text": "if",
+          "start": 111.5188,
+          "end": 111.7462
+        },
+        {
+          "text": "chain",
+          "start": 111.7462,
+          "end": 112.1057
+        },
+        {
+          "text": "evaluates",
+          "start": 112.1057,
+          "end": 112.5881
+        },
+        {
+          "text": "conditions",
+          "start": 112.5881,
+          "end": 113.0965
+        },
+        {
+          "text": "from",
+          "start": 113.0965,
+          "end": 113.418
+        },
+        {
+          "text": "top",
+          "start": 113.418,
+          "end": 113.6965
+        },
+        {
+          "text": "to",
+          "start": 113.6965,
+          "end": 113.9239
+        },
+        {
+          "text": "bottom",
+          "start": 113.9239,
+          "end": 114.3177
+        },
+        {
+          "text": "and",
+          "start": 114.3177,
+          "end": 114.5962
+        },
+        {
+          "text": "enters",
+          "start": 114.5962,
+          "end": 114.99
+        },
+        {
+          "text": "the",
+          "start": 114.99,
+          "end": 115.2685
+        },
+        {
+          "text": "first",
+          "start": 115.2685,
+          "end": 115.628
+        },
+        {
+          "text": "matching",
+          "start": 115.628,
+          "end": 116.0828
+        },
+        {
+          "text": "branch.",
+          "start": 116.0828,
+          "end": 116.5328
+        },
+        {
+          "text": "A",
+          "start": 116.5328,
+          "end": 116.6936
+        },
+        {
+          "text": "for",
+          "start": 116.6936,
+          "end": 116.9721
+        },
+        {
+          "text": "loop",
+          "start": 116.9721,
+          "end": 117.2937
+        },
+        {
+          "text": "asks",
+          "start": 117.2937,
+          "end": 117.6152
+        },
+        {
+          "text": "an",
+          "start": 117.6152,
+          "end": 117.8426
+        },
+        {
+          "text": "iterable",
+          "start": 117.8426,
+          "end": 118.2973
+        },
+        {
+          "text": "for",
+          "start": 118.2973,
+          "end": 118.5758
+        },
+        {
+          "text": "each",
+          "start": 118.5758,
+          "end": 118.8974
+        },
+        {
+          "text": "item",
+          "start": 118.8974,
+          "end": 119.2189
+        },
+        {
+          "text": "and",
+          "start": 119.2189,
+          "end": 119.4974
+        },
+        {
+          "text": "runs",
+          "start": 119.4974,
+          "end": 119.819
+        },
+        {
+          "text": "its",
+          "start": 119.819,
+          "end": 120.0974
+        },
+        {
+          "text": "indented",
+          "start": 120.0974,
+          "end": 120.5522
+        },
+        {
+          "text": "body",
+          "start": 120.5522,
+          "end": 120.8737
+        },
+        {
+          "text": "once",
+          "start": 120.8737,
+          "end": 121.1953
+        },
+        {
+          "text": "per",
+          "start": 121.1953,
+          "end": 121.4738
+        },
+        {
+          "text": "item.",
+          "start": 121.4738,
+          "end": 121.8516
+        },
+        {
+          "text": "Here,",
+          "start": 121.8516,
+          "end": 122.2053
+        },
+        {
+          "text": "score",
+          "start": 122.2053,
+          "end": 122.5648
+        },
+        {
+          "text": "receives",
+          "start": 122.5648,
+          "end": 123.0196
+        },
+        {
+          "text": "each",
+          "start": 123.0196,
+          "end": 123.3411
+        },
+        {
+          "text": "number.",
+          "start": 123.3411,
+          "end": 123.7912
+        },
+        {
+          "text": "Only",
+          "start": 123.7912,
+          "end": 124.1128
+        },
+        {
+          "text": "values",
+          "start": 124.1128,
+          "end": 124.5066
+        },
+        {
+          "text": "at",
+          "start": 124.5066,
+          "end": 124.734
+        },
+        {
+          "text": "least",
+          "start": 124.734,
+          "end": 125.0935
+        },
+        {
+          "text": "seventy",
+          "start": 125.0935,
+          "end": 125.5189
+        },
+        {
+          "text": "reach",
+          "start": 125.5189,
+          "end": 125.8784
+        },
+        {
+          "text": "print,",
+          "start": 125.8784,
+          "end": 126.2701
+        },
+        {
+          "text": "producing",
+          "start": 126.2701,
+          "end": 126.7524
+        },
+        {
+          "text": "seventy-two",
+          "start": 126.7524,
+          "end": 127.2608
+        },
+        {
+          "text": "and",
+          "start": 127.2608,
+          "end": 127.5393
+        },
+        {
+          "text": "ninety-one.",
+          "start": 127.5393,
+          "end": 128.0779
+        },
+        {
+          "text": "Indentation",
+          "start": 128.0779,
+          "end": 128.6111
+        },
+        {
+          "text": "defines",
+          "start": 128.6111,
+          "end": 129.0365
+        },
+        {
+          "text": "Python\u2019s",
+          "start": 129.0365,
+          "end": 129.4619
+        },
+        {
+          "text": "blocks;",
+          "start": 129.4619,
+          "end": 129.8879
+        },
+        {
+          "text": "it",
+          "start": 129.8879,
+          "end": 130.1152
+        },
+        {
+          "text": "is",
+          "start": 130.1152,
+          "end": 130.3426
+        },
+        {
+          "text": "not",
+          "start": 130.3426,
+          "end": 130.6211
+        },
+        {
+          "text": "decoration.",
+          "start": 130.6211,
+          "end": 131.1858
+        },
+        {
+          "text": "Use",
+          "start": 131.1858,
+          "end": 131.4643
+        },
+        {
+          "text": "while",
+          "start": 131.4643,
+          "end": 131.8238
+        },
+        {
+          "text": "when",
+          "start": 131.8238,
+          "end": 132.1453
+        },
+        {
+          "text": "repetition",
+          "start": 132.1453,
+          "end": 132.6538
+        },
+        {
+          "text": "depends",
+          "start": 132.6538,
+          "end": 133.0791
+        },
+        {
+          "text": "on",
+          "start": 133.0791,
+          "end": 133.3065
+        },
+        {
+          "text": "a",
+          "start": 133.3065,
+          "end": 133.4673
+        },
+        {
+          "text": "condition",
+          "start": 133.4673,
+          "end": 133.9496
+        },
+        {
+          "text": "rather",
+          "start": 133.9496,
+          "end": 134.3435
+        },
+        {
+          "text": "than",
+          "start": 134.3435,
+          "end": 134.665
+        },
+        {
+          "text": "a",
+          "start": 134.665,
+          "end": 134.8258
+        },
+        {
+          "text": "known",
+          "start": 134.8258,
+          "end": 135.1853
+        },
+        {
+          "text": "collection.",
+          "start": 135.1853,
+          "end": 135.75
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "start": 138.0,
+      "end": 165.125,
+      "text": "Def creates a function object; its body runs only when called. During the call, arguments bind to parameters in a new local execution frame. Here, values receives the list. Sum produces a total, len counts items, and return sends the average back to the caller. Return differs from print: return provides a value that other code can reuse, while print only writes text. Functions package behavior behind a name, reduce repetition, and make logic easier to test and combine.",
+      "words": [
+        {
+          "text": "Def",
+          "start": 138.0,
+          "end": 138.2724
+        },
+        {
+          "text": "creates",
+          "start": 138.2724,
+          "end": 138.6886
+        },
+        {
+          "text": "a",
+          "start": 138.6886,
+          "end": 138.8459
+        },
+        {
+          "text": "function",
+          "start": 138.8459,
+          "end": 139.2908
+        },
+        {
+          "text": "object;",
+          "start": 139.2908,
+          "end": 139.7076
+        },
+        {
+          "text": "its",
+          "start": 139.7076,
+          "end": 139.98
+        },
+        {
+          "text": "body",
+          "start": 139.98,
+          "end": 140.2946
+        },
+        {
+          "text": "runs",
+          "start": 140.2946,
+          "end": 140.6092
+        },
+        {
+          "text": "only",
+          "start": 140.6092,
+          "end": 140.9238
+        },
+        {
+          "text": "when",
+          "start": 140.9238,
+          "end": 141.2384
+        },
+        {
+          "text": "called.",
+          "start": 141.2384,
+          "end": 141.6787
+        },
+        {
+          "text": "During",
+          "start": 141.6787,
+          "end": 142.064
+        },
+        {
+          "text": "the",
+          "start": 142.064,
+          "end": 142.3365
+        },
+        {
+          "text": "call,",
+          "start": 142.3365,
+          "end": 142.6825
+        },
+        {
+          "text": "arguments",
+          "start": 142.6825,
+          "end": 143.1544
+        },
+        {
+          "text": "bind",
+          "start": 143.1544,
+          "end": 143.469
+        },
+        {
+          "text": "to",
+          "start": 143.469,
+          "end": 143.6915
+        },
+        {
+          "text": "parameters",
+          "start": 143.6915,
+          "end": 144.1889
+        },
+        {
+          "text": "in",
+          "start": 144.1889,
+          "end": 144.4113
+        },
+        {
+          "text": "a",
+          "start": 144.4113,
+          "end": 144.5686
+        },
+        {
+          "text": "new",
+          "start": 144.5686,
+          "end": 144.8411
+        },
+        {
+          "text": "local",
+          "start": 144.8411,
+          "end": 145.1928
+        },
+        {
+          "text": "execution",
+          "start": 145.1928,
+          "end": 145.6647
+        },
+        {
+          "text": "frame.",
+          "start": 145.6647,
+          "end": 146.0715
+        },
+        {
+          "text": "Here,",
+          "start": 146.0715,
+          "end": 146.4175
+        },
+        {
+          "text": "values",
+          "start": 146.4175,
+          "end": 146.8028
+        },
+        {
+          "text": "receives",
+          "start": 146.8028,
+          "end": 147.2477
+        },
+        {
+          "text": "the",
+          "start": 147.2477,
+          "end": 147.5202
+        },
+        {
+          "text": "list.",
+          "start": 147.5202,
+          "end": 147.8898
+        },
+        {
+          "text": "Sum",
+          "start": 147.8898,
+          "end": 148.1622
+        },
+        {
+          "text": "produces",
+          "start": 148.1622,
+          "end": 148.6071
+        },
+        {
+          "text": "a",
+          "start": 148.6071,
+          "end": 148.7644
+        },
+        {
+          "text": "total,",
+          "start": 148.7644,
+          "end": 149.1476
+        },
+        {
+          "text": "len",
+          "start": 149.1476,
+          "end": 149.4201
+        },
+        {
+          "text": "counts",
+          "start": 149.4201,
+          "end": 149.8054
+        },
+        {
+          "text": "items,",
+          "start": 149.8054,
+          "end": 150.1886
+        },
+        {
+          "text": "and",
+          "start": 150.1886,
+          "end": 150.461
+        },
+        {
+          "text": "return",
+          "start": 150.461,
+          "end": 150.8463
+        },
+        {
+          "text": "sends",
+          "start": 150.8463,
+          "end": 151.198
+        },
+        {
+          "text": "the",
+          "start": 151.198,
+          "end": 151.4705
+        },
+        {
+          "text": "average",
+          "start": 151.4705,
+          "end": 151.8866
+        },
+        {
+          "text": "back",
+          "start": 151.8866,
+          "end": 152.2012
+        },
+        {
+          "text": "to",
+          "start": 152.2012,
+          "end": 152.4237
+        },
+        {
+          "text": "the",
+          "start": 152.4237,
+          "end": 152.6961
+        },
+        {
+          "text": "caller.",
+          "start": 152.6961,
+          "end": 153.1365
+        },
+        {
+          "text": "Return",
+          "start": 153.1365,
+          "end": 153.5218
+        },
+        {
+          "text": "differs",
+          "start": 153.5218,
+          "end": 153.9379
+        },
+        {
+          "text": "from",
+          "start": 153.9379,
+          "end": 154.2525
+        },
+        {
+          "text": "print:",
+          "start": 154.2525,
+          "end": 154.6357
+        },
+        {
+          "text": "return",
+          "start": 154.6357,
+          "end": 155.021
+        },
+        {
+          "text": "provides",
+          "start": 155.021,
+          "end": 155.4659
+        },
+        {
+          "text": "a",
+          "start": 155.4659,
+          "end": 155.6232
+        },
+        {
+          "text": "value",
+          "start": 155.6232,
+          "end": 155.9749
+        },
+        {
+          "text": "that",
+          "start": 155.9749,
+          "end": 156.2895
+        },
+        {
+          "text": "other",
+          "start": 156.2895,
+          "end": 156.6412
+        },
+        {
+          "text": "code",
+          "start": 156.6412,
+          "end": 156.9558
+        },
+        {
+          "text": "can",
+          "start": 156.9558,
+          "end": 157.2283
+        },
+        {
+          "text": "reuse,",
+          "start": 157.2283,
+          "end": 157.6115
+        },
+        {
+          "text": "while",
+          "start": 157.6115,
+          "end": 157.9632
+        },
+        {
+          "text": "print",
+          "start": 157.9632,
+          "end": 158.3149
+        },
+        {
+          "text": "only",
+          "start": 158.3149,
+          "end": 158.6295
+        },
+        {
+          "text": "writes",
+          "start": 158.6295,
+          "end": 159.0148
+        },
+        {
+          "text": "text.",
+          "start": 159.0148,
+          "end": 159.3845
+        },
+        {
+          "text": "Functions",
+          "start": 159.3845,
+          "end": 159.8563
+        },
+        {
+          "text": "package",
+          "start": 159.8563,
+          "end": 160.2725
+        },
+        {
+          "text": "behavior",
+          "start": 160.2725,
+          "end": 160.7174
+        },
+        {
+          "text": "behind",
+          "start": 160.7174,
+          "end": 161.1027
+        },
+        {
+          "text": "a",
+          "start": 161.1027,
+          "end": 161.26
+        },
+        {
+          "text": "name,",
+          "start": 161.26,
+          "end": 161.6061
+        },
+        {
+          "text": "reduce",
+          "start": 161.6061,
+          "end": 161.9914
+        },
+        {
+          "text": "repetition,",
+          "start": 161.9914,
+          "end": 162.5202
+        },
+        {
+          "text": "and",
+          "start": 162.5202,
+          "end": 162.7927
+        },
+        {
+          "text": "make",
+          "start": 162.7927,
+          "end": 163.1073
+        },
+        {
+          "text": "logic",
+          "start": 163.1073,
+          "end": 163.459
+        },
+        {
+          "text": "easier",
+          "start": 163.459,
+          "end": 163.8443
+        },
+        {
+          "text": "to",
+          "start": 163.8443,
+          "end": 164.0667
+        },
+        {
+          "text": "test",
+          "start": 164.0667,
+          "end": 164.3813
+        },
+        {
+          "text": "and",
+          "start": 164.3813,
+          "end": 164.6538
+        },
+        {
+          "text": "combine.",
+          "start": 164.6538,
+          "end": 165.125
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "start": 168.0,
+      "end": 197.725,
+      "text": "A module is usually a Python file with its own global namespace. Import asks the system to find and initialize that module, then binds a name in the importing file. From statistics import mean binds only the selected name. Code initializes the first time its module loads in that interpreter process, then is reused from the module cache. Prefer explicit imports so readers see where behavior comes from. Packages organize related modules into directories, giving larger applications clear boundaries.",
+      "words": [
+        {
+          "text": "A",
+          "start": 168.0,
+          "end": 168.1668
+        },
+        {
+          "text": "module",
+          "start": 168.1668,
+          "end": 168.5755
+        },
+        {
+          "text": "is",
+          "start": 168.5755,
+          "end": 168.8115
+        },
+        {
+          "text": "usually",
+          "start": 168.8115,
+          "end": 169.2529
+        },
+        {
+          "text": "a",
+          "start": 169.2529,
+          "end": 169.4198
+        },
+        {
+          "text": "Python",
+          "start": 169.4198,
+          "end": 169.8285
+        },
+        {
+          "text": "file",
+          "start": 169.8285,
+          "end": 170.1622
+        },
+        {
+          "text": "with",
+          "start": 170.1622,
+          "end": 170.4959
+        },
+        {
+          "text": "its",
+          "start": 170.4959,
+          "end": 170.7849
+        },
+        {
+          "text": "own",
+          "start": 170.7849,
+          "end": 171.0739
+        },
+        {
+          "text": "global",
+          "start": 171.0739,
+          "end": 171.4826
+        },
+        {
+          "text": "namespace.",
+          "start": 171.4826,
+          "end": 172.0415
+        },
+        {
+          "text": "Import",
+          "start": 172.0415,
+          "end": 172.4502
+        },
+        {
+          "text": "asks",
+          "start": 172.4502,
+          "end": 172.7839
+        },
+        {
+          "text": "the",
+          "start": 172.7839,
+          "end": 173.0729
+        },
+        {
+          "text": "system",
+          "start": 173.0729,
+          "end": 173.4816
+        },
+        {
+          "text": "to",
+          "start": 173.4816,
+          "end": 173.7175
+        },
+        {
+          "text": "find",
+          "start": 173.7175,
+          "end": 174.0512
+        },
+        {
+          "text": "and",
+          "start": 174.0512,
+          "end": 174.3402
+        },
+        {
+          "text": "initialize",
+          "start": 174.3402,
+          "end": 174.8679
+        },
+        {
+          "text": "that",
+          "start": 174.8679,
+          "end": 175.2016
+        },
+        {
+          "text": "module,",
+          "start": 175.2016,
+          "end": 175.6436
+        },
+        {
+          "text": "then",
+          "start": 175.6436,
+          "end": 175.9773
+        },
+        {
+          "text": "binds",
+          "start": 175.9773,
+          "end": 176.3504
+        },
+        {
+          "text": "a",
+          "start": 176.3504,
+          "end": 176.5172
+        },
+        {
+          "text": "name",
+          "start": 176.5172,
+          "end": 176.8509
+        },
+        {
+          "text": "in",
+          "start": 176.8509,
+          "end": 177.0869
+        },
+        {
+          "text": "the",
+          "start": 177.0869,
+          "end": 177.3759
+        },
+        {
+          "text": "importing",
+          "start": 177.3759,
+          "end": 177.8764
+        },
+        {
+          "text": "file.",
+          "start": 177.8764,
+          "end": 178.2685
+        },
+        {
+          "text": "From",
+          "start": 178.2685,
+          "end": 178.6022
+        },
+        {
+          "text": "statistics",
+          "start": 178.6022,
+          "end": 179.1299
+        },
+        {
+          "text": "import",
+          "start": 179.1299,
+          "end": 179.5386
+        },
+        {
+          "text": "mean",
+          "start": 179.5386,
+          "end": 179.8723
+        },
+        {
+          "text": "binds",
+          "start": 179.8723,
+          "end": 180.2453
+        },
+        {
+          "text": "only",
+          "start": 180.2453,
+          "end": 180.579
+        },
+        {
+          "text": "the",
+          "start": 180.579,
+          "end": 180.868
+        },
+        {
+          "text": "selected",
+          "start": 180.868,
+          "end": 181.3399
+        },
+        {
+          "text": "name.",
+          "start": 181.3399,
+          "end": 181.732
+        },
+        {
+          "text": "Code",
+          "start": 181.732,
+          "end": 182.0657
+        },
+        {
+          "text": "initializes",
+          "start": 182.0657,
+          "end": 182.6191
+        },
+        {
+          "text": "the",
+          "start": 182.6191,
+          "end": 182.9081
+        },
+        {
+          "text": "first",
+          "start": 182.9081,
+          "end": 183.2812
+        },
+        {
+          "text": "time",
+          "start": 183.2812,
+          "end": 183.6149
+        },
+        {
+          "text": "its",
+          "start": 183.6149,
+          "end": 183.9039
+        },
+        {
+          "text": "module",
+          "start": 183.9039,
+          "end": 184.3126
+        },
+        {
+          "text": "loads",
+          "start": 184.3126,
+          "end": 184.6857
+        },
+        {
+          "text": "in",
+          "start": 184.6857,
+          "end": 184.9216
+        },
+        {
+          "text": "that",
+          "start": 184.9216,
+          "end": 185.2553
+        },
+        {
+          "text": "interpreter",
+          "start": 185.2553,
+          "end": 185.8087
+        },
+        {
+          "text": "process,",
+          "start": 185.8087,
+          "end": 186.2835
+        },
+        {
+          "text": "then",
+          "start": 186.2835,
+          "end": 186.6172
+        },
+        {
+          "text": "is",
+          "start": 186.6172,
+          "end": 186.8532
+        },
+        {
+          "text": "reused",
+          "start": 186.8532,
+          "end": 187.2619
+        },
+        {
+          "text": "from",
+          "start": 187.2619,
+          "end": 187.5956
+        },
+        {
+          "text": "the",
+          "start": 187.5956,
+          "end": 187.8845
+        },
+        {
+          "text": "module",
+          "start": 187.8845,
+          "end": 188.2932
+        },
+        {
+          "text": "cache.",
+          "start": 188.2932,
+          "end": 188.7247
+        },
+        {
+          "text": "Prefer",
+          "start": 188.7247,
+          "end": 189.1334
+        },
+        {
+          "text": "explicit",
+          "start": 189.1334,
+          "end": 189.6053
+        },
+        {
+          "text": "imports",
+          "start": 189.6053,
+          "end": 190.0468
+        },
+        {
+          "text": "so",
+          "start": 190.0468,
+          "end": 190.2827
+        },
+        {
+          "text": "readers",
+          "start": 190.2827,
+          "end": 190.7242
+        },
+        {
+          "text": "see",
+          "start": 190.7242,
+          "end": 191.0132
+        },
+        {
+          "text": "where",
+          "start": 191.0132,
+          "end": 191.3863
+        },
+        {
+          "text": "behavior",
+          "start": 191.3863,
+          "end": 191.8582
+        },
+        {
+          "text": "comes",
+          "start": 191.8582,
+          "end": 192.2313
+        },
+        {
+          "text": "from.",
+          "start": 192.2313,
+          "end": 192.6234
+        },
+        {
+          "text": "Packages",
+          "start": 192.6234,
+          "end": 193.0953
+        },
+        {
+          "text": "organize",
+          "start": 193.0953,
+          "end": 193.5672
+        },
+        {
+          "text": "related",
+          "start": 193.5672,
+          "end": 194.0086
+        },
+        {
+          "text": "modules",
+          "start": 194.0086,
+          "end": 194.4501
+        },
+        {
+          "text": "into",
+          "start": 194.4501,
+          "end": 194.7838
+        },
+        {
+          "text": "directories,",
+          "start": 194.7838,
+          "end": 195.3705
+        },
+        {
+          "text": "giving",
+          "start": 195.3705,
+          "end": 195.7792
+        },
+        {
+          "text": "larger",
+          "start": 195.7792,
+          "end": 196.1879
+        },
+        {
+          "text": "applications",
+          "start": 196.1879,
+          "end": 196.7659
+        },
+        {
+          "text": "clear",
+          "start": 196.7659,
+          "end": 197.139
+        },
+        {
+          "text": "boundaries.",
+          "start": 197.139,
+          "end": 197.725
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "start": 198.0,
+      "end": 226.275,
+      "text": "Python has two failure moments. A syntax error means parsing could not produce valid code, so execution never starts. An exception happens while valid code runs: converting hello to an integer raises Value Error. A try block marks the operation that may fail. An except clause handles a specific type and lets execution continue. Catch narrowly; catching everything can hide mistakes. Use finally for cleanup that must happen whether the operation succeeds or fails, such as closing a file.",
+      "words": [
+        {
+          "text": "Python",
+          "start": 198.0,
+          "end": 198.3934
+        },
+        {
+          "text": "has",
+          "start": 198.3934,
+          "end": 198.6716
+        },
+        {
+          "text": "two",
+          "start": 198.6716,
+          "end": 198.9498
+        },
+        {
+          "text": "failure",
+          "start": 198.9498,
+          "end": 199.3747
+        },
+        {
+          "text": "moments.",
+          "start": 199.3747,
+          "end": 199.8558
+        },
+        {
+          "text": "A",
+          "start": 199.8558,
+          "end": 200.0164
+        },
+        {
+          "text": "syntax",
+          "start": 200.0164,
+          "end": 200.4098
+        },
+        {
+          "text": "error",
+          "start": 200.4098,
+          "end": 200.769
+        },
+        {
+          "text": "means",
+          "start": 200.769,
+          "end": 201.1281
+        },
+        {
+          "text": "parsing",
+          "start": 201.1281,
+          "end": 201.553
+        },
+        {
+          "text": "could",
+          "start": 201.553,
+          "end": 201.9121
+        },
+        {
+          "text": "not",
+          "start": 201.9121,
+          "end": 202.1903
+        },
+        {
+          "text": "produce",
+          "start": 202.1903,
+          "end": 202.6152
+        },
+        {
+          "text": "valid",
+          "start": 202.6152,
+          "end": 202.9744
+        },
+        {
+          "text": "code,",
+          "start": 202.9744,
+          "end": 203.3277
+        },
+        {
+          "text": "so",
+          "start": 203.3277,
+          "end": 203.5548
+        },
+        {
+          "text": "execution",
+          "start": 203.5548,
+          "end": 204.0366
+        },
+        {
+          "text": "never",
+          "start": 204.0366,
+          "end": 204.3958
+        },
+        {
+          "text": "starts.",
+          "start": 204.3958,
+          "end": 204.8454
+        },
+        {
+          "text": "An",
+          "start": 204.8454,
+          "end": 205.0725
+        },
+        {
+          "text": "exception",
+          "start": 205.0725,
+          "end": 205.5543
+        },
+        {
+          "text": "happens",
+          "start": 205.5543,
+          "end": 205.9793
+        },
+        {
+          "text": "while",
+          "start": 205.9793,
+          "end": 206.3384
+        },
+        {
+          "text": "valid",
+          "start": 206.3384,
+          "end": 206.6975
+        },
+        {
+          "text": "code",
+          "start": 206.6975,
+          "end": 207.0187
+        },
+        {
+          "text": "runs:",
+          "start": 207.0187,
+          "end": 207.3721
+        },
+        {
+          "text": "converting",
+          "start": 207.3721,
+          "end": 207.8799
+        },
+        {
+          "text": "hello",
+          "start": 207.8799,
+          "end": 208.2391
+        },
+        {
+          "text": "to",
+          "start": 208.2391,
+          "end": 208.4662
+        },
+        {
+          "text": "an",
+          "start": 208.4662,
+          "end": 208.6933
+        },
+        {
+          "text": "integer",
+          "start": 208.6933,
+          "end": 209.1182
+        },
+        {
+          "text": "raises",
+          "start": 209.1182,
+          "end": 209.5117
+        },
+        {
+          "text": "Value",
+          "start": 209.5117,
+          "end": 209.8708
+        },
+        {
+          "text": "Error.",
+          "start": 209.8708,
+          "end": 210.2861
+        },
+        {
+          "text": "A",
+          "start": 210.2861,
+          "end": 210.4467
+        },
+        {
+          "text": "try",
+          "start": 210.4467,
+          "end": 210.7249
+        },
+        {
+          "text": "block",
+          "start": 210.7249,
+          "end": 211.084
+        },
+        {
+          "text": "marks",
+          "start": 211.084,
+          "end": 211.4432
+        },
+        {
+          "text": "the",
+          "start": 211.4432,
+          "end": 211.7213
+        },
+        {
+          "text": "operation",
+          "start": 211.7213,
+          "end": 212.2031
+        },
+        {
+          "text": "that",
+          "start": 212.2031,
+          "end": 212.5244
+        },
+        {
+          "text": "may",
+          "start": 212.5244,
+          "end": 212.8025
+        },
+        {
+          "text": "fail.",
+          "start": 212.8025,
+          "end": 213.18
+        },
+        {
+          "text": "An",
+          "start": 213.18,
+          "end": 213.4071
+        },
+        {
+          "text": "except",
+          "start": 213.4071,
+          "end": 213.8005
+        },
+        {
+          "text": "clause",
+          "start": 213.8005,
+          "end": 214.1939
+        },
+        {
+          "text": "handles",
+          "start": 214.1939,
+          "end": 214.6188
+        },
+        {
+          "text": "a",
+          "start": 214.6188,
+          "end": 214.7794
+        },
+        {
+          "text": "specific",
+          "start": 214.7794,
+          "end": 215.2337
+        },
+        {
+          "text": "type",
+          "start": 215.2337,
+          "end": 215.5549
+        },
+        {
+          "text": "and",
+          "start": 215.5549,
+          "end": 215.8331
+        },
+        {
+          "text": "lets",
+          "start": 215.8331,
+          "end": 216.1543
+        },
+        {
+          "text": "execution",
+          "start": 216.1543,
+          "end": 216.6361
+        },
+        {
+          "text": "continue.",
+          "start": 216.6361,
+          "end": 217.1466
+        },
+        {
+          "text": "Catch",
+          "start": 217.1466,
+          "end": 217.5057
+        },
+        {
+          "text": "narrowly;",
+          "start": 217.5057,
+          "end": 217.9921
+        },
+        {
+          "text": "catching",
+          "start": 217.9921,
+          "end": 218.4464
+        },
+        {
+          "text": "everything",
+          "start": 218.4464,
+          "end": 218.9542
+        },
+        {
+          "text": "can",
+          "start": 218.9542,
+          "end": 219.2324
+        },
+        {
+          "text": "hide",
+          "start": 219.2324,
+          "end": 219.5536
+        },
+        {
+          "text": "mistakes.",
+          "start": 219.5536,
+          "end": 220.0641
+        },
+        {
+          "text": "Use",
+          "start": 220.0641,
+          "end": 220.3423
+        },
+        {
+          "text": "finally",
+          "start": 220.3423,
+          "end": 220.7672
+        },
+        {
+          "text": "for",
+          "start": 220.7672,
+          "end": 221.0454
+        },
+        {
+          "text": "cleanup",
+          "start": 221.0454,
+          "end": 221.4703
+        },
+        {
+          "text": "that",
+          "start": 221.4703,
+          "end": 221.7915
+        },
+        {
+          "text": "must",
+          "start": 221.7915,
+          "end": 222.1127
+        },
+        {
+          "text": "happen",
+          "start": 222.1127,
+          "end": 222.5061
+        },
+        {
+          "text": "whether",
+          "start": 222.5061,
+          "end": 222.9311
+        },
+        {
+          "text": "the",
+          "start": 222.9311,
+          "end": 223.2092
+        },
+        {
+          "text": "operation",
+          "start": 223.2092,
+          "end": 223.6911
+        },
+        {
+          "text": "succeeds",
+          "start": 223.6911,
+          "end": 224.1453
+        },
+        {
+          "text": "or",
+          "start": 224.1453,
+          "end": 224.3725
+        },
+        {
+          "text": "fails,",
+          "start": 224.3725,
+          "end": 224.7637
+        },
+        {
+          "text": "such",
+          "start": 224.7637,
+          "end": 225.0849
+        },
+        {
+          "text": "as",
+          "start": 225.0849,
+          "end": 225.312
+        },
+        {
+          "text": "closing",
+          "start": 225.312,
+          "end": 225.737
+        },
+        {
+          "text": "a",
+          "start": 225.737,
+          "end": 225.8976
+        },
+        {
+          "text": "file.",
+          "start": 225.8976,
+          "end": 226.275
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "start": 228.0,
+      "end": 257.0,
+      "text": "Now combine the fundamentals. The program imports mean from the standard library. Summarize receives text scores, converts each value to an integer, calculates the average, chooses a status, and returns both results. The caller prints labeled output. Try and except handle invalid numeric input without hiding unrelated bugs. Notice the layers: a list holds data, a function owns the transformation, control flow chooses the status, an import supplies reusable behavior, and an exception defines the expected failure path.",
+      "words": [
+        {
+          "text": "Now",
+          "start": 228.0,
+          "end": 228.2762
+        },
+        {
+          "text": "combine",
+          "start": 228.2762,
+          "end": 228.698
+        },
+        {
+          "text": "the",
+          "start": 228.698,
+          "end": 228.9742
+        },
+        {
+          "text": "fundamentals.",
+          "start": 228.9742,
+          "end": 229.5823
+        },
+        {
+          "text": "The",
+          "start": 229.5823,
+          "end": 229.8585
+        },
+        {
+          "text": "program",
+          "start": 229.8585,
+          "end": 230.2803
+        },
+        {
+          "text": "imports",
+          "start": 230.2803,
+          "end": 230.7022
+        },
+        {
+          "text": "mean",
+          "start": 230.7022,
+          "end": 231.0211
+        },
+        {
+          "text": "from",
+          "start": 231.0211,
+          "end": 231.34
+        },
+        {
+          "text": "the",
+          "start": 231.34,
+          "end": 231.6161
+        },
+        {
+          "text": "standard",
+          "start": 231.6161,
+          "end": 232.0671
+        },
+        {
+          "text": "library.",
+          "start": 232.0671,
+          "end": 232.5448
+        },
+        {
+          "text": "Summarize",
+          "start": 232.5448,
+          "end": 233.0231
+        },
+        {
+          "text": "receives",
+          "start": 233.0231,
+          "end": 233.4741
+        },
+        {
+          "text": "text",
+          "start": 233.4741,
+          "end": 233.793
+        },
+        {
+          "text": "scores,",
+          "start": 233.793,
+          "end": 234.2154
+        },
+        {
+          "text": "converts",
+          "start": 234.2154,
+          "end": 234.6664
+        },
+        {
+          "text": "each",
+          "start": 234.6664,
+          "end": 234.9853
+        },
+        {
+          "text": "value",
+          "start": 234.9853,
+          "end": 235.3418
+        },
+        {
+          "text": "to",
+          "start": 235.3418,
+          "end": 235.5673
+        },
+        {
+          "text": "an",
+          "start": 235.5673,
+          "end": 235.7928
+        },
+        {
+          "text": "integer,",
+          "start": 235.7928,
+          "end": 236.2465
+        },
+        {
+          "text": "calculates",
+          "start": 236.2465,
+          "end": 236.7508
+        },
+        {
+          "text": "the",
+          "start": 236.7508,
+          "end": 237.0269
+        },
+        {
+          "text": "average,",
+          "start": 237.0269,
+          "end": 237.4807
+        },
+        {
+          "text": "chooses",
+          "start": 237.4807,
+          "end": 237.9025
+        },
+        {
+          "text": "a",
+          "start": 237.9025,
+          "end": 238.062
+        },
+        {
+          "text": "status,",
+          "start": 238.062,
+          "end": 238.4844
+        },
+        {
+          "text": "and",
+          "start": 238.4844,
+          "end": 238.7606
+        },
+        {
+          "text": "returns",
+          "start": 238.7606,
+          "end": 239.1824
+        },
+        {
+          "text": "both",
+          "start": 239.1824,
+          "end": 239.5013
+        },
+        {
+          "text": "results.",
+          "start": 239.5013,
+          "end": 239.979
+        },
+        {
+          "text": "The",
+          "start": 239.979,
+          "end": 240.2551
+        },
+        {
+          "text": "caller",
+          "start": 240.2551,
+          "end": 240.6457
+        },
+        {
+          "text": "prints",
+          "start": 240.6457,
+          "end": 241.0363
+        },
+        {
+          "text": "labeled",
+          "start": 241.0363,
+          "end": 241.4581
+        },
+        {
+          "text": "output.",
+          "start": 241.4581,
+          "end": 241.9045
+        },
+        {
+          "text": "Try",
+          "start": 241.9045,
+          "end": 242.1806
+        },
+        {
+          "text": "and",
+          "start": 242.1806,
+          "end": 242.4568
+        },
+        {
+          "text": "except",
+          "start": 242.4568,
+          "end": 242.8474
+        },
+        {
+          "text": "handle",
+          "start": 242.8474,
+          "end": 243.2379
+        },
+        {
+          "text": "invalid",
+          "start": 243.2379,
+          "end": 243.6598
+        },
+        {
+          "text": "numeric",
+          "start": 243.6598,
+          "end": 244.0816
+        },
+        {
+          "text": "input",
+          "start": 244.0816,
+          "end": 244.4382
+        },
+        {
+          "text": "without",
+          "start": 244.4382,
+          "end": 244.86
+        },
+        {
+          "text": "hiding",
+          "start": 244.86,
+          "end": 245.2506
+        },
+        {
+          "text": "unrelated",
+          "start": 245.2506,
+          "end": 245.7289
+        },
+        {
+          "text": "bugs.",
+          "start": 245.7289,
+          "end": 246.1036
+        },
+        {
+          "text": "Notice",
+          "start": 246.1036,
+          "end": 246.4942
+        },
+        {
+          "text": "the",
+          "start": 246.4942,
+          "end": 246.7703
+        },
+        {
+          "text": "layers:",
+          "start": 246.7703,
+          "end": 247.1928
+        },
+        {
+          "text": "a",
+          "start": 247.1928,
+          "end": 247.3522
+        },
+        {
+          "text": "list",
+          "start": 247.3522,
+          "end": 247.6711
+        },
+        {
+          "text": "holds",
+          "start": 247.6711,
+          "end": 248.0276
+        },
+        {
+          "text": "data,",
+          "start": 248.0276,
+          "end": 248.3784
+        },
+        {
+          "text": "a",
+          "start": 248.3784,
+          "end": 248.5379
+        },
+        {
+          "text": "function",
+          "start": 248.5379,
+          "end": 248.9888
+        },
+        {
+          "text": "owns",
+          "start": 248.9888,
+          "end": 249.3077
+        },
+        {
+          "text": "the",
+          "start": 249.3077,
+          "end": 249.5839
+        },
+        {
+          "text": "transformation,",
+          "start": 249.5839,
+          "end": 250.2124
+        },
+        {
+          "text": "control",
+          "start": 250.2124,
+          "end": 250.6342
+        },
+        {
+          "text": "flow",
+          "start": 250.6342,
+          "end": 250.9531
+        },
+        {
+          "text": "chooses",
+          "start": 250.9531,
+          "end": 251.375
+        },
+        {
+          "text": "the",
+          "start": 251.375,
+          "end": 251.6511
+        },
+        {
+          "text": "status,",
+          "start": 251.6511,
+          "end": 252.0736
+        },
+        {
+          "text": "an",
+          "start": 252.0736,
+          "end": 252.2991
+        },
+        {
+          "text": "import",
+          "start": 252.2991,
+          "end": 252.6896
+        },
+        {
+          "text": "supplies",
+          "start": 252.6896,
+          "end": 253.1406
+        },
+        {
+          "text": "reusable",
+          "start": 253.1406,
+          "end": 253.5916
+        },
+        {
+          "text": "behavior,",
+          "start": 253.5916,
+          "end": 254.0745
+        },
+        {
+          "text": "and",
+          "start": 254.0745,
+          "end": 254.3506
+        },
+        {
+          "text": "an",
+          "start": 254.3506,
+          "end": 254.5761
+        },
+        {
+          "text": "exception",
+          "start": 254.5761,
+          "end": 255.0545
+        },
+        {
+          "text": "defines",
+          "start": 255.0545,
+          "end": 255.4763
+        },
+        {
+          "text": "the",
+          "start": 255.4763,
+          "end": 255.7525
+        },
+        {
+          "text": "expected",
+          "start": 255.7525,
+          "end": 256.2035
+        },
+        {
+          "text": "failure",
+          "start": 256.2035,
+          "end": 256.6253
+        },
+        {
+          "text": "path.",
+          "start": 256.6253,
+          "end": 257.0
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "start": 258.0,
+      "end": 281.45,
+      "text": "Run the file and Python executes the module from top to bottom. The function definition binds summarize, then the try block calls it. The score strings become integers, mean returns eighty-two point three, and both results return to the caller. Print produces the terminal output. Py compile then confirms that the file parses and compiles; no output means no syntax error was found.",
+      "words": [
+        {
+          "text": "Run",
+          "start": 258.0,
+          "end": 258.2913
+        },
+        {
+          "text": "the",
+          "start": 258.2913,
+          "end": 258.5827
+        },
+        {
+          "text": "file",
+          "start": 258.5827,
+          "end": 258.9191
+        },
+        {
+          "text": "and",
+          "start": 258.9191,
+          "end": 259.2104
+        },
+        {
+          "text": "Python",
+          "start": 259.2104,
+          "end": 259.6224
+        },
+        {
+          "text": "executes",
+          "start": 259.6224,
+          "end": 260.0982
+        },
+        {
+          "text": "the",
+          "start": 260.0982,
+          "end": 260.3895
+        },
+        {
+          "text": "module",
+          "start": 260.3895,
+          "end": 260.8015
+        },
+        {
+          "text": "from",
+          "start": 260.8015,
+          "end": 261.1379
+        },
+        {
+          "text": "top",
+          "start": 261.1379,
+          "end": 261.4292
+        },
+        {
+          "text": "to",
+          "start": 261.4292,
+          "end": 261.6671
+        },
+        {
+          "text": "bottom.",
+          "start": 261.6671,
+          "end": 262.138
+        },
+        {
+          "text": "The",
+          "start": 262.138,
+          "end": 262.4293
+        },
+        {
+          "text": "function",
+          "start": 262.4293,
+          "end": 262.9051
+        },
+        {
+          "text": "definition",
+          "start": 262.9051,
+          "end": 263.437
+        },
+        {
+          "text": "binds",
+          "start": 263.437,
+          "end": 263.8131
+        },
+        {
+          "text": "summarize,",
+          "start": 263.8131,
+          "end": 264.3513
+        },
+        {
+          "text": "then",
+          "start": 264.3513,
+          "end": 264.6877
+        },
+        {
+          "text": "the",
+          "start": 264.6877,
+          "end": 264.9791
+        },
+        {
+          "text": "try",
+          "start": 264.9791,
+          "end": 265.2704
+        },
+        {
+          "text": "block",
+          "start": 265.2704,
+          "end": 265.6465
+        },
+        {
+          "text": "calls",
+          "start": 265.6465,
+          "end": 266.0226
+        },
+        {
+          "text": "it.",
+          "start": 266.0226,
+          "end": 266.3194
+        },
+        {
+          "text": "The",
+          "start": 266.3194,
+          "end": 266.6107
+        },
+        {
+          "text": "score",
+          "start": 266.6107,
+          "end": 266.9868
+        },
+        {
+          "text": "strings",
+          "start": 266.9868,
+          "end": 267.4318
+        },
+        {
+          "text": "become",
+          "start": 267.4318,
+          "end": 267.8438
+        },
+        {
+          "text": "integers,",
+          "start": 267.8438,
+          "end": 268.3532
+        },
+        {
+          "text": "mean",
+          "start": 268.3532,
+          "end": 268.6896
+        },
+        {
+          "text": "returns",
+          "start": 268.6896,
+          "end": 269.1347
+        },
+        {
+          "text": "eighty-two",
+          "start": 269.1347,
+          "end": 269.6393
+        },
+        {
+          "text": "point",
+          "start": 269.6393,
+          "end": 270.0154
+        },
+        {
+          "text": "three,",
+          "start": 270.0154,
+          "end": 270.4251
+        },
+        {
+          "text": "and",
+          "start": 270.4251,
+          "end": 270.7165
+        },
+        {
+          "text": "both",
+          "start": 270.7165,
+          "end": 271.0529
+        },
+        {
+          "text": "results",
+          "start": 271.0529,
+          "end": 271.4979
+        },
+        {
+          "text": "return",
+          "start": 271.4979,
+          "end": 271.9099
+        },
+        {
+          "text": "to",
+          "start": 271.9099,
+          "end": 272.1478
+        },
+        {
+          "text": "the",
+          "start": 272.1478,
+          "end": 272.4391
+        },
+        {
+          "text": "caller.",
+          "start": 272.4391,
+          "end": 272.91
+        },
+        {
+          "text": "Print",
+          "start": 272.91,
+          "end": 273.2861
+        },
+        {
+          "text": "produces",
+          "start": 273.2861,
+          "end": 273.7618
+        },
+        {
+          "text": "the",
+          "start": 273.7618,
+          "end": 274.0532
+        },
+        {
+          "text": "terminal",
+          "start": 274.0532,
+          "end": 274.5289
+        },
+        {
+          "text": "output.",
+          "start": 274.5289,
+          "end": 274.9998
+        },
+        {
+          "text": "Py",
+          "start": 274.9998,
+          "end": 275.2377
+        },
+        {
+          "text": "compile",
+          "start": 275.2377,
+          "end": 275.6827
+        },
+        {
+          "text": "then",
+          "start": 275.6827,
+          "end": 276.0191
+        },
+        {
+          "text": "confirms",
+          "start": 276.0191,
+          "end": 276.4948
+        },
+        {
+          "text": "that",
+          "start": 276.4948,
+          "end": 276.8312
+        },
+        {
+          "text": "the",
+          "start": 276.8312,
+          "end": 277.1226
+        },
+        {
+          "text": "file",
+          "start": 277.1226,
+          "end": 277.459
+        },
+        {
+          "text": "parses",
+          "start": 277.459,
+          "end": 277.871
+        },
+        {
+          "text": "and",
+          "start": 277.871,
+          "end": 278.1623
+        },
+        {
+          "text": "compiles;",
+          "start": 278.1623,
+          "end": 278.6717
+        },
+        {
+          "text": "no",
+          "start": 278.6717,
+          "end": 278.9096
+        },
+        {
+          "text": "output",
+          "start": 278.9096,
+          "end": 279.3216
+        },
+        {
+          "text": "means",
+          "start": 279.3216,
+          "end": 279.6977
+        },
+        {
+          "text": "no",
+          "start": 279.6977,
+          "end": 279.9356
+        },
+        {
+          "text": "syntax",
+          "start": 279.9356,
+          "end": 280.3476
+        },
+        {
+          "text": "error",
+          "start": 280.3476,
+          "end": 280.7237
+        },
+        {
+          "text": "was",
+          "start": 280.7237,
+          "end": 281.015
+        },
+        {
+          "text": "found.",
+          "start": 281.015,
+          "end": 281.45
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "start": 282.0,
+      "end": 293.75,
+      "text": "Before moving on, check three things: can you trace execution, choose the correct collection, and explain what each function returns? If yes, you have the foundation needed for larger Python services.",
+      "words": [
+        {
+          "text": "Before",
+          "start": 282.0,
+          "end": 282.4045
+        },
+        {
+          "text": "moving",
+          "start": 282.4045,
+          "end": 282.8089
+        },
+        {
+          "text": "on,",
+          "start": 282.8089,
+          "end": 283.0755
+        },
+        {
+          "text": "check",
+          "start": 283.0755,
+          "end": 283.4447
+        },
+        {
+          "text": "three",
+          "start": 283.4447,
+          "end": 283.814
+        },
+        {
+          "text": "things:",
+          "start": 283.814,
+          "end": 284.2515
+        },
+        {
+          "text": "can",
+          "start": 284.2515,
+          "end": 284.5375
+        },
+        {
+          "text": "you",
+          "start": 284.5375,
+          "end": 284.8235
+        },
+        {
+          "text": "trace",
+          "start": 284.8235,
+          "end": 285.1927
+        },
+        {
+          "text": "execution,",
+          "start": 285.1927,
+          "end": 285.7211
+        },
+        {
+          "text": "choose",
+          "start": 285.7211,
+          "end": 286.1256
+        },
+        {
+          "text": "the",
+          "start": 286.1256,
+          "end": 286.4116
+        },
+        {
+          "text": "correct",
+          "start": 286.4116,
+          "end": 286.8485
+        },
+        {
+          "text": "collection,",
+          "start": 286.8485,
+          "end": 287.4036
+        },
+        {
+          "text": "and",
+          "start": 287.4036,
+          "end": 287.6897
+        },
+        {
+          "text": "explain",
+          "start": 287.6897,
+          "end": 288.1265
+        },
+        {
+          "text": "what",
+          "start": 288.1265,
+          "end": 288.4568
+        },
+        {
+          "text": "each",
+          "start": 288.4568,
+          "end": 288.787
+        },
+        {
+          "text": "function",
+          "start": 288.787,
+          "end": 289.2541
+        },
+        {
+          "text": "returns?",
+          "start": 289.2541,
+          "end": 289.7488
+        },
+        {
+          "text": "If",
+          "start": 289.7488,
+          "end": 289.9823
+        },
+        {
+          "text": "yes,",
+          "start": 289.9823,
+          "end": 290.3013
+        },
+        {
+          "text": "you",
+          "start": 290.3013,
+          "end": 290.5873
+        },
+        {
+          "text": "have",
+          "start": 290.5873,
+          "end": 290.9176
+        },
+        {
+          "text": "the",
+          "start": 290.9176,
+          "end": 291.2036
+        },
+        {
+          "text": "foundation",
+          "start": 291.2036,
+          "end": 291.7257
+        },
+        {
+          "text": "needed",
+          "start": 291.7257,
+          "end": 292.1302
+        },
+        {
+          "text": "for",
+          "start": 292.1302,
+          "end": 292.4162
+        },
+        {
+          "text": "larger",
+          "start": 292.4162,
+          "end": 292.8207
+        },
+        {
+          "text": "Python",
+          "start": 292.8207,
+          "end": 293.2252
+        },
+        {
+          "text": "services.",
+          "start": 293.2252,
+          "end": 293.75
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "start": 294.0,
+      "end": 299.725,
+      "text": "Next, practise each concept, then use these foundations to build your first Fast API service.",
+      "words": [
+        {
+          "text": "Next,",
+          "start": 294.0,
+          "end": 294.3729
+        },
+        {
+          "text": "practise",
+          "start": 294.3729,
+          "end": 294.8524
+        },
+        {
+          "text": "each",
+          "start": 294.8524,
+          "end": 295.1914
+        },
+        {
+          "text": "concept,",
+          "start": 295.1914,
+          "end": 295.6738
+        },
+        {
+          "text": "then",
+          "start": 295.6738,
+          "end": 296.0128
+        },
+        {
+          "text": "use",
+          "start": 296.0128,
+          "end": 296.3064
+        },
+        {
+          "text": "these",
+          "start": 296.3064,
+          "end": 296.6855
+        },
+        {
+          "text": "foundations",
+          "start": 296.6855,
+          "end": 297.2477
+        },
+        {
+          "text": "to",
+          "start": 297.2477,
+          "end": 297.4874
+        },
+        {
+          "text": "build",
+          "start": 297.4874,
+          "end": 297.8665
+        },
+        {
+          "text": "your",
+          "start": 297.8665,
+          "end": 298.2055
+        },
+        {
+          "text": "first",
+          "start": 298.2055,
+          "end": 298.5845
+        },
+        {
+          "text": "Fast",
+          "start": 298.5845,
+          "end": 298.9236
+        },
+        {
+          "text": "API",
+          "start": 298.9236,
+          "end": 299.2172
+        },
+        {
+          "text": "service.",
+          "start": 299.2172,
+          "end": 299.725
+        }
+      ]
+    }
+  ]
+}

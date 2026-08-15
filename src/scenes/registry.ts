@@ -9,6 +9,7 @@ import {Compare} from './Compare';
 import {Counting} from './Counting';
 import {Flashcards} from './Flashcards';
 import {Flow} from './Flow';
+import {MotionCanvas} from './MotionCanvas';
 import {Outro} from './Outro';
 import {Stats} from './Stats';
 import {Steps} from './Steps';
@@ -35,5 +36,6 @@ export const SCENES: Record<SceneType, React.FC<{scene: any}>> = {
   flashcards: Flashcards,
   callout: Callout,
   arrayViz: ArrayViz,
+  motionCanvas: MotionCanvas,
   outro: Outro,
 };

@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {cancelRender, continueRender, delayRender} from 'remotion';
 import {FONT_FACE_CSS, FONT_SPECS} from './fontFaces';
+import {INDIC_FONT_SPECS} from './indicFonts';
 
 /**
  * Holds the render until every brand face is rasterised, then releases it.
@@ -17,7 +18,11 @@ export const FontGate: React.FC<{children: React.ReactNode}> = ({children}) => {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all(FONT_SPECS.map((spec) => document.fonts.load(spec)))
+    Promise.all(
+      [...FONT_SPECS, ...INDIC_FONT_SPECS].map((spec) =>
+        document.fonts.load(spec),
+      ),
+    )
       .then(() => document.fonts.ready)
       .then(() => {
         if (cancelled) return;

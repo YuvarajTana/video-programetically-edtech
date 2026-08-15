@@ -1,10 +1,7 @@
-import {useEffect, useState} from 'react';
 import {
   AbsoluteFill,
   spring,
-  staticFile,
   useCurrentFrame,
-  useDelayRender,
   useVideoConfig,
 } from 'remotion';
 import {space, tint, type} from '../design/tokens';
@@ -13,6 +10,8 @@ import {useChannel} from '../channels';
 import {useTheme} from '../themes';
 import type {VideoSpec} from '../types';
 import {sceneOffsets} from '../types';
+import {languageFor} from '../../shared/languages';
+import {useWordTimings} from '../timing/wordTimings';
 
 /**
  * Channel furniture that persists across every scene: the handle watermark and
@@ -65,72 +64,6 @@ export const Chrome: React.FC = () => {
  * Burned-in caption bar. Most portrait social video is watched muted, so the narration line
  * doubles as the on-screen caption rather than being VO-only.
  */
-type TimedWord = {text: string; start: number; end: number};
-type TimedCue = {
-  index: number;
-  start: number;
-  end: number;
-  text: string;
-  words: TimedWord[];
-};
-type WordTimingFile = {
-  schemaVersion: 1;
-  durationSeconds: number;
-  cues: TimedCue[];
-};
-
-const timingCache = new Map<string, WordTimingFile>();
-const timingRequests = new Map<string, Promise<WordTimingFile>>();
-
-const loadTimings = (path: string) => {
-  const cached = timingCache.get(path);
-  if (cached) return Promise.resolve(cached);
-  const pending = timingRequests.get(path);
-  if (pending) return pending;
-
-  const request = fetch(staticFile(path))
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Failed to load ${path}: HTTP ${response.status}`);
-      }
-      return response.json() as Promise<WordTimingFile>;
-    })
-    .then((data) => {
-      if (data.schemaVersion !== 1 || !Array.isArray(data.cues)) {
-        throw new Error(`Invalid word timing file: ${path}`);
-      }
-      timingCache.set(path, data);
-      timingRequests.delete(path);
-      return data;
-    });
-  timingRequests.set(path, request);
-  return request;
-};
-
-const useWordTimings = (path?: string) => {
-  const {cancelRender, continueRender, delayRender} = useDelayRender();
-  const [data, setData] = useState<WordTimingFile | null>(() =>
-    path ? (timingCache.get(path) ?? null) : null,
-  );
-  const [handle] = useState(() =>
-    path && !timingCache.has(path)
-      ? delayRender(`Loading word captions: ${path}`)
-      : null,
-  );
-
-  useEffect(() => {
-    if (!path || data) return;
-    loadTimings(path)
-      .then((loaded) => {
-        setData(loaded);
-        if (handle !== null) continueRender(handle);
-      })
-      .catch(cancelRender);
-  }, [cancelRender, continueRender, data, handle, path]);
-
-  return data;
-};
-
 export const Captions: React.FC<{spec: VideoSpec}> = ({spec}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -144,7 +77,10 @@ export const Captions: React.FC<{spec: VideoSpec}> = ({spec}) => {
   const activeWordIndex = cue?.words.findIndex(
     (word) => seconds >= word.start && seconds < word.end,
   );
-  const wordsPerPage = layout.isPortrait ? 5 : 8;
+  const language = languageFor(spec.editorial?.language ?? 'en-US');
+  const wordsPerPage = layout.isPortrait
+    ? language.captionWordsPerPage.portrait
+    : language.captionWordsPerPage.landscape;
   const pageStart =
     activeWordIndex !== undefined && activeWordIndex >= 0
       ? Math.floor(activeWordIndex / wordsPerPage) * wordsPerPage

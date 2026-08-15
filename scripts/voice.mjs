@@ -159,6 +159,13 @@ if (!Number.isFinite(voice.speed) || voice.speed <= 0) {
   console.error('--speed must be a positive number');
   process.exit(1);
 }
+if (
+  voice.maxSpeed !== undefined &&
+  (!Number.isFinite(voice.maxSpeed) || voice.maxSpeed < voice.speed)
+) {
+  console.error('voice.maxSpeed must be greater than or equal to voice.speed');
+  process.exit(1);
+}
 
 const publicRoot = resolve('public');
 const finalPath = resolve(publicRoot, request.audio);
@@ -374,6 +381,9 @@ const ttsArgs = [
   '--language',
   voice.language,
 ];
+if (voice.maxSpeed !== undefined) {
+  ttsArgs.push('--max-speed', String(voice.maxSpeed));
+}
 if (pendingWordTimingsPath) {
   ttsArgs.push('--timings', pendingWordTimingsPath);
 }

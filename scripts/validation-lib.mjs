@@ -14,6 +14,7 @@ export const validateSpec = (spec, channel) => {
     return issues;
   }
   const fps = spec.fps ?? 30;
+  const publicRoot = resolve('public');
 
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(spec.slug ?? '')) {
     add('error', 'slug', 'must be lowercase kebab-case');
@@ -67,6 +68,19 @@ export const validateSpec = (spec, channel) => {
         if (!ids.has(traceId)) add('error', `${path}.trace`, `unknown node "${traceId}"`);
       }
     }
+
+    if (scene.type === 'motionCanvas') {
+      for (const [elementIndex, element] of (scene.elements ?? []).entries()) {
+        if (element.kind !== 'image') continue;
+        const imagePath = resolve(publicRoot, element.src ?? '');
+        const imageIssuePath = `${path}.elements[${elementIndex}].src`;
+        if (!imagePath.startsWith(`${publicRoot}${sep}`)) {
+          add('error', imageIssuePath, 'must stay inside public/');
+        } else if (!existsSync(imagePath)) {
+          add('error', imageIssuePath, `missing public/${element.src}`);
+        }
+      }
+    }
   });
 
   if (spec.kind !== 'style-guide') {
@@ -83,7 +97,12 @@ export const validateSpec = (spec, channel) => {
       );
     }
 
-    const hookSeconds = spec.scenes[0].durationInFrames / fps;
+    const firstScene = spec.scenes[0];
+    const hookFrames =
+      firstScene.type === 'motionCanvas' && Number.isInteger(firstScene.hookEndFrame)
+        ? firstScene.hookEndFrame
+        : firstScene.durationInFrames;
+    const hookSeconds = hookFrames / fps;
     if (hookSeconds > 3.2) {
       add('warning', 'scenes[0]', `hook lasts ${hookSeconds.toFixed(1)}s; target 3.2s or less`);
     }
@@ -109,7 +128,6 @@ export const validateSpec = (spec, channel) => {
     }
   }
 
-  const publicRoot = resolve('public');
   if (spec.captionTimings) {
     const captionTimingsPath = resolve(publicRoot, spec.captionTimings);
     if (!captionTimingsPath.startsWith(`${publicRoot}${sep}`)) {

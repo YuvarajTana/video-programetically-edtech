@@ -1,12 +1,19 @@
 import type {DeliveryId, PlatformId} from '../publishing/types';
 import type {VideoTheme} from '../themes/types';
 
-export type ChannelId = 'tech' | 'learn' | 'fun';
+/**
+ * Channel/category ids are data-driven for managed projects. The three built-in
+ * ids remain available for the source-controlled legacy catalog.
+ */
+export type ChannelId = string;
+export type BuiltInChannelId = 'tech' | 'learn' | 'fun';
 
 export type VoiceProfile = {
   model: string;
   preset: string;
   speed: number;
+  /** Optional hard ceiling used by local TTS timing fit. */
+  maxSpeed?: number;
   language: string;
   targetLufs: number;
   truePeakDb: number;

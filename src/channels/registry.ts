@@ -1,7 +1,7 @@
 import {funTheme, learnTheme, techTheme} from '../themes';
-import type {ChannelId, ChannelProfile} from './types';
+import type {BuiltInChannelId, ChannelId, ChannelProfile} from './types';
 
-export const CHANNELS: Record<ChannelId, ChannelProfile> = {
+export const CHANNELS: Record<BuiltInChannelId, ChannelProfile> = {
   tech: {
     id: 'tech',
     label: 'AI Data Dynamics',
@@ -18,7 +18,8 @@ export const CHANNELS: Record<ChannelId, ChannelProfile> = {
     voice: {
       model: 'mlx-community/Kokoro-82M-bf16',
       preset: 'am_adam',
-      speed: 0.98,
+      speed: 1,
+      maxSpeed: 1,
       language: 'a',
       targetLufs: -14,
       truePeakDb: -1.5,
@@ -26,8 +27,8 @@ export const CHANNELS: Record<ChannelId, ChannelProfile> = {
     },
     editorial: {
       minSeconds: 20,
-      maxSeconds: 480,
-      maxNarrationWpm: 220,
+      maxSeconds: 1_800,
+      maxNarrationWpm: 165,
     },
   },
   learn: {
@@ -46,7 +47,8 @@ export const CHANNELS: Record<ChannelId, ChannelProfile> = {
     voice: {
       model: 'mlx-community/Kokoro-82M-bf16',
       preset: 'af_heart',
-      speed: 0.92,
+      speed: 1,
+      maxSpeed: 1,
       language: 'a',
       targetLufs: -14,
       truePeakDb: -1.5,
@@ -54,7 +56,7 @@ export const CHANNELS: Record<ChannelId, ChannelProfile> = {
     },
     editorial: {
       minSeconds: 20,
-      maxSeconds: 90,
+      maxSeconds: 1_800,
       maxNarrationWpm: 170,
       requiresAgeBand: true,
       requiresLearningObjective: true,
@@ -77,7 +79,8 @@ export const CHANNELS: Record<ChannelId, ChannelProfile> = {
     voice: {
       model: 'mlx-community/Kokoro-82M-bf16',
       preset: 'af_sky',
-      speed: 1.08,
+      speed: 1,
+      maxSpeed: 1,
       language: 'a',
       targetLufs: -14,
       truePeakDb: -1.5,
@@ -85,12 +88,16 @@ export const CHANNELS: Record<ChannelId, ChannelProfile> = {
     },
     editorial: {
       minSeconds: 8,
-      maxSeconds: 45,
+      maxSeconds: 1_800,
       maxNarrationWpm: 230,
     },
   },
 };
 
-export const CHANNEL_IDS = Object.keys(CHANNELS) as ChannelId[];
+export const CHANNEL_IDS = Object.keys(CHANNELS) as BuiltInChannelId[];
 
-export const getChannel = (id: ChannelId) => CHANNELS[id];
+export const getChannel = (id: ChannelId) => {
+  const channel = CHANNELS[id as BuiltInChannelId];
+  if (!channel) throw new Error(`Unknown source-controlled channel: ${id}`);
+  return channel;
+};

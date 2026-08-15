@@ -1,0 +1,134 @@
+{
+  "version": "video-kit-script-context-v5",
+  "product": {
+    "mission": "Create visual-first videos that help viewers progress from Python fundamentals to production AI engineering.",
+    "curriculum": [
+      "Python fundamentals",
+      "advanced Python",
+      "FastAPI",
+      "MySQL",
+      "LLM fundamentals",
+      "RAG",
+      "AI agents",
+      "Agentic RAG",
+      "multi-agent orchestration",
+      "context versus harness engineering",
+      "fine-tuning",
+      "small language models",
+      "edge AI",
+      "physical AI"
+    ],
+    "teachingSequence": [
+      "Start with a concrete problem or surprising question.",
+      "Give one precise mental model.",
+      "Show a small runnable or observable example.",
+      "Trace what happens at runtime in execution order.",
+      "Connect the concept to a production AI engineering use case.",
+      "End with one memorable rule and the next curriculum step."
+    ]
+  },
+  "globalRules": [
+    "Write for spoken delivery, not an article or documentation page.",
+    "One scene must communicate one visual idea and one narration idea.",
+    "Use short direct sentences with concrete nouns and active verbs.",
+    "Explain why the concept matters and what happens at runtime, not syntax alone.",
+    "Keep raw code, punctuation-heavy expressions, and commands in the code visual; describe their behavior naturally in narration.",
+    "When code behavior is important, use a compact two-to-eight-line runnable sample and direct the visual to focus or execute one exact line at a time, including the resulting value or output.",
+    "Choose diagram geometry by meaning: diamonds for decisions, documents for files or prompts, databases for stored data, pills for actions, hexagons for services or processing, and circles only when a circle is semantically useful.",
+    "Vary motion by purpose with draws, paths, handoffs, transforms, highlights, camera moves, and finite shape actions instead of making every object pulse or float.",
+    "Examples must be simple, accurate, runnable, and consistent across narration and visuals.",
+    "Do not use generic filler, repeated introductions, unsupported claims, invented statistics, or engagement bait.",
+    "Preserve product names, acronyms, URLs, commands, and glossary-protected terms.",
+    "Every factual or API-specific claim must be suitable for manual verification against a primary source.",
+    "The final scene must recap the mental model or bridge to the next curriculum topic.",
+    "For music-only videos, make every scene understandable through concise on-screen text, labels, diagrams, code, and animation without relying on speech."
+  ],
+  "categories": {
+    "tech": {
+      "audience": "Beginner-to-intermediate developers becoming AI engineers.",
+      "tone": "Calm, precise, visual, practical, and confident without hype.",
+      "requirements": [
+        "Prefer a runtime trace, data flow, before-and-after comparison, or architecture path.",
+        "Define technical terms in plain language before using them as shorthand.",
+        "Connect Python concepts to APIs, databases, model calls, RAG, or agents only when the connection is concrete.",
+        "Narration must not read Python punctuation character by character."
+      ]
+    },
+    "learn": {
+      "audience": "Children and students learning one compact lesson quickly.",
+      "tone": "Warm, encouraging, concrete, age-appropriate, and easy to repeat aloud.",
+      "requirements": [
+        "Use familiar examples and one idea per card.",
+        "Include repetition or a quick recall check without talking down to the learner.",
+        "Avoid fear, unsafe challenges, or age-inappropriate examples."
+      ]
+    },
+    "fun": {
+      "audience": "General short-form viewers.",
+      "tone": "Fast, playful, surprising, and loop-friendly.",
+      "requirements": [
+        "Establish the setup immediately.",
+        "Build a clear sequence of escalating visual beats.",
+        "End in a way that naturally connects back to the opening."
+      ]
+    }
+  },
+  "formats": {
+    "reel": {
+      "seconds": 60,
+      "sceneCount": 8,
+      "wordRange": [135, 150],
+      "structure": [
+        "3-second hook",
+        "five focused explanation or example beats",
+        "one production connection or decision rule",
+        "3-to-6-second recap"
+      ]
+    },
+    "full": {
+      "seconds": 300,
+      "sceneCount": 13,
+      "wordRange": [700, 780],
+      "structure": [
+        "3-second hook",
+        "brief learning roadmap",
+        "ordered visual teaching chapters that expand with the selected runtime",
+        "complete example and runtime trace",
+        "short knowledge check",
+        "6-second recap and next topic"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Python Before AI Engineering",
+      "category": "tech",
+      "format": "reel",
+      "topic": "The Python concepts required before learning AI engineering",
+      "whyItWorks": "It follows the curriculum, progresses from data to behavior to services, uses exactly eight visual beats, and ends by bridging to LLM fundamentals.",
+      "paragraphs": [
+        "Before AI engineering, learn the Python that builds it.",
+        "You do not need every feature. You need a reliable core that turns data into small, testable programs and services.",
+        "Start with names, strings, numbers, booleans, and None. Master lists, tuples, sets, and dictionaries for records, chunks, messages, and structured model responses.",
+        "Learn conditions, loops, comprehensions, functions, parameters, and return values. They filter results, transform data, and keep each processing step testable.",
+        "Organize code with modules, imports, packages, and virtual environments. Read files, JSON, and environment variables. Catch expected failures with specific exceptions.",
+        "Then add type hints, dataclasses, logging, tests, generators, decorators, and async await. Async helps while applications wait for APIs, databases, and model calls.",
+        "This maps directly to AI: dictionaries hold messages, functions become tools, async runs requests, and tested modules become reliable RAG and agent services.",
+        "Master this path, then start LLM fundamentals."
+      ]
+    },
+    {
+      "name": "Python execution chapter",
+      "category": "tech",
+      "format": "full",
+      "topic": "How Python executes code",
+      "whyItWorks": "It separates the portable execution model from CPython details and explains runtime effects in execution order.",
+      "paragraphs": [
+        "Python turns readable ideas into running programs.",
+        "When you run a Python file, Python first reads and parses the source. Invalid grammar stops with a Syntax Error before execution begins.",
+        "A Python implementation compiles valid code into a code object. In CPython, that object contains bytecode instructions, and the interpreter evaluates them inside execution frames.",
+        "Statements bind names, call functions, and create effects such as printed output. Keep the portable model: parse valid source, create executable instructions, then execute them."
+      ]
+    }
+  ]
+}
