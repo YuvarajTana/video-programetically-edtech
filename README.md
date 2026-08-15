@@ -159,9 +159,9 @@ npm run validate
 npm run render -- tech/selection-sort
 ```
 
-Requires Node 22.18+. Full machine setup, including the browser studio and the
-optional voiceover and publishing pieces, is documented in
-[`docs/local-setup.md`](docs/local-setup.md).
+Requires Node 22.18+. [`SETUP.md`](SETUP.md) covers both local setup and the
+optional cloud pieces (Lambda rendering, platform publishing);
+[`docs/local-setup.md`](docs/local-setup.md) is the detailed local reference.
 
 ## Core model
 
