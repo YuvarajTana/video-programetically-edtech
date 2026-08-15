@@ -1,13 +1,33 @@
+# Dependencies
 node_modules/
-out/
-.DS_Store
-.remotion/
-.cache/
+.pnpm-store/
+
+# Environment and secrets
 .env
 .env.*
 !.env.example
+
+# Build, render, and packaging outputs
+out/
+dist/
+.remotion/
+*.tsbuildinfo
+
+# Caches
+.cache/
+
+# Local studio / pipeline state (SQLite DB, narrations, voice samples, model cache)
+.video-kit/
+
+# Python virtual environments and bytecode (Kokoro TTS, local voice, Indic AI workers)
+.venv*/
+venv/
 __pycache__/
 *.py[cod]
+.pytest_cache/
+
+# Runtime-generated public assets (UUID-scoped uploads and previews)
+public/generated/
 
 # Local TTS intermediates are reproducible build artifacts. Keep only the
 # normalized master tracks that production specs reference.
@@ -15,3 +35,15 @@ public/audio/**/clips/
 public/audio/**/*-raw.wav
 public/audio/**/*.pending.wav
 public/audio/**/*.pending.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
