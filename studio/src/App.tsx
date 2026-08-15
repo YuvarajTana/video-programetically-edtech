@@ -1,5 +1,6 @@
-import {Player} from '@remotion/player';
 import {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useRef,
@@ -37,11 +38,14 @@ import {
   productionStageIndex,
   productionStageLabel,
 } from '../../shared/pipeline';
-import {FORMATS, type FormatId} from '../../src/design/formats';
+import {FORMATS, type FormatId} from '../../src/design/formatDefs';
 import type {MotionCanvasElement, Scene, SceneType} from '../../src/types';
 import {totalFrames} from '../../src/types';
-import {Video} from '../../src/Video';
 import {api, type LegacyVideo} from './api';
+
+// The Remotion player and the entire scene kit load on demand — they are the
+// heaviest part of the bundle and only the editor's preview pane needs them.
+const ScenePreview = lazy(() => import('./ScenePreview'));
 
 type Catalog = Awaited<ReturnType<typeof api.catalog>>;
 type View =
@@ -1770,20 +1774,15 @@ const ProjectEditor = ({id, onChanged}: {id: string; onChanged: () => void}) => 
             <span>{format.width} × {format.height}</span>
           </div>
           <div className={`player-stage ${profile}`}>
-            <Player
-              component={Video}
-              inputProps={{
-                spec: spec as unknown as Parameters<typeof Video>[0]['spec'],
-                channel: resolved.channel,
-                renderProfile: profile,
-              }}
-              durationInFrames={Math.max(1, totalFrames(spec as unknown as Parameters<typeof totalFrames>[0]))}
-              fps={spec.fps ?? 30}
-              compositionWidth={format.width}
-              compositionHeight={format.height}
-              controls
-              style={{width: '100%', height: '100%'}}
-            />
+            <Suspense fallback={<div className="player-loading">Loading preview…</div>}>
+              <ScenePreview
+                spec={spec}
+                channel={resolved.channel}
+                profile={profile}
+                format={format}
+                fps={spec.fps ?? 30}
+              />
+            </Suspense>
           </div>
           <div className="timeline-summary">
             {spec.scenes.map((scene, index) => (

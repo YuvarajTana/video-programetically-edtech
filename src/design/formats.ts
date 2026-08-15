@@ -1,24 +1,12 @@
 import {useVideoConfig} from 'remotion';
 import {SAFE} from './tokens';
 
-export type FormatId = 'landscape' | 'portrait' | 'square';
-
-export type FormatDef = {
-  id: FormatId;
-  label: string;
-  width: number;
-  height: number;
-  /** Where this cut is destined, used by the render script for filenames. */
-  target: string;
-};
-
-export const FORMATS: Record<FormatId, FormatDef> = {
-  landscape: {id: 'landscape', label: 'Landscape 16:9', width: 1920, height: 1080, target: 'landscape'},
-  portrait: {id: 'portrait', label: 'Portrait 9:16', width: 1080, height: 1920, target: 'portrait'},
-  square: {id: 'square', label: 'Square 1:1', width: 1080, height: 1080, target: 'square'},
-};
-
-export const FORMAT_IDS = Object.keys(FORMATS) as FormatId[];
+// Definitions live in formatDefs.ts (remotion-free, importable by the studio
+// app without dragging the renderer into its bundle); re-exported here so
+// composition code keeps one import site.
+export {FORMATS, FORMAT_IDS} from './formatDefs';
+export type {FormatDef, FormatId} from './formatDefs';
+import type {FormatId} from './formatDefs';
 
 export type Layout = {
   format: FormatId;

@@ -444,6 +444,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .segmented button { min-width: 48px; height: 25px; border: 0; border-radius: 5px; color: var(--muted); background: none; font-size: 10px; cursor: pointer; }
 .segmented button.active { color: var(--text); background: #272d34; }
 .player-stage { flex: 1; min-height: 430px; margin: 28px; align-self: center; display: grid; place-items: center; overflow: hidden; border-radius: 8px; box-shadow: 0 24px 80px #000; background: #111; }
+.player-loading { color: #8b8fa3; font-size: 13px; letter-spacing: 0.4px; }
 .player-stage.landscape { width: min(90%, 880px); aspect-ratio: 16 / 9; }
 .player-stage.portrait { height: min(calc(100vh - 190px), 760px); aspect-ratio: 9 / 16; flex: none; }
 .player-stage.square { height: min(calc(100vh - 210px), 680px); aspect-ratio: 1; flex: none; }
