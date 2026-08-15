@@ -20,6 +20,9 @@ npm run validate
 npm run render -- tech/selection-sort
 ```
 
+Requires Node 22.18+. Full machine setup, including the optional voiceover and
+publishing pieces, is documented in [`docs/local-setup.md`](docs/local-setup.md).
+
 ## Core model
 
 A production video is a typed `VideoSpec`:
