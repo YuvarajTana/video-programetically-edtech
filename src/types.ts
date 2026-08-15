@@ -215,6 +215,48 @@ export type KineticTextScene = Base & {
   beats: KineticBeat[];
 };
 
+/** Any picture or footage shown on screen must carry its provenance. */
+export type LicensedVisualAsset = {
+  /** Path relative to public/. */
+  src: string;
+  /** Human-readable creator or library attribution. */
+  credit: string;
+  /** License identifier or "original" for project-owned media. */
+  license: string;
+  sourceUrl?: string;
+};
+
+export type ImageScene = Base & {
+  type: 'image';
+  kicker?: string;
+  title?: string;
+  image: LicensedVisualAsset & {
+    /** cover fills the frame; contain letterboxes. Defaults to cover. */
+    fit?: 'cover' | 'contain';
+    /** Slow push-in so stills feel alive. Defaults on for cover fit. */
+    kenBurns?: boolean;
+  };
+  caption?: string;
+  /** Hide the automatic on-frame credit line (credit still ships in metadata). */
+  hideCredit?: boolean;
+};
+
+export type VideoClipScene = Base & {
+  type: 'videoClip';
+  kicker?: string;
+  title?: string;
+  clip: LicensedVisualAsset & {
+    fit?: 'cover' | 'contain';
+    /** Frames to skip at the start of the source file. */
+    trimBefore?: number;
+    /** Clip audio is muted by default; narration owns the mix. */
+    muted?: boolean;
+    volume?: number;
+  };
+  caption?: string;
+  hideCredit?: boolean;
+};
+
 export type CountdownScene = Base & {
   type: 'countdown';
   kicker?: string;
@@ -332,6 +374,8 @@ export type Scene =
   | ChartScene
   | TimelineScene
   | KineticTextScene
+  | ImageScene
+  | VideoClipScene
   | CountdownScene
   | NumberLineScene
   | LabeledDiagramScene

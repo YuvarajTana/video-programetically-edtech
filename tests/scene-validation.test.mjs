@@ -237,3 +237,76 @@ test('labeledDiagram requires emoji, labels, and valid sides', () => {
   );
   assert.ok(errorsOf(badSide).some((issue) => issue.path.endsWith('side')));
 });
+
+// ------------------------------------------------------------- image/clip
+
+const imageScene = (overrides = {}) => ({
+  type: 'image',
+  durationInFrames: 100,
+  image: {
+    src: 'media/samples/dusk-gradient.png',
+    credit: 'Studio',
+    license: 'original',
+  },
+  ...overrides,
+});
+
+const clipScene = (overrides = {}) => ({
+  type: 'videoClip',
+  durationInFrames: 84,
+  clip: {
+    src: 'media/samples/kinetic-sample.mp4',
+    credit: 'Studio',
+    license: 'original',
+  },
+  ...overrides,
+});
+
+test('well-formed image and videoClip scenes pass', () => {
+  assert.deepEqual(validateSpec(withScene(imageScene()), makeChannel()), []);
+  assert.deepEqual(validateSpec(withScene(clipScene()), makeChannel()), []);
+});
+
+test('visual assets require credit, license, and a real file inside public/', () => {
+  const uncredited = validateSpec(
+    withScene(imageScene({image: {src: 'media/samples/dusk-gradient.png'}})),
+    makeChannel(),
+  );
+  const paths = errorsOf(uncredited).map((issue) => issue.path);
+  assert.ok(paths.some((path) => path.endsWith('image.credit')));
+  assert.ok(paths.some((path) => path.endsWith('image.license')));
+
+  const escaped = validateSpec(
+    withScene(imageScene({image: {src: '../secret.png', credit: 'X', license: 'x'}})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(escaped).some((issue) => issue.message.includes('inside public/')));
+
+  const missing = validateSpec(
+    withScene(clipScene({clip: {src: 'media/nope.mp4', credit: 'X', license: 'x'}})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(missing).some((issue) => issue.message.includes('missing public/')));
+});
+
+test('videoClip bounds fit, trimBefore, and volume', () => {
+  const bad = validateSpec(
+    withScene(
+      clipScene({
+        clip: {
+          src: 'media/samples/kinetic-sample.mp4',
+          credit: 'X',
+          license: 'x',
+          fit: 'stretch',
+          trimBefore: -3,
+          volume: 2,
+        },
+      }),
+    ),
+    makeChannel(),
+  );
+  const paths = errorsOf(bad).map((issue) => issue.path);
+  assert.ok(paths.some((path) => path.endsWith('clip.fit')));
+  assert.ok(paths.some((path) => path.endsWith('clip.trimBefore')));
+  assert.ok(paths.some((path) => path.endsWith('clip.volume')));
+});

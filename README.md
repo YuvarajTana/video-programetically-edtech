@@ -247,6 +247,15 @@ before credentials or platform APIs are introduced.
 | `countdown` | 3… 2… 1… with a payoff reveal |
 | `numberLine` | ticks, marked values, and an animated hop for arithmetic |
 | `labeledDiagram` | emoji illustration with connected callout labels |
+| `image` | full-bleed licensed still with optional push-in |
+| `videoClip` | full-bleed licensed footage, muted by default |
+
+Media scenes follow the same traceability rules as audio: every `image` and
+`videoClip` asset lives under `public/`, must declare `credit` and `license`,
+is attributed on frame automatically (`hideCredit` opts out of the overlay,
+never the metadata), and is listed under "Media credits" in packaged
+`metadata.json` and `manifest.json`. Sample assets for the style guides live
+in `public/media/samples/`.
 | `callout` | one memorable sentence |
 | `arrayViz` | selection and bubble sort |
 | `quiz` | question, options, thinking pause, answer reveal |

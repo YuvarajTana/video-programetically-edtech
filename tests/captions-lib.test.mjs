@@ -29,3 +29,21 @@ test('toVoScript lists every scene with timing', () => {
   assert.ok(script.includes('| 2 | steps | 3.0s | 2.0s | — |'));
   assert.ok(script.includes('| 3 | outro | 5.0s | 1.5s | Goodbye. |'));
 });
+
+test('mediaCreditsFor includes scene images and clips alongside audio', async () => {
+  const {mediaCreditsFor} = await import('../scripts/package-lib.mjs');
+  const credits = mediaCreditsFor({
+    soundtrack: {
+      music: {src: 'a.wav', credit: 'M', license: 'cc0'},
+    },
+    scenes: [
+      {type: 'image', durationInFrames: 10, image: {src: 'i.png', credit: 'I', license: 'cc-by'}},
+      {type: 'videoClip', durationInFrames: 10, clip: {src: 'c.mp4', credit: 'C', license: 'original'}},
+      {type: 'title', durationInFrames: 10, title: 'x'},
+    ],
+  });
+  assert.deepEqual(
+    credits.map((asset) => [asset.role, asset.credit]),
+    [['music', 'M'], ['image', 'I'], ['video-clip', 'C']],
+  );
+});

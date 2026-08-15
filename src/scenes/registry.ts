@@ -4,6 +4,7 @@ import {ArrayViz} from './ArrayViz';
 import {BigStat} from './BigStat';
 import {Callout} from './Callout';
 import {Chart} from './Chart';
+import {Clip} from './Clip';
 import {Code} from './Code';
 import {Colors} from './Colors';
 import {Compare} from './Compare';
@@ -15,6 +16,7 @@ import {KineticText} from './KineticText';
 import {LabeledDiagram} from './LabeledDiagram';
 import {NumberLine} from './NumberLine';
 import {Outro} from './Outro';
+import {Photo} from './Photo';
 import {Quiz} from './Quiz';
 import {Stats} from './Stats';
 import {Steps} from './Steps';
@@ -43,6 +45,8 @@ export const SCENES: Record<SceneType, React.FC<{scene: any}>> = {
   countdown: Countdown,
   numberLine: NumberLine,
   labeledDiagram: LabeledDiagram,
+  image: Photo,
+  videoClip: Clip,
   counting: Counting,
   colors: Colors,
   flashcards: Flashcards,

@@ -18,6 +18,11 @@ Newly implemented:
   early arithmetic, with range/step validation.
 - `labeledDiagram` scene (Learn): a large emoji illustration with connected,
   sequenced callout labels.
+- `image` and `videoClip` media scenes: full-bleed licensed stills and
+  footage with cover/contain fit, Ken Burns push-in, default-muted clip
+  audio, automatic on-frame credits, and validation of path safety,
+  existence, and credit/license metadata. Packaged metadata now lists
+  visual assets alongside audio under "Media credits".
 - Browser-free `validate`, `captions`, and `package`: specs load straight from
   the TypeScript registries via Node 22 type stripping, so no bundling or
   headless Chrome is needed outside actual rendering.

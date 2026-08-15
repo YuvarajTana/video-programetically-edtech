@@ -306,19 +306,7 @@ export const validateSpec = (spec, channel) => {
   }
 
   const publicRoot = resolve('public');
-  if (spec.audio) {
-    const audioPath = resolve(publicRoot, spec.audio);
-    if (!audioPath.startsWith(`${publicRoot}${sep}`)) {
-      add('error', 'audio', 'must stay inside public/');
-    }
-  }
-  if (spec.captionTimings) {
-    const captionTimingsPath = resolve(publicRoot, spec.captionTimings);
-    if (!captionTimingsPath.startsWith(`${publicRoot}${sep}`)) {
-      add('error', 'captionTimings', 'must stay inside public/');
-    }
-  }
-  const validateAudioAsset = (asset, path) => {
+  const validateLicensedAsset = (asset, path) => {
     if (!asset?.src?.trim()) {
       add('error', `${path}.src`, 'is required');
       return;
@@ -335,8 +323,54 @@ export const validateSpec = (spec, channel) => {
     if (!asset.license?.trim()) {
       add('error', `${path}.license`, 'is required for media traceability');
     }
+  };
+
+  spec.scenes.forEach((scene, index) => {
+    const path = `scenes[${index}]`;
+    if (scene.type === 'image') {
+      validateLicensedAsset(scene.image, `${path}.image`);
+      if (scene.image?.fit !== undefined && !['cover', 'contain'].includes(scene.image.fit)) {
+        add('error', `${path}.image.fit`, 'must be "cover" or "contain"');
+      }
+    }
+    if (scene.type === 'videoClip') {
+      validateLicensedAsset(scene.clip, `${path}.clip`);
+      if (scene.clip?.fit !== undefined && !['cover', 'contain'].includes(scene.clip.fit)) {
+        add('error', `${path}.clip.fit`, 'must be "cover" or "contain"');
+      }
+      if (
+        scene.clip?.trimBefore !== undefined &&
+        (!Number.isInteger(scene.clip.trimBefore) || scene.clip.trimBefore < 0)
+      ) {
+        add('error', `${path}.clip.trimBefore`, 'must be a non-negative integer');
+      }
+      if (
+        scene.clip?.volume !== undefined &&
+        (!Number.isFinite(scene.clip.volume) ||
+          scene.clip.volume < 0 ||
+          scene.clip.volume > 1)
+      ) {
+        add('error', `${path}.clip.volume`, 'must be between 0 and 1');
+      }
+    }
+  });
+
+  if (spec.audio) {
+    const audioPath = resolve(publicRoot, spec.audio);
+    if (!audioPath.startsWith(`${publicRoot}${sep}`)) {
+      add('error', 'audio', 'must stay inside public/');
+    }
+  }
+  if (spec.captionTimings) {
+    const captionTimingsPath = resolve(publicRoot, spec.captionTimings);
+    if (!captionTimingsPath.startsWith(`${publicRoot}${sep}`)) {
+      add('error', 'captionTimings', 'must stay inside public/');
+    }
+  }
+  const validateAudioAsset = (asset, path) => {
+    validateLicensedAsset(asset, path);
     if (
-      asset.volume !== undefined &&
+      asset?.volume !== undefined &&
       (!Number.isFinite(asset.volume) || asset.volume < 0 || asset.volume > 1)
     ) {
       add('error', `${path}.volume`, 'must be between 0 and 1');

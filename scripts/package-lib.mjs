@@ -13,13 +13,21 @@ import {DELIVERIES} from './deliveries.mjs';
 const checksum = (value) =>
   createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
-const mediaCreditsFor = (spec) => {
+export const mediaCreditsFor = (spec) => {
   const assets = [];
   if (spec.soundtrack?.music) {
     assets.push({role: 'music', ...spec.soundtrack.music});
   }
   for (const effect of spec.soundtrack?.effects ?? []) {
     assets.push({role: 'sound-effect', ...effect});
+  }
+  for (const scene of spec.scenes ?? []) {
+    if (scene.type === 'image' && scene.image) {
+      assets.push({role: 'image', ...scene.image});
+    }
+    if (scene.type === 'videoClip' && scene.clip) {
+      assets.push({role: 'video-clip', ...scene.clip});
+    }
   }
   return assets.map(
     ({
@@ -53,7 +61,7 @@ const descriptionFor = (spec, channel, platform, chapters) => {
   }
   const mediaCredits = mediaCreditsFor(spec);
   if (mediaCredits.length) {
-    lines.push('', 'Audio credits:');
+    lines.push('', 'Media credits:');
     for (const asset of mediaCredits) {
       lines.push(
         `- ${asset.role}: ${asset.credit} (${asset.license})${
