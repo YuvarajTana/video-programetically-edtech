@@ -25,6 +25,8 @@ export type ChannelProfile = {
   label: string;
   shortLabel: string;
   handle: string;
+  /** Personal/creator handle shown beside the channel handle on every frame. */
+  secondaryHandle?: string;
   theme: VideoTheme;
   defaultDeliveries: DeliveryId[];
   defaultTemplate: string;
@@ -35,6 +37,12 @@ export type ChannelProfile = {
     minSeconds: number;
     maxSeconds: number;
     maxNarrationWpm: number;
+    /**
+     * Floor for narrated text-led scenes (title/callout/bigStat). A slow line
+     * over a static frame reads as dead air; mechanism scenes are exempt
+     * because their visuals carry the pause.
+     */
+    minNarrationWpm?: number;
     requiresAgeBand?: boolean;
     requiresLearningObjective?: boolean;
     requiresSafetyReview?: boolean;

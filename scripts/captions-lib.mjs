@@ -39,15 +39,35 @@ export const toSrt = (spec, fps = 30) => {
   );
 };
 
+const countWords = (text = '') => text.trim().split(/\s+/).filter(Boolean).length;
+
+/**
+ * Per-scene reading pace, flagged against the channel's WPM band. "fast" lines
+ * need rewriting before recording; "slow" is only a problem on scenes where
+ * nothing else moves.
+ */
+const paceCell = (scene, fps, band) => {
+  if (!scene.narration?.trim()) return '—';
+  const seconds = scene.durationInFrames / fps;
+  if (seconds <= 0) return '—';
+  const wps = countWords(scene.narration) / seconds;
+  const wpm = wps * 60;
+  let flag = '';
+  if (band?.max && wpm > band.max) flag = ' ⚠ fast';
+  else if (band?.min && wpm < band.min) flag = ' · slow';
+  return `${wps.toFixed(1)} w/s${flag}`;
+};
+
 export const toVoScript = (
   spec,
   fps = 30,
   renderPath = `out/${spec.channel}/${spec.slug}/renders/portrait.mp4`,
+  paceBand = undefined,
 ) => {
   const rows = offsets(spec).map((o) => {
     const secs = (o.scene.durationInFrames / fps).toFixed(1);
     const at = (o.start / fps).toFixed(1);
-    return `| ${o.index + 1} | ${o.scene.type} | ${at}s | ${secs}s | ${o.scene.narration ?? '—'} |`;
+    return `| ${o.index + 1} | ${o.scene.type} | ${at}s | ${secs}s | ${paceCell(o.scene, fps, paceBand)} | ${o.scene.narration ?? '—'} |`;
   });
 
   return [
@@ -55,8 +75,12 @@ export const toVoScript = (
     '',
     spec.summary ? `> ${spec.summary}` : '',
     '',
-    '| # | scene | starts | length | line |',
-    '| --- | --- | --- | --- | --- |',
+    paceBand
+      ? `Target pace: ${(paceBand.min ?? 0) / 60 > 0 ? `${(paceBand.min / 60).toFixed(1)}–` : 'up to '}${(paceBand.max / 60).toFixed(1)} words/second. Fix every ⚠ before recording.`
+      : '',
+    '',
+    '| # | scene | starts | length | pace | line |',
+    '| --- | --- | --- | --- | --- | --- |',
     ...rows,
     '',
     '## Mux a recorded voiceover',

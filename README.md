@@ -398,8 +398,13 @@ npm run validate -- --studio
 ```
 
 Validation checks structure, delivery IDs, duplicate scenes, diagram
-references, narration speed, duration, hook length, quiz timing, audio paths,
-and channel-specific editorial requirements. It reads the spec registries
+references, narration pace (a channel WPM band, not just a ceiling), duration,
+hook length and hook-vs-topic naming, accent rotation, static text-led scenes,
+quiz timing, audio paths, and channel-specific editorial requirements. The
+editorial rules themselves are documented in
+[`docs/authoring.md`](docs/authoring.md), and
+[`docs/llm-authoring-prompt.md`](docs/llm-authoring-prompt.md) is a paste-ready
+prompt for drafting a spec with a model. It reads the spec registries
 directly through Node's native TypeScript support, so it needs no bundling or
 browser and finishes in well under a second (Node 22.18+).
 

@@ -184,3 +184,72 @@ test('validateCollection flags duplicate refs', () => {
     results[1].issues.some((issue) => issue.message.includes('duplicate video ref')),
   );
 });
+
+// ------------------------------------------------- handoff editorial rules
+
+test('narration floor applies to text-led scenes only', () => {
+  const channel = makeChannel({editorial: {minNarrationWpm: 130}});
+  const spec = makeSpec();
+  // 4 words over 6s = 40 WPM on a static title scene.
+  spec.scenes[0] = {
+    type: 'title',
+    durationInFrames: 180,
+    title: 'A claim, not a label',
+    narration: 'Four words spoken slowly.',
+  };
+  const issues = validateSpec(spec, channel);
+  assert.ok(warningsOf(issues).some((issue) => issue.message.includes('WPM floor')));
+
+  // The same pace on a mechanism scene is fine — visuals carry the pause.
+  spec.scenes[0] = {
+    type: 'flow',
+    durationInFrames: 180,
+    steps: [{label: 'One'}, {label: 'Two'}],
+    narration: 'Four words spoken slowly.',
+  };
+  const mechanism = validateSpec(spec, channel);
+  assert.ok(!warningsOf(mechanism).some((issue) => issue.message.includes('WPM floor')));
+});
+
+test('an opening title that repeats the video title warns', () => {
+  const spec = makeSpec();
+  spec.scenes[0] = {...spec.scenes[0], title: '  Test Video '};
+  const issues = validateSpec(spec, makeChannel());
+  assert.ok(
+    warningsOf(issues).some((issue) => issue.message.includes('claim or question')),
+  );
+});
+
+test('adjacent scenes with the same explicit accent warn; defaults are exempt', () => {
+  const spec = makeSpec();
+  spec.scenes[0].accent = 'info';
+  spec.scenes[1].accent = 'info';
+  const issues = validateSpec(spec, makeChannel());
+  assert.ok(
+    warningsOf(issues).some((issue) => issue.path === 'scenes[1].accent'),
+  );
+
+  const untouched = validateSpec(makeSpec(), makeChannel());
+  assert.ok(!warningsOf(untouched).some((issue) => issue.path.endsWith('.accent')));
+});
+
+test('a long text-led scene mid-video warns as a static-frame leak', () => {
+  const spec = makeSpec();
+  spec.scenes.splice(1, 0, {
+    type: 'callout',
+    durationInFrames: 240, // 8s of static text
+    text: 'A sentence that overstays.',
+  });
+  const issues = validateSpec(spec, makeChannel());
+  assert.ok(
+    warningsOf(issues).some((issue) => issue.message.includes('static frame')),
+  );
+
+  // The same scene at 4s is fine, and so is a long one at the outro position.
+  spec.scenes[1].durationInFrames = 120;
+  assert.ok(
+    !warningsOf(validateSpec(spec, makeChannel())).some((issue) =>
+      issue.message.includes('static frame'),
+    ),
+  );
+});

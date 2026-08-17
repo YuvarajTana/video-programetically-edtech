@@ -21,7 +21,7 @@ export const makeSpec = (overrides = {}) => ({
     {
       type: 'title',
       durationInFrames: 90,
-      title: 'Test video',
+      title: 'A claim, not a label',
       narration: 'A short hook line.',
     },
     {

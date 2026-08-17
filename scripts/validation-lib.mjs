@@ -4,6 +4,9 @@ import {resolve, sep} from 'node:path';
 
 const words = (text = '') => text.trim().split(/\s+/).filter(Boolean).length;
 
+/** Scenes with no moving mechanism — the retention-leak candidates. */
+const TEXT_LED_SCENES = new Set(['title', 'callout', 'bigStat']);
+
 const issue = (severity, path, message) => ({severity, path, message});
 
 export const validateSpec = (spec, channel) => {
@@ -58,6 +61,16 @@ export const validateSpec = (spec, channel) => {
           'warning',
           `${path}.narration`,
           `${Math.round(wpm)} WPM exceeds ${channel.editorial.maxNarrationWpm} WPM for ${channel.id}`,
+        );
+      }
+      // The floor applies only to text-led scenes: a slow line over a static
+      // frame is dead air, while a mechanism scene's visuals carry the pause.
+      const minWpm = channel.editorial.minNarrationWpm;
+      if (minWpm && TEXT_LED_SCENES.has(scene.type) && wpm < minWpm) {
+        add(
+          'warning',
+          `${path}.narration`,
+          `${Math.round(wpm)} WPM is below the ${minWpm} WPM floor for a text-led ${scene.type} scene; tighten the scene or move the line onto a visual`,
         );
       }
     }
@@ -302,6 +315,49 @@ export const validateSpec = (spec, channel) => {
     if (hookSeconds > 3.2) {
       add('warning', 'scenes[0]', `hook lasts ${hookSeconds.toFixed(1)}s; target 3.2s or less`);
     }
+
+    // The first frame is a hook, not a label: the channel chrome already
+    // identifies the video, so an opening title that just repeats the topic
+    // wastes the strongest three seconds.
+    if (
+      firstScene.type === 'title' &&
+      firstScene.title?.trim().toLowerCase() === spec.title?.trim().toLowerCase()
+    ) {
+      add(
+        'warning',
+        'scenes[0].title',
+        'opening title repeats the video title; make the first frame a claim or question and keep the topic in metadata',
+      );
+    }
+
+    // Rotate explicitly chosen accents so adjacent scenes read as a sequence,
+    // not one long scene. Scenes leaving accent to its default are exempt.
+    for (let index = 1; index < spec.scenes.length; index++) {
+      const previous = spec.scenes[index - 1].accent;
+      const current = spec.scenes[index].accent;
+      if (previous && current && previous === current) {
+        add(
+          'warning',
+          `scenes[${index}].accent`,
+          `repeats "${current}" from the previous scene; rotate accents between adjacent scenes`,
+        );
+      }
+    }
+
+    // A long text-led scene mid-video is the classic static-frame retention
+    // leak: nothing moves while the clock runs.
+    spec.scenes.forEach((scene, index) => {
+      if (index === 0 || index === spec.scenes.length - 1) return;
+      if (!TEXT_LED_SCENES.has(scene.type)) return;
+      const staticSeconds = scene.durationInFrames / fps;
+      if (staticSeconds > 6) {
+        add(
+          'warning',
+          `scenes[${index}]`,
+          `${scene.type} scene holds a static frame for ${staticSeconds.toFixed(1)}s; add a mechanism scene or shorten it`,
+        );
+      }
+    });
 
     if (channel.editorial.requiresAgeBand && !spec.audience?.ageBand) {
       add('error', 'audience.ageBand', 'is required for Learn videos');
