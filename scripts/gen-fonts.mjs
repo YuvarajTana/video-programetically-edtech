@@ -16,6 +16,12 @@ const FACES = [
   ['Hanken Grotesk', 700, 'hanken-grotesk-latin-700-normal.woff2'],
   ['JetBrains Mono', 400, 'jetbrains-mono-latin-400-normal.woff2'],
   ['JetBrains Mono', 700, 'jetbrains-mono-latin-700-normal.woff2'],
+  // Fallbacks for glyphs the latin brand subsets lack: ✓ ✕ (Symbols 2),
+  // → (Symbols), ₹ (Devanagari latin-ext). Without these, those characters
+  // depend on whatever system fonts the render machine happens to have.
+  ['Noto Sans Symbols 2', 400, 'noto-sans-symbols-2-symbols-400-normal.woff2'],
+  ['Noto Sans Symbols', 400, 'noto-sans-symbols-symbols-400-normal.woff2'],
+  ['Noto Sans Devanagari', 400, 'noto-sans-devanagari-latin-ext-400-normal.woff2'],
 ];
 
 const blocks = [];

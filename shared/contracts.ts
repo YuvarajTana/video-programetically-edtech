@@ -18,6 +18,7 @@ export const DeliverySchema = z.enum([
   'youtube-short',
   'instagram-reel',
   'instagram-feed',
+  'instagram-carousel',
 ]);
 export const SceneTypeSchema = z.enum([
   'title',

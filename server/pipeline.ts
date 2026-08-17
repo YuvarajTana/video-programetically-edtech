@@ -780,9 +780,10 @@ export class JobRunner {
         spec.deliveries ?? snapshot.channel.defaultDeliveries;
       const profiles = [
         ...new Set(
-          requestedDeliveries.map(
-            (deliveryId) => DELIVERIES[deliveryId].renderProfile,
-          ),
+          requestedDeliveries
+            // Stills deliveries (carousels) are not video renders.
+            .filter((deliveryId) => !DELIVERIES[deliveryId].stills)
+            .map((deliveryId) => DELIVERIES[deliveryId].renderProfile),
         ),
       ] as FormatId[];
       for (const [index, profile] of profiles.entries()) {

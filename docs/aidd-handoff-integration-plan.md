@@ -131,7 +131,7 @@ this kit's accent roles already encode the same "semantics never change" rule.
 | --- | --- | --- |
 | 1 | ✅ **done** — validation rules (pace band, accent rotation, hook, text-only), authoring guide + LLM prompt, secondaryHandle, voiceover.md pace column, AI-context rules | small — landed first |
 | 2 | ✅ **done** — rail, algorithm, tokens, meter scenes + validation + style guides + QA stills + tests | the core build |
-| 3 | carousel deliveries + PDF, cover safe-box QA, music generator, glyph audit | independent items, any order |
+| 3 | ✅ **done** — carousel deliveries + PDF, cover safe-box QA, music generator, glyph audit + baked Noto fallbacks | independent items, all landed |
 
 Each phase ships with unit tests and style-guide coverage, matching how the
 scene kit was built. Phase 1 needs no design work and can merge alone.

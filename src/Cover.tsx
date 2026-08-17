@@ -71,7 +71,9 @@ const CoverBody: React.FC<CoverProps> = ({spec, channel, delivery}) => {
 
         <div
           style={{
-            maxWidth: layout.isLandscape ? layout.contentW * 0.82 : layout.contentW,
+            // Portrait covers stay inside the Instagram grid-crop safe box (>=140px
+            // side margins); npm run cover:check verifies rendered output.
+            maxWidth: layout.isLandscape ? layout.contentW * 0.82 : layout.width - 300,
             alignSelf: layout.isLandscape ? 'flex-start' : 'center',
             textAlign: layout.isLandscape ? 'left' : 'center',
           }}
@@ -102,7 +104,7 @@ const CoverBody: React.FC<CoverProps> = ({spec, channel, delivery}) => {
           {spec.summary ? (
             <div
               style={{
-                maxWidth: layout.isLandscape ? layout.contentW * 0.68 : layout.contentW * 0.92,
+                maxWidth: layout.isLandscape ? layout.contentW * 0.68 : layout.width - 320,
                 fontSize: type.body,
                 fontWeight: 600,
                 lineHeight: 1.35,

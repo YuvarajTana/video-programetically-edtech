@@ -484,3 +484,19 @@ test('rail bounds stages and railStage, and warns on regression', () => {
     errorsOf(rangeIssues).some((issue) => issue.message.includes('one of the rail stages')),
   );
 });
+
+// -------------------------------------------------------------- carousel
+
+test('stills deliveries warn when scene count exceeds the slide cap', () => {
+  const spec = makeSpec({deliveries: ['instagram-carousel']});
+  spec.scenes = Array.from({length: 11}, (_, i) => ({
+    type: 'callout',
+    durationInFrames: 90,
+    text: `Slide ${i}`,
+    narration: 'A line for this slide read at pace.',
+  }));
+  const issues = validateSpec(spec, makeChannel());
+  assert.ok(
+    warningsOf(issues).some((issue) => issue.message.includes('cap at 10')),
+  );
+});

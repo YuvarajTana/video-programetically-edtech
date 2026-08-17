@@ -17,6 +17,7 @@ import {
   matchesRef,
   positionals,
   preferredRenderProfile,
+  STILL_PROFILES,
   videoComposition,
 } from './deliveries.mjs';
 import {packageSpec} from './package-lib.mjs';
@@ -54,7 +55,10 @@ const productionVideos = compositions.filter((composition) => {
   const {spec} = composition.props ?? {};
   if (!spec || spec.kind === 'style-guide') return false;
   if (!matchesRef(spec, refs)) return false;
-  if (onlyProfile && composition.id.split('--')[2] !== onlyProfile) return false;
+  const profile = composition.id.split('--')[2];
+  // Stills-only profiles (carousels) render via `npm run carousel`, not as video.
+  if (STILL_PROFILES.has(profile)) return false;
+  if (onlyProfile && profile !== onlyProfile) return false;
   return true;
 });
 

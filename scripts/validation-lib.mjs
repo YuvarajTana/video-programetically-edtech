@@ -37,6 +37,14 @@ export const validateSpec = (spec, channel) => {
   for (const delivery of deliveries) {
     if (!DELIVERIES[delivery]) add('error', 'deliveries', `unknown delivery "${delivery}"`);
   }
+  const hasStillsDelivery = deliveries.some((id) => DELIVERIES[id]?.stills);
+  if (hasStillsDelivery && Array.isArray(spec.scenes) && spec.scenes.length > 10) {
+    add(
+      'warning',
+      'scenes',
+      `${spec.scenes.length} scenes make ${spec.scenes.length} carousel slides; Instagram carousels cap at 10`,
+    );
+  }
 
   const seen = new Set();
   let totalFrames = 0;

@@ -28,6 +28,13 @@ export const DELIVERIES: Record<DeliveryId, DeliveryTarget> = {
     platform: 'instagram',
     renderProfile: 'square',
   },
+  'instagram-carousel': {
+    id: 'instagram-carousel',
+    label: 'Instagram Carousel 4:5',
+    platform: 'instagram',
+    renderProfile: 'carousel',
+    stills: true,
+  },
 };
 
 export const deliveriesFor = (spec: VideoSpec, channel: ChannelProfile) =>

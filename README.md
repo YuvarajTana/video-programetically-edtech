@@ -281,6 +281,7 @@ Publishing destinations are separate from aspect ratios.
 | `youtube-short` | YouTube | `portrait` | 1080×1920 |
 | `instagram-reel` | Instagram | `portrait` | 1080×1920 |
 | `instagram-feed` | Instagram | `square` | 1080×1080 |
+| `instagram-carousel` | Instagram | `carousel` (stills) | 1080×1350 |
 
 If a spec requests both a YouTube Short and an Instagram Reel, the portrait
 video is rendered once and packaged twice with platform-specific metadata and
@@ -444,6 +445,36 @@ Rebuild publish packages from existing renders:
 npm run package
 npm run package -- tech/selection-sort
 ```
+
+### Carousels, cover QA, and music beds
+
+A spec that declares the `instagram-carousel` delivery ships as stills — one
+1080×1350 slide per scene, captured at 80% through the scene, plus a PDF for
+LinkedIn document posts (validation warns past Instagram's 10-slide cap):
+
+```bash
+npm run carousel -- tech/my-video
+```
+
+Rendered covers can be audited against the Instagram grid crop — content must
+keep ≥140px side margins and, on portrait covers, stay inside the centered
+800×1100 safe box:
+
+```bash
+npm run cover:check -- tech/my-video
+```
+
+Copyright-free music beds are synthesized in-repo (numpy required), RMS-
+normalized to −22 dBFS with 1.2s fades, and declared in specs with
+`license: 'original'`:
+
+```bash
+npm run music -- calm-plucks 60
+npm run music     # lists the presets
+```
+
+The baked font set includes Noto fallback faces for ₹, ✓, ✕, and → — glyphs
+the latin brand subsets lack — and a test fails CI if coverage regresses.
 
 ## Output packages
 

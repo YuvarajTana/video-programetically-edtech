@@ -15,6 +15,7 @@ export const MANAGED_COMPOSITION_IDS: Record<FormatId, string> = {
   landscape: 'managed--landscape',
   portrait: 'managed--portrait',
   square: 'managed--square',
+  carousel: 'managed--carousel',
 };
 
 export const managedDefaults: ManagedVideoInput = {
