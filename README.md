@@ -508,8 +508,15 @@ never the metadata), and is listed under "Media credits" in packaged
 in `public/media/samples/`.
 | `callout` | one memorable sentence |
 | `arrayViz` | selection and bubble sort |
+| `algorithm` | synced array + status + code, one step clock |
+| `tokens` | chips flipping text → id |
+| `meter` | one quantity filling toward a visible limit |
 | `quiz` | question, options, thinking pause, answer reveal |
 | `outro` | recap and channel-driven CTA |
+
+A spec may declare a `rail` — a persistent stage pipeline rendered above every
+scene. Scenes advance it with `railStage` (omitted scenes carry the previous
+stage forward), turning a sequence of cuts into one visible journey.
 
 Chart bars share one hue because they encode magnitude — identity lives in the
 label under each bar, and `highlightIndex` spotlights the bar the narration is

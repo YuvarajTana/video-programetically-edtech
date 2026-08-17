@@ -78,8 +78,19 @@ EVERY SCENE MUST SHOW A MECHANISM
 
 Something must move, fill, travel, flip, get eliminated or get blocked.
 Use for concept scenes: flow, architecture, chart, timeline, arrayViz,
-numberLine, code, terminal, compare, stats, quiz, counting, flashcards,
-labeledDiagram.
+algorithm, tokens, meter, numberLine, code, terminal, compare, stats, quiz,
+counting, flashcards, labeledDiagram.
+
+TWO HIGH-VALUE PATTERNS:
+
+• Synced execution — the `algorithm` scene runs array cells, pointer labels,
+  a status readout, and a highlighted code line on ONE step clock. Keep each
+  step's atFrame, states, status, and codeLine aligned — that alignment is
+  the entire effect.
+
+• Rail — for any topic with ordered stages, declare `rail: {stages: [...]}`
+  on the spec and advance `railStage` scene by scene. It turns six cuts into
+  one journey.
 Use title / callout / bigStat only for the hook, a verdict, or the recap —
 a validator warns when one of them holds the frame for more than 6 seconds
 mid-video.

@@ -107,6 +107,111 @@ export const validateSpec = (spec, channel) => {
       }
     }
 
+    if (scene.type === 'algorithm') {
+      const valueCount = Array.isArray(scene.values) ? scene.values.length : 0;
+      if (valueCount < 2 || valueCount > 16) {
+        add('error', `${path}.values`, 'needs two to sixteen values');
+      }
+      const steps = Array.isArray(scene.steps) ? scene.steps : [];
+      if (steps.length === 0) {
+        add('error', `${path}.steps`, 'needs at least one step');
+      }
+      let lastAt = -1;
+      for (const [stepIndex, step] of steps.entries()) {
+        const stepPath = `${path}.steps[${stepIndex}]`;
+        if (
+          !Number.isInteger(step.atFrame) ||
+          step.atFrame < 0 ||
+          step.atFrame >= scene.durationInFrames
+        ) {
+          add('error', `${stepPath}.atFrame`, 'must be a frame inside the scene');
+        } else if (step.atFrame <= lastAt) {
+          add('error', `${stepPath}.atFrame`, 'steps must be in strictly ascending order');
+        } else {
+          lastAt = step.atFrame;
+        }
+        if (typeof step.states !== 'string' || step.states.length !== valueCount) {
+          add(
+            'error',
+            `${stepPath}.states`,
+            `must be one state character per value (${valueCount})`,
+          );
+        } else if (!/^[.cfgx]*$/.test(step.states)) {
+          add('error', `${stepPath}.states`, 'characters must be . c f g or x');
+        }
+        if (
+          step.codeLine !== undefined &&
+          (!Number.isInteger(step.codeLine) ||
+            step.codeLine < 1 ||
+            step.codeLine > (scene.code?.lines?.length ?? 0))
+        ) {
+          add('error', `${stepPath}.codeLine`, 'must point at a line of scene.code');
+        }
+        for (const [name, pointer] of Object.entries(step.pointers ?? {})) {
+          if (!Number.isInteger(pointer) || pointer < 0 || pointer >= valueCount) {
+            add('error', `${stepPath}.pointers.${name}`, 'must point at one of the values');
+          }
+        }
+      }
+      for (const [lineIndex, line] of (scene.code?.lines ?? []).entries()) {
+        if (line.length > 46) {
+          add(
+            'warning',
+            `${path}.code.lines[${lineIndex}]`,
+            `${line.length} chars will wrap or shrink; keep code lines to 46`,
+          );
+        }
+      }
+    }
+
+    if (scene.type === 'tokens') {
+      const itemCount = Array.isArray(scene.items) ? scene.items.length : 0;
+      if (itemCount < 2 || itemCount > 12) {
+        add('error', `${path}.items`, 'needs two to twelve items');
+      }
+      for (const [itemIndex, item] of (scene.items ?? []).entries()) {
+        if (!item.text?.trim()) {
+          add('error', `${path}.items[${itemIndex}].text`, 'is required');
+        }
+        if (item.id === undefined || item.id === null || item.id === '') {
+          add('error', `${path}.items[${itemIndex}].id`, 'is required — the flip needs a target');
+        }
+      }
+      // Mirrors tokensFlipFrame() in src/scenes/Tokens.tsx.
+      const flip = scene.flipAtFrame ?? Math.round(scene.durationInFrames * 0.45);
+      if (!Number.isInteger(flip) || flip < 0 || flip >= scene.durationInFrames) {
+        add('error', `${path}.flipAtFrame`, 'must be a frame inside the scene');
+      } else if (scene.durationInFrames - flip < itemCount * 5 + Math.round(fps)) {
+        add(
+          'warning',
+          `${path}.flipAtFrame`,
+          'leaves too little time for every chip to flip and settle',
+        );
+      }
+    }
+
+    if (scene.type === 'meter') {
+      if (!Number.isFinite(scene.max) || scene.max <= 0) {
+        add('error', `${path}.max`, 'must be a positive number');
+      } else {
+        const from = scene.from ?? 0;
+        if (!Number.isFinite(from) || from < 0 || from > scene.max) {
+          add('error', `${path}.from`, 'must sit between 0 and max');
+        }
+        if (!Number.isFinite(scene.to) || scene.to < 0 || scene.to > scene.max) {
+          add('error', `${path}.to`, 'must sit between 0 and max');
+        }
+        if (
+          scene.marker &&
+          (!Number.isFinite(scene.marker.value) ||
+            scene.marker.value < 0 ||
+            scene.marker.value > scene.max)
+        ) {
+          add('error', `${path}.marker.value`, 'must sit between 0 and max');
+        }
+      }
+    }
+
     if (scene.type === 'chart') {
       const barCount = Array.isArray(scene.bars) ? scene.bars.length : 0;
       if (barCount < 2) {
@@ -379,6 +484,43 @@ export const validateSpec = (spec, channel) => {
       add('warning', 'editorial.sources', 'add sources for statistics or quantitative claims');
     }
   }
+
+  // The rail is one journey: stages bounded, every railStage on it, and the
+  // active stage never moving backwards.
+  const railStages = spec.rail?.stages;
+  if (railStages !== undefined) {
+    if (!Array.isArray(railStages) || railStages.length < 2 || railStages.length > 8) {
+      add('error', 'rail.stages', 'needs two to eight stages');
+    }
+    for (const [stageIndex, stage] of (railStages ?? []).entries()) {
+      if (!stage?.trim()) {
+        add('error', `rail.stages[${stageIndex}]`, 'is required');
+      } else if (stage.length > 16) {
+        add('warning', `rail.stages[${stageIndex}]`, 'longer than 16 characters will crowd the rail');
+      }
+    }
+  }
+  let lastRailStage = -1;
+  spec.scenes.forEach((scene, index) => {
+    if (scene.railStage === undefined) return;
+    const railPath = `scenes[${index}].railStage`;
+    if (!railStages) {
+      add('error', railPath, 'is set but the spec declares no rail');
+      return;
+    }
+    if (
+      !Number.isInteger(scene.railStage) ||
+      scene.railStage < 0 ||
+      scene.railStage >= railStages.length
+    ) {
+      add('error', railPath, 'must point at one of the rail stages');
+      return;
+    }
+    if (scene.railStage < lastRailStage) {
+      add('warning', railPath, 'moves the rail backwards; the journey should only advance');
+    }
+    lastRailStage = scene.railStage;
+  });
 
   const validateLicensedAsset = (asset, path) => {
     if (!asset?.src?.trim()) {

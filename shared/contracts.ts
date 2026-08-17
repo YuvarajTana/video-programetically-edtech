@@ -43,6 +43,9 @@ export const SceneTypeSchema = z.enum([
   'quiz',
   'callout',
   'arrayViz',
+  'algorithm',
+  'tokens',
+  'meter',
   'motionCanvas',
   'outro',
 ]);

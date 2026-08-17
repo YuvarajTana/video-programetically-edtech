@@ -130,7 +130,7 @@ this kit's accent roles already encode the same "semantics never change" rule.
 | Phase | Contents | Effort |
 | --- | --- | --- |
 | 1 | ✅ **done** — validation rules (pace band, accent rotation, hook, text-only), authoring guide + LLM prompt, secondaryHandle, voiceover.md pace column, AI-context rules | small — landed first |
-| 2 | rail, algorithm, tokens, meter scenes + validation + style guides + QA stills + tests | the core build |
+| 2 | ✅ **done** — rail, algorithm, tokens, meter scenes + validation + style guides + QA stills + tests | the core build |
 | 3 | carousel deliveries + PDF, cover safe-box QA, music generator, glyph audit | independent items, any order |
 
 Each phase ships with unit tests and style-guide coverage, matching how the
