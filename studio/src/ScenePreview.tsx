@@ -1,7 +1,7 @@
 import {Player} from '@remotion/player';
 import type {FormatDef} from '@video-kit/core/design/formats';
 import {totalFrames} from '@video-kit/core/spec';
-import {Video} from '../../src/Video';
+import {Video} from '@video-kit/render-kit';
 
 type VideoProps = Parameters<typeof Video>[0];
 

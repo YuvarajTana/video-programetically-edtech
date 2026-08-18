@@ -105,7 +105,7 @@ const objective =
   topic?.objective ??
   `Explain ${title} with a correct mental model and one practical example.`;
 const exportName = slug.replace(/-([a-z0-9])/g, (_, char) => char.toUpperCase());
-const videoDir = `src/videos/${channel}`;
+const videoDir = `packages/catalog/src/videos/${channel}`;
 const videoPath = `${videoDir}/${slug}.ts`;
 const scriptDir = `content/scripts/${channel}`;
 const scriptPath = `${scriptDir}/${slug}.md`;

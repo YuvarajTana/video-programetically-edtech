@@ -21,7 +21,7 @@ import {
 import {LANGUAGES, SupportedLocaleSchema} from '@video-kit/core/languages';
 import {MUSIC_TRACKS, musicTrackById} from '@video-kit/core/music';
 import {createSpecFromScript, slugify} from '@video-kit/core/storyboard';
-import {VIDEOS} from '../src/videos/registry';
+import {VIDEOS} from '@video-kit/catalog';
 import {StudioRepository} from './db';
 import {JobRunner} from './pipeline';
 import {LocalAiWorker} from './local-ai';

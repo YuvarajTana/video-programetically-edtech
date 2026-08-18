@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig.base.json",
   "include": [
-    "src",
     "scripts",
     "server",
     "studio",
@@ -16,6 +15,27 @@
       ],
       "@video-kit/core/*": [
         "./packages/core/src/*"
+      ],
+      "@video-kit/catalog": [
+        "./packages/catalog/src/index.ts"
+      ],
+      "@video-kit/catalog/*": [
+        "./packages/catalog/src/*"
+      ],
+      "@video-kit/render-kit": [
+        "./packages/render-kit/src/exports.ts"
+      ],
+      "@video-kit/render-kit/entry": [
+        "./packages/render-kit/src/index.ts"
+      ],
+      "@video-kit/render-kit/scenes": [
+        "./packages/render-kit/src/scenes/registry.ts"
+      ],
+      "@video-kit/render-kit/timing": [
+        "./packages/render-kit/src/timing/wordTimings.ts"
+      ],
+      "@video-kit/render-kit/layout": [
+        "./packages/render-kit/src/design/formats.ts"
       ]
     }
   }

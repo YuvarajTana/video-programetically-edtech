@@ -22,6 +22,7 @@ import {
 } from './deliveries.mjs';
 import {packageSpec} from './package-lib.mjs';
 import {validateCollection} from './validation-lib.mjs';
+import {PUBLIC_DIR, RENDER_KIT_ENTRY} from './render-kit.mjs';
 
 const argv = process.argv.slice(2);
 const flag = (name) => {
@@ -42,7 +43,8 @@ const chromeMode = process.env.REMOTION_CHROME_MODE || undefined;
 
 console.log('· bundling');
 const serveUrl = await bundle({
-  entryPoint: join(process.cwd(), 'src/index.ts'),
+  entryPoint: RENDER_KIT_ENTRY,
+  publicDir: PUBLIC_DIR,
   onProgress: () => {},
 });
 const compositions = await getCompositions(serveUrl, {

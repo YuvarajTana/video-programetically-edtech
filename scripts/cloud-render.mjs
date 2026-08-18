@@ -28,6 +28,8 @@ import {
 import {dirname, join, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {DELIVERIES, positionals} from './deliveries.mjs';
+import {WORKSPACE_ROOT} from '@video-kit/core/config';
+import {PUBLIC_DIR, RENDER_KIT_ENTRY} from './render-kit.mjs';
 
 const argv = process.argv.slice(2);
 const valueFlags = [
@@ -210,10 +212,10 @@ if (!serveUrl) {
     bucketName: config.bucketName,
     region: config.region,
     siteName: config.siteName,
-    entryPoint: resolve('src/index.ts'),
+    entryPoint: RENDER_KIT_ENTRY,
     options: {
-      publicDir: resolve('public'),
-      rootDir: process.cwd(),
+      publicDir: PUBLIC_DIR,
+      rootDir: WORKSPACE_ROOT,
       enableCaching: true,
       onBundleProgress: (progress) =>
         process.stdout.write(`\r  bundle ${Math.floor(progress)}%   `),

@@ -6,7 +6,7 @@ import {
   productionStageIndex,
   productionStageLabel,
 } from '@video-kit/core/pipeline';
-import {embeddingsMotionExplainer} from '../src/videos/tech/embeddings-motion-explainer';
+import {embeddingsMotionExplainer} from '@video-kit/catalog/videos/tech/embeddings-motion-explainer';
 
 test('the canonical pipeline matches the master-timeline production order', () => {
   assert.deepEqual(

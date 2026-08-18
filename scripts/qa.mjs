@@ -12,10 +12,11 @@ import {bundle} from '@remotion/bundler';
 import {getCompositions, renderStill} from '@remotion/renderer';
 import {mkdirSync} from 'node:fs';
 import {join} from 'node:path';
+import {PUBLIC_DIR, RENDER_KIT_ENTRY} from './render-kit.mjs';
 
 const [compId, ...frames] = process.argv.slice(2);
 mkdirSync('out/qa', {recursive: true});
-const serveUrl = await bundle({entryPoint: join(process.cwd(), 'src/index.ts')});
+const serveUrl = await bundle({entryPoint: RENDER_KIT_ENTRY, publicDir: PUBLIC_DIR});
 const opts = {
   browserExecutable: process.env.REMOTION_BROWSER_EXECUTABLE || null,
   chromeMode: process.env.REMOTION_CHROME_MODE || undefined,

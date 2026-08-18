@@ -13,6 +13,7 @@ import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {DELIVERIES, matchesRef, positionals, videoComposition} from './deliveries.mjs';
 import {jpegsToPdf} from './pdf-lib.mjs';
+import {PUBLIC_DIR, RENDER_KIT_ENTRY} from './render-kit.mjs';
 
 const refs = positionals(process.argv.slice(2));
 
@@ -23,7 +24,8 @@ const browserOptions = {
 
 console.log('· bundling');
 const serveUrl = await bundle({
-  entryPoint: join(process.cwd(), 'src/index.ts'),
+  entryPoint: RENDER_KIT_ENTRY,
+  publicDir: PUBLIC_DIR,
   onProgress: () => {},
 });
 const compositions = await getCompositions(serveUrl, browserOptions);
