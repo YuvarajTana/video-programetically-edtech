@@ -249,7 +249,7 @@ export class JobRunner {
           .filter(Boolean)
           .join('\n\n')}\n`,
       );
-      this.recordArtifact(
+      await this.recordArtifact(
         jobId,
         approvedScriptPath,
         'script',
@@ -315,7 +315,7 @@ export class JobRunner {
           2,
         )}\n`,
       );
-      this.recordArtifact(
+      await this.recordArtifact(
         jobId,
         sceneBreakdownPath,
         'scene-breakdown',
@@ -398,8 +398,8 @@ export class JobRunner {
           writeFileSync(captionsPath, captionsFor(spec));
           spec.audio = relative(publicRoot, finalAudio).split(sep).join('/');
           spec.captionTimings = relative(publicRoot, timings).split(sep).join('/');
-          this.recordArtifact(jobId, finalAudio, 'audio', null, 'audio/wav');
-          this.recordArtifact(
+          await this.recordArtifact(jobId, finalAudio, 'audio', null, 'audio/wav');
+          await this.recordArtifact(
             jobId,
             timings,
             'word-timings',
@@ -578,8 +578,8 @@ export class JobRunner {
             .join('/');
           spec.audio = audioRelative;
           spec.captionTimings = timingRelative;
-          this.recordArtifact(jobId, finalAudio, 'audio', null, 'audio/wav');
-          this.recordArtifact(
+          await this.recordArtifact(jobId, finalAudio, 'audio', null, 'audio/wav');
+          await this.recordArtifact(
             jobId,
             timings,
             'word-timings',
@@ -667,8 +667,8 @@ export class JobRunner {
         const timingRelative = relative(publicRoot, timings).split(sep).join('/');
         spec.audio = audioRelative;
         spec.captionTimings = timingRelative;
-        this.recordArtifact(jobId, finalAudio, 'audio', null, 'audio/wav');
-        this.recordArtifact(jobId, timings, 'word-timings', null, 'application/json');
+        await this.recordArtifact(jobId, finalAudio, 'audio', null, 'audio/wav');
+        await this.recordArtifact(jobId, timings, 'word-timings', null, 'application/json');
         }
       } else {
         await this.event(
@@ -732,7 +732,7 @@ export class JobRunner {
         masterTimelinePath,
         `${JSON.stringify(mastered.timeline, null, 2)}\n`,
       );
-      this.recordArtifact(
+      await this.recordArtifact(
         jobId,
         masterTimelinePath,
         'master-timeline',
@@ -748,7 +748,7 @@ export class JobRunner {
       );
       if (!musicOnly) {
         writeFileSync(captionsPath, captionsFor(spec));
-        this.recordArtifact(
+        await this.recordArtifact(
           jobId,
           captionsPath,
           'captions',
@@ -775,6 +775,33 @@ export class JobRunner {
         'Producing every requested output from the mastered composition.',
       );
       const variants = variantsFor(spec, snapshot.channel);
+      // Progress is advisory, so it must not block rendering — but it also must
+      // not pile up unawaited promises against a datasource that is a network
+      // call away. One write in flight at a time, latest value wins.
+      let progressInFlight = false;
+      let pendingProgress: {progress: number; notify: boolean} | null = null;
+      const reportProgress = (progress: number, notify: boolean) => {
+        pendingProgress = {progress, notify};
+        if (progressInFlight) return;
+        progressInFlight = true;
+        void (async () => {
+          try {
+            while (pendingProgress) {
+              const next = pendingProgress;
+              pendingProgress = null;
+              await this.repository.updateJob(jobId, {
+                stage: 'render',
+                progress: next.progress,
+              });
+              if (next.notify) this.notify(jobId);
+            }
+          } catch {
+            // A dropped progress update must never fail the render.
+          } finally {
+            progressInFlight = false;
+          }
+        })();
+      };
       const renderRoot = join(jobRoot, 'renders');
       const produced = await produceVariants({
         spec,
@@ -787,13 +814,13 @@ export class JobRunner {
           concurrency: config.renderConcurrency() ?? null,
         },
         cancelSignal: cancellation.cancelSignal,
-        onProgress: (variant, fraction) => void (async () => {
+        onProgress: (variant, fraction) => {
           const index = variants.indexOf(variant);
-          const overall =
-            0.5 + ((index + fraction) / Math.max(1, variants.length)) * 0.3;
-          await this.repository.updateJob(jobId, {stage: 'render', progress: overall});
-          if (Math.round(fraction * 100) % 10 === 0) this.notify(jobId);
-        })(),
+          reportProgress(
+            0.5 + ((index + fraction) / Math.max(1, variants.length)) * 0.3,
+            Math.round(fraction * 100) % 10 === 0,
+          );
+        },
       });
 
       // Artifacts are filed under the job's artifact root so downloads keep
@@ -804,7 +831,7 @@ export class JobRunner {
         mkdirSync(dirname(packaged), {recursive: true});
         copyFileSync(artifact.path, packaged);
         const variant = OUTPUT_VARIANTS[artifact.variantId];
-        this.recordArtifact(
+        await this.recordArtifact(
           jobId,
           packaged,
           artifact.kind,
@@ -876,7 +903,7 @@ export class JobRunner {
           2,
         )}\n`,
       );
-      this.recordArtifact(jobId, manifestPath, 'manifest', null, 'application/json');
+      await this.recordArtifact(jobId, manifestPath, 'manifest', null, 'application/json');
       const packagePath = join(artifactRoot, 'video-package.zip');
       const packageFiles = await Promise.all(
         (await this.repository.listArtifacts(jobId)).map((artifact) =>
@@ -889,7 +916,7 @@ export class JobRunner {
         paths.root,
         active,
       );
-      this.recordArtifact(
+      await this.recordArtifact(
         jobId,
         packagePath,
         'package',
