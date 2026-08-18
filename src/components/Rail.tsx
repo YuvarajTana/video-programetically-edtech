@@ -1,10 +1,10 @@
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {fadeIn} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, tint, type} from '../design/tokens';
+import {radius, space, stroke, tint, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {VideoSpec} from '../types';
-import {sceneOffsets} from '../types';
+import type {VideoSpec} from '@video-kit/core/spec';
+import {sceneOffsets} from '@video-kit/core/spec';
 
 /**
  * The persistent stage pipeline. Rendered outside the scene series so it

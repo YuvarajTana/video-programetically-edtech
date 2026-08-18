@@ -1,5 +1,5 @@
-import type {VideoSpec} from '../types';
-import {sceneOffsets, totalFrames} from '../types';
+import type {VideoSpec} from '@video-kit/core/spec';
+import {sceneOffsets, totalFrames} from '@video-kit/core/spec';
 
 export type FrameRange = {start: number; end: number};
 

@@ -2,9 +2,9 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {fadeUp, pop, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, tint, type} from '../design/tokens';
+import {radius, space, stroke, tint, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {CountingScene} from '../types';
+import type {CountingScene} from '@video-kit/core/spec';
 
 export const Counting: React.FC<{scene: CountingScene}> = ({scene}) => {
   const frame = useCurrentFrame();

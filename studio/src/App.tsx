@@ -23,24 +23,24 @@ import type {
   ThemeDefinition,
   TranslationUnitRecord,
   VoiceProfileRecord,
-} from '../../shared/contracts';
-import {LANGUAGES, type SupportedLocale} from '../../shared/languages';
-import type {MusicTrackCatalogItem} from '../../shared/music';
+} from '@video-kit/core/contracts';
+import {LANGUAGES, type SupportedLocale} from '@video-kit/core/languages';
+import type {MusicTrackCatalogItem} from '@video-kit/core/music';
 import {
   LONG_FORM_MINUTES,
   MAX_VIDEO_SECONDS,
   secondsForVideoFormat,
   type LongFormMinutes,
-} from '../../shared/durations';
-import {slugify} from '../../shared/storyboard';
+} from '@video-kit/core/durations';
+import {slugify} from '@video-kit/core/storyboard';
 import {
   PRODUCTION_PIPELINE,
   productionStageIndex,
   productionStageLabel,
-} from '../../shared/pipeline';
-import {FORMATS, type FormatId} from '../../src/design/formatDefs';
-import type {MotionCanvasElement, Scene, SceneType} from '../../src/types';
-import {totalFrames} from '../../src/types';
+} from '@video-kit/core/pipeline';
+import {FORMATS, type FormatId} from '@video-kit/core/design/formats';
+import type {MotionCanvasElement, Scene, SceneType} from '@video-kit/core/spec';
+import {totalFrames} from '@video-kit/core/spec';
 import {api, type LegacyVideo} from './api';
 
 // The Remotion player and the entire scene kit load on demand — they are the

@@ -2,9 +2,9 @@ import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
 import {EASE} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {type} from '../design/tokens';
+import {type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {KineticBeat, KineticTextScene} from '../types';
+import type {KineticBeat, KineticTextScene} from '@video-kit/core/spec';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 

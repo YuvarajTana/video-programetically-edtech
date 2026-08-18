@@ -2,9 +2,9 @@ import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
 import {EASE, pop} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, type} from '../design/tokens';
+import {radius, space, stroke, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {CountdownScene} from '../types';
+import type {CountdownScene} from '@video-kit/core/spec';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 

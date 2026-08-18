@@ -1,4 +1,4 @@
-import type {Scene} from '../src/types';
+import type {Scene} from './spec';
 import type {
   EditableVideoSpec,
   TemplateDefinition,

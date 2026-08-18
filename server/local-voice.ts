@@ -7,7 +7,7 @@ import {randomUUID} from 'node:crypto';
 import {existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {createInterface} from 'node:readline';
-import type {ModelStatus} from '../shared/contracts';
+import type {ModelStatus} from '@video-kit/core/contracts';
 
 type Pending = {
   resolve: (value: unknown) => void;

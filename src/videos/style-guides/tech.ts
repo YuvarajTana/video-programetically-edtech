@@ -1,4 +1,4 @@
-import type {VideoSpec} from '../../types';
+import type {VideoSpec} from '@video-kit/core/spec';
 
 /**
  * Living style guide: one scene of every type, in order.

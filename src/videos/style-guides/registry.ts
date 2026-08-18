@@ -1,4 +1,4 @@
-import type {VideoSpec} from '../../types';
+import type {VideoSpec} from '@video-kit/core/spec';
 import {funStyleGuide} from './fun';
 import {learnStyleGuide} from './learn';
 import {styleGuide as techStyleGuide} from './tech';

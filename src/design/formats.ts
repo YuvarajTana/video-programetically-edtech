@@ -1,12 +1,12 @@
 import {useVideoConfig} from 'remotion';
-import {SAFE} from './tokens';
+import {SAFE} from '@video-kit/core/design/tokens';
 
-// Definitions live in formatDefs.ts (remotion-free, importable by the studio
+// Definitions live in @video-kit/core (remotion-free, importable by the studio
 // app without dragging the renderer into its bundle); re-exported here so
 // composition code keeps one import site.
-export {FORMATS, FORMAT_IDS} from './formatDefs';
-export type {FormatDef, FormatId} from './formatDefs';
-import type {FormatId} from './formatDefs';
+export {FORMATS, FORMAT_IDS} from '@video-kit/core/design/formats';
+export type {FormatDef, FormatId} from '@video-kit/core/design/formats';
+import type {FormatId} from '@video-kit/core/design/formats';
 
 export type Layout = {
   format: FormatId;

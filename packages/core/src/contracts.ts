@@ -1,6 +1,6 @@
 import {z} from 'zod';
-import type {ChannelProfile} from '../src/channels';
-import type {VideoSpec} from '../src/types';
+import type {ChannelProfile} from './channels';
+import type {VideoSpec} from './spec';
 import {SupportedLocaleSchema, type LanguageDefinition} from './languages';
 
 export const IdentifierSchema = z

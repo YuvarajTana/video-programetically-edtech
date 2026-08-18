@@ -21,8 +21,8 @@ import type {
   GeneratedScriptResult,
   ScriptGenerationInput,
   ScriptGenerationStatus,
-} from '../../shared/contracts';
-import type {MusicTrackCatalogItem} from '../../shared/music';
+} from '@video-kit/core/contracts';
+import type {MusicTrackCatalogItem} from '@video-kit/core/music';
 
 type Catalog = {
   categories: CategoryDefinition[];

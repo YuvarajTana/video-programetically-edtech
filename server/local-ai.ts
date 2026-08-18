@@ -3,8 +3,8 @@ import {existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {spawn, type ChildProcessWithoutNullStreams} from 'node:child_process';
 import {createInterface} from 'node:readline';
-import type {ModelStatus} from '../shared/contracts';
-import {languageFor} from '../shared/languages';
+import type {ModelStatus} from '@video-kit/core/contracts';
+import {languageFor} from '@video-kit/core/languages';
 
 type Pending = {
   resolve: (value: unknown) => void;

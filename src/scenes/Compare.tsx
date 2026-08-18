@@ -2,12 +2,12 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Body, H3} from '../components/Text';
-import {space, type} from '../design/tokens';
+import {space, type} from '@video-kit/core/design/tokens';
 import {fadeUp, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
 import type {Accent} from '../themes';
-import type {CompareScene} from '../types';
+import type {CompareScene} from '@video-kit/core/spec';
 
 const Column: React.FC<{
   side: CompareScene['left'];

@@ -2,9 +2,9 @@ import {interpolate, useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {EASE_IO, fadeUp} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, tint, type} from '../design/tokens';
+import {radius, space, stroke, tint, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {MeterScene} from '../types';
+import type {MeterScene} from '@video-kit/core/spec';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 

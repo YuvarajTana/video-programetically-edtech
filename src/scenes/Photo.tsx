@@ -1,6 +1,6 @@
 import {AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {useTheme} from '../themes';
-import type {ImageScene} from '../types';
+import type {ImageScene} from '@video-kit/core/spec';
 import {MediaOverlay, useMediaFade} from './mediaChrome';
 
 /**

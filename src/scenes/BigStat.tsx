@@ -1,11 +1,11 @@
 import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Body, Kicker, Small} from '../components/Text';
-import {space} from '../design/tokens';
+import {space} from '@video-kit/core/design/tokens';
 import {fadeUp, pop} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
-import type {BigStatScene} from '../types';
+import type {BigStatScene} from '@video-kit/core/spec';
 
 export const BigStat: React.FC<{scene: BigStatScene}> = ({scene}) => {
   const frame = useCurrentFrame();

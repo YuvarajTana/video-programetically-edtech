@@ -30,12 +30,14 @@ registerHooks({
 });
 
 const src = (path) => pathToFileURL(join(process.cwd(), 'src', path)).href;
+const core = (path) =>
+  pathToFileURL(join(process.cwd(), 'packages/core/src', path)).href;
 
 /** Returns [{spec, channel}] for production videos, plus style guides on request. */
 export const loadSpecs = async ({includeStyleGuides = false} = {}) => {
   const [videos, channels] = await Promise.all([
     import(src('videos/registry.ts')),
-    import(src('channels/registry.ts')),
+    import(core('channels/registry.ts')),
   ]);
   const specs = includeStyleGuides ? videos.STUDIO_VIDEOS : videos.VIDEOS;
   return specs.map((spec) => ({spec, channel: channels.getChannel(spec.channel)}));

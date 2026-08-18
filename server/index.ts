@@ -1,10 +1,10 @@
-import {existsSync} from 'node:fs';
+import {config, loadEnv} from '@video-kit/core/config';
 import {createStudioApp} from './app';
 
-if (existsSync('.env')) process.loadEnvFile('.env');
+loadEnv();
 
-const port = Number(process.env.VIDEO_KIT_PORT ?? 4311);
-const host = '127.0.0.1';
+const port = config.apiPort();
+const host = config.host();
 const {app} = await createStudioApp();
 
 await app.listen({host, port});

@@ -1,5 +1,5 @@
-import type {VideoSpec} from '../types';
-import type {ChannelId} from '../channels';
+import type {VideoSpec} from '@video-kit/core/spec';
+import type {ChannelId} from '@video-kit/core/channels';
 import {FUN_VIDEOS} from './fun/registry';
 import {LEARN_VIDEOS} from './learn/registry';
 import {STYLE_GUIDES} from './style-guides/registry';

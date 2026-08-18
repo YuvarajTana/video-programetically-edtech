@@ -12,7 +12,7 @@ import {join, relative, resolve, sep} from 'node:path';
 import {chaptersFor, toChapterText} from './chapters-lib.mjs';
 import {DELIVERIES} from './deliveries.mjs';
 import {assertMediaFile} from './media-qa.mjs';
-import {buildMasterTimeline} from '../shared/master-timeline.mjs';
+import {buildMasterTimeline} from '@video-kit/core/master-timeline';
 
 const checksum = (value) =>
   createHash('sha256').update(JSON.stringify(value)).digest('hex');

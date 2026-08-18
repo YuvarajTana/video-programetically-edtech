@@ -1,5 +1,5 @@
 import {Audio, Sequence, staticFile} from 'remotion';
-import type {VideoSpec} from '../types';
+import type {VideoSpec} from '@video-kit/core/spec';
 import {
   audioMixDefaults,
   duckingGainAtFrame,

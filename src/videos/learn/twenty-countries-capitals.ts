@@ -1,4 +1,4 @@
-import type {FlashcardItem, VideoSpec} from '../../types';
+import type {FlashcardItem, VideoSpec} from '@video-kit/core/spec';
 
 const countries: Record<string, FlashcardItem> = {
   india: {rank: 1, label: 'India', emoji: '🇮🇳', clue: 'Capital: New Delhi', color: '#FF8A1F'},

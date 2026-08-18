@@ -1,16 +1,22 @@
 {
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "src",
+    "scripts",
+    "server",
+    "studio",
+    "tests",
+    "packages/*/src"
+  ],
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
-    "strict": true,
-    "noEmit": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true
-  },
-  "include": ["src", "scripts", "server", "shared", "studio", "tests"]
+    "baseUrl": ".",
+    "paths": {
+      "@video-kit/core": [
+        "./packages/core/src/index.ts"
+      ],
+      "@video-kit/core/*": [
+        "./packages/core/src/*"
+      ]
+    }
+  }
 }

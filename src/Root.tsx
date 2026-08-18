@@ -2,10 +2,10 @@ import {Composition} from 'remotion';
 import {FORMATS, FORMAT_IDS} from './design/formats';
 import {getChannel} from './channels';
 import {Cover} from './Cover';
-import {DELIVERIES, deliveriesFor, renderProfilesFor} from './publishing/deliveries';
+import {DELIVERIES, deliveriesFor, renderProfilesFor} from '@video-kit/core/publishing';
 import {STUDIO_VIDEOS} from './videos/registry';
 import {Video} from './Video';
-import {totalFrames} from './types';
+import {totalFrames} from '@video-kit/core/spec';
 import {
   calculateManagedMetadata,
   managedDefaults,

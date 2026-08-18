@@ -2,9 +2,9 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {fadeUp, pop, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, type} from '../design/tokens';
+import {radius, space, stroke, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {ColorsScene} from '../types';
+import type {ColorsScene} from '@video-kit/core/spec';
 
 export const Colors: React.FC<{scene: ColorsScene}> = ({scene}) => {
   const frame = useCurrentFrame();

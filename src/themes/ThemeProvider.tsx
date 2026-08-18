@@ -1,7 +1,7 @@
 import {createContext, useContext} from 'react';
 import type {ReactNode} from 'react';
-import {techTheme} from './tech';
-import type {VideoTheme} from './types';
+import {techTheme} from '@video-kit/core/themes';
+import type {VideoTheme} from '@video-kit/core/themes';
 
 const ThemeContext = createContext<VideoTheme>(techTheme);
 

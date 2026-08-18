@@ -12,7 +12,7 @@ import type {
   MotionCanvasAction,
   MotionCanvasElement,
   MotionCanvasScene,
-} from '../types';
+} from '@video-kit/core/spec';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 

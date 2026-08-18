@@ -2,11 +2,11 @@ import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Small} from '../components/Text';
-import {radius, space, tint, type} from '../design/tokens';
+import {radius, space, tint, type} from '@video-kit/core/design/tokens';
 import {EASE, fadeUp} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
-import type {CodeScene} from '../types';
+import type {CodeScene} from '@video-kit/core/spec';
 
 const LINE_H = 1.72;
 

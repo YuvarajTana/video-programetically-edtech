@@ -1,7 +1,7 @@
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {fadeUp, sceneFade} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {space, type} from '../design/tokens';
+import {space, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
 import type {Accent} from '../themes';
 

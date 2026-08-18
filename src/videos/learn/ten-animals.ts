@@ -1,4 +1,4 @@
-import type {FlashcardItem, VideoSpec} from '../../types';
+import type {FlashcardItem, VideoSpec} from '@video-kit/core/spec';
 
 const animals: Record<string, FlashcardItem> = {
   lion: {label: 'Lion', emoji: '🦁', clue: 'has a big mane', color: '#F5A524'},

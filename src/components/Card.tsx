@@ -1,5 +1,5 @@
 import type {CSSProperties, ReactNode} from 'react';
-import {radius, space, stroke, tint} from '../design/tokens';
+import {radius, space, stroke, tint} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
 import type {Accent} from '../themes';
 

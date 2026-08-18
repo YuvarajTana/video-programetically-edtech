@@ -1,6 +1,6 @@
-import type {ChannelId, VoiceProfile} from './channels/types';
-import type {DeliveryId} from './publishing/types';
-import type {Accent} from './themes/types';
+import type {ChannelId, VoiceProfile} from '../channels/types';
+import type {DeliveryId} from '../publishing/types';
+import type {Accent} from '../themes/types';
 
 /**
  * A video in this kit is data, not a React tree.

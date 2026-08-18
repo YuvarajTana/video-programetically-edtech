@@ -1,11 +1,11 @@
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Body, Display, Kicker} from '../components/Text';
-import {space} from '../design/tokens';
+import {space} from '@video-kit/core/design/tokens';
 import {drawWidth, fadeUp, pop, sceneFade} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
-import type {TitleScene} from '../types';
+import type {TitleScene} from '@video-kit/core/spec';
 
 export const Title: React.FC<{scene: TitleScene}> = ({scene}) => {
   const frame = useCurrentFrame();

@@ -1,13 +1,13 @@
 import {useEffect, useMemo, useState} from 'react';
 import {staticFile, useDelayRender} from 'remotion';
-import type {VideoSpec} from '../types';
+import type {VideoSpec} from '@video-kit/core/spec';
 import {
   resolveMotionCanvasTiming,
   type WordTimingFile,
-} from '../../shared/master-timeline.mjs';
+} from '@video-kit/core/master-timeline';
 
-export type {TimedCue, TimedWord, WordTimingFile} from '../../shared/master-timeline.mjs';
-export {resolveMotionCanvasTiming} from '../../shared/master-timeline.mjs';
+export type {TimedCue, TimedWord, WordTimingFile} from '@video-kit/core/master-timeline';
+export {resolveMotionCanvasTiming} from '@video-kit/core/master-timeline';
 
 const timingCache = new Map<string, WordTimingFile>();
 const timingRequests = new Map<string, Promise<WordTimingFile>>();

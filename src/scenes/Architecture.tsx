@@ -1,10 +1,10 @@
 import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
-import {radius, space, tint, type} from '../design/tokens';
+import {radius, space, tint, type} from '@video-kit/core/design/tokens';
 import {EASE, EASE_IO, fadeUp} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
-import type {ArchitectureScene, ArchNode} from '../types';
+import type {ArchitectureScene, ArchNode} from '@video-kit/core/spec';
 
 type Placed = ArchNode & {x: number; y: number; w: number; h: number; group: number};
 

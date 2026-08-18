@@ -2,9 +2,9 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {drawWidth, fadeUp, pop, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, tint, type} from '../design/tokens';
+import {radius, space, stroke, tint, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {TimelineScene} from '../types';
+import type {TimelineScene} from '@video-kit/core/spec';
 
 /**
  * Ordered events on a line. Landscape runs left to right; portrait and square

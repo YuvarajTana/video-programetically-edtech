@@ -1,4 +1,4 @@
-import type {SceneType} from '../types';
+import type {SceneType} from '@video-kit/core/spec';
 import {Algorithm} from './Algorithm';
 import {Architecture} from './Architecture';
 import {ArrayViz} from './ArrayViz';

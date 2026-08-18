@@ -1,11 +1,11 @@
 import {interpolate, useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
-import {space, type} from '../design/tokens';
+import {space, type} from '@video-kit/core/design/tokens';
 import {fadeUp} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
-import type {TerminalScene} from '../types';
+import type {TerminalScene} from '@video-kit/core/spec';
 
 const CPS = 1.6; // characters per frame while "typing"
 

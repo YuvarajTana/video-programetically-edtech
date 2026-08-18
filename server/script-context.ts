@@ -1,3 +1,4 @@
+import {paths} from '@video-kit/core/config';
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {z} from 'zod';
@@ -41,7 +42,7 @@ const ScriptContextSchema = z.object({
   ),
 });
 
-const contextPath = resolve('content', 'script-generation', 'context.json');
+const contextPath = paths.scriptContext();
 
 export const loadScriptContext = () =>
   ScriptContextSchema.parse(JSON.parse(readFileSync(contextPath, 'utf8')));

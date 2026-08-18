@@ -1,4 +1,4 @@
-import type {VideoSpec} from '../src/types';
+import type {VideoSpec} from './spec';
 
 export type TimedWord = {text: string; start: number; end: number};
 export type TimedCue = {

@@ -1,4 +1,4 @@
-import type {VideoSpec} from '../../types';
+import type {VideoSpec} from '@video-kit/core/spec';
 import {agenticRag} from './agentic-rag';
 import {cdnToContainer} from './cdn-to-container';
 import {llmFundamentals} from './llm-fundamentals';

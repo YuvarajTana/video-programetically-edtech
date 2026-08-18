@@ -1,11 +1,11 @@
 import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {H1, Small} from '../components/Text';
-import {radius, space, tint} from '../design/tokens';
+import {radius, space, tint} from '@video-kit/core/design/tokens';
 import {fadeUp, pop} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
-import type {CalloutScene} from '../types';
+import type {CalloutScene} from '@video-kit/core/spec';
 
 export const Callout: React.FC<{scene: CalloutScene}> = ({scene}) => {
   const frame = useCurrentFrame();

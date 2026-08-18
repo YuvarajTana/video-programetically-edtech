@@ -8,12 +8,12 @@ import {ingestVoiceSample} from '../server/voice-files';
 import {
   CreateVoiceProfileSchema,
   type EditableVideoSpec,
-} from '../shared/contracts';
-import {LANGUAGES, languageFor} from '../shared/languages';
+} from '@video-kit/core/contracts';
+import {LANGUAGES, languageFor} from '@video-kit/core/languages';
 import {
   extractTranslatableFields,
   protectTerms,
-} from '../shared/localization';
+} from '@video-kit/core/localization';
 
 const directory = mkdtempSync(join(tmpdir(), 'video-kit-localization-'));
 after(() => rmSync(directory, {recursive: true, force: true}));

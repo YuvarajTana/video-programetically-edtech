@@ -1,11 +1,11 @@
 import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
-import {radius, space, tint, type} from '../design/tokens';
+import {radius, space, tint, type} from '@video-kit/core/design/tokens';
 import {EASE, EASE_IO} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
 import {DEFAULT_TEMPO, buildTrace, stepAt} from '../lib/sortTrace';
-import type {ArrayVizScene} from '../types';
+import type {ArrayVizScene} from '@video-kit/core/spec';
 
 const INTRO = 26;
 const HOLD = 34;

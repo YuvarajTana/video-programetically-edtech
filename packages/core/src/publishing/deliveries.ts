@@ -1,4 +1,4 @@
-import type {VideoSpec} from '../types';
+import type {VideoSpec} from '../spec';
 import type {ChannelProfile} from '../channels/types';
 import type {FormatId} from '../design/formats';
 import type {DeliveryId, DeliveryTarget} from './types';

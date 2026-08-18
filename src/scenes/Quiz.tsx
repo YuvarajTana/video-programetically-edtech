@@ -2,9 +2,9 @@ import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Frame} from '../components/Frame';
 import {EASE, fadeUp, pop, pulse, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, tint, type} from '../design/tokens';
+import {radius, space, stroke, tint, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {QuizScene} from '../types';
+import type {QuizScene} from '@video-kit/core/spec';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const LETTERS = ['A', 'B', 'C', 'D'];

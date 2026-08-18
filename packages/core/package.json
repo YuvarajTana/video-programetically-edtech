@@ -1,0 +1,31 @@
+{
+  "name": "@video-kit/core",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Domain types, contracts, catalog data, and configuration shared by every Video Kit package. Free of React, Remotion, and Fastify.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./config": "./src/config/index.ts",
+    "./spec": "./src/spec/index.ts",
+    "./channels": "./src/channels/index.ts",
+    "./themes": "./src/themes/index.ts",
+    "./design/formats": "./src/design/formats.ts",
+    "./design/tokens": "./src/design/tokens.ts",
+    "./publishing": "./src/publishing/index.ts",
+    "./contracts": "./src/contracts.ts",
+    "./defaults": "./src/defaults.ts",
+    "./durations": "./src/durations.ts",
+    "./languages": "./src/languages.ts",
+    "./localization": "./src/localization.ts",
+    "./master-timeline": "./src/master-timeline.mjs",
+    "./managed": "./src/managed.ts",
+    "./music": "./src/music.ts",
+    "./pipeline": "./src/pipeline.ts",
+    "./storyboard": "./src/storyboard.ts",
+    "./tts": "./src/tts.ts"
+  },
+  "dependencies": {
+    "zod": "^4.1.5"
+  }
+}

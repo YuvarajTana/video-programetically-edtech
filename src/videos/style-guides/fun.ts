@@ -1,4 +1,4 @@
-import type {VideoSpec} from '../../types';
+import type {VideoSpec} from '@video-kit/core/spec';
 
 export const funStyleGuide: VideoSpec = {
   channel: 'fun',

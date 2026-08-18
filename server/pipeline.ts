@@ -16,22 +16,22 @@ import {
 } from 'node:fs';
 import {join, relative, resolve, sep} from 'node:path';
 import {spawn, type ChildProcess} from 'node:child_process';
-import {EditableVideoSpecSchema, type JobStage} from '../shared/contracts';
+import {EditableVideoSpecSchema, type JobStage} from '@video-kit/core/contracts';
 import {
   buildMasterTimeline,
   type WordTimingFile,
-} from '../shared/master-timeline.mjs';
-import {protectTerms} from '../shared/localization';
-import {narrationSpeechMap} from '../shared/tts';
+} from '@video-kit/core/master-timeline';
+import {protectTerms} from '@video-kit/core/localization';
+import {narrationSpeechMap} from '@video-kit/core/tts';
 import {
   fitScenesToDuration,
   scenesExceedNarrationRate,
-} from '../shared/storyboard';
-import {FORMATS, type FormatId} from '../src/design/formats';
-import {MANAGED_COMPOSITION_IDS, type ManagedVideoInput} from '../src/managed';
-import {DELIVERIES} from '../src/publishing/deliveries';
-import type {DeliveryId} from '../src/publishing/types';
-import type {VideoSpec} from '../src/types';
+} from '@video-kit/core/storyboard';
+import {FORMATS, type FormatId} from '@video-kit/core/design/formats';
+import {MANAGED_COMPOSITION_IDS, type ManagedVideoInput} from '@video-kit/core/managed';
+import {DELIVERIES} from '@video-kit/core/publishing';
+import type {DeliveryId} from '@video-kit/core/publishing';
+import type {VideoSpec} from '@video-kit/core/spec';
 import {StudioRepository} from './db';
 import {LocalAiWorker} from './local-ai';
 import {ElevenLabsVoiceProvider} from './elevenlabs';

@@ -2,12 +2,12 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Body, H1, Small} from '../components/Text';
-import {space, type} from '../design/tokens';
+import {space, type} from '@video-kit/core/design/tokens';
 import {fadeUp, pop} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useChannel} from '../channels';
 import {useTheme} from '../themes';
-import type {OutroScene} from '../types';
+import type {OutroScene} from '@video-kit/core/spec';
 
 export const Outro: React.FC<{scene: OutroScene}> = ({scene}) => {
   const frame = useCurrentFrame();

@@ -2,9 +2,9 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {fadeUp, pulse, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, tint, type} from '../design/tokens';
+import {radius, space, stroke, tint, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {AlgorithmScene, AlgorithmStep} from '../types';
+import type {AlgorithmScene, AlgorithmStep} from '@video-kit/core/spec';
 
 /**
  * The synced-execution technique: array cells, pointer labels, a status

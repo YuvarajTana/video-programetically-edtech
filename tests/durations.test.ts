@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {ScriptGenerationInputSchema} from '../shared/contracts';
-import {DEFAULT_TEMPLATES} from '../shared/defaults';
+import {ScriptGenerationInputSchema} from '@video-kit/core/contracts';
+import {DEFAULT_TEMPLATES} from '@video-kit/core/defaults';
 import {
   LONG_FORM_MINUTES,
   MAX_VIDEO_SECONDS,
@@ -9,8 +9,8 @@ import {
   sceneCountForVideo,
   secondsForVideoFormat,
   voiceoverWordRange,
-} from '../shared/durations';
-import {createSpecFromScript} from '../shared/storyboard';
+} from '@video-kit/core/durations';
+import {createSpecFromScript} from '@video-kit/core/storyboard';
 
 test('long-form presets cover five-minute steps through thirty minutes', () => {
   assert.deepEqual(LONG_FORM_MINUTES, [5, 10, 15, 20, 25, 30]);

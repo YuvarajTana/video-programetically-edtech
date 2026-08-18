@@ -1,4 +1,4 @@
-import type {FlashcardItem, VideoSpec} from '../../types';
+import type {FlashcardItem, VideoSpec} from '@video-kit/core/spec';
 
 const planets: Record<string, FlashcardItem> = {
   mercury: {

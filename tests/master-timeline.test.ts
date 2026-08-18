@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {buildMasterTimeline} from '../shared/master-timeline.mjs';
+import {buildMasterTimeline} from '@video-kit/core/master-timeline';
 import {
   PRODUCTION_PIPELINE,
   productionStageIndex,
   productionStageLabel,
-} from '../shared/pipeline';
+} from '@video-kit/core/pipeline';
 import {embeddingsMotionExplainer} from '../src/videos/tech/embeddings-motion-explainer';
 
 test('the canonical pipeline matches the master-timeline production order', () => {

@@ -1,8 +1,8 @@
 import {createContext, useContext} from 'react';
 import type {ReactNode} from 'react';
 import {ThemeProvider} from '../themes';
-import {CHANNELS} from './registry';
-import type {ChannelProfile} from './types';
+import {CHANNELS} from '@video-kit/core/channels';
+import type {ChannelProfile} from '@video-kit/core/channels';
 
 const ChannelContext = createContext<ChannelProfile>(CHANNELS.tech);
 

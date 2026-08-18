@@ -8,7 +8,7 @@ import {
 } from 'node:fs';
 import {join, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {SupportedLocaleSchema} from '../shared/languages';
+import {SupportedLocaleSchema} from '@video-kit/core/languages';
 import type {StudioRepository} from './db';
 
 const ALLOWED_AUDIO = new Set([

@@ -6,11 +6,11 @@ import {FontGate} from './design/FontGate';
 import {useLayout} from './design/formats';
 import type {FormatId} from './design/formats';
 import {SCENES} from './scenes/registry';
-import type {VideoSpec} from './types';
+import type {VideoSpec} from '@video-kit/core/spec';
 import {ChannelProvider} from './channels';
 import type {ChannelProfile} from './channels';
 import {useTheme} from './themes';
-import {isIndicLocale, languageFor} from '../shared/languages';
+import {isIndicLocale, languageFor} from '@video-kit/core/languages';
 import {useResolvedMotionCanvasSpec, useWordTimings} from './timing/wordTimings';
 
 /**

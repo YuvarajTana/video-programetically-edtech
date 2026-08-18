@@ -1,4 +1,4 @@
-import type {ColorSwatch, VideoSpec} from '../../types';
+import type {ColorSwatch, VideoSpec} from '@video-kit/core/spec';
 
 const colors: Record<string, ColorSwatch> = {
   red: {name: 'Red', hex: '#EF3340', example: 'an apple', emoji: '🍎'},

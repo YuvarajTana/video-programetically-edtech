@@ -2,11 +2,11 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Body, H3, Small} from '../components/Text';
-import {space, type} from '../design/tokens';
+import {space, type} from '@video-kit/core/design/tokens';
 import {fadeIn, slideIn, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
-import type {StepsScene} from '../types';
+import type {StepsScene} from '@video-kit/core/spec';
 
 const ROTATION = ['attention', 'primary', 'success', 'info'] as const;
 

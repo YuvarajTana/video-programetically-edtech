@@ -1,5 +1,5 @@
 import type {CSSProperties, ReactNode} from 'react';
-import {type} from '../design/tokens';
+import {type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
 
 type P = {children: ReactNode; style?: CSSProperties; accent?: string};

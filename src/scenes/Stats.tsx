@@ -2,11 +2,11 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {Card} from '../components/Card';
 import {Kicker, Small} from '../components/Text';
-import {space, type} from '../design/tokens';
+import {space, type} from '@video-kit/core/design/tokens';
 import {fadeUp, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
 import {useTheme} from '../themes';
-import type {StatsScene} from '../types';
+import type {StatsScene} from '@video-kit/core/spec';
 
 const ROTATION = ['primary', 'success', 'attention', 'info'] as const;
 

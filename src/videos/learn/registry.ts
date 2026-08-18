@@ -1,4 +1,4 @@
-import type {VideoSpec} from '../../types';
+import type {VideoSpec} from '@video-kit/core/spec';
 import {eightPlanets} from './eight-planets';
 import {moonPhases} from './moon-phases';
 import {numbersOneToTen} from './numbers-one-to-ten';

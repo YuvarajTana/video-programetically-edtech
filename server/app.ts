@@ -17,10 +17,10 @@ import {
   ThemeDefinitionSchema,
   UpdateTranslationUnitSchema,
   UpdateProjectSchema,
-} from '../shared/contracts';
-import {LANGUAGES, SupportedLocaleSchema} from '../shared/languages';
-import {MUSIC_TRACKS, musicTrackById} from '../shared/music';
-import {createSpecFromScript, slugify} from '../shared/storyboard';
+} from '@video-kit/core/contracts';
+import {LANGUAGES, SupportedLocaleSchema} from '@video-kit/core/languages';
+import {MUSIC_TRACKS, musicTrackById} from '@video-kit/core/music';
+import {createSpecFromScript, slugify} from '@video-kit/core/storyboard';
 import {VIDEOS} from '../src/videos/registry';
 import {StudioRepository} from './db';
 import {JobRunner} from './pipeline';

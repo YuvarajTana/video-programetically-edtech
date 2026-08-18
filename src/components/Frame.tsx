@@ -1,6 +1,6 @@
 import type {CSSProperties, ReactNode} from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
-import {space} from '../design/tokens';
+import {space} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
 import type {Accent} from '../themes';
 import {fadeUp, sceneFade} from '../design/anim';

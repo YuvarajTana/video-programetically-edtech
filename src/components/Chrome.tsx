@@ -4,13 +4,13 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
-import {space, tint, type} from '../design/tokens';
+import {space, tint, type} from '@video-kit/core/design/tokens';
 import {useLayout} from '../design/formats';
 import {useChannel} from '../channels';
 import {useTheme} from '../themes';
-import type {VideoSpec} from '../types';
-import {sceneOffsets} from '../types';
-import {languageFor} from '../../shared/languages';
+import type {VideoSpec} from '@video-kit/core/spec';
+import {sceneOffsets} from '@video-kit/core/spec';
+import {languageFor} from '@video-kit/core/languages';
 import {useWordTimings} from '../timing/wordTimings';
 
 /**

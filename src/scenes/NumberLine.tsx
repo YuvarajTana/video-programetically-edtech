@@ -2,9 +2,9 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {drawWidth, fadeUp, pop, progress, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, tint, type} from '../design/tokens';
+import {radius, space, stroke, tint, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {NumberLineScene} from '../types';
+import type {NumberLineScene} from '@video-kit/core/spec';
 
 /**
  * A number line with ticks, highlighted values, and an optional animated hop —

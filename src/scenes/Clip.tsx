@@ -1,6 +1,6 @@
 import {AbsoluteFill, OffthreadVideo, staticFile} from 'remotion';
 import {useTheme} from '../themes';
-import type {VideoClipScene} from '../types';
+import type {VideoClipScene} from '@video-kit/core/spec';
 import {MediaOverlay, useMediaFade} from './mediaChrome';
 
 /**

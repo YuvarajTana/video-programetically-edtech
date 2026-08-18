@@ -5,14 +5,14 @@ import {
   type GeneratedScriptResult,
   type ScriptGenerationInput,
   type ScriptGenerationStatus,
-} from '../shared/contracts';
-import type {CategoryDefinition, TemplateDefinition} from '../shared/contracts';
+} from '@video-kit/core/contracts';
+import type {CategoryDefinition, TemplateDefinition} from '@video-kit/core/contracts';
 import {
   musicPlanningWordRange,
   sceneCountForVideo,
   secondsForVideoFormat,
   voiceoverWordRange,
-} from '../shared/durations';
+} from '@video-kit/core/durations';
 import {contextForGeneration, loadScriptContext} from './script-context';
 
 export type ScriptGenerationContext = {

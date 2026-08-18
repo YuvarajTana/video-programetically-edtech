@@ -3,10 +3,10 @@ import {ChannelProvider} from './channels';
 import type {ChannelProfile} from './channels';
 import {FontGate} from './design/FontGate';
 import {useLayout} from './design/formats';
-import {radius, space, tint, type} from './design/tokens';
-import type {DeliveryTarget} from './publishing/types';
+import {radius, space, tint, type} from '@video-kit/core/design/tokens';
+import type {DeliveryTarget} from '@video-kit/core/publishing';
 import {useTheme} from './themes';
-import type {VideoSpec} from './types';
+import type {VideoSpec} from '@video-kit/core/spec';
 
 type CoverProps = {
   spec: VideoSpec;

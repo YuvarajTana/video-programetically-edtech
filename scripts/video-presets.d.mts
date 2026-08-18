@@ -1,4 +1,4 @@
-import type {VideoSpec} from '../src/types';
+import type {VideoSpec} from '@video-kit/core/spec';
 
 export type VideoPresetId =
   | 'reel-concept'

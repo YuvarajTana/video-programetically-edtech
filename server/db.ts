@@ -38,21 +38,22 @@ import {
   type VoiceProfileVersionRecord,
   type VoiceProvider,
   type VoiceSampleRecord,
-} from '../shared/contracts';
+} from '@video-kit/core/contracts';
 import {
   DEFAULT_CATEGORIES,
   DEFAULT_TEMPLATES,
   DEFAULT_THEMES,
-} from '../shared/defaults';
-import {createSpecFromScript, slugify} from '../shared/storyboard';
+} from '@video-kit/core/defaults';
+import {paths} from '@video-kit/core/config';
+import {createSpecFromScript, slugify} from '@video-kit/core/storyboard';
 import {
   extractTranslatableFields,
   setFieldAtPath,
   sourceTextHash,
-} from '../shared/localization';
-import {SupportedLocaleSchema} from '../shared/languages';
-import type {ChannelProfile} from '../src/channels';
-import type {VideoSpec} from '../src/types';
+} from '@video-kit/core/localization';
+import {SupportedLocaleSchema} from '@video-kit/core/languages';
+import type {ChannelProfile} from '@video-kit/core/channels';
+import type {VideoSpec} from '@video-kit/core/spec';
 
 const now = () => new Date().toISOString();
 const parse = <T>(value: string) => JSON.parse(value) as T;
@@ -86,7 +87,7 @@ export class StudioRepository {
     this.database.exec(
       'CREATE TABLE IF NOT EXISTS schema_migrations (version TEXT PRIMARY KEY, applied_at TEXT NOT NULL)',
     );
-    const directory = resolve('migrations');
+    const directory = paths.migrations();
     for (const filename of readdirSync(directory)
       .filter((entry) => entry.endsWith('.sql'))
       .sort()) {

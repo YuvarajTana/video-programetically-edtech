@@ -2,9 +2,9 @@ import {useCurrentFrame} from 'remotion';
 import {Frame} from '../components/Frame';
 import {drawWidth, fadeUp, pop, stagger} from '../design/anim';
 import {useLayout} from '../design/formats';
-import {radius, space, stroke, tint, type} from '../design/tokens';
+import {radius, space, stroke, tint, type} from '@video-kit/core/design/tokens';
 import {useTheme} from '../themes';
-import type {DiagramLabel, LabeledDiagramScene} from '../types';
+import type {DiagramLabel, LabeledDiagramScene} from '@video-kit/core/spec';
 
 /**
  * One big illustration with callout labels connected to it — the Learn kit's
