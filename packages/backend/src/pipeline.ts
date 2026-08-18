@@ -39,7 +39,7 @@ type ActiveJob = {
 const safeError = (error: unknown) => {
   const message = error instanceof Error ? error.message : String(error);
   return message
-    .replaceAll(process.cwd(), '<project>')
+    .replaceAll(paths.root, '<project>')
     .replace(/(?:api[-_]?key|token|secret)=\S+/gi, '$1=<redacted>')
     .slice(0, 2_000);
 };
@@ -479,7 +479,7 @@ export class JobRunner {
                 'default=noprint_wrappers=1:nokey=1',
                 clip,
               ],
-              process.cwd(),
+              paths.root,
               active,
             );
             const audioDuration = Number(stdout.trim());
@@ -506,7 +506,7 @@ export class JobRunner {
                 String(sceneDuration),
                 paddedClip,
               ],
-              process.cwd(),
+              paths.root,
               active,
             );
             scene.durationInFrames = Math.max(
@@ -553,7 +553,7 @@ export class JobRunner {
               `loudnorm=I=${voice.targetLufs}:TP=${voice.truePeakDb}:LRA=${voice.loudnessRange}`,
               finalAudio,
             ],
-            process.cwd(),
+            paths.root,
             active,
           );
           writeFileSync(
@@ -641,7 +641,7 @@ export class JobRunner {
           await runProcess(
             pythonExecutable(),
             ttsArguments,
-            process.cwd(),
+            paths.root,
             active,
           );
           await runProcess(
@@ -657,7 +657,7 @@ export class JobRunner {
               `loudnorm=I=${voice.targetLufs}:TP=${voice.truePeakDb}:LRA=${voice.loudnessRange}`,
               finalAudio,
             ],
-            process.cwd(),
+            paths.root,
             active,
           );
           copyFileSync(finalAudio, cachedAudio);
@@ -840,7 +840,7 @@ export class JobRunner {
               String(expectedDurationSeconds),
               ...(requireAudio ? ['--require-audio'] : []),
             ],
-            process.cwd(),
+            paths.root,
             active,
           );
         }
@@ -886,7 +886,7 @@ export class JobRunner {
       await runProcess(
         'zip',
         ['-j', packagePath, ...packageFiles],
-        process.cwd(),
+        paths.root,
         active,
       );
       this.recordArtifact(

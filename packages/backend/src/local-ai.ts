@@ -1,6 +1,7 @@
+import {fromRoot, paths} from '@video-kit/core/config';
 import {randomUUID} from 'node:crypto';
 import {existsSync} from 'node:fs';
-import {resolve} from 'node:path';
+import {join, resolve} from 'node:path';
 import {spawn, type ChildProcessWithoutNullStreams} from 'node:child_process';
 import {createInterface} from 'node:readline';
 import type {ModelStatus} from '@video-kit/core/contracts';
@@ -43,8 +44,8 @@ const pythonExecutable = () => {
   const requested = process.env.INDIC_AI_PYTHON;
   const candidates = [
     requested,
-    resolve('.venv-indic/bin/python3'),
-    resolve('.venv-indic/bin/python'),
+    fromRoot('.venv-indic/bin/python3'),
+    fromRoot('.venv-indic/bin/python'),
   ].filter(Boolean) as string[];
   return candidates.find((candidate) => existsSync(candidate)) ?? candidates[0];
 };
@@ -139,12 +140,12 @@ export class LocalAiWorker
     }
     const child = spawn(
       executable,
-      [resolve('scripts', 'indic-ai-worker.py'), '--stdio'],
+      [fromRoot('scripts', 'indic-ai-worker.py'), '--stdio'],
       {
-        cwd: process.cwd(),
+        cwd: paths.root,
         env: {
           ...process.env,
-          VIDEO_KIT_MODEL_DIR: resolve('.video-kit', 'models'),
+          VIDEO_KIT_MODEL_DIR: paths.models(),
         },
         stdio: ['pipe', 'pipe', 'pipe'],
       },

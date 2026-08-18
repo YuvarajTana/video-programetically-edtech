@@ -94,6 +94,8 @@ export const paths = {
   cache: () => fromRoot(str('VIDEO_KIT_CACHE_DIR', '.cache/video-kit')),
   /** CLI render output. */
   out: () => fromRoot('out'),
+  /** Built studio bundle, served by the API when it exists. */
+  web: () => fromRoot('studio', 'dist'),
 } as const;
 
 export const config = {

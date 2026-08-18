@@ -1,3 +1,4 @@
+import {fromRoot, paths} from '@video-kit/core/config';
 import {
   spawn,
   spawnSync,
@@ -5,7 +6,7 @@ import {
 } from 'node:child_process';
 import {randomUUID} from 'node:crypto';
 import {existsSync} from 'node:fs';
-import {resolve} from 'node:path';
+import {join, resolve} from 'node:path';
 import {createInterface} from 'node:readline';
 import type {ModelStatus} from '@video-kit/core/contracts';
 
@@ -33,8 +34,8 @@ export interface LocalVoiceProvider {
 const pythonExecutable = () => {
   const candidates = [
     process.env.LOCAL_VOICE_PYTHON,
-    resolve('.venv-local-voice/bin/python3'),
-    resolve('.venv-local-voice/bin/python'),
+    fromRoot('.venv-local-voice/bin/python3'),
+    fromRoot('.venv-local-voice/bin/python'),
   ].filter(Boolean) as string[];
   return candidates.find((candidate) => existsSync(candidate)) ?? candidates[0];
 };
@@ -95,13 +96,13 @@ export class ChatterboxVoiceWorker implements LocalVoiceProvider {
     }
     const child = spawn(
       executable,
-      [resolve('scripts', 'local-voice-worker.py'), '--stdio'],
+      [fromRoot('scripts', 'local-voice-worker.py'), '--stdio'],
       {
-        cwd: process.cwd(),
+        cwd: paths.root,
         env: {
           ...process.env,
-          HF_HOME: resolve('.video-kit', 'models', 'huggingface'),
-          TORCH_HOME: resolve('.video-kit', 'models', 'torch'),
+          HF_HOME: join(paths.models(), 'huggingface'),
+          TORCH_HOME: join(paths.models(), 'torch'),
         },
         stdio: ['pipe', 'pipe', 'pipe'],
       },

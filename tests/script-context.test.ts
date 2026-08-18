@@ -3,7 +3,7 @@ import test from 'node:test';
 import {
   contextForGeneration,
   loadScriptContext,
-} from '../server/script-context';
+} from '@video-kit/backend/script-context';
 
 test('script generation context captures the established curriculum and reel rhythm', () => {
   const context = loadScriptContext();

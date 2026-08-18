@@ -4,7 +4,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {after, test} from 'node:test';
 import {StudioRepository} from '@video-kit/datasource';
-import {ingestVoiceSample} from '../server/voice-files';
+import {ingestVoiceSample} from '@video-kit/backend/voice-files';
 import {
   CreateVoiceProfileSchema,
   type EditableVideoSpec,

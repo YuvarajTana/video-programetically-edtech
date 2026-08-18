@@ -1,6 +1,7 @@
+import {fromRoot, paths} from '@video-kit/core/config';
 import {randomUUID} from 'node:crypto';
 import {mkdirSync, rmSync, writeFileSync} from 'node:fs';
-import {resolve, sep} from 'node:path';
+import {join, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
 
 const IMAGE_FORMATS = {
@@ -67,7 +68,7 @@ export const ingestProjectImage = ({
     throw new Error('The uploaded image content does not match its MIME type.');
   }
 
-  const root = resolve('public', 'generated', 'project-assets');
+  const root = join(paths.generated(), 'project-assets');
   const directory = resolve(root, projectId);
   if (!directory.startsWith(`${root}${sep}`)) {
     throw new Error('Invalid project image storage path.');

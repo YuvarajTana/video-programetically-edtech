@@ -23,7 +23,7 @@ const ALLOWED_AUDIO = new Set([
 
 const run = (command: string, args: string[]) => {
   const result = spawnSync(command, args, {
-    cwd: process.cwd(),
+    cwd: paths.root,
     encoding: 'utf8',
     maxBuffer: 2_000_000,
   });

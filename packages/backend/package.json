@@ -1,0 +1,31 @@
+{
+  "name": "@video-kit/backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The Video Kit Studio API: project and job routes, the production job runner, and the AI and voice adapters.",
+  "exports": {
+    ".": "./src/app.ts",
+    "./script-context": "./src/script-context.ts",
+    "./openai-script": "./src/openai-script.ts",
+    "./image-files": "./src/image-files.ts",
+    "./voice-files": "./src/voice-files.ts",
+    "./narration-files": "./src/narration-files.ts",
+    "./pipeline": "./src/pipeline.ts"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@fastify/multipart": "^9.2.1",
+    "@fastify/static": "^10.1.2",
+    "@video-kit/catalog": "1.0.0",
+    "@video-kit/core": "1.0.0",
+    "@video-kit/datasource": "1.0.0",
+    "@video-kit/render-engine": "1.0.0",
+    "fastify": "^5.5.0",
+    "openai": "^6.49.0",
+    "zod": "^4.1.5"
+  }
+}

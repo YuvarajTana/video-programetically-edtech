@@ -2,7 +2,6 @@
   "extends": "./tsconfig.base.json",
   "include": [
     "scripts",
-    "server",
     "studio",
     "tests",
     "packages/*/src"
@@ -57,6 +56,27 @@
       ],
       "@video-kit/datasource/client": [
         "./packages/datasource/src/http/client.ts"
+      ],
+      "@video-kit/backend": [
+        "./packages/backend/src/app.ts"
+      ],
+      "@video-kit/backend/script-context": [
+        "./packages/backend/src/script-context.ts"
+      ],
+      "@video-kit/backend/openai-script": [
+        "./packages/backend/src/openai-script.ts"
+      ],
+      "@video-kit/backend/image-files": [
+        "./packages/backend/src/image-files.ts"
+      ],
+      "@video-kit/backend/voice-files": [
+        "./packages/backend/src/voice-files.ts"
+      ],
+      "@video-kit/backend/narration-files": [
+        "./packages/backend/src/narration-files.ts"
+      ],
+      "@video-kit/backend/pipeline": [
+        "./packages/backend/src/pipeline.ts"
       ]
     }
   }
