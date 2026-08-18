@@ -10,6 +10,10 @@ import {
 import {dirname, join, relative, resolve, sep} from 'node:path';
 import {captionsFor, configureMusicOnlySpec} from './jobs/captions';
 import {voiceProviderFor} from './jobs/voice';
+import type {JobContext} from './jobs/context';
+import {runPackageStage} from './jobs/stages/package';
+import {runQaStage} from './jobs/stages/qa';
+import {runRenderStage} from './jobs/stages/render';
 import {
   checksum,
   runProcess,
@@ -43,6 +47,12 @@ export class JobRunner {
   private readonly listeners = new Set<Listener>();
   private readonly active = new Map<string, ActiveJob>();
   private processing = false;
+  private pendingProgress: {
+    jobId: string;
+    stage: JobStage;
+    progress: number;
+    notify: boolean;
+  } | null = null;
 
   constructor(
     private readonly repository: Repository,
@@ -380,161 +390,30 @@ export class JobRunner {
             : 'No audio track is configured; rendering intentionally silent.',
       );
 
-      await this.stage(
+      const context: JobContext = {
         jobId,
-        'render',
-        0.48,
-        'Producing every requested output from the mastered composition.',
-      );
-      const variants = variantsFor(spec, snapshot.channel);
-      // Progress is advisory, so it must not block rendering — but it also must
-      // not pile up unawaited promises against a datasource that is a network
-      // call away. One write in flight at a time, latest value wins.
-      let progressInFlight = false;
-      let pendingProgress: {progress: number; notify: boolean} | null = null;
-      const reportProgress = (progress: number, notify: boolean) => {
-        pendingProgress = {progress, notify};
-        if (progressInFlight) return;
-        progressInFlight = true;
-        void (async () => {
-          try {
-            while (pendingProgress) {
-              const next = pendingProgress;
-              pendingProgress = null;
-              await this.repository.updateJob(jobId, {
-                stage: 'render',
-                progress: next.progress,
-              });
-              if (next.notify) this.notify(jobId);
-            }
-          } catch {
-            // A dropped progress update must never fail the render.
-          } finally {
-            progressInFlight = false;
-          }
-        })();
-      };
-      const renderRoot = join(jobRoot, 'renders');
-      const produced = await produceVariants({
+        job,
+        snapshot,
         spec,
-        channel: snapshot.channel,
-        variants,
-        outDir: renderRoot,
-        browser: {
-          browserExecutable: config.browserExecutable(),
-          chromeMode: config.chromeMode(),
-          concurrency: config.renderConcurrency() ?? null,
-        },
-        cancelSignal: cancellation.cancelSignal,
-        onProgress: (variant, fraction) => {
-          const index = variants.indexOf(variant);
-          reportProgress(
-            0.5 + ((index + fraction) / Math.max(1, variants.length)) * 0.3,
-            Math.round(fraction * 100) % 10 === 0,
-          );
-        },
-      });
-
-      // Artifacts are filed under the job's artifact root so downloads keep
-      // working; the delivery id is still written where a variant stands in for
-      // one, so rows created before the variant registry stay comparable.
-      for (const artifact of produced) {
-        const packaged = join(artifactRoot, relative(renderRoot, artifact.path));
-        mkdirSync(dirname(packaged), {recursive: true});
-        copyFileSync(artifact.path, packaged);
-        const variant = OUTPUT_VARIANTS[artifact.variantId];
-        await this.recordArtifact(
-          jobId,
-          packaged,
-          artifact.kind,
-          variant?.legacyDeliveryId ?? null,
-          artifact.mimeType,
-        );
-      }
-
-      await this.stage(jobId, 'qa', 0.84, 'Checking duration, streams, audio, and generated artifacts.');
-      // Voice generation and uploaded narration may legitimately retime scenes.
-      // QA must compare against the immutable spec actually rendered, not the
-      // pre-voice storyboard duration captured at validation time.
-      const expectedDurationSeconds =
-        spec.scenes.reduce(
-          (sum, scene) => sum + scene.durationInFrames,
-          0,
-        ) / (spec.fps ?? 30);
-      const requireAudio = Boolean(
-        spec.audio || spec.soundtrack?.music || spec.soundtrack?.effects?.length,
-      );
-      for (const artifact of await this.repository.listArtifacts(jobId)) {
-        const path = await this.repository.artifactPath(artifact.id);
-        if (!existsSync(path) || statSync(path).size === 0) {
-          throw new Error(`Generated artifact is empty: ${artifact.filename}`);
-        }
-        if (artifact.kind === 'video') {
-          await runProcess(
-            process.execPath,
-            [
-              fromRoot('packages', 'cli', 'src', 'media-qa.mjs'),
-              path,
-              '--expected',
-              String(expectedDurationSeconds),
-              ...(requireAudio ? ['--require-audio'] : []),
-            ],
-            paths.root,
-            active,
-          );
-        }
-      }
-
-      await this.stage(jobId, 'package', 0.93, 'Writing the production manifest and download package.');
-      const currentArtifacts = await this.repository.listArtifacts(jobId);
-      const manifestPath = join(artifactRoot, 'manifest.json');
-      writeFileSync(
-        manifestPath,
-        `${JSON.stringify(
-          {
-            schemaVersion: 1,
-            jobId,
-            projectId: job.projectId,
-            revisionId: job.revisionId,
-            title: spec.title,
-            locale: snapshot.variant.locale,
-            translationStatus: snapshot.variant.translationStatus,
-            audioMode: musicOnly ? 'music-only' : 'voiceover',
-            music: spec.soundtrack?.music ?? null,
-            syntheticVoice: Boolean(
-              job.generateVoice && snapshot.variant.voiceProfileVersionId,
-            ),
-            voiceProvider: job.provider,
-            voiceProfileVersionId:
-              snapshot.variant.voiceProfileVersionId ?? null,
-            narrationAssetId: snapshot.variant.narrationAssetId ?? null,
-            createdAt: new Date().toISOString(),
-            artifacts: currentArtifacts,
-          },
-          null,
-          2,
-        )}\n`,
-      );
-      await this.recordArtifact(jobId, manifestPath, 'manifest', null, 'application/json');
-      const packagePath = join(artifactRoot, 'video-package.zip');
-      const packageFiles = await Promise.all(
-        (await this.repository.listArtifacts(jobId)).map((artifact) =>
-          this.repository.artifactPath(artifact.id),
-        ),
-      );
-      await runProcess(
-        'zip',
-        ['-j', packagePath, ...packageFiles],
-        paths.root,
+        repository: this.repository,
         active,
-      );
-      await this.recordArtifact(
-        jobId,
-        packagePath,
-        'package',
-        null,
-        'application/zip',
-      );
+        cancelSignal: cancellation.cancelSignal,
+        dirs: {jobRoot, artifactRoot, publicRoot, generatedRoot},
+        files: {captionsPath, timingsPath},
+        musicOnly,
+        stage: (stage, progress, message) =>
+          this.stage(jobId, stage, progress, message),
+        event: (stage, level, message, progress) =>
+          this.event(jobId, stage, level, message, progress),
+        recordArtifact: (path, kind, deliveryId, mimeType) =>
+          this.recordArtifact(jobId, path, kind, deliveryId, mimeType),
+        reportProgress: (stage, progress, notify) =>
+          this.reportProgress(jobId, stage, progress, notify),
+      };
+
+      await runRenderStage(context);
+      await runQaStage(context);
+      await runPackageStage(context);
 
       const completedAt = new Date().toISOString();
       await this.repository.updateJob(jobId, {
@@ -633,6 +512,39 @@ export class JobRunner {
       'Translation draft is ready for review.',
       1,
     );
+  }
+
+  /**
+   * Advisory progress within a stage. It must not block the work, but it also
+   * must not pile up unawaited writes against a datasource that is a network
+   * call away, so one write is in flight at a time and the latest value wins.
+   */
+  private reportProgress(
+    jobId: string,
+    stage: JobStage,
+    progress: number,
+    notify: boolean,
+  ) {
+    const pending = this.pendingProgress;
+    this.pendingProgress = {jobId, stage, progress, notify};
+    if (pending) return;
+    void (async () => {
+      try {
+        while (this.pendingProgress) {
+          const next = this.pendingProgress;
+          await this.repository.updateJob(next.jobId, {
+            stage: next.stage,
+            progress: next.progress,
+          });
+          if (next.notify) this.notify(next.jobId);
+          if (this.pendingProgress === next) this.pendingProgress = null;
+        }
+      } catch {
+        // A dropped progress update must never fail the render.
+      } finally {
+        this.pendingProgress = null;
+      }
+    })();
   }
 
   private async recordArtifact(

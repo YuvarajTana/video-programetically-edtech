@@ -88,26 +88,40 @@ test('an artifact write is visible to the next read', async () => {
   assert.ok(revision.id, 'revision was not created');
 });
 
-test('every recordArtifact call in the job runner is awaited', async () => {
+test('every artifact write in the job runner is awaited', async () => {
   // The QA, manifest and zip stages all read listArtifacts, so a floating
   // write can silently drop an artifact from the package. Guard the source
   // rather than trying to provoke the race through a whole render.
-  const {readFileSync} = await import('node:fs');
-  const source = readFileSync(
-    new URL('../packages/backend/src/pipeline.ts', import.meta.url),
-    'utf8',
-  );
-  const floating = source
-    .split('\n')
-    .map((line, index) => ({line, number: index + 1}))
-    .filter(
-      ({line}) =>
-        /(?<!await )this\.recordArtifact\(/.test(line) &&
-        !line.includes('private async recordArtifact'),
-    );
-  assert.deepEqual(
-    floating.map(({number}) => number),
-    [],
-    `unawaited recordArtifact calls at lines ${floating.map((f) => f.number).join(', ')}`,
-  );
+  const {readFileSync, readdirSync, statSync} = await import('node:fs');
+  const {join} = await import('node:path');
+  const {fileURLToPath} = await import('node:url');
+
+  const backend = fileURLToPath(new URL('../packages/backend/src', import.meta.url));
+  const sources: string[] = [];
+  const walk = (directory: string) => {
+    for (const entry of readdirSync(directory)) {
+      const path = join(directory, entry);
+      if (statSync(path).isDirectory()) walk(path);
+      else if (path.endsWith('.ts')) sources.push(path);
+    }
+  };
+  walk(backend);
+
+  const floating: string[] = [];
+  for (const path of sources) {
+    const lines = readFileSync(path, 'utf8').split('\n');
+    lines.forEach((line, index) => {
+      if (!/\brecordArtifact\(/.test(line)) return;
+      // Declarations, and calls whose promise is returned from an arrow or a
+      // return statement, are already chained by their caller.
+      if (/(?:private |async |=>\s*$|return )/.test(line)) return;
+      if (/(?:await|=>|return)\s+\S*recordArtifact\(/.test(line)) return;
+      const previous = lines[index - 1] ?? '';
+      if (/=>\s*$|return\s*$/.test(previous.trimEnd())) return;
+      if (/\brecordArtifact:\s*\(/.test(line)) return;
+      floating.push(`${path.slice(backend.length + 1)}:${index + 1}`);
+    });
+  }
+
+  assert.deepEqual(floating, [], `unawaited artifact writes at ${floating.join(', ')}`);
 });
