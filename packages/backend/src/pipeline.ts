@@ -1,5 +1,4 @@
 import {makeCancelSignal} from '@remotion/renderer';
-import {createHash} from 'node:crypto';
 import {
   copyFileSync,
   existsSync,
@@ -9,7 +8,14 @@ import {
   writeFileSync,
 } from 'node:fs';
 import {dirname, join, relative, resolve, sep} from 'node:path';
-import {spawn, type ChildProcess} from 'node:child_process';
+import {captionsFor, configureMusicOnlySpec} from './jobs/captions';
+import {voiceProviderFor} from './jobs/voice';
+import {
+  checksum,
+  runProcess,
+  safeError,
+  type ActiveJob,
+} from './jobs/process';
 import {EditableVideoSpecSchema, type JobStage} from '@video-kit/core/contracts';
 import {OUTPUT_VARIANTS, variantsFor} from '@video-kit/core/output';
 import {config, fromRoot, paths} from '@video-kit/core/config';
@@ -19,7 +25,6 @@ import {
   type WordTimingFile,
 } from '@video-kit/core/master-timeline';
 import {protectTerms} from '@video-kit/core/localization';
-import {narrationSpeechMap} from '@video-kit/core/tts';
 import {
   fitScenesToDuration,
   scenesExceedNarrationRate,
@@ -31,109 +36,8 @@ import {ElevenLabsVoiceProvider} from './elevenlabs';
 import {ChatterboxVoiceWorker} from './local-voice';
 
 type Listener = (jobId: string) => void;
-type ActiveJob = {
-  cancel: () => void;
-  child: ChildProcess | null;
-};
 
-const safeError = (error: unknown) => {
-  const message = error instanceof Error ? error.message : String(error);
-  return message
-    .replaceAll(paths.root, '<project>')
-    .replace(/(?:api[-_]?key|token|secret)=\S+/gi, '$1=<redacted>')
-    .slice(0, 2_000);
-};
-
-const pad = (value: number, width = 2) => String(value).padStart(width, '0');
-const timecode = (frames: number, fps: number) => {
-  const total = frames / fps;
-  const hours = Math.floor(total / 3600);
-  const minutes = Math.floor((total % 3600) / 60);
-  const seconds = Math.floor(total % 60);
-  const milliseconds = Math.round((total - Math.floor(total)) * 1000);
-  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)},${pad(milliseconds, 3)}`;
-};
-
-export const captionsFor = (spec: VideoSpec) => {
-  const fps = spec.fps ?? 30;
-  let cursor = 0;
-  const cues: string[] = [];
-  for (const scene of spec.scenes) {
-    const start = cursor;
-    cursor += scene.durationInFrames;
-    if (!scene.narration) continue;
-    cues.push(
-      [
-        cues.length + 1,
-        `${timecode(start, fps)} --> ${timecode(cursor, fps)}`,
-        scene.narration,
-        '',
-      ].join('\n'),
-    );
-  }
-  return `${cues.join('\n')}\n`;
-};
-
-export const configureMusicOnlySpec = (spec: VideoSpec) => {
-  if (!spec.soundtrack?.music) {
-    throw new Error('Music-only production requires a selected music track.');
-  }
-  spec.audio = undefined;
-  spec.captionTimings = undefined;
-  spec.captions = false;
-  // Spreading a union member widens it, so map each scene as its own type.
-  spec.scenes = spec.scenes.map((scene) => ({...scene, narration: undefined}));
-  return spec;
-};
-
-const checksum = (path: string) =>
-  createHash('sha256').update(readFileSync(path)).digest('hex');
-
-const runProcess = (
-  command: string,
-  args: string[],
-  cwd: string,
-  active: ActiveJob,
-) =>
-  new Promise<{stdout: string; stderr: string}>((resolvePromise, reject) => {
-    const child = spawn(command, args, {
-      cwd,
-      env: process.env,
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
-    active.child = child;
-    let stdout = '';
-    let stderr = '';
-    child.stdout.on('data', (value) => {
-      stdout += String(value);
-    });
-    child.stderr.on('data', (value) => {
-      stderr += String(value);
-    });
-    child.once('error', reject);
-    child.once('close', (code, signal) => {
-      active.child = null;
-      if (code === 0) resolvePromise({stdout, stderr});
-      else reject(new Error(`${command} stopped (${signal ?? code}): ${stderr || stdout}`));
-    });
-  });
-
-const pythonExecutable = () => {
-  const requested = process.env.TTS_PYTHON;
-  const candidates = [
-    requested,
-    fromRoot('.venv-tts/bin/python3'),
-    fromRoot('.venv-tts/bin/python'),
-    'python3',
-  ].filter(Boolean) as string[];
-  return candidates[0];
-};
-
-const languageForVoice = (locale: string, fallback: string) => {
-  if (locale.toLowerCase() === 'en-gb') return 'b';
-  if (locale.toLowerCase().startsWith('en')) return 'a';
-  return fallback;
-};
+export {captionsFor, configureMusicOnlySpec} from './jobs/captions';
 
 export class JobRunner {
   private readonly listeners = new Set<Listener>();
@@ -341,333 +245,43 @@ export class JobRunner {
           : 'TTS is intentionally skipped for this production.',
       );
       if (job.generateVoice) {
-        const rawAudio = join(generatedRoot, 'master-raw.wav');
-        const finalAudio = join(generatedRoot, 'master.wav');
-        const timings = timingsPath;
-        const voice = snapshot.channel.voice;
-        if (job.provider === 'uploaded') {
-          const narrationId = snapshot.variant.narrationAssetId;
-          if (!narrationId) {
-            throw new Error('The project has no uploaded narration track.');
-          }
-          const narration = await this.repository.getNarrationAsset(narrationId);
-          const narrationPath = await this.repository.narrationAssetPath(narrationId);
-          copyFileSync(narrationPath, finalAudio);
-          const fps = spec.fps ?? 30;
-          fitScenesToDuration(
-            spec.scenes,
-            Math.max(spec.scenes.length * 15, Math.round(narration.durationSeconds * fps)),
-          );
-          let cursorSeconds = 0;
-          const cues = spec.scenes.flatMap((scene, sceneIndex) => {
-            const sceneDuration = scene.durationInFrames / fps;
-            const start = cursorSeconds;
-            const end = cursorSeconds + sceneDuration;
-            cursorSeconds = end;
-            if (!scene.narration?.trim()) return [];
-            const words = scene.narration.trim().split(/\s+/u);
-            const wordDuration = sceneDuration / Math.max(1, words.length);
-            return [{
-              index: sceneIndex + 1,
-              start,
-              end,
-              text: scene.narration,
-              words: words.map((text, wordIndex) => ({
-                text,
-                start: start + wordIndex * wordDuration,
-                end: start + (wordIndex + 1) * wordDuration,
-              })),
-            }];
-          });
-          writeFileSync(
-            timings,
-            `${JSON.stringify(
-              {
-                schemaVersion: 1,
-                locale: snapshot.variant.locale,
-                durationSeconds: narration.durationSeconds,
-                alignment: 'estimated-from-approved-script',
-                cues,
-              },
-              null,
-              2,
-            )}\n`,
-          );
-          writeFileSync(captionsPath, captionsFor(spec));
-          spec.audio = relative(publicRoot, finalAudio).split(sep).join('/');
-          spec.captionTimings = relative(publicRoot, timings).split(sep).join('/');
-          await this.recordArtifact(jobId, finalAudio, 'audio', null, 'audio/wav');
-          await this.recordArtifact(
-            jobId,
-            timings,
-            'word-timings',
-            null,
-            'application/json',
-          );
-          await this.event(
-            jobId,
-            'tts',
-            'info',
-            `Using uploaded narration “${narration.label}” without voice synthesis.`,
-            0.27,
-          );
-        } else if (
-          job.provider === 'f5tts' ||
-          job.provider === 'indicf5' ||
-          job.provider === 'elevenlabs' ||
-          job.provider === 'chatterbox'
-        ) {
-          const versionId = snapshot.variant.voiceProfileVersionId;
-          if (!versionId) {
-            throw new Error('The localized variant has no voice profile.');
-          }
-          const selected = await this.repository.voiceProfileForProduction(
-            versionId,
-            snapshot.variant.locale,
-          );
-          const clipsRoot = join(generatedRoot, 'scenes');
-          mkdirSync(clipsRoot, {recursive: true});
-          const concatLines: string[] = [];
-          const cueData: Array<{
-            index: number;
-            start: number;
-            end: number;
-            text: string;
-            words: Array<{text: string; start: number; end: number}>;
-          }> = [];
-          let cursorSeconds = 0;
-          for (const [index, scene] of spec.scenes.entries()) {
-            if (!scene.narration?.trim()) continue;
-            const clip = join(clipsRoot, `${String(index).padStart(3, '0')}.wav`);
-            if (job.provider === 'chatterbox') {
-              await this.localVoice.synthesize({
-                text: scene.narration,
-                referencePath: selected.samplePath,
-                outputPath: clip,
-              });
-            } else if (job.provider === 'elevenlabs') {
-              await this.cloudVoice.synthesize({
-                text: scene.narration,
-                voiceId: selected.version.model,
-                outputPath: clip,
-                speed: voice.speed,
-              });
-            } else {
-              await this.ai.synthesize({
-                text: scene.narration,
-                locale: snapshot.variant.locale,
-                referencePath: selected.samplePath,
-                referenceTranscript: selected.sample.transcript,
-                outputPath: clip,
-                speed: voice.speed,
-                engine:
-                  job.provider === 'f5tts' && snapshot.variant.locale === 'en-US'
-                    ? 'f5tts'
-                    : 'indicf5',
-              });
-            }
-            const {stdout} = await runProcess(
-              'ffprobe',
-              [
-                '-v',
-                'error',
-                '-show_entries',
-                'format=duration',
-                '-of',
-                'default=noprint_wrappers=1:nokey=1',
-                clip,
-              ],
-              paths.root,
-              active,
-            );
-            const audioDuration = Number(stdout.trim());
-            if (!Number.isFinite(audioDuration) || audioDuration <= 0) {
-              throw new Error(`Could not measure narration for scene ${index + 1}.`);
-            }
-            const sceneDuration = audioDuration + 0.6;
-            const paddedClip = join(
-              clipsRoot,
-              `${String(index).padStart(3, '0')}-padded.wav`,
-            );
-            await runProcess(
-              'ffmpeg',
-              [
-                '-y',
-                '-hide_banner',
-                '-loglevel',
-                'error',
-                '-i',
-                clip,
-                '-af',
-                'apad=pad_dur=0.6',
-                '-t',
-                String(sceneDuration),
-                paddedClip,
-              ],
-              paths.root,
-              active,
-            );
-            scene.durationInFrames = Math.max(
-              15,
-              Math.min(18_000, Math.ceil(sceneDuration * (spec.fps ?? 30))),
-            );
-            const words = scene.narration.trim().split(/\s+/u);
-            const wordDuration = audioDuration / Math.max(1, words.length);
-            cueData.push({
-              index: cueData.length + 1,
-              start: cursorSeconds,
-              end: cursorSeconds + audioDuration,
-              text: scene.narration,
-              words: words.map((text, wordIndex) => ({
-                text,
-                start: cursorSeconds + wordIndex * wordDuration,
-                end: cursorSeconds + (wordIndex + 1) * wordDuration,
-              })),
-            });
-            cursorSeconds += sceneDuration;
-            concatLines.push(
-              `file '${paddedClip.replaceAll("'", "'\\''")}'`,
-            );
-          }
-          if (!concatLines.length) {
-            throw new Error('The storyboard has no narration to synthesize.');
-          }
-          const concatFile = join(clipsRoot, 'concat.txt');
-          writeFileSync(concatFile, `${concatLines.join('\n')}\n`);
-          await runProcess(
-            'ffmpeg',
-            [
-              '-y',
-              '-hide_banner',
-              '-loglevel',
-              'error',
-              '-f',
-              'concat',
-              '-safe',
-              '0',
-              '-i',
-              concatFile,
-              '-af',
-              `loudnorm=I=${voice.targetLufs}:TP=${voice.truePeakDb}:LRA=${voice.loudnessRange}`,
-              finalAudio,
-            ],
-            paths.root,
-            active,
-          );
-          writeFileSync(
-            timings,
-            `${JSON.stringify(
-              {
-                schemaVersion: 1,
-                locale: snapshot.variant.locale,
-                durationSeconds: cursorSeconds,
-                cues: cueData,
-              },
-              null,
-              2,
-            )}\n`,
-          );
-          writeFileSync(captionsPath, captionsFor(spec));
-          const audioRelative = relative(publicRoot, finalAudio)
-            .split(sep)
-            .join('/');
-          const timingRelative = relative(publicRoot, timings)
-            .split(sep)
-            .join('/');
-          spec.audio = audioRelative;
-          spec.captionTimings = timingRelative;
-          await this.recordArtifact(jobId, finalAudio, 'audio', null, 'audio/wav');
-          await this.recordArtifact(
-            jobId,
-            timings,
-            'word-timings',
-            null,
-            'application/json',
-          );
-        } else {
-        const speechMap = join(generatedRoot, 'speech-map.json');
-        const spokenNarrations = narrationSpeechMap(
-          spec.scenes
-            .filter((scene) => Boolean(scene.narration?.trim()))
-            .map((scene) => scene.narration!.trim()),
+        const files = {
+          generatedRoot,
+          publicRoot,
+          captionsPath,
+          timingsPath,
+          rawAudio: join(generatedRoot, 'master-raw.wav'),
+          finalAudio: join(generatedRoot, 'master.wav'),
+        };
+        const provider = voiceProviderFor(job.provider);
+        const {note} = await provider.synthesize({
+          job,
+          snapshot,
+          spec,
+          repository: this.repository,
+          active,
+          workers: {ai: this.ai, cloudVoice: this.cloudVoice, localVoice: this.localVoice},
+          files,
+          event: (message, progress) =>
+            this.event(jobId, 'tts', 'info', message, progress),
+        });
+
+        // Every provider leaves a master track and a timings file in the same
+        // place, so the spec is pointed at them and they are recorded once here
+        // rather than at the end of each provider.
+        spec.audio = relative(publicRoot, files.finalAudio).split(sep).join('/');
+        spec.captionTimings = relative(publicRoot, files.timingsPath)
+          .split(sep)
+          .join('/');
+        await this.recordArtifact(jobId, files.finalAudio, 'audio', null, 'audio/wav');
+        await this.recordArtifact(
+          jobId,
+          files.timingsPath,
+          'word-timings',
+          null,
+          'application/json',
         );
-        writeFileSync(speechMap, `${JSON.stringify(spokenNarrations, null, 2)}\n`);
-        const cacheKey = createHash('sha256')
-          .update(
-            JSON.stringify({
-              srt: readFileSync(captionsPath, 'utf8'),
-              spokenNarrations,
-              model: voice.model,
-              preset: voice.preset,
-              speed: voice.speed,
-              maxSpeed: voice.maxSpeed,
-              locale: snapshot.variant.locale,
-            }),
-          )
-          .digest('hex');
-        const cacheRoot = join(paths.cache(), 'studio-audio');
-        const cachedAudio = join(cacheRoot, `${cacheKey}.wav`);
-        const cachedTimings = join(cacheRoot, `${cacheKey}.json`);
-        mkdirSync(cacheRoot, {recursive: true});
-        if (existsSync(cachedAudio) && existsSync(cachedTimings)) {
-          copyFileSync(cachedAudio, finalAudio);
-          copyFileSync(cachedTimings, timings);
-          await this.event(jobId, 'tts', 'info', 'Reused the matching cached voice track.', 0.27);
-        } else {
-          const ttsArguments = [
-            fromRoot('packages', 'cli', 'python', 'local-tts-from-srt.py'),
-            '--srt',
-            captionsPath,
-            '--out',
-            rawAudio,
-            '--voice',
-            voice.preset,
-            '--speed',
-            String(voice.speed),
-            '--model',
-            voice.model,
-            '--language',
-            languageForVoice(snapshot.variant.locale, voice.language),
-            '--timings',
-            timings,
-            '--speech-map',
-            speechMap,
-          ];
-          if (voice.maxSpeed !== undefined) {
-            ttsArguments.push('--max-speed', String(voice.maxSpeed));
-          }
-          await runProcess(
-            pythonExecutable(),
-            ttsArguments,
-            paths.root,
-            active,
-          );
-          await runProcess(
-            'ffmpeg',
-            [
-              '-y',
-              '-hide_banner',
-              '-loglevel',
-              'error',
-              '-i',
-              rawAudio,
-              '-af',
-              `loudnorm=I=${voice.targetLufs}:TP=${voice.truePeakDb}:LRA=${voice.loudnessRange}`,
-              finalAudio,
-            ],
-            paths.root,
-            active,
-          );
-          copyFileSync(finalAudio, cachedAudio);
-          copyFileSync(timings, cachedTimings);
-        }
-        const audioRelative = relative(publicRoot, finalAudio).split(sep).join('/');
-        const timingRelative = relative(publicRoot, timings).split(sep).join('/');
-        spec.audio = audioRelative;
-        spec.captionTimings = timingRelative;
-        await this.recordArtifact(jobId, finalAudio, 'audio', null, 'audio/wav');
-        await this.recordArtifact(jobId, timings, 'word-timings', null, 'application/json');
-        }
+        if (note) await this.event(jobId, 'tts', 'info', note, 0.27);
       } else {
         await this.event(
           jobId,

@@ -11,7 +11,8 @@
     "./image-files": "./src/image-files.ts",
     "./voice-files": "./src/voice-files.ts",
     "./narration-files": "./src/narration-files.ts",
-    "./pipeline": "./src/pipeline.ts"
+    "./pipeline": "./src/pipeline.ts",
+    "./voice": "./src/jobs/voice/index.ts"
   },
   "scripts": {
     "dev": "tsx watch src/index.ts",

@@ -81,6 +81,9 @@
       ],
       "@video-kit/datasource/specs": [
         "./packages/datasource/src/sqlite/specs.ts"
+      ],
+      "@video-kit/backend/voice": [
+        "./packages/backend/src/jobs/voice/index.ts"
       ]
     }
   }
