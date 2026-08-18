@@ -1,3 +1,4 @@
+import {paths} from '@video-kit/core/config';
 import {createHash, randomUUID} from 'node:crypto';
 import {
   chmodSync,
@@ -9,7 +10,7 @@ import {
 import {join, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {SupportedLocaleSchema} from '@video-kit/core/languages';
-import type {StudioRepository} from './db';
+import type {Repository} from '@video-kit/datasource';
 
 const ALLOWED_AUDIO = new Set([
   'audio/wav',
@@ -34,7 +35,7 @@ const run = (command: string, args: string[]) => {
   return `${result.stdout ?? ''}${result.stderr ?? ''}`;
 };
 
-export const ingestVoiceSample = ({
+export const ingestVoiceSample = async ({
   repository,
   profileId,
   purpose,
@@ -43,7 +44,7 @@ export const ingestVoiceSample = ({
   mimeType,
   data,
 }: {
-  repository: StudioRepository;
+  repository: Repository;
   profileId: string;
   purpose: 'consent' | 'reference';
   locale: string;
@@ -51,7 +52,7 @@ export const ingestVoiceSample = ({
   mimeType: string;
   data: Buffer;
 }) => {
-  const profile = repository.getVoiceProfile(profileId);
+  const profile = await repository.getVoiceProfile(profileId);
   SupportedLocaleSchema.parse(locale);
   if (!ALLOWED_AUDIO.has(mimeType)) {
     throw new Error('Unsupported audio type. Upload WAV, MP3, MP4, WebM, or OGG.');
@@ -59,8 +60,8 @@ export const ingestVoiceSample = ({
   if (data.length < 1_000 || data.length > 12 * 1024 * 1024) {
     throw new Error('Voice recordings must be between 1 KB and 12 MB.');
   }
-  const directory = resolve(repository.storageRoot, 'voices', profileId);
-  const root = resolve(repository.storageRoot, 'voices');
+  const directory = resolve(paths.managed(), 'voices', profileId);
+  const root = resolve(paths.managed(), 'voices');
   if (!directory.startsWith(`${root}${sep}`)) {
     throw new Error('Invalid voice profile storage path.');
   }
@@ -142,7 +143,7 @@ export const ingestVoiceSample = ({
   const checksum = createHash('sha256')
     .update(readFileSync(normalized))
     .digest('hex');
-  return repository.addVoiceSample({
+  return await repository.addVoiceSample({
     profileId,
     purpose,
     locale,

@@ -42,6 +42,21 @@
       ],
       "@video-kit/render-engine/pdf": [
         "./packages/render-engine/src/pdf.ts"
+      ],
+      "@video-kit/datasource": [
+        "./packages/datasource/src/index.ts"
+      ],
+      "@video-kit/datasource/port": [
+        "./packages/datasource/src/port.ts"
+      ],
+      "@video-kit/datasource/sqlite": [
+        "./packages/datasource/src/sqlite/index.ts"
+      ],
+      "@video-kit/datasource/service": [
+        "./packages/datasource/src/http/service.ts"
+      ],
+      "@video-kit/datasource/client": [
+        "./packages/datasource/src/http/client.ts"
       ]
     }
   }

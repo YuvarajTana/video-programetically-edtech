@@ -1,3 +1,4 @@
+import {paths} from '@video-kit/core/config';
 import {createHash, randomUUID} from 'node:crypto';
 import {
   chmodSync,
@@ -9,7 +10,7 @@ import {
 import {join, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {SupportedLocaleSchema} from '@video-kit/core/languages';
-import type {StudioRepository} from './db';
+import type {Repository} from '@video-kit/datasource';
 
 const ALLOWED_AUDIO = new Set([
   'audio/wav',
@@ -34,7 +35,7 @@ const run = (command: string, args: string[]) => {
   return `${result.stdout ?? ''}${result.stderr ?? ''}`;
 };
 
-export const ingestNarrationAsset = ({
+export const ingestNarrationAsset = async ({
   repository,
   label,
   locale,
@@ -42,7 +43,7 @@ export const ingestNarrationAsset = ({
   mimeType,
   data,
 }: {
-  repository: StudioRepository;
+  repository: Repository;
   label: string;
   locale: string;
   originalFilename: string;
@@ -56,7 +57,7 @@ export const ingestNarrationAsset = ({
   if (data.length < 1_000 || data.length > 384 * 1024 * 1024) {
     throw new Error('Narration audio must be between 1 KB and 384 MB.');
   }
-  const root = resolve(repository.storageRoot, 'narrations');
+  const root = resolve(paths.managed(), 'narrations');
   const id = randomUUID();
   const directory = resolve(root, id);
   if (!directory.startsWith(`${root}${sep}`)) {
@@ -105,7 +106,7 @@ export const ingestNarrationAsset = ({
   const checksum = createHash('sha256')
     .update(readFileSync(normalized))
     .digest('hex');
-  return repository.addNarrationAsset({
+  return await repository.addNarrationAsset({
     label,
     locale,
     originalFilename,

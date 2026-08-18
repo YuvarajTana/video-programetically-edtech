@@ -4,7 +4,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {after, test} from 'node:test';
 import {createStudioApp} from '../server/app';
-import {StudioRepository} from '../server/db';
+import {StudioRepository} from '@video-kit/datasource';
 import type {ScriptGenerator} from '../server/openai-script';
 
 const directory = mkdtempSync(join(tmpdir(), 'video-kit-api-'));

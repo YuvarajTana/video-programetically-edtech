@@ -1,3 +1,4 @@
+import {paths} from '@video-kit/core/config';
 import fastifyStatic from '@fastify/static';
 import fastifyMultipart from '@fastify/multipart';
 import Fastify from 'fastify';
@@ -22,7 +23,7 @@ import {LANGUAGES, SupportedLocaleSchema} from '@video-kit/core/languages';
 import {MUSIC_TRACKS, musicTrackById} from '@video-kit/core/music';
 import {createSpecFromScript, slugify} from '@video-kit/core/storyboard';
 import {VIDEOS} from '@video-kit/catalog';
-import {StudioRepository} from './db';
+import {createRepository, type Repository} from '@video-kit/datasource';
 import {JobRunner} from './pipeline';
 import {LocalAiWorker} from './local-ai';
 import {ChatterboxVoiceWorker} from './local-voice';
@@ -39,18 +40,23 @@ const IdParams = z.object({id: z.uuid()});
 const NamedIdParams = z.object({id: IdentifierSchema});
 
 export const createStudioApp = async ({
-  repository = new StudioRepository(),
+  repository: providedRepository,
   ai = new LocalAiWorker(),
   cloudVoice = new ElevenLabsVoiceProvider(),
   localVoice = new ChatterboxVoiceWorker(),
   scriptGenerator = new OpenAiScriptGenerator(),
 }: {
-  repository?: StudioRepository;
+  repository?: Repository;
   ai?: LocalAiWorker;
   cloudVoice?: ElevenLabsVoiceProvider;
   localVoice?: ChatterboxVoiceWorker;
   scriptGenerator?: ScriptGenerator;
 } = {}) => {
+  // Resolved here rather than in the parameter list: which store this is —
+  // SQLite in this process, or a datasource service over HTTP — is decided by
+  // configuration, and awaiting is not allowed in a default initializer.
+  const repository = providedRepository ?? (await createRepository());
+
   const app = Fastify({
     logger: true,
     bodyLimit: 1_000_000,
@@ -85,7 +91,7 @@ export const createStudioApp = async ({
     time: new Date().toISOString(),
   }));
 
-  app.get('/api/catalog', async () => repository.catalog());
+  app.get('/api/catalog', async () => await repository.catalog());
 
   app.get('/api/languages', async () => ({
     languages: LANGUAGES,
@@ -114,7 +120,7 @@ export const createStudioApp = async ({
 
   app.post('/api/script-generation/generate', async (request) => {
     const input = ScriptGenerationInputSchema.parse(request.body);
-    const catalog = repository.catalog();
+    const catalog = await repository.catalog();
     const category = catalog.categories.find(
       (item) => item.id === input.categoryId,
     );
@@ -137,13 +143,13 @@ export const createStudioApp = async ({
         label: z.string().trim().min(1).max(100),
       })
       .parse(request.body);
-    return repository.cloneTheme(body.sourceId, body.id, body.label);
+    return await repository.cloneTheme(body.sourceId, body.id, body.label);
   });
 
   app.put('/api/themes/:id', async (request) => {
     const {id} = NamedIdParams.parse(request.params);
     const definition = ThemeDefinitionSchema.parse(request.body);
-    return repository.versionTheme(id, definition);
+    return await repository.versionTheme(id, definition);
   });
 
   app.post('/api/templates/clone', async (request) => {
@@ -154,22 +160,22 @@ export const createStudioApp = async ({
         label: z.string().trim().min(1).max(100),
       })
       .parse(request.body);
-    return repository.cloneTemplate(body.sourceId, body.id, body.label);
+    return await repository.cloneTemplate(body.sourceId, body.id, body.label);
   });
 
   app.put('/api/templates/:id', async (request) => {
     const {id} = NamedIdParams.parse(request.params);
     const definition = TemplateDefinitionSchema.parse(request.body);
-    return repository.versionTemplate(id, definition);
+    return await repository.versionTemplate(id, definition);
   });
 
   app.post('/api/categories', async (request) =>
-    repository.upsertCategory(CategoryDefinitionSchema.parse(request.body)),
+    await repository.upsertCategory(CategoryDefinitionSchema.parse(request.body)),
   );
 
   app.put('/api/categories/:id', async (request) => {
     const {id} = NamedIdParams.parse(request.params);
-    return repository.upsertCategory(
+    return await repository.upsertCategory(
       CategoryDefinitionSchema.parse({
         ...(request.body as Record<string, unknown>),
         id,
@@ -177,10 +183,10 @@ export const createStudioApp = async ({
     );
   });
 
-  app.get('/api/projects', async () => repository.listProjects());
+  app.get('/api/projects', async () => await repository.listProjects());
 
   app.post('/api/projects', async (request, reply) => {
-    const project = repository.createProject(CreateProjectSchema.parse(request.body));
+    const project = await repository.createProject(CreateProjectSchema.parse(request.body));
     return reply.status(201).send(project);
   });
 
@@ -189,24 +195,24 @@ export const createStudioApp = async ({
     const query = z
       .object({variantId: z.uuid().optional()})
       .parse(request.query);
-    return repository.getProject(id, query.variantId);
+    return await repository.getProject(id, query.variantId);
   });
 
   app.put('/api/projects/:id', async (request) => {
     const {id} = IdParams.parse(request.params);
-    return repository.updateProject(id, UpdateProjectSchema.parse(request.body));
+    return await repository.updateProject(id, UpdateProjectSchema.parse(request.body));
   });
 
   app.get('/api/projects/:id/variants', async (request) => {
     const {id} = IdParams.parse(request.params);
-    repository.getProject(id);
-    return repository.listVariants(id);
+    await repository.getProject(id);
+    return await repository.listVariants(id);
   });
 
   app.post('/api/projects/:id/variants', async (request, reply) => {
     const {id} = IdParams.parse(request.params);
     const body = CreateVariantSchema.parse(request.body);
-    return reply.status(201).send(repository.createVariant(id, body.locale));
+    return reply.status(201).send(await repository.createVariant(id, body.locale));
   });
 
   app.put('/api/projects/:id/variants/:variantId', async (request) => {
@@ -220,14 +226,14 @@ export const createStudioApp = async ({
         narrationAssetId: z.uuid().nullable().optional(),
       })
       .parse(request.body);
-    return repository.updateVariant(params.id, params.variantId, body);
+    return await repository.updateVariant(params.id, params.variantId, body);
   });
 
   app.post('/api/projects/:id/variants/:variantId/promote', async (request) => {
     const params = z
       .object({id: z.uuid(), variantId: z.uuid()})
       .parse(request.params);
-    return repository.promoteVariant(params.id, params.variantId);
+    return await repository.promoteVariant(params.id, params.variantId);
   });
 
   app.get(
@@ -236,8 +242,8 @@ export const createStudioApp = async ({
       const params = z
         .object({id: z.uuid(), variantId: z.uuid()})
         .parse(request.params);
-      repository.getVariant(params.id, params.variantId);
-      return repository.listTranslationUnits(params.variantId);
+      await repository.getVariant(params.id, params.variantId);
+      return await repository.listTranslationUnits(params.variantId);
     },
   );
 
@@ -247,7 +253,7 @@ export const createStudioApp = async ({
       const params = z
         .object({id: z.uuid(), variantId: z.uuid(), unitId: z.uuid()})
         .parse(request.params);
-      return repository.updateTranslationUnit(
+      return await repository.updateTranslationUnit(
         params.id,
         params.variantId,
         params.unitId,
@@ -262,25 +268,25 @@ export const createStudioApp = async ({
       const params = z
         .object({id: z.uuid(), variantId: z.uuid()})
         .parse(request.params);
-      return repository.approveVariant(params.id, params.variantId);
+      return await repository.approveVariant(params.id, params.variantId);
     },
   );
 
   app.get('/api/projects/:id/glossary', async (request) => {
     const {id} = IdParams.parse(request.params);
-    return repository.listGlossary(id);
+    return await repository.listGlossary(id);
   });
 
   app.post('/api/projects/:id/glossary', async (request) => {
     const {id} = IdParams.parse(request.params);
-    return repository.upsertGlossary(id, GlossaryEntrySchema.parse(request.body));
+    return await repository.upsertGlossary(id, GlossaryEntrySchema.parse(request.body));
   });
 
   app.delete('/api/projects/:id/glossary/:entryId', async (request) => {
     const params = z
       .object({id: z.uuid(), entryId: z.uuid()})
       .parse(request.params);
-    return repository.deleteGlossary(params.id, params.entryId);
+    return await repository.deleteGlossary(params.id, params.entryId);
   });
 
   app.post('/api/projects/:id/import-script', async (request) => {
@@ -288,7 +294,7 @@ export const createStudioApp = async ({
     const {script} = z
       .object({script: z.string().max(100_000)})
       .parse(request.body);
-    const current = repository.getProject(id);
+    const current = await repository.getProject(id);
     const spec = createSpecFromScript({
       title: current.project.title,
       categoryId: current.category.id,
@@ -297,12 +303,12 @@ export const createStudioApp = async ({
       deliveries: current.variant.spec.deliveries,
       script,
     });
-    return repository.updateProject(id, {spec});
+    return await repository.updateProject(id, {spec});
   });
 
   app.post('/api/projects/:id/images', async (request, reply) => {
     const {id} = IdParams.parse(request.params);
-    repository.getProject(id);
+    await repository.getProject(id);
     const upload = await request.file({
       limits: {fileSize: 15 * 1024 * 1024},
     });
@@ -319,7 +325,7 @@ export const createStudioApp = async ({
   app.post('/api/projects/:id/revisions', async (request, reply) => {
     const {id} = IdParams.parse(request.params);
     const {variantId} = z.object({variantId: z.uuid()}).parse(request.body);
-    return reply.status(201).send(repository.createRevision(id, variantId));
+    return reply.status(201).send(await repository.createRevision(id, variantId));
   });
 
   app.get('/api/legacy-videos', async () =>
@@ -344,10 +350,10 @@ export const createStudioApp = async ({
         video.channel === params.channel && video.slug === params.slug,
     );
     if (!spec) throw new Error('Legacy video not found.');
-    return reply.status(201).send(repository.cloneLegacy(spec));
+    return reply.status(201).send(await repository.cloneLegacy(spec));
   });
 
-  app.get('/api/jobs', async () => repository.listJobs());
+  app.get('/api/jobs', async () => await repository.listJobs());
 
   app.post('/api/jobs', async (request, reply) => {
     const body = CreateJobSchema.parse(request.body);
@@ -358,8 +364,8 @@ export const createStudioApp = async ({
     }
     const job =
       body.kind === 'translation'
-        ? repository.createTranslationJob(body.projectId, body.variantId)
-        : repository.createJob(
+        ? await repository.createTranslationJob(body.projectId, body.variantId)
+        : await repository.createJob(
             body.projectId,
             body.variantId,
             body.generateVoice,
@@ -373,9 +379,9 @@ export const createStudioApp = async ({
     return reply.status(202).send(job);
   });
 
-  app.get('/api/voices', async () => repository.listVoiceProfiles());
+  app.get('/api/voices', async () => await repository.listVoiceProfiles());
 
-  app.get('/api/narrations', async () => repository.listNarrationAssets());
+  app.get('/api/narrations', async () => await repository.listNarrationAssets());
 
   app.post('/api/narrations', async (request, reply) => {
     const upload = await request.file({
@@ -404,9 +410,9 @@ export const createStudioApp = async ({
 
   app.get('/api/narrations/:id/audio', async (request, reply) => {
     const {id} = IdParams.parse(request.params);
-    const narration = repository.getNarrationAsset(id);
-    const path = resolve(repository.narrationAssetPath(id));
-    const root = resolve(repository.storageRoot, 'narrations');
+    const narration = await repository.getNarrationAsset(id);
+    const path = resolve(await repository.narrationAssetPath(id));
+    const root = resolve(paths.managed(), 'narrations');
     if (!path.startsWith(`${root}${sep}`) || !existsSync(path)) {
       throw new Error('Uploaded narration not found.');
     }
@@ -425,15 +431,15 @@ export const createStudioApp = async ({
     if (body.enabledLocales.some((locale) => locale !== 'en-US')) {
       throw new Error('The local My Voice engine currently supports English only.');
     }
-    return reply.status(201).send(repository.createVoiceProfile(body));
+    return reply.status(201).send(await repository.createVoiceProfile(body));
   });
 
   app.get('/api/voices/:id', async (request) => {
     const {id} = IdParams.parse(request.params);
     return {
-      profile: repository.getVoiceProfile(id),
-      samples: repository.listVoiceSamples(id),
-      previews: repository.listVoicePreviews(id),
+      profile: await repository.getVoiceProfile(id),
+      samples: await repository.listVoiceSamples(id),
+      previews: await repository.listVoicePreviews(id),
     };
   });
 
@@ -472,9 +478,9 @@ export const createStudioApp = async ({
 
   app.get('/api/voice-samples/:id/audio', async (request, reply) => {
     const {id} = IdParams.parse(request.params);
-    const sample = repository.getVoiceSample(id);
-    const path = resolve(repository.voiceSamplePath(id));
-    const voiceRoot = resolve(repository.storageRoot, 'voices');
+    const sample = await repository.getVoiceSample(id);
+    const path = resolve(await repository.voiceSamplePath(id));
+    const voiceRoot = resolve(paths.managed(), 'voices');
     if (!path.startsWith(`${voiceRoot}${sep}`) || !existsSync(path)) {
       throw new Error('Voice sample not found.');
     }
@@ -489,7 +495,7 @@ export const createStudioApp = async ({
       const params = z
         .object({id: z.uuid(), locale: SupportedLocaleSchema})
         .parse(request.params);
-      const selected = repository.voiceProfileForPreview(
+      const selected = await repository.voiceProfileForPreview(
         params.id,
         params.locale,
       );
@@ -506,7 +512,7 @@ export const createStudioApp = async ({
         'bn-IN': 'এটি আমার কৃত্রিম কণ্ঠের ব্যক্তিগত নমুনা।',
       };
       const directory = resolve(
-        repository.storageRoot,
+        paths.managed(),
         'voices',
         params.id,
         'previews',
@@ -548,7 +554,7 @@ export const createStudioApp = async ({
               : 'indicf5',
         });
       }
-      repository.markVoicePreview(params.id, params.locale, outputPath);
+      await repository.markVoicePreview(params.id, params.locale, outputPath);
       return {
         profileId: params.id,
         locale: params.locale,
@@ -565,9 +571,9 @@ export const createStudioApp = async ({
         .object({id: z.uuid(), locale: SupportedLocaleSchema})
         .parse(request.params);
       const path = resolve(
-        repository.voicePreviewPath(params.id, params.locale),
+        await repository.voicePreviewPath(params.id, params.locale),
       );
-      const root = resolve(repository.storageRoot, 'voices', params.id);
+      const root = resolve(paths.managed(), 'voices', params.id);
       if (!path.startsWith(`${root}${sep}`) || !existsSync(path)) {
         throw new Error('Voice preview not found.');
       }
@@ -583,52 +589,70 @@ export const createStudioApp = async ({
       const params = z
         .object({id: z.uuid(), locale: SupportedLocaleSchema})
         .parse(request.params);
-      return repository.acceptVoicePreview(params.id, params.locale);
+      return await repository.acceptVoicePreview(params.id, params.locale);
     },
   );
 
   app.post('/api/voices/:id/revoke', async (request) => {
     const {id} = IdParams.parse(request.params);
-    return repository.revokeVoiceProfile(id);
+    return await repository.revokeVoiceProfile(id);
   });
 
   app.delete('/api/voices/:id', async (request) => {
     const {id} = IdParams.parse(request.params);
-    return repository.deleteVoiceProfile(id);
+    return await repository.deleteVoiceProfile(id);
   });
 
   app.get('/api/jobs/:id', async (request) => {
     const {id} = IdParams.parse(request.params);
-    return repository.getJobDetail(id);
+    return await repository.getJobDetail(id);
   });
 
   app.post('/api/jobs/:id/cancel', async (request) => {
     const {id} = IdParams.parse(request.params);
-    runner.cancel(id);
-    return repository.getJob(id);
+    await runner.cancel(id);
+    return await repository.getJob(id);
   });
 
   app.post('/api/jobs/:id/retry', async (request, reply) => {
     const {id} = IdParams.parse(request.params);
-    const job = repository.retryJob(id);
+    const job = await repository.retryJob(id);
     runner.enqueue();
     return reply.status(202).send(job);
   });
 
   app.get('/api/jobs/:id/events', async (request, reply) => {
     const {id} = IdParams.parse(request.params);
-    repository.getJob(id);
+    await repository.getJob(id);
     reply.hijack();
     reply.raw.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache, no-transform',
       Connection: 'keep-alive',
     });
-    const send = (changedId?: string) => {
+    // Reading the job now costs a round trip when the datasource runs out of
+    // process, so a burst of progress updates must not interleave writes.
+    let inflight = false;
+    let pending = false;
+    const send = async (changedId?: string) => {
       if (changedId && changedId !== id) return;
-      reply.raw.write(`event: job\ndata: ${JSON.stringify(repository.getJobDetail(id))}\n\n`);
+      if (inflight) {
+        pending = true;
+        return;
+      }
+      inflight = true;
+      try {
+        const detail = await repository.getJobDetail(id);
+        reply.raw.write(`event: job\ndata: ${JSON.stringify(detail)}\n\n`);
+      } finally {
+        inflight = false;
+        if (pending) {
+          pending = false;
+          void send();
+        }
+      }
     };
-    send();
+    void send();
     const unsubscribe = runner.subscribe(send);
     const heartbeat = setInterval(() => reply.raw.write(': heartbeat\n\n'), 15_000);
     request.raw.once('close', () => {
@@ -639,17 +663,18 @@ export const createStudioApp = async ({
 
   app.get('/api/artifacts/:id/download', async (request, reply) => {
     const {id} = IdParams.parse(request.params);
-    const path = resolve(repository.artifactPath(id));
+    const path = resolve(await repository.artifactPath(id));
     const managedRoot = resolve('.video-kit');
     const generatedRoot = resolve('public', 'generated');
     const allowed =
       path.startsWith(`${managedRoot}${sep}`) ||
       path.startsWith(`${generatedRoot}${sep}`);
     if (!allowed || !existsSync(path)) throw new Error('Artifact not found.');
-    const artifact = repository
-      .listJobs()
-      .flatMap((job) => repository.listArtifacts(job.id))
-      .find((entry) => entry.id === id);
+    const jobs = await repository.listJobs();
+    const perJob = await Promise.all(
+      jobs.map((job) => repository.listArtifacts(job.id)),
+    );
+    const artifact = perJob.flat().find((entry) => entry.id === id);
     if (!artifact) throw new Error('Artifact not found.');
     reply.header(
       'Content-Disposition',

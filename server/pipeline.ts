@@ -25,7 +25,7 @@ import {
   scenesExceedNarrationRate,
 } from '@video-kit/core/storyboard';
 import type {VideoSpec} from '@video-kit/core/spec';
-import {StudioRepository} from './db';
+import type {Repository} from '@video-kit/datasource';
 import {LocalAiWorker} from './local-ai';
 import {ElevenLabsVoiceProvider} from './elevenlabs';
 import {ChatterboxVoiceWorker} from './local-voice';
@@ -143,7 +143,7 @@ export class JobRunner {
   private processing = false;
 
   constructor(
-    private readonly repository: StudioRepository,
+    private readonly repository: Repository,
     private readonly ai = new LocalAiWorker(),
     private readonly cloudVoice = new ElevenLabsVoiceProvider(),
     private readonly localVoice = new ChatterboxVoiceWorker(),
@@ -158,15 +158,15 @@ export class JobRunner {
     void this.drain();
   }
 
-  cancel(jobId: string) {
-    const job = this.repository.getJob(jobId);
+  async cancel(jobId: string) {
+    const job = await this.repository.getJob(jobId);
     if (job.status === 'queued') {
-      this.repository.updateJob(jobId, {
+      await this.repository.updateJob(jobId, {
         status: 'cancelled',
         error: 'Cancelled before processing.',
         completedAt: new Date().toISOString(),
       });
-      this.event(jobId, 'queued', 'info', 'Job cancelled.', job.progress);
+      await this.event(jobId, 'queued', 'info', 'Job cancelled.', job.progress);
       return;
     }
     const active = this.active.get(jobId);
@@ -179,20 +179,25 @@ export class JobRunner {
     for (const listener of this.listeners) listener(jobId);
   }
 
-  private event(
+  private async event(
     jobId: string,
     stage: JobStage,
     level: 'info' | 'error',
     message: string,
     progress: number,
   ) {
-    this.repository.addJobEvent(jobId, stage, level, message, progress);
+    await this.repository.addJobEvent(jobId, stage, level, message, progress);
     this.notify(jobId);
   }
 
-  private stage(jobId: string, stage: JobStage, progress: number, message: string) {
-    this.repository.updateJob(jobId, {status: 'running', stage, progress});
-    this.event(jobId, stage, 'info', message, progress);
+  private async stage(
+    jobId: string,
+    stage: JobStage,
+    progress: number,
+    message: string,
+  ) {
+    await this.repository.updateJob(jobId, {status: 'running', stage, progress});
+    await this.event(jobId, stage, 'info', message, progress);
   }
 
   private async drain() {
@@ -200,8 +205,7 @@ export class JobRunner {
     this.processing = true;
     try {
       while (true) {
-        const next = this.repository
-          .listJobs()
+        const next = (await this.repository.listJobs())
           .filter((job) => job.status === 'queued')
           .sort((a, b) => a.createdAt.localeCompare(b.createdAt))[0];
         if (!next) break;
@@ -216,18 +220,18 @@ export class JobRunner {
     const cancellation = makeCancelSignal();
     const active: ActiveJob = {cancel: cancellation.cancel, child: null};
     this.active.set(jobId, active);
-    this.repository.updateJob(jobId, {
+    await this.repository.updateJob(jobId, {
       status: 'running',
       startedAt: new Date().toISOString(),
       error: null,
     });
     try {
-      const job = this.repository.getJob(jobId);
+      const job = await this.repository.getJob(jobId);
       if (job.kind === 'translation') {
         await this.runTranslation(jobId);
         return;
       }
-      const snapshot = this.repository.getRevision(job.revisionId);
+      const snapshot = await this.repository.getRevision(job.revisionId);
       const jobRoot = join(paths.jobs(), jobId);
       const artifactRoot = join(jobRoot, 'artifacts');
       const publicRoot = paths.public();
@@ -235,7 +239,7 @@ export class JobRunner {
       mkdirSync(artifactRoot, {recursive: true});
       mkdirSync(generatedRoot, {recursive: true});
 
-      this.stage(jobId, 'validate', 0.02, 'Validating the immutable project revision.');
+      await this.stage(jobId, 'validate', 0.02, 'Validating the immutable project revision.');
       let spec = EditableVideoSpecSchema.parse(snapshot.spec) as VideoSpec;
       const approvedScriptPath = join(artifactRoot, 'approved-script.txt');
       writeFileSync(
@@ -252,13 +256,13 @@ export class JobRunner {
         null,
         'text/plain',
       );
-      this.stage(
+      await this.stage(
         jobId,
         'topic',
         0.035,
         `Topic locked: ${spec.editorial?.objective ?? spec.title}`,
       );
-      this.stage(
+      await this.stage(
         jobId,
         'script',
         0.055,
@@ -282,7 +286,7 @@ export class JobRunner {
         )
       ) {
         fitScenesToDuration(spec.scenes, totalFrames);
-        this.event(
+        await this.event(
           jobId,
           'validate',
           'info',
@@ -318,7 +322,7 @@ export class JobRunner {
         null,
         'application/json',
       );
-      this.stage(
+      await this.stage(
         jobId,
         'scene-breakdown',
         0.08,
@@ -330,7 +334,7 @@ export class JobRunner {
       // final caption artifact is rebuilt after localized audio retimes scenes.
       if (!musicOnly) writeFileSync(captionsPath, captionsFor(spec));
 
-      this.stage(
+      await this.stage(
         jobId,
         'tts',
         0.14,
@@ -348,8 +352,8 @@ export class JobRunner {
           if (!narrationId) {
             throw new Error('The project has no uploaded narration track.');
           }
-          const narration = this.repository.getNarrationAsset(narrationId);
-          const narrationPath = this.repository.narrationAssetPath(narrationId);
+          const narration = await this.repository.getNarrationAsset(narrationId);
+          const narrationPath = await this.repository.narrationAssetPath(narrationId);
           copyFileSync(narrationPath, finalAudio);
           const fps = spec.fps ?? 30;
           fitScenesToDuration(
@@ -402,7 +406,7 @@ export class JobRunner {
             null,
             'application/json',
           );
-          this.event(
+          await this.event(
             jobId,
             'tts',
             'info',
@@ -419,7 +423,7 @@ export class JobRunner {
           if (!versionId) {
             throw new Error('The localized variant has no voice profile.');
           }
-          const selected = this.repository.voiceProfileForProduction(
+          const selected = await this.repository.voiceProfileForProduction(
             versionId,
             snapshot.variant.locale,
           );
@@ -610,7 +614,7 @@ export class JobRunner {
         if (existsSync(cachedAudio) && existsSync(cachedTimings)) {
           copyFileSync(cachedAudio, finalAudio);
           copyFileSync(cachedTimings, timings);
-          this.event(jobId, 'tts', 'info', 'Reused the matching cached voice track.', 0.27);
+          await this.event(jobId, 'tts', 'info', 'Reused the matching cached voice track.', 0.27);
         } else {
           const ttsArguments = [
             fromRoot('scripts/local-tts-from-srt.py'),
@@ -667,7 +671,7 @@ export class JobRunner {
         this.recordArtifact(jobId, timings, 'word-timings', null, 'application/json');
         }
       } else {
-        this.event(
+        await this.event(
           jobId,
           'tts',
           'info',
@@ -678,7 +682,7 @@ export class JobRunner {
         );
       }
 
-      this.stage(
+      await this.stage(
         jobId,
         'timestamps',
         0.3,
@@ -706,7 +710,7 @@ export class JobRunner {
         }
       }
 
-      this.stage(
+      await this.stage(
         jobId,
         'timeline',
         0.34,
@@ -736,7 +740,7 @@ export class JobRunner {
         'application/json',
       );
 
-      this.stage(
+      await this.stage(
         jobId,
         'composition',
         0.39,
@@ -753,7 +757,7 @@ export class JobRunner {
         );
       }
 
-      this.stage(
+      await this.stage(
         jobId,
         'audio',
         0.44,
@@ -764,7 +768,7 @@ export class JobRunner {
             : 'No audio track is configured; rendering intentionally silent.',
       );
 
-      this.stage(
+      await this.stage(
         jobId,
         'render',
         0.48,
@@ -783,13 +787,13 @@ export class JobRunner {
           concurrency: config.renderConcurrency() ?? null,
         },
         cancelSignal: cancellation.cancelSignal,
-        onProgress: (variant, fraction) => {
+        onProgress: (variant, fraction) => void (async () => {
           const index = variants.indexOf(variant);
           const overall =
             0.5 + ((index + fraction) / Math.max(1, variants.length)) * 0.3;
-          this.repository.updateJob(jobId, {stage: 'render', progress: overall});
+          await this.repository.updateJob(jobId, {stage: 'render', progress: overall});
           if (Math.round(fraction * 100) % 10 === 0) this.notify(jobId);
-        },
+        })(),
       });
 
       // Artifacts are filed under the job's artifact root so downloads keep
@@ -809,7 +813,7 @@ export class JobRunner {
         );
       }
 
-      this.stage(jobId, 'qa', 0.84, 'Checking duration, streams, audio, and generated artifacts.');
+      await this.stage(jobId, 'qa', 0.84, 'Checking duration, streams, audio, and generated artifacts.');
       // Voice generation and uploaded narration may legitimately retime scenes.
       // QA must compare against the immutable spec actually rendered, not the
       // pre-voice storyboard duration captured at validation time.
@@ -821,8 +825,8 @@ export class JobRunner {
       const requireAudio = Boolean(
         spec.audio || spec.soundtrack?.music || spec.soundtrack?.effects?.length,
       );
-      for (const artifact of this.repository.listArtifacts(jobId)) {
-        const path = this.repository.artifactPath(artifact.id);
+      for (const artifact of await this.repository.listArtifacts(jobId)) {
+        const path = await this.repository.artifactPath(artifact.id);
         if (!existsSync(path) || statSync(path).size === 0) {
           throw new Error(`Generated artifact is empty: ${artifact.filename}`);
         }
@@ -842,8 +846,8 @@ export class JobRunner {
         }
       }
 
-      this.stage(jobId, 'package', 0.93, 'Writing the production manifest and download package.');
-      const currentArtifacts = this.repository.listArtifacts(jobId);
+      await this.stage(jobId, 'package', 0.93, 'Writing the production manifest and download package.');
+      const currentArtifacts = await this.repository.listArtifacts(jobId);
       const manifestPath = join(artifactRoot, 'manifest.json');
       writeFileSync(
         manifestPath,
@@ -874,9 +878,11 @@ export class JobRunner {
       );
       this.recordArtifact(jobId, manifestPath, 'manifest', null, 'application/json');
       const packagePath = join(artifactRoot, 'video-package.zip');
-      const packageFiles = this.repository
-        .listArtifacts(jobId)
-        .map((artifact) => this.repository.artifactPath(artifact.id));
+      const packageFiles = await Promise.all(
+        (await this.repository.listArtifacts(jobId)).map((artifact) =>
+          this.repository.artifactPath(artifact.id),
+        ),
+      );
       await runProcess(
         'zip',
         ['-j', packagePath, ...packageFiles],
@@ -892,25 +898,25 @@ export class JobRunner {
       );
 
       const completedAt = new Date().toISOString();
-      this.repository.updateJob(jobId, {
+      await this.repository.updateJob(jobId, {
         status: 'completed',
         stage: 'completed',
         progress: 1,
         completedAt,
       });
-      this.event(jobId, 'completed', 'info', 'All requested outputs are ready.', 1);
+      await this.event(jobId, 'completed', 'info', 'All requested outputs are ready.', 1);
     } catch (error) {
-      const current = this.repository.getJob(jobId);
+      const current = await this.repository.getJob(jobId);
       const cancelled =
         current.status === 'cancelled' ||
         /SIGTERM|cancel/i.test(safeError(error));
       const message = cancelled ? 'Job cancelled.' : safeError(error);
-      this.repository.updateJob(jobId, {
+      await this.repository.updateJob(jobId, {
         status: cancelled ? 'cancelled' : 'failed',
         error: message,
         completedAt: new Date().toISOString(),
       });
-      this.event(
+      await this.event(
         jobId,
         current.stage,
         cancelled ? 'info' : 'error',
@@ -924,24 +930,24 @@ export class JobRunner {
   }
 
   private async runTranslation(jobId: string) {
-    const job = this.repository.getJob(jobId);
-    const target = this.repository.getVariant(job.projectId, job.variantId);
+    const job = await this.repository.getJob(jobId);
+    const target = await this.repository.getVariant(job.projectId, job.variantId);
     if (!target.sourceVariantId) {
       throw new Error('Translation target has no source variant.');
     }
-    const source = this.repository.getVariant(
+    const source = await this.repository.getVariant(
       job.projectId,
       target.sourceVariantId,
     );
-    const units = this.repository.listTranslationUnits(target.id);
+    const units = await this.repository.listTranslationUnits(target.id);
     if (!units.length) throw new Error('Translation target has no text units.');
-    this.stage(
+    await this.stage(
       jobId,
       'translation',
       0.1,
       `Translating ${units.length} fields from ${source.locale} to ${target.locale}.`,
     );
-    const glossary = this.repository.listGlossary(job.projectId);
+    const glossary = await this.repository.listGlossary(job.projectId);
     const preserved = glossary
       .filter((entry) => entry.mode === 'preserve')
       .map((entry) => entry.sourceTerm);
@@ -969,19 +975,19 @@ export class JobRunner {
         pivotText: result.pivots[index] ?? null,
       };
     });
-    this.repository.applyTranslationResults(
+    await this.repository.applyTranslationResults(
       job.projectId,
       target.id,
       translated,
     );
     const completedAt = new Date().toISOString();
-    this.repository.updateJob(jobId, {
+    await this.repository.updateJob(jobId, {
       status: 'completed',
       stage: 'completed',
       progress: 1,
       completedAt,
     });
-    this.event(
+    await this.event(
       jobId,
       'completed',
       'info',
@@ -990,7 +996,7 @@ export class JobRunner {
     );
   }
 
-  private recordArtifact(
+  private async recordArtifact(
     jobId: string,
     path: string,
     kind: string,
@@ -1009,7 +1015,7 @@ export class JobRunner {
       throw new Error('Artifact path escaped the managed job directories.');
     }
     const stats = statSync(resolved);
-    this.repository.addArtifact(jobId, {
+    await this.repository.addArtifact(jobId, {
       kind,
       deliveryId,
       filename: resolved.split(sep).at(-1)!,

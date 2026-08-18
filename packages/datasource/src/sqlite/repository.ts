@@ -44,7 +44,8 @@ import {
   DEFAULT_TEMPLATES,
   DEFAULT_THEMES,
 } from '@video-kit/core/defaults';
-import {paths} from '@video-kit/core/config';
+import {config} from '@video-kit/core/config';
+import {fileURLToPath} from 'node:url';
 import {createSpecFromScript, slugify} from '@video-kit/core/storyboard';
 import {
   extractTranslatableFields,
@@ -60,23 +61,50 @@ const parse = <T>(value: string) => JSON.parse(value) as T;
 
 type Row = Record<string, unknown>;
 
+/** Migrations ship with this package, so they are found wherever it is installed. */
+export const MIGRATIONS_DIR = fileURLToPath(new URL('../../migrations', import.meta.url));
+
+export type SqliteRepositoryOptions = {
+  databasePath?: string;
+  migrationsDirectory?: string;
+  /**
+   * Apply pending migrations and seed on construction. Left on so local dev and
+   * tests need no extra step; the service and CI use the explicit migrate CLI.
+   */
+  autoMigrate?: boolean;
+};
+
 export class StudioRepository {
   readonly database: Database.Database;
   readonly storageRoot: string;
+  private readonly migrationsDirectory: string;
 
-  constructor(
-    databasePath = resolve(
-      process.env.VIDEO_KIT_DB_PATH ?? join('.video-kit', 'video-kit.db'),
-    ),
-  ) {
+  constructor(options: string | SqliteRepositoryOptions = {}) {
+    const {
+      databasePath = config.databasePath(),
+      migrationsDirectory = MIGRATIONS_DIR,
+      autoMigrate = true,
+    } = typeof options === 'string' ? {databasePath: options} : options;
+
+    this.migrationsDirectory = migrationsDirectory;
     this.storageRoot = dirname(databasePath);
     mkdirSync(dirname(databasePath), {recursive: true});
     this.database = new Database(databasePath);
     this.database.pragma('journal_mode = WAL');
     this.database.pragma('foreign_keys = ON');
+    if (autoMigrate) {
+      this.migrate();
+      this.seed();
+      // Only meaningful once the schema exists; the migrate CLI opens an
+      // unmigrated database and must not trip over a missing jobs table.
+      this.recoverInterruptedJobs();
+    }
+  }
+
+  /** Apply pending migrations and seed defaults. Used by the migrate CLI. */
+  applyMigrations() {
     this.migrate();
     this.seed();
-    this.recoverInterruptedJobs();
   }
 
   close() {
@@ -87,7 +115,7 @@ export class StudioRepository {
     this.database.exec(
       'CREATE TABLE IF NOT EXISTS schema_migrations (version TEXT PRIMARY KEY, applied_at TEXT NOT NULL)',
     );
-    const directory = paths.migrations();
+    const directory = this.migrationsDirectory;
     for (const filename of readdirSync(directory)
       .filter((entry) => entry.endsWith('.sql'))
       .sort()) {
