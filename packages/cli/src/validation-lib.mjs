@@ -1,6 +1,7 @@
 import {DELIVERIES, refOf} from './deliveries.mjs';
 import {existsSync} from 'node:fs';
 import {resolve, sep} from 'node:path';
+import {paths} from '@video-kit/core/config';
 
 const words = (text = '') => text.trim().split(/\s+/).filter(Boolean).length;
 
@@ -17,7 +18,7 @@ export const validateSpec = (spec, channel) => {
     return issues;
   }
   const fps = spec.fps ?? 30;
-  const publicRoot = resolve('public');
+  const publicRoot = paths.public();
 
   if (spec.fps !== undefined && (!Number.isInteger(spec.fps) || spec.fps < 1 || spec.fps > 120)) {
     add('error', 'fps', 'must be an integer between 1 and 120');

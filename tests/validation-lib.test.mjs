@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {validateCollection, validateSpec} from '../scripts/validation-lib.mjs';
+import {validateCollection, validateSpec} from '../packages/cli/src/validation-lib.mjs';
 import {errorsOf, makeChannel, makeSpec, warningsOf} from './helpers.mjs';
 
 test('a well-formed spec produces no issues', () => {

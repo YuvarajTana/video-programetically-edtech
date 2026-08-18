@@ -96,7 +96,7 @@ export class ChatterboxVoiceWorker implements LocalVoiceProvider {
     }
     const child = spawn(
       executable,
-      [fromRoot('scripts', 'local-voice-worker.py'), '--stdio'],
+      [fromRoot('packages', 'cli', 'python', 'local-voice-worker.py'), '--stdio'],
       {
         cwd: paths.root,
         env: {

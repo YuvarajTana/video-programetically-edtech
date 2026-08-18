@@ -80,7 +80,7 @@ const descriptionFor = (spec, channel, platform, chapters) => {
   return lines.filter((line, index) => line || index > 0).join('\n').trim();
 };
 
-export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
+export const packageSpec = ({spec, channel, outRoot = paths.out()}) => {
   const base = join(outRoot, spec.channel, spec.slug);
   const files = [];
   const mediaCredits = mediaCreditsFor(spec);

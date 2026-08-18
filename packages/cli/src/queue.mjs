@@ -17,6 +17,7 @@ import {
 import {basename, join, resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {positionals} from './deliveries.mjs';
+import {paths} from '@video-kit/core/config';
 
 const argv = process.argv.slice(2);
 const files = positionals(argv);
@@ -148,7 +149,7 @@ if (has('dry-run')) {
   process.exit(0);
 }
 
-const stateDirectory = join('out', 'queues', queue.id);
+const stateDirectory = join(paths.out(), 'queues', queue.id);
 const statePath = join(stateDirectory, 'state.json');
 const pendingStatePath = join(stateDirectory, 'state.pending.json');
 mkdirSync(stateDirectory, {recursive: true});

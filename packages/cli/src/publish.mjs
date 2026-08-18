@@ -18,6 +18,7 @@ import {join, resolve, sep} from 'node:path';
 import {positionals} from './deliveries.mjs';
 import {publishInstagramReel} from './publishing/instagram.mjs';
 import {publishYouTube} from './publishing/youtube.mjs';
+import {paths} from '@video-kit/core/config';
 
 const argv = process.argv.slice(2);
 const valueFlags = [
@@ -68,7 +69,7 @@ if (!/^(tech|learn|fun)\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(ref)) {
 
 const [channel, slug] = ref.split('/');
 const deliveryId = value('delivery');
-const base = join('out', channel, slug);
+const base = join(paths.out(), channel, slug);
 const manifestPath = join(base, 'manifest.json');
 if (!existsSync(manifestPath)) {
   console.error(`missing ${manifestPath}; run npm run produce -- ${ref} first`);

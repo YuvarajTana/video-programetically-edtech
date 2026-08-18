@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {validateSpec} from '../scripts/validation-lib.mjs';
+import {validateSpec} from '../packages/cli/src/validation-lib.mjs';
 import {errorsOf, makeChannel, makeSpec, warningsOf} from './helpers.mjs';
 
 const withScene = (scene) => {

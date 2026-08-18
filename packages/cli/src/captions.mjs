@@ -15,6 +15,7 @@ import {
   preferredRenderProfile,
 } from './deliveries.mjs';
 import {loadSpecs} from './spec-loader.mjs';
+import {paths} from '@video-kit/core/config';
 
 const refs = positionals(process.argv.slice(2));
 
@@ -22,7 +23,7 @@ let count = 0;
 for (const {spec, channel} of await loadSpecs()) {
   if (!matchesRef(spec, refs)) continue;
   const ref = `${spec.channel}/${spec.slug}`;
-  const base = join('out', spec.channel, spec.slug);
+  const base = join(paths.out(), spec.channel, spec.slug);
   mkdirSync(base, {recursive: true});
   const fps = spec.fps ?? 30;
   writeFileSync(

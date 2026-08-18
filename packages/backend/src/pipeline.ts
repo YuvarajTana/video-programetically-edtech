@@ -617,7 +617,7 @@ export class JobRunner {
           await this.event(jobId, 'tts', 'info', 'Reused the matching cached voice track.', 0.27);
         } else {
           const ttsArguments = [
-            fromRoot('scripts/local-tts-from-srt.py'),
+            fromRoot('packages', 'cli', 'python', 'local-tts-from-srt.py'),
             '--srt',
             captionsPath,
             '--out',
@@ -834,7 +834,7 @@ export class JobRunner {
           await runProcess(
             process.execPath,
             [
-              fromRoot('scripts/media-qa.mjs'),
+              fromRoot('packages', 'cli', 'src', 'media-qa.mjs'),
               path,
               '--expected',
               String(expectedDurationSeconds),

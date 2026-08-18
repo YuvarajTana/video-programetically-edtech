@@ -140,7 +140,7 @@ export class LocalAiWorker
     }
     const child = spawn(
       executable,
-      [fromRoot('scripts', 'indic-ai-worker.py'), '--stdio'],
+      [fromRoot('packages', 'cli', 'python', 'indic-ai-worker.py'), '--stdio'],
       {
         cwd: paths.root,
         env: {

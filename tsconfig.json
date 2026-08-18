@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig.base.json",
   "include": [
-    "scripts",
     "tests",
     "packages/*/src"
   ],
@@ -76,6 +75,9 @@
       ],
       "@video-kit/backend/pipeline": [
         "./packages/backend/src/pipeline.ts"
+      ],
+      "@video-kit/cli/*": [
+        "./packages/cli/src/*"
       ]
     }
   }

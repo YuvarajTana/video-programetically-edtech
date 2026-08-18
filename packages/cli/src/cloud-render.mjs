@@ -188,7 +188,7 @@ runLocal('validate', 'scripts/validate.mjs', [ref]);
 runLocal('captions', 'scripts/captions.mjs', [ref]);
 spec = JSON.parse(readFileSync(specPath, 'utf8'));
 
-const publicRoot = resolve('public');
+const publicRoot = paths.public();
 for (const asset of [spec.audio, spec.captionTimings].filter(Boolean)) {
   const assetPath = resolve(publicRoot, asset);
   if (

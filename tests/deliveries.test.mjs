@@ -6,7 +6,7 @@ import {
   positionals,
   preferredRenderProfile,
   refOf,
-} from '../scripts/deliveries.mjs';
+} from '../packages/cli/src/deliveries.mjs';
 
 const channel = {defaultDeliveries: ['youtube-long', 'instagram-reel']};
 

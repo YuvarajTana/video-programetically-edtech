@@ -17,6 +17,7 @@ import {createHash} from 'node:crypto';
 import {dirname, join, parse, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {positionals} from './deliveries.mjs';
+import {paths} from '@video-kit/core/config';
 
 const argv = process.argv.slice(2);
 const value = (name) => {
@@ -133,7 +134,7 @@ console.log(`· captions ${ref}`);
 run(process.execPath, ['scripts/captions.mjs', ref], {stdio: 'inherit'});
 
 const [channel, slug] = ref.split('/');
-const base = join('out', channel, slug);
+const base = join(paths.out(), channel, slug);
 const requestPath = join(base, 'voice.json');
 if (!existsSync(requestPath)) {
   console.error(`missing ${requestPath}`);
@@ -167,7 +168,7 @@ if (
   process.exit(1);
 }
 
-const publicRoot = resolve('public');
+const publicRoot = paths.public();
 const finalPath = resolve(publicRoot, request.audio);
 if (!finalPath.startsWith(`${publicRoot}${sep}`)) {
   console.error(`audio path must stay inside public/: ${request.audio}`);

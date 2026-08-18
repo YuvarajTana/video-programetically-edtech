@@ -14,7 +14,7 @@ and sequences the work.
 
 | Handoff concept | This repo's equivalent |
 | --- | --- |
-| `Reel` data file, no JSX in content | `VideoSpec` in `src/videos/` — same philosophy |
+| `Reel` data file, no JSX in content | `VideoSpec` in `packages/catalog/src/videos/` — same philosophy |
 | 21 blocks | 23 scene types (different grain: blocks compose within a scene; scenes are full-frame) |
 | `lint.mjs` gating `build` | `validate.mjs` gating `produce` |
 | VO lines rendered as captions | narration + word-timed animated captions |

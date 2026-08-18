@@ -3,8 +3,8 @@
 Paste everything between the lines into any capable model, replace
 `TOPIC HERE` and `CHANNEL HERE`, then attach two files from this repo:
 
-1. `src/types.ts` — the full scene type definitions
-2. One existing spec that matches the shape you want, from `src/videos/`
+1. `packages/core/src/spec/index.ts` — the full scene type definitions
+2. One existing spec that matches the shape you want, from `packages/catalog/src/videos/`
 
 The second attachment matters more than the first: a model copies a working
 example far more reliably than it follows a spec.
@@ -13,11 +13,11 @@ example far more reliably than it follows a spec.
 
 | You want | Attach |
 | --- | --- |
-| A concept explainer | `src/videos/tech/llm-fundamentals.ts` |
-| An algorithm walkthrough | `src/videos/tech/selection-sort.ts` |
-| A system/architecture piece | `src/videos/tech/cdn-to-container.ts` |
-| A kids/students lesson | `src/videos/learn/moon-phases.ts` |
-| A short, loopable Fun video | `src/videos/fun/cloud-vs-elephant.ts` |
+| A concept explainer | `packages/catalog/src/videos/tech/llm-fundamentals.ts` |
+| An algorithm walkthrough | `packages/catalog/src/videos/tech/selection-sort.ts` |
+| A system/architecture piece | `packages/catalog/src/videos/tech/cdn-to-container.ts` |
+| A kids/students lesson | `packages/catalog/src/videos/learn/moon-phases.ts` |
+| A short, loopable Fun video | `packages/catalog/src/videos/fun/cloud-vs-elephant.ts` |
 
 ---
 
@@ -135,7 +135,7 @@ then the export. Match the style of the attached example file exactly.
 ## After the model gives you the file
 
 ```bash
-# 1. save to src/videos/<channel>/, register it in that channel's registry
+# 1. save to packages/catalog/src/videos/<channel>/, register it in that channel's registry
 npm run validate -- <channel>/<slug>    # fix every error, then the warnings
 npm run captions -- <channel>/<slug>    # check the pace column in voiceover.md
 npm run studio                          # scrub it; look for collisions

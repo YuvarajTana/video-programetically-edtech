@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readdirSync, readFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {test} from 'node:test';
-import {woff2Coverage} from '../scripts/glyphs-lib.mjs';
+import {woff2Coverage} from '../packages/cli/src/glyphs-lib.mjs';
 
 /**
  * The kit renders ✓ (rail, rows), ✕, →, and ₹ (house cast money). The latin

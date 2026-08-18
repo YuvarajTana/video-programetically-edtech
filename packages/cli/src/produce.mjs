@@ -16,6 +16,7 @@ import {join, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {performance} from 'node:perf_hooks';
 import {positionals} from './deliveries.mjs';
+import {paths} from '@video-kit/core/config';
 
 const argv = process.argv.slice(2);
 const valueFlags = ['voice', 'speed', 'model', 'language', 'python'];
@@ -52,7 +53,7 @@ if (!/^(tech|learn|fun)\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(ref)) {
 }
 
 const [channel, slug] = ref.split('/');
-const base = join('out', channel, slug);
+const base = join(paths.out(), channel, slug);
 const reportPath = join(base, 'production.json');
 const startedAt = new Date().toISOString();
 const stages = [];
@@ -152,7 +153,7 @@ if (!has('silent')) {
     process.exit(1);
   }
 
-  const publicRoot = resolve('public');
+  const publicRoot = paths.public();
   const audioPath = resolve(publicRoot, voiceRequest.audio);
   if (
     !audioPath.startsWith(`${publicRoot}${sep}`) ||

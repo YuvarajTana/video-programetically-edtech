@@ -17,6 +17,7 @@ import {join} from 'node:path';
 import {OUTPUT_VARIANTS, variantOutputName} from '@video-kit/core/output';
 import {positionals} from './deliveries.mjs';
 import {decodePng, rgbDistance} from './png-lib.mjs';
+import {paths} from '@video-kit/core/config';
 
 const refs = positionals(process.argv.slice(2));
 const MIN_SIDE_MARGIN = 140;
@@ -63,7 +64,7 @@ const contentBounds = (image) => {
   return maxX === -1 ? null : {minX, maxX, minY, maxY};
 };
 
-const outRoot = 'out';
+const outRoot = paths.out();
 let checked = 0;
 let failures = 0;
 
