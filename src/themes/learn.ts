@@ -21,9 +21,9 @@ export const learnTheme: VideoTheme = {
     info: '#2F80ED',
   },
   font: {
-    display: "'Hanken Grotesk', system-ui, sans-serif",
-    body: "'Hanken Grotesk', system-ui, sans-serif",
-    mono: "'JetBrains Mono', ui-monospace, monospace",
+    display: "'Hanken Grotesk', 'Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari', system-ui, sans-serif",
+    body: "'Hanken Grotesk', 'Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari', system-ui, sans-serif",
+    mono: "'JetBrains Mono', 'Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari', ui-monospace, monospace",
   },
   frameBackground:
     'radial-gradient(110% 75% at 50% 0%, rgba(255,190,92,0.24) 0%, transparent 64%)',

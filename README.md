@@ -281,6 +281,7 @@ Publishing destinations are separate from aspect ratios.
 | `youtube-short` | YouTube | `portrait` | 1080×1920 |
 | `instagram-reel` | Instagram | `portrait` | 1080×1920 |
 | `instagram-feed` | Instagram | `square` | 1080×1080 |
+| `instagram-carousel` | Instagram | `carousel` (stills) | 1080×1350 |
 
 If a spec requests both a YouTube Short and an Instagram Reel, the portrait
 video is rendered once and packaged twice with platform-specific metadata and
@@ -398,8 +399,13 @@ npm run validate -- --studio
 ```
 
 Validation checks structure, delivery IDs, duplicate scenes, diagram
-references, narration speed, duration, hook length, quiz timing, audio paths,
-and channel-specific editorial requirements. It reads the spec registries
+references, narration pace (a channel WPM band, not just a ceiling), duration,
+hook length and hook-vs-topic naming, accent rotation, static text-led scenes,
+quiz timing, audio paths, and channel-specific editorial requirements. The
+editorial rules themselves are documented in
+[`docs/authoring.md`](docs/authoring.md), and
+[`docs/llm-authoring-prompt.md`](docs/llm-authoring-prompt.md) is a paste-ready
+prompt for drafting a spec with a model. It reads the spec registries
 directly through Node's native TypeScript support, so it needs no bundling or
 browser and finishes in well under a second (Node 22.18+).
 
@@ -439,6 +445,36 @@ Rebuild publish packages from existing renders:
 npm run package
 npm run package -- tech/selection-sort
 ```
+
+### Carousels, cover QA, and music beds
+
+A spec that declares the `instagram-carousel` delivery ships as stills — one
+1080×1350 slide per scene, captured at 80% through the scene, plus a PDF for
+LinkedIn document posts (validation warns past Instagram's 10-slide cap):
+
+```bash
+npm run carousel -- tech/my-video
+```
+
+Rendered covers can be audited against the Instagram grid crop — content must
+keep ≥140px side margins and, on portrait covers, stay inside the centered
+800×1100 safe box:
+
+```bash
+npm run cover:check -- tech/my-video
+```
+
+Copyright-free music beds are synthesized in-repo (numpy required), RMS-
+normalized to −22 dBFS with 1.2s fades, and declared in specs with
+`license: 'original'`:
+
+```bash
+npm run music -- calm-plucks 60
+npm run music     # lists the presets
+```
+
+The baked font set includes Noto fallback faces for ₹, ✓, ✕, and → — glyphs
+the latin brand subsets lack — and a test fails CI if coverage regresses.
 
 ## Output packages
 
@@ -503,8 +539,15 @@ never the metadata), and is listed under "Media credits" in packaged
 in `public/media/samples/`.
 | `callout` | one memorable sentence |
 | `arrayViz` | selection and bubble sort |
+| `algorithm` | synced array + status + code, one step clock |
+| `tokens` | chips flipping text → id |
+| `meter` | one quantity filling toward a visible limit |
 | `quiz` | question, options, thinking pause, answer reveal |
 | `outro` | recap and channel-driven CTA |
+
+A spec may declare a `rail` — a persistent stage pipeline rendered above every
+scene. Scenes advance it with `railStage` (omitted scenes carry the previous
+stage forward), turning a sequence of cuts into one visible journey.
 
 Chart bars share one hue because they encode magnitude — identity lives in the
 label under each bar, and `highlightIndex` spotlights the bar the narration is

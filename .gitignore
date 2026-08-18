@@ -47,3 +47,6 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+# Music beds are reproducible: npm run music -- <preset> <seconds>
+public/audio/music/

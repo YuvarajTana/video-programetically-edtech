@@ -41,7 +41,11 @@
     "Preserve product names, acronyms, URLs, commands, and glossary-protected terms.",
     "Every factual or API-specific claim must be suitable for manual verification against a primary source.",
     "The final scene must recap the mental model or bridge to the next curriculum topic.",
-    "For music-only videos, make every scene understandable through concise on-screen text, labels, diagrams, code, and animation without relying on speech."
+    "For music-only videos, make every scene understandable through concise on-screen text, labels, diagrams, code, and animation without relying on speech.",
+    "Keep narration lines to about ten words each: one idea per line, active voice, no idioms or phrasal verbs, and say the number instead of a vague quantifier.",
+    "Target a narration pace of roughly 2.2 to 2.8 spoken words per second and err slower; a scene's word count divided by its seconds must stay inside the channel band.",
+    "Open with a claim, question, or surprising observation; never open by repeating the topic name as the first title.",
+    "Reuse the recurring cast and setting for examples: Ravi, Priya, and Meera; Chennai, Pune, and Bengaluru; rupee amounts with GST; and the e-commerce schema of users, orders, and order_items."
   ],
   "categories": {
     "tech": {

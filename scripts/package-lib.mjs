@@ -3,6 +3,7 @@ import {
   copyFileSync,
   existsSync,
   mkdirSync,
+  readdirSync,
   readFileSync,
   unlinkSync,
   writeFileSync,
@@ -120,6 +121,53 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
     const delivery = DELIVERIES[deliveryId];
     const deliveryDir = join(base, deliveryId);
     mkdirSync(deliveryDir, {recursive: true});
+
+    // Stills deliveries (carousels) package slides + a PDF, not a video.
+    if (delivery.stills) {
+      const slidesDir = join(deliveryDir, 'slides');
+      const slides = existsSync(slidesDir)
+        ? readdirSync(slidesDir).filter((name) => name.endsWith('.jpg')).sort()
+        : [];
+      const pdfPath = join(deliveryDir, 'carousel.pdf');
+      const coverPath = join(deliveryDir, 'cover.png');
+      const hashtags = channel.defaultHashtags[delivery.platform];
+      writeFileSync(
+        join(deliveryDir, 'metadata.json'),
+        JSON.stringify(
+          {
+            schemaVersion: 1,
+            channel: spec.channel,
+            delivery: deliveryId,
+            platform: delivery.platform,
+            title: spec.title,
+            description: descriptionFor(spec, channel, delivery.platform, []),
+            hashtags,
+            handle: channel.handle,
+            mediaCredits,
+            slides: slides.length,
+            chapters: [],
+          },
+          null,
+          2,
+        ) + '\n',
+      );
+      files.push({
+        delivery: deliveryId,
+        platform: delivery.platform,
+        renderProfile: delivery.renderProfile,
+        status:
+          slides.length && existsSync(pdfPath)
+            ? 'ready'
+            : existsSync(coverPath)
+              ? 'cover-only'
+              : 'incomplete',
+        slides: slides.map((name) => relative(base, join(slidesDir, name))),
+        pdf: existsSync(pdfPath) ? relative(base, pdfPath) : null,
+        cover: existsSync(coverPath) ? relative(base, coverPath) : null,
+        metadata: relative(base, join(deliveryDir, 'metadata.json')),
+      });
+      continue;
+    }
 
     const renderPath = join(base, 'renders', `${delivery.renderProfile}.mp4`);
     const videoPath = join(deliveryDir, 'video.mp4');

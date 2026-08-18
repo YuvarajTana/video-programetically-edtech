@@ -12,6 +12,7 @@ export const CHANNELS: Record<BuiltInChannelId, ChannelProfile> = {
     label: 'AI Data Dynamics',
     shortLabel: 'Tech, visually',
     handle: '@AIDataDynamics',
+    secondaryHandle: '@YuvarajTana',
     theme: techTheme,
     defaultDeliveries: ['youtube-long', 'instagram-reel'],
     defaultTemplate: 'concept-explainer',
@@ -34,6 +35,7 @@ export const CHANNELS: Record<BuiltInChannelId, ChannelProfile> = {
       minSeconds: 20,
       maxSeconds: 1_800,
       maxNarrationWpm: 165,
+      minNarrationWpm: 130,
     },
   },
   learn: {

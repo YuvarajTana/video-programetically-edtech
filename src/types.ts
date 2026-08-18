@@ -22,6 +22,12 @@ export type Base = {
   /** Optional override for an automatically generated YouTube chapter title. */
   chapterTitle?: string;
   accent?: Accent;
+  /**
+   * 0-based active stage of the video's rail while this scene plays. Omitted
+   * scenes carry the previous scene's stage forward, so set it only when the
+   * journey advances.
+   */
+  railStage?: number;
 };
 
 // ---------------------------------------------------------------- scene types
@@ -333,6 +339,67 @@ export type QuizScene = Base & {
   revealAtFrame?: number;
 };
 
+export type AlgorithmStep = {
+  /** Frame within the scene when this step becomes active. */
+  atFrame: number;
+  /**
+   * One state character per value:
+   * `.` idle · `c` comparing · `f` focus · `g` locked/found · `x` eliminated.
+   */
+  states: string;
+  /** Status readout under the array, e.g. "lo=5 hi=6 mid=5". */
+  status?: string;
+  /** 1-based line of `code` highlighted during this step. */
+  codeLine?: number;
+  /** Pointer labels over cells, e.g. {lo: 0, mid: 4, hi: 9}. */
+  pointers?: Record<string, number>;
+};
+
+export type AlgorithmScene = Base & {
+  type: 'algorithm';
+  kicker?: string;
+  title?: string;
+  values: (number | string)[];
+  /**
+   * The signature technique: the array, the status line, and the code all
+   * advance on this one step clock, so the data and the executing line move
+   * together.
+   */
+  steps: AlgorithmStep[];
+  code?: {lines: string[]; lang?: string};
+};
+
+export type TokenItem = {
+  text: string;
+  id: number | string;
+};
+
+export type TokensScene = Base & {
+  type: 'tokens';
+  kicker?: string;
+  title?: string;
+  items: TokenItem[];
+  /** Frame when chips begin flipping text → id. Defaults to 45% of the scene. */
+  flipAtFrame?: number;
+  footnote?: string;
+};
+
+export type MeterScene = Base & {
+  type: 'meter';
+  kicker?: string;
+  title?: string;
+  /** What the meter measures, shown above the bar. */
+  label?: string;
+  max: number;
+  /** Fill animates from → to. Defaults from 0. */
+  from?: number;
+  to: number;
+  unit?: string;
+  /** A limit line on the bar, e.g. the context window size. */
+  marker?: {value: number; label?: string};
+  note?: string;
+};
+
 export type CalloutScene = Base & {
   type: 'callout';
   text: string;
@@ -547,6 +614,9 @@ export type Scene =
   | LabeledDiagramScene
   | CalloutScene
   | ArrayVizScene
+  | AlgorithmScene
+  | TokensScene
+  | MeterScene
   | MotionCanvasScene
   | OutroScene;
 
@@ -628,6 +698,11 @@ export type VideoSpec = {
   soundtrack?: Soundtrack;
   /** Burn narration into the frame as captions. On by default for Reels. */
   captions?: boolean;
+  /**
+   * A persistent stage pipeline rendered above every scene. Scenes advance it
+   * with `railStage`; it turns a sequence of cuts into one visible journey.
+   */
+  rail?: {stages: string[]};
   scenes: Scene[];
 };
 

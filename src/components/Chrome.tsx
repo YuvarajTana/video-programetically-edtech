@@ -41,7 +41,7 @@ export const Chrome: React.FC = () => {
             textTransform: 'uppercase',
           }}
         >
-          {channel.handle}
+          {[channel.handle, channel.secondaryHandle].filter(Boolean).join(' · ')}
         </div>
       ) : null}
 

@@ -21,9 +21,9 @@ export const techTheme: VideoTheme = {
     info: '#A78BFA',
   },
   font: {
-    display: "'Fraunces', Georgia, serif",
-    body: "'Hanken Grotesk', system-ui, sans-serif",
-    mono: "'JetBrains Mono', ui-monospace, monospace",
+    display: "'Fraunces', 'Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari', Georgia, serif",
+    body: "'Hanken Grotesk', 'Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari', system-ui, sans-serif",
+    mono: "'JetBrains Mono', 'Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari', ui-monospace, monospace",
   },
   frameBackground:
     'radial-gradient(120% 80% at 50% 0%, rgba(20,31,26,0.34) 0%, transparent 60%)',

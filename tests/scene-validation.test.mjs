@@ -310,3 +310,193 @@ test('videoClip bounds fit, trimBefore, and volume', () => {
   assert.ok(paths.some((path) => path.endsWith('clip.trimBefore')));
   assert.ok(paths.some((path) => path.endsWith('clip.volume')));
 });
+
+// ------------------------------------------------------------- algorithm
+
+const algorithm = (overrides = {}) => ({
+  type: 'algorithm',
+  durationInFrames: 200,
+  values: [2, 5, 8, 12],
+  code: {lines: ['lo = 0', 'hi = 3', 'mid = (lo + hi) // 2']},
+  steps: [
+    {atFrame: 10, states: '....', codeLine: 1, pointers: {lo: 0}},
+    {atFrame: 60, states: 'xc.g', codeLine: 3, status: 'mid = 1'},
+  ],
+  ...overrides,
+});
+
+test('a well-formed algorithm passes', () => {
+  assert.deepEqual(validateSpec(withScene(algorithm()), makeChannel()), []);
+});
+
+test('algorithm rejects bad states, order, codeLine, and pointers', () => {
+  const shortStates = validateSpec(
+    withScene(algorithm({steps: [{atFrame: 10, states: '..'}]})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(shortStates).some((issue) => issue.path.endsWith('states')));
+
+  const badChars = validateSpec(
+    withScene(algorithm({steps: [{atFrame: 10, states: 'abcd'}]})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(badChars).some((issue) => issue.message.includes('. c f g or x')));
+
+  const outOfOrder = validateSpec(
+    withScene(
+      algorithm({
+        steps: [
+          {atFrame: 60, states: '....'},
+          {atFrame: 10, states: '....'},
+        ],
+      }),
+    ),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(outOfOrder).some((issue) => issue.message.includes('ascending')));
+
+  const badLine = validateSpec(
+    withScene(algorithm({steps: [{atFrame: 10, states: '....', codeLine: 9}]})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(badLine).some((issue) => issue.path.endsWith('codeLine')));
+
+  const badPointer = validateSpec(
+    withScene(algorithm({steps: [{atFrame: 10, states: '....', pointers: {hi: 7}}]})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(badPointer).some((issue) => issue.path.endsWith('pointers.hi')));
+});
+
+test('algorithm warns on code lines too long to fit', () => {
+  const issues = validateSpec(
+    withScene(algorithm({code: {lines: ['x'.repeat(60)]}, steps: [{atFrame: 10, states: '....'}]})),
+    makeChannel(),
+  );
+  assert.ok(warningsOf(issues).some((issue) => issue.message.includes('46')));
+});
+
+// ---------------------------------------------------------------- tokens
+
+const tokens = (overrides = {}) => ({
+  type: 'tokens',
+  durationInFrames: 130,
+  items: [
+    {text: 'The', id: 464},
+    {text: ' model', id: 2746},
+  ],
+  ...overrides,
+});
+
+test('a well-formed tokens scene passes', () => {
+  assert.deepEqual(validateSpec(withScene(tokens()), makeChannel()), []);
+});
+
+test('tokens requires text, ids, and a workable flip window', () => {
+  const missing = validateSpec(
+    withScene(tokens({items: [{text: '', id: 1}, {text: 'ok'}]})),
+    makeChannel(),
+  );
+  const paths = errorsOf(missing).map((issue) => issue.path);
+  assert.ok(paths.some((path) => path.endsWith('items[0].text')));
+  assert.ok(paths.some((path) => path.endsWith('items[1].id')));
+
+  const late = validateSpec(withScene(tokens({flipAtFrame: 125})), makeChannel());
+  assert.ok(warningsOf(late).some((issue) => issue.message.includes('flip and settle')));
+
+  const outside = validateSpec(withScene(tokens({flipAtFrame: 200})), makeChannel());
+  assert.ok(errorsOf(outside).some((issue) => issue.path.endsWith('flipAtFrame')));
+});
+
+// ----------------------------------------------------------------- meter
+
+const meter = (overrides = {}) => ({
+  type: 'meter',
+  durationInFrames: 130,
+  max: 100,
+  to: 80,
+  ...overrides,
+});
+
+test('a well-formed meter passes', () => {
+  assert.deepEqual(validateSpec(withScene(meter()), makeChannel()), []);
+});
+
+test('meter bounds max, from, to, and marker', () => {
+  const badMax = validateSpec(withScene(meter({max: 0})), makeChannel());
+  assert.ok(errorsOf(badMax).some((issue) => issue.path.endsWith('max')));
+
+  const badTo = validateSpec(withScene(meter({to: 150})), makeChannel());
+  assert.ok(errorsOf(badTo).some((issue) => issue.path.endsWith('to')));
+
+  const badFrom = validateSpec(withScene(meter({from: -5})), makeChannel());
+  assert.ok(errorsOf(badFrom).some((issue) => issue.path.endsWith('from')));
+
+  const badMarker = validateSpec(
+    withScene(meter({marker: {value: 500}})),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(badMarker).some((issue) => issue.path.endsWith('marker.value')));
+});
+
+// ------------------------------------------------------------------ rail
+
+test('a well-formed rail passes and advances', () => {
+  const spec = makeSpec({rail: {stages: ['HOOK', 'MODEL', 'RECAP']}});
+  spec.scenes[0].railStage = 0;
+  spec.scenes[1].railStage = 1;
+  spec.scenes[2].railStage = 2;
+  assert.deepEqual(validateSpec(spec, makeChannel()), []);
+});
+
+test('rail bounds stages and railStage, and warns on regression', () => {
+  const tooFew = validateSpec(
+    makeSpec({rail: {stages: ['ONLY']}}),
+    makeChannel(),
+  );
+  assert.ok(errorsOf(tooFew).some((issue) => issue.path === 'rail.stages'));
+
+  const longStage = validateSpec(
+    makeSpec({rail: {stages: ['OK', 'A VERY LONG STAGE NAME']}}),
+    makeChannel(),
+  );
+  assert.ok(warningsOf(longStage).some((issue) => issue.message.includes('crowd')));
+
+  const orphan = makeSpec();
+  orphan.scenes[1].railStage = 0;
+  const orphanIssues = validateSpec(orphan, makeChannel());
+  assert.ok(
+    errorsOf(orphanIssues).some((issue) => issue.message.includes('declares no rail')),
+  );
+
+  const backwards = makeSpec({rail: {stages: ['A', 'B']}});
+  backwards.scenes[0].railStage = 1;
+  backwards.scenes[1].railStage = 0;
+  const backwardsIssues = validateSpec(backwards, makeChannel());
+  assert.ok(
+    warningsOf(backwardsIssues).some((issue) => issue.message.includes('backwards')),
+  );
+
+  const outOfRange = makeSpec({rail: {stages: ['A', 'B']}});
+  outOfRange.scenes[0].railStage = 5;
+  const rangeIssues = validateSpec(outOfRange, makeChannel());
+  assert.ok(
+    errorsOf(rangeIssues).some((issue) => issue.message.includes('one of the rail stages')),
+  );
+});
+
+// -------------------------------------------------------------- carousel
+
+test('stills deliveries warn when scene count exceeds the slide cap', () => {
+  const spec = makeSpec({deliveries: ['instagram-carousel']});
+  spec.scenes = Array.from({length: 11}, (_, i) => ({
+    type: 'callout',
+    durationInFrames: 90,
+    text: `Slide ${i}`,
+    narration: 'A line for this slide read at pace.',
+  }));
+  const issues = validateSpec(spec, makeChannel());
+  assert.ok(
+    warningsOf(issues).some((issue) => issue.message.includes('cap at 10')),
+  );
+});

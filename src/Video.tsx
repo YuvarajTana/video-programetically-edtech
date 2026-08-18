@@ -1,6 +1,7 @@
 import {AbsoluteFill, Series} from 'remotion';
 import {AudioMix} from './audio/AudioMix';
 import {Captions, Chrome} from './components/Chrome';
+import {Rail} from './components/Rail';
 import {FontGate} from './design/FontGate';
 import {useLayout} from './design/formats';
 import type {FormatId} from './design/formats';
@@ -58,6 +59,7 @@ const VideoBody: React.FC<{spec: VideoSpec}> = ({spec}) => {
         </Series>
 
         {showCaptions ? <Captions spec={timedSpec} /> : null}
+        <Rail spec={timedSpec} />
         <Chrome />
         <AudioMix spec={timedSpec} />
       </FontGate>

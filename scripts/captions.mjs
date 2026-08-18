@@ -40,6 +40,10 @@ for (const {spec, channel} of await loadSpecs()) {
       spec,
       fps,
       join(base, 'renders', `${preferredRenderProfile(spec, channel)}.mp4`),
+      {
+        min: channel.editorial.minNarrationWpm,
+        max: channel.editorial.maxNarrationWpm,
+      },
     ),
   );
   writeFileSync(

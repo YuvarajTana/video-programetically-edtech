@@ -14,7 +14,9 @@ const channel = {defaultDeliveries: ['youtube-long', 'instagram-reel']};
 
 test('every delivery maps to a render profile', () => {
   for (const delivery of Object.values(DELIVERIES)) {
-    assert.ok(['landscape', 'portrait', 'square'].includes(delivery.renderProfile));
+    assert.ok(
+      ['landscape', 'portrait', 'square', 'carousel'].includes(delivery.renderProfile),
+    );
   }
 });
 

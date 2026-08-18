@@ -23,7 +23,21 @@ export const DELIVERIES = {
     platform: 'instagram',
     renderProfile: 'square',
   },
+  'instagram-carousel': {
+    id: 'instagram-carousel',
+    label: 'Instagram Carousel 4:5',
+    platform: 'instagram',
+    renderProfile: 'carousel',
+    stills: true,
+  },
 };
+
+/** Render profiles that only ever ship as still sequences, never as video. */
+export const STILL_PROFILES = new Set(
+  Object.values(DELIVERIES)
+    .filter((delivery) => delivery.stills)
+    .map((delivery) => delivery.renderProfile),
+);
 
 export const refOf = (spec) => `${spec.channel}/${spec.slug}`;
 

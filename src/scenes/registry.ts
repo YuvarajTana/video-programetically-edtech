@@ -1,4 +1,5 @@
 import type {SceneType} from '../types';
+import {Algorithm} from './Algorithm';
 import {Architecture} from './Architecture';
 import {ArrayViz} from './ArrayViz';
 import {BigStat} from './BigStat';
@@ -21,8 +22,10 @@ import {Photo} from './Photo';
 import {Quiz} from './Quiz';
 import {Stats} from './Stats';
 import {Steps} from './Steps';
+import {Meter} from './Meter';
 import {Terminal} from './Terminal';
 import {Timeline} from './Timeline';
+import {Tokens} from './Tokens';
 import {Title} from './Title';
 
 /**
@@ -54,6 +57,9 @@ export const SCENES: Record<SceneType, React.FC<{scene: any}>> = {
   quiz: Quiz,
   callout: Callout,
   arrayViz: ArrayViz,
+  algorithm: Algorithm,
+  tokens: Tokens,
+  meter: Meter,
   motionCanvas: MotionCanvas,
   outro: Outro,
 };

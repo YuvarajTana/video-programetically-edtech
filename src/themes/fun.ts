@@ -21,9 +21,9 @@ export const funTheme: VideoTheme = {
     info: '#45D6FF',
   },
   font: {
-    display: "'Hanken Grotesk', system-ui, sans-serif",
-    body: "'Hanken Grotesk', system-ui, sans-serif",
-    mono: "'JetBrains Mono', ui-monospace, monospace",
+    display: "'Hanken Grotesk', 'Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari', system-ui, sans-serif",
+    body: "'Hanken Grotesk', 'Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari', system-ui, sans-serif",
+    mono: "'JetBrains Mono', 'Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari', ui-monospace, monospace",
   },
   frameBackground:
     'radial-gradient(100% 80% at 50% 0%, rgba(255,79,216,0.20) 0%, transparent 58%), radial-gradient(70% 55% at 100% 100%, rgba(69,214,255,0.14) 0%, transparent 70%)',

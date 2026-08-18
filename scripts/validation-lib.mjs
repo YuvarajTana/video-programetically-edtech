@@ -4,6 +4,9 @@ import {resolve, sep} from 'node:path';
 
 const words = (text = '') => text.trim().split(/\s+/).filter(Boolean).length;
 
+/** Scenes with no moving mechanism — the retention-leak candidates. */
+const TEXT_LED_SCENES = new Set(['title', 'callout', 'bigStat']);
+
 const issue = (severity, path, message) => ({severity, path, message});
 
 export const validateSpec = (spec, channel) => {
@@ -34,6 +37,14 @@ export const validateSpec = (spec, channel) => {
   for (const delivery of deliveries) {
     if (!DELIVERIES[delivery]) add('error', 'deliveries', `unknown delivery "${delivery}"`);
   }
+  const hasStillsDelivery = deliveries.some((id) => DELIVERIES[id]?.stills);
+  if (hasStillsDelivery && Array.isArray(spec.scenes) && spec.scenes.length > 10) {
+    add(
+      'warning',
+      'scenes',
+      `${spec.scenes.length} scenes make ${spec.scenes.length} carousel slides; Instagram carousels cap at 10`,
+    );
+  }
 
   const seen = new Set();
   let totalFrames = 0;
@@ -58,6 +69,16 @@ export const validateSpec = (spec, channel) => {
           'warning',
           `${path}.narration`,
           `${Math.round(wpm)} WPM exceeds ${channel.editorial.maxNarrationWpm} WPM for ${channel.id}`,
+        );
+      }
+      // The floor applies only to text-led scenes: a slow line over a static
+      // frame is dead air, while a mechanism scene's visuals carry the pause.
+      const minWpm = channel.editorial.minNarrationWpm;
+      if (minWpm && TEXT_LED_SCENES.has(scene.type) && wpm < minWpm) {
+        add(
+          'warning',
+          `${path}.narration`,
+          `${Math.round(wpm)} WPM is below the ${minWpm} WPM floor for a text-led ${scene.type} scene; tighten the scene or move the line onto a visual`,
         );
       }
     }
@@ -91,6 +112,111 @@ export const validateSpec = (spec, channel) => {
           `${path}.revealAtFrame`,
           `leave at least ${(minRevealHoldFrames / fps).toFixed(1)}s to show the answer`,
         );
+      }
+    }
+
+    if (scene.type === 'algorithm') {
+      const valueCount = Array.isArray(scene.values) ? scene.values.length : 0;
+      if (valueCount < 2 || valueCount > 16) {
+        add('error', `${path}.values`, 'needs two to sixteen values');
+      }
+      const steps = Array.isArray(scene.steps) ? scene.steps : [];
+      if (steps.length === 0) {
+        add('error', `${path}.steps`, 'needs at least one step');
+      }
+      let lastAt = -1;
+      for (const [stepIndex, step] of steps.entries()) {
+        const stepPath = `${path}.steps[${stepIndex}]`;
+        if (
+          !Number.isInteger(step.atFrame) ||
+          step.atFrame < 0 ||
+          step.atFrame >= scene.durationInFrames
+        ) {
+          add('error', `${stepPath}.atFrame`, 'must be a frame inside the scene');
+        } else if (step.atFrame <= lastAt) {
+          add('error', `${stepPath}.atFrame`, 'steps must be in strictly ascending order');
+        } else {
+          lastAt = step.atFrame;
+        }
+        if (typeof step.states !== 'string' || step.states.length !== valueCount) {
+          add(
+            'error',
+            `${stepPath}.states`,
+            `must be one state character per value (${valueCount})`,
+          );
+        } else if (!/^[.cfgx]*$/.test(step.states)) {
+          add('error', `${stepPath}.states`, 'characters must be . c f g or x');
+        }
+        if (
+          step.codeLine !== undefined &&
+          (!Number.isInteger(step.codeLine) ||
+            step.codeLine < 1 ||
+            step.codeLine > (scene.code?.lines?.length ?? 0))
+        ) {
+          add('error', `${stepPath}.codeLine`, 'must point at a line of scene.code');
+        }
+        for (const [name, pointer] of Object.entries(step.pointers ?? {})) {
+          if (!Number.isInteger(pointer) || pointer < 0 || pointer >= valueCount) {
+            add('error', `${stepPath}.pointers.${name}`, 'must point at one of the values');
+          }
+        }
+      }
+      for (const [lineIndex, line] of (scene.code?.lines ?? []).entries()) {
+        if (line.length > 46) {
+          add(
+            'warning',
+            `${path}.code.lines[${lineIndex}]`,
+            `${line.length} chars will wrap or shrink; keep code lines to 46`,
+          );
+        }
+      }
+    }
+
+    if (scene.type === 'tokens') {
+      const itemCount = Array.isArray(scene.items) ? scene.items.length : 0;
+      if (itemCount < 2 || itemCount > 12) {
+        add('error', `${path}.items`, 'needs two to twelve items');
+      }
+      for (const [itemIndex, item] of (scene.items ?? []).entries()) {
+        if (!item.text?.trim()) {
+          add('error', `${path}.items[${itemIndex}].text`, 'is required');
+        }
+        if (item.id === undefined || item.id === null || item.id === '') {
+          add('error', `${path}.items[${itemIndex}].id`, 'is required — the flip needs a target');
+        }
+      }
+      // Mirrors tokensFlipFrame() in src/scenes/Tokens.tsx.
+      const flip = scene.flipAtFrame ?? Math.round(scene.durationInFrames * 0.45);
+      if (!Number.isInteger(flip) || flip < 0 || flip >= scene.durationInFrames) {
+        add('error', `${path}.flipAtFrame`, 'must be a frame inside the scene');
+      } else if (scene.durationInFrames - flip < itemCount * 5 + Math.round(fps)) {
+        add(
+          'warning',
+          `${path}.flipAtFrame`,
+          'leaves too little time for every chip to flip and settle',
+        );
+      }
+    }
+
+    if (scene.type === 'meter') {
+      if (!Number.isFinite(scene.max) || scene.max <= 0) {
+        add('error', `${path}.max`, 'must be a positive number');
+      } else {
+        const from = scene.from ?? 0;
+        if (!Number.isFinite(from) || from < 0 || from > scene.max) {
+          add('error', `${path}.from`, 'must sit between 0 and max');
+        }
+        if (!Number.isFinite(scene.to) || scene.to < 0 || scene.to > scene.max) {
+          add('error', `${path}.to`, 'must sit between 0 and max');
+        }
+        if (
+          scene.marker &&
+          (!Number.isFinite(scene.marker.value) ||
+            scene.marker.value < 0 ||
+            scene.marker.value > scene.max)
+        ) {
+          add('error', `${path}.marker.value`, 'must sit between 0 and max');
+        }
       }
     }
 
@@ -303,6 +429,49 @@ export const validateSpec = (spec, channel) => {
       add('warning', 'scenes[0]', `hook lasts ${hookSeconds.toFixed(1)}s; target 3.2s or less`);
     }
 
+    // The first frame is a hook, not a label: the channel chrome already
+    // identifies the video, so an opening title that just repeats the topic
+    // wastes the strongest three seconds.
+    if (
+      firstScene.type === 'title' &&
+      firstScene.title?.trim().toLowerCase() === spec.title?.trim().toLowerCase()
+    ) {
+      add(
+        'warning',
+        'scenes[0].title',
+        'opening title repeats the video title; make the first frame a claim or question and keep the topic in metadata',
+      );
+    }
+
+    // Rotate explicitly chosen accents so adjacent scenes read as a sequence,
+    // not one long scene. Scenes leaving accent to its default are exempt.
+    for (let index = 1; index < spec.scenes.length; index++) {
+      const previous = spec.scenes[index - 1].accent;
+      const current = spec.scenes[index].accent;
+      if (previous && current && previous === current) {
+        add(
+          'warning',
+          `scenes[${index}].accent`,
+          `repeats "${current}" from the previous scene; rotate accents between adjacent scenes`,
+        );
+      }
+    }
+
+    // A long text-led scene mid-video is the classic static-frame retention
+    // leak: nothing moves while the clock runs.
+    spec.scenes.forEach((scene, index) => {
+      if (index === 0 || index === spec.scenes.length - 1) return;
+      if (!TEXT_LED_SCENES.has(scene.type)) return;
+      const staticSeconds = scene.durationInFrames / fps;
+      if (staticSeconds > 6) {
+        add(
+          'warning',
+          `scenes[${index}]`,
+          `${scene.type} scene holds a static frame for ${staticSeconds.toFixed(1)}s; add a mechanism scene or shorten it`,
+        );
+      }
+    });
+
     if (channel.editorial.requiresAgeBand && !spec.audience?.ageBand) {
       add('error', 'audience.ageBand', 'is required for Learn videos');
     }
@@ -323,6 +492,43 @@ export const validateSpec = (spec, channel) => {
       add('warning', 'editorial.sources', 'add sources for statistics or quantitative claims');
     }
   }
+
+  // The rail is one journey: stages bounded, every railStage on it, and the
+  // active stage never moving backwards.
+  const railStages = spec.rail?.stages;
+  if (railStages !== undefined) {
+    if (!Array.isArray(railStages) || railStages.length < 2 || railStages.length > 8) {
+      add('error', 'rail.stages', 'needs two to eight stages');
+    }
+    for (const [stageIndex, stage] of (railStages ?? []).entries()) {
+      if (!stage?.trim()) {
+        add('error', `rail.stages[${stageIndex}]`, 'is required');
+      } else if (stage.length > 16) {
+        add('warning', `rail.stages[${stageIndex}]`, 'longer than 16 characters will crowd the rail');
+      }
+    }
+  }
+  let lastRailStage = -1;
+  spec.scenes.forEach((scene, index) => {
+    if (scene.railStage === undefined) return;
+    const railPath = `scenes[${index}].railStage`;
+    if (!railStages) {
+      add('error', railPath, 'is set but the spec declares no rail');
+      return;
+    }
+    if (
+      !Number.isInteger(scene.railStage) ||
+      scene.railStage < 0 ||
+      scene.railStage >= railStages.length
+    ) {
+      add('error', railPath, 'must point at one of the rail stages');
+      return;
+    }
+    if (scene.railStage < lastRailStage) {
+      add('warning', railPath, 'moves the rail backwards; the journey should only advance');
+    }
+    lastRailStage = scene.railStage;
+  });
 
   const validateLicensedAsset = (asset, path) => {
     if (!asset?.src?.trim()) {
