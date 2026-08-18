@@ -750,3 +750,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .glossary-panel, .voice-list { width: 100%; flex-basis: auto; }
   .translation-columns, .voice-step-grid { grid-template-columns: 1fr; }
 }
+
+/* Summary of what the selected deliveries will produce, derived from the
+   output-variant registry rather than a hard-coded list. */
+.delivery-summary {
+  margin: 6px 0 0;
+  color: var(--muted, #7e8c86);
+  font-size: 13px;
+}

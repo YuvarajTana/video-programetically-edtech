@@ -1,0 +1,22 @@
+{
+  "name": "@video-kit/frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Video Kit Studio: the browser app for authoring, previewing, voicing, and producing videos.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@remotion/player": "4.0.501",
+    "@video-kit/core": "1.0.0",
+    "@video-kit/render-kit": "1.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.2",
+    "vite": "^7.1.3"
+  }
+}

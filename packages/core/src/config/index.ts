@@ -95,7 +95,7 @@ export const paths = {
   /** CLI render output. */
   out: () => fromRoot('out'),
   /** Built studio bundle, served by the API when it exists. */
-  web: () => fromRoot('studio', 'dist'),
+  web: () => fromRoot('packages', 'frontend', 'dist'),
 } as const;
 
 export const config = {

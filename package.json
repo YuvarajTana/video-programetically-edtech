@@ -12,8 +12,8 @@
   "description": "Multi-channel, spec-driven Remotion kit for Tech, Learn, and Fun video brands.",
   "scripts": {
     "app": "npm run start -w @video-kit/backend",
-    "app:dev": "concurrently -k -n api,web -c cyan,magenta \"npm run dev -w @video-kit/backend\" \"vite --config studio/vite.config.ts\"",
-    "app:build": "vite build --config studio/vite.config.ts",
+    "app:dev": "concurrently -k -n api,web -c cyan,magenta \"npm run dev -w @video-kit/backend\" \"npm run dev -w @video-kit/frontend\"",
+    "app:build": "npm run build -w @video-kit/frontend",
     "app:test": "node --import tsx --test tests/*.test.ts",
     "ai:setup": "bash scripts/setup-indic-ai.sh",
     "voice:setup": "bash scripts/setup-local-voice.sh",
@@ -41,7 +41,7 @@
     "test": "node --import tsx --test tests/*.test.mjs tests/*.test.ts",
     "datasource": "npm run dev -w @video-kit/datasource",
     "db:migrate": "npm run migrate -w @video-kit/datasource",
-    "app:dev:all": "concurrently -k -n data,api,web -c yellow,cyan,magenta \"npm run datasource\" \"npm run dev -w @video-kit/backend\" \"vite --config studio/vite.config.ts\""
+    "app:dev:all": "concurrently -k -n data,api,web -c yellow,cyan,magenta \"npm run datasource\" \"npm run dev -w @video-kit/backend\" \"npm run dev -w @video-kit/frontend\""
   },
   "dependencies": {
     "@fastify/multipart": "^9.2.1",

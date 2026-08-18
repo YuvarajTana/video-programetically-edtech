@@ -39,6 +39,12 @@ import {
   productionStageLabel,
 } from '@video-kit/core/pipeline';
 import {FORMATS, type FormatId} from '@video-kit/core/design/formats';
+import {
+  ASPECT_IDS,
+  aspectRatioLabel,
+  DELIVERY_CHOICES,
+  describeOutputs,
+} from './outputs';
 import type {MotionCanvasElement, Scene, SceneType} from '@video-kit/core/spec';
 import {totalFrames} from '@video-kit/core/spec';
 import {api, type LegacyVideo} from './api';
@@ -1339,12 +1345,7 @@ const NewProject = ({
               </div>
               <div className="delivery-row">
                 <span>Outputs</span>
-                {[
-                  ['youtube-long', 'YouTube 16:9'],
-                  ['youtube-short', 'YouTube Short'],
-                  ['instagram-reel', 'Instagram Reel'],
-                  ['instagram-feed', 'Instagram 1:1'],
-                ].map(([deliveryId, label]) => (
+                {DELIVERY_CHOICES.map(({id: deliveryId, label}) => (
                   <label className="check" key={deliveryId}>
                     <input
                       type="checkbox"
@@ -1361,6 +1362,11 @@ const NewProject = ({
                   </label>
                 ))}
               </div>
+              {deliveries.length ? (
+                <p className="delivery-summary">
+                  Produces {describeOutputs(deliveries)}.
+                </p>
+              ) : null}
             </details>
           </div>
         </section>
@@ -1765,9 +1771,9 @@ const ProjectEditor = ({id, onChanged}: {id: string; onChanged: () => void}) => 
         <section className="preview-workspace">
           <div className="preview-toolbar">
             <div className="segmented">
-              {(['landscape', 'portrait', 'square'] as FormatId[]).map((id) => (
+              {ASPECT_IDS.map((id) => (
                 <button className={profile === id ? 'active' : ''} onClick={() => setProfile(id)} key={id}>
-                  {id === 'landscape' ? '16:9' : id === 'portrait' ? '9:16' : '1:1'}
+                  {aspectRatioLabel(id)}
                 </button>
               ))}
             </div>
