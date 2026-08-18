@@ -81,10 +81,8 @@ export const configureMusicOnlySpec = (spec: VideoSpec) => {
   spec.audio = undefined;
   spec.captionTimings = undefined;
   spec.captions = false;
-  spec.scenes = spec.scenes.map((scene) => ({
-    ...scene,
-    narration: undefined,
-  })) as VideoSpec['scenes'];
+  // Spreading a union member widens it, so map each scene as its own type.
+  spec.scenes = spec.scenes.map((scene) => ({...scene, narration: undefined}));
   return spec;
 };
 
@@ -240,7 +238,7 @@ export class JobRunner {
       mkdirSync(generatedRoot, {recursive: true});
 
       await this.stage(jobId, 'validate', 0.02, 'Validating the immutable project revision.');
-      let spec = EditableVideoSpecSchema.parse(snapshot.spec) as VideoSpec;
+      let spec: VideoSpec = EditableVideoSpecSchema.parse(snapshot.spec);
       const approvedScriptPath = join(artifactRoot, 'approved-script.txt');
       writeFileSync(
         approvedScriptPath,
