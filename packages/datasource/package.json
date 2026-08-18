@@ -9,11 +9,14 @@
     "./port": "./src/port.ts",
     "./sqlite": "./src/sqlite/index.ts",
     "./service": "./src/http/service.ts",
-    "./client": "./src/http/client.ts"
+    "./client": "./src/http/client.ts",
+    "./specs": "./src/sqlite/specs.ts"
   },
   "scripts": {
     "dev": "tsx src/main.ts",
-    "migrate": "tsx src/cli.ts migrate"
+    "migrate": "tsx src/cli.ts migrate",
+    "check-specs": "tsx src/cli.ts check-specs",
+    "repair-specs": "tsx src/cli.ts repair-specs"
   },
   "dependencies": {
     "@video-kit/core": "1.0.0",

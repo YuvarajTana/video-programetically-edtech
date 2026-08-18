@@ -112,20 +112,75 @@ bespoke sizing if the new ratio is far from an existing one.
 
 ## Add a scene type
 
-This one still spans several files; see *Known rough edges* below.
+A scene type is a zod schema plus a component. The TypeScript type, the
+validation the studio applies, and the type the renderer sees are all derived
+from the schema, so there is one declaration.
 
-1. Add the typed variant in `packages/core/src/spec/index.ts` and add it to the
-   `Scene` union.
-2. Add it to `SceneTypeSchema` (and any rules) in
-   `packages/core/src/contracts.ts`.
-3. Add validation in `packages/cli/src/validation-lib.mjs`.
-4. Build the component in `packages/render-kit/src/scenes/`, using `useTheme()`
-   for colour and `useLayout()` for aspect-aware layout.
-5. Register it in `packages/render-kit/src/scenes/registry.ts`.
-6. Add it to the channel style guides in `packages/catalog/src/videos/style-guides/`.
+1. Write the schema in `packages/core/src/spec/scenes/` — pick the module that
+   fits (`text`, `technical`, `data`, `learning`, `media`), or add one:
 
-Structural sizing belongs in `packages/core/src/design/tokens.ts`; brand colour
-and typography belong in `packages/core/src/themes/`.
+   ```ts
+   export const StepChartSceneSchema = sceneSchema('stepChart', {
+     kicker: z.string().max(120).optional(),
+     title: z.string().max(300).optional(),
+     points: z.array(accented({label: z.string().min(1), value: z.number()}))
+       .min(2)
+       .max(20),
+   });
+   ```
+
+   `sceneSchema` adds the fields every scene carries (`id`, `durationInFrames`,
+   `narration`, `chapterTitle`, `accent`, `railStage`) and makes the result
+   strict, so a typo is rejected rather than persisted.
+
+2. Register it in `packages/core/src/spec/scenes/index.ts` — add it to
+   `SCENE_SCHEMAS` and to the `SceneUnion` list.
+
+3. Build the component in `packages/render-kit/src/scenes/`, using `useTheme()`
+   for colour and `useLayout()` for aspect-aware layout. Its props type comes
+   from the schema:
+
+   ```ts
+   import type {StepChartScene} from '@video-kit/core/spec';
+   export const StepChart: React.FC<{scene: StepChartScene}> = ({scene}) => …
+   ```
+
+4. Register the component in `packages/render-kit/src/scenes/registry.ts`.
+
+Forgetting step 4 fails the build, not the render: `SCENES` is typed as an
+exhaustive `Record<SceneType, …>`, so `tsc` names the missing component, and a
+test asserts the two registries hold the same set.
+
+Two optional extras: add editorial rules (pacing, wording) in
+`packages/cli/src/validation-lib.mjs`, which answers a different question from
+the schema — "is this well-formed" versus "is this good" — and add the scene to
+the channel style guides in `packages/catalog/src/videos/style-guides/` so it
+shows up in visual QA.
+
+### Cross-field rules
+
+Anything that depends on more than one field — an index pointing into a list, a
+reference to another element's id — cannot be expressed structurally. Add it to
+the `superRefine` on `SceneSchema` in `scenes/index.ts`, where the quiz answer
+check and the motion-canvas element/action/anchor checks already live. Members
+of the union stay plain objects so the discriminator can narrow on `type` and
+report a useful error instead of "no variant matched".
+
+### Changing an existing scene type
+
+Tightening a schema can invalidate specs already in someone's database, which
+is re-parsed on every read. Before shipping:
+
+```bash
+npm run db:check-specs    # which stored specs would fail to load, and why
+npm run db:repair-specs   # drop stale fields; report what needs editing
+npm run db:repair-specs -- --apply
+```
+
+`db:migrate` runs the check automatically and warns, so an upgrade tells you
+before the studio does. Repair only drops fields the schema no longer
+recognises — missing content is reported, never invented, because a spec filled
+with placeholders would still fail while looking fixed.
 
 ## Add a video
 
@@ -158,11 +213,11 @@ service instead; nothing else changes, because both sides implement the same
 
 ## Known rough edges
 
-- **Scene types are described in three places** — the TypeScript union, the zod
-  schema, and the imperative validator. They answer different questions
-  (is it well-formed / is it parseable / is it editorially sound), but the
-  duplication is real and deriving the first two from per-scene schemas is the
-  obvious next step.
+- **Editorial rules still live apart from the schemas.**
+  `packages/cli/src/validation-lib.mjs` checks pacing and wording for
+  source-controlled specs, which is a different question from "is this
+  well-formed", but it covers only fourteen scene types and does not run on
+  studio projects at all.
 - **`FormatId` still exists** as an alias of `AspectId` in
   `packages/core/src/design/formats.ts`, because `renderProfile` is threaded
   through the studio, the job pipeline and the composition props. It is one

@@ -1,3 +1,4 @@
+import {parseStoredSpec} from './specs';
 import Database from 'better-sqlite3';
 import {createHash, randomUUID} from 'node:crypto';
 import {
@@ -1548,7 +1549,7 @@ export class StudioRepository {
       .prepare('SELECT spec_json FROM project_variants WHERE id = ?')
       .get(variantId) as Row | undefined;
     if (!row) throw new Error('Variant not found.');
-    const spec = EditableVideoSpecSchema.parse(parse(String(row.spec_json)));
+    const spec = parseStoredSpec(String(row.spec_json), `variant ${variantId}`);
     const scenes = new Map(
       spec.scenes.map((scene, index) => [
         scene.id ?? `scene-${index + 1}`,
@@ -1967,7 +1968,7 @@ export class StudioRepository {
     id: String(row.id),
     projectId: String(row.project_id),
     locale: String(row.locale),
-    spec: EditableVideoSpecSchema.parse(parse(String(row.spec_json))),
+    spec: parseStoredSpec(String(row.spec_json), `variant ${String(row.id)}`),
     sourceVariantId: row.source_variant_id
       ? String(row.source_variant_id)
       : null,

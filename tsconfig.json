@@ -78,6 +78,9 @@
       ],
       "@video-kit/cli/*": [
         "./packages/cli/src/*"
+      ],
+      "@video-kit/datasource/specs": [
+        "./packages/datasource/src/sqlite/specs.ts"
       ]
     }
   }
