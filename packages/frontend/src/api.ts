@@ -24,7 +24,7 @@ import type {
 } from '@video-kit/core/contracts';
 import type {MusicTrackCatalogItem} from '@video-kit/core/music';
 
-type Catalog = {
+export type Catalog = {
   categories: CategoryDefinition[];
   themes: CatalogTheme[];
   templates: CatalogTemplate[];
