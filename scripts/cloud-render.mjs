@@ -27,8 +27,14 @@ import {
 } from 'node:fs';
 import {dirname, join, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {DELIVERIES, positionals} from './deliveries.mjs';
-import {WORKSPACE_ROOT} from '@video-kit/core/config';
+import {
+  compositionId,
+  variantOutputName,
+  variantsFor,
+} from '@video-kit/core/output';
+import {positionals} from './deliveries.mjs';
+import {paths, WORKSPACE_ROOT} from '@video-kit/core/config';
+import {getChannel} from '@video-kit/core/channels';
 import {PUBLIC_DIR, RENDER_KIT_ENTRY} from './render-kit.mjs';
 
 const argv = process.argv.slice(2);
@@ -77,7 +83,7 @@ if (!/^(tech|learn|fun)\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(ref)) {
   process.exit(1);
 }
 const [channel, slug] = ref.split('/');
-const base = join('out', channel, slug);
+const base = join(paths.out(), channel, slug);
 const specPath = join(base, 'spec.json');
 if (!existsSync(specPath)) {
   console.error(`missing ${specPath}; run npm run captions -- ${ref} first`);
@@ -85,31 +91,31 @@ if (!existsSync(specPath)) {
 }
 
 let spec = JSON.parse(readFileSync(specPath, 'utf8'));
-const deliveries = spec.deliveries;
-if (!Array.isArray(deliveries) || deliveries.length === 0) {
-  console.error(`${ref} must declare at least one delivery for cloud rendering`);
+const channelProfile = getChannel(channel);
+// Lambda renders the moving and single-frame variants; sequences and documents
+// are cheap enough to assemble locally with `npm run render`.
+const variants = variantsFor(spec, channelProfile);
+if (!variants.length) {
+  console.error(`${ref} resolves no output variants for cloud rendering`);
   process.exit(1);
 }
-for (const delivery of deliveries) {
-  if (!DELIVERIES[delivery]) {
-    console.error(`unknown delivery: ${delivery}`);
-    process.exit(1);
-  }
-}
 
-const renderProfiles = [
-  ...new Set(deliveries.map((delivery) => DELIVERIES[delivery].renderProfile)),
-];
-const videoJobs = renderProfiles.map((profile) => ({
-  kind: 'video',
-  composition: `${channel}--${slug}--${profile}`,
-  output: join(base, 'renders', `${profile}.mp4`),
-}));
-const coverJobs = deliveries.map((delivery) => ({
-  kind: 'cover',
-  composition: `${channel}--${slug}--${delivery}--cover`,
-  output: join(base, delivery, 'cover.png'),
-}));
+const videoJobs = variants
+  .filter((variant) => variant.kind === 'video')
+  .map((variant) => ({
+    kind: 'video',
+    variant,
+    composition: compositionId({family: variant.composition, aspect: variant.aspect}),
+    output: join(base, variantOutputName(variant).file),
+  }));
+const coverJobs = variants
+  .filter((variant) => variant.kind === 'still')
+  .map((variant) => ({
+    kind: 'cover',
+    variant,
+    composition: compositionId({family: variant.composition, aspect: variant.aspect}),
+    output: join(base, variantOutputName(variant).file),
+  }));
 
 const config = {
   region: value('region') ?? process.env.REMOTION_LAMBDA_REGION ?? null,

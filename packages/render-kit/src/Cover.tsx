@@ -2,19 +2,23 @@ import {AbsoluteFill} from 'remotion';
 import {ChannelProvider} from './channels';
 import type {ChannelProfile} from './channels';
 import {FontGate} from './design/FontGate';
-import {useLayout} from './design/formats';
+import {LayoutProvider, useLayout} from './design/formats';
+import type {FormatId} from './design/formats';
 import {radius, space, tint, type} from '@video-kit/core/design/tokens';
-import type {DeliveryTarget} from '@video-kit/core/publishing';
 import {useTheme} from './themes';
 import type {VideoSpec} from '@video-kit/core/spec';
 
 type CoverProps = {
   spec: VideoSpec;
   channel: ChannelProfile;
-  delivery: DeliveryTarget;
+  renderProfile: FormatId;
+  /** Platform name printed top-right. */
+  platform?: string;
+  /** Wording printed bottom-right, from the requesting variant's caption. */
+  caption?: string;
 };
 
-const CoverBody: React.FC<CoverProps> = ({spec, channel, delivery}) => {
+const CoverBody: React.FC<CoverProps> = ({spec, channel, platform, caption}) => {
   const layout = useLayout();
   const {accents, color, font, frameBackground} = useTheme();
   const titleSize = layout.isLandscape ? 112 : layout.isSquare ? 96 : 106;
@@ -65,7 +69,7 @@ const CoverBody: React.FC<CoverProps> = ({spec, channel, delivery}) => {
               textTransform: 'uppercase',
             }}
           >
-            {delivery.platform}
+            {platform}
           </div>
         </div>
 
@@ -129,7 +133,7 @@ const CoverBody: React.FC<CoverProps> = ({spec, channel, delivery}) => {
           }}
         >
           <span>{channel.handle}</span>
-          <span style={{color: color.muted, fontSize: type.nano}}>{delivery.label}</span>
+          <span style={{color: color.muted, fontSize: type.nano}}>{caption}</span>
         </div>
       </div>
     </AbsoluteFill>
@@ -138,8 +142,10 @@ const CoverBody: React.FC<CoverProps> = ({spec, channel, delivery}) => {
 
 export const Cover: React.FC<CoverProps> = (props) => (
   <ChannelProvider channel={props.channel}>
-    <FontGate>
-      <CoverBody {...props} />
-    </FontGate>
+    <LayoutProvider aspect={props.renderProfile}>
+      <FontGate>
+        <CoverBody {...props} />
+      </FontGate>
+    </LayoutProvider>
   </ChannelProvider>
 );

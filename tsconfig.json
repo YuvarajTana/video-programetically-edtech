@@ -35,7 +35,13 @@
         "./packages/render-kit/src/timing/wordTimings.ts"
       ],
       "@video-kit/render-kit/layout": [
-        "./packages/render-kit/src/design/formats.ts"
+        "./packages/render-kit/src/design/formats.tsx"
+      ],
+      "@video-kit/render-engine": [
+        "./packages/render-engine/src/index.ts"
+      ],
+      "@video-kit/render-engine/pdf": [
+        "./packages/render-engine/src/pdf.ts"
       ]
     }
   }

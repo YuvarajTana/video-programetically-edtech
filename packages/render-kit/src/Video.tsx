@@ -3,8 +3,9 @@ import {AudioMix} from './audio/AudioMix';
 import {Captions, Chrome} from './components/Chrome';
 import {Rail} from './components/Rail';
 import {FontGate} from './design/FontGate';
-import {useLayout} from './design/formats';
+import {LayoutProvider, useLayout} from './design/formats';
 import type {FormatId} from './design/formats';
+import type {OverlayToggles} from '@video-kit/core/output';
 import {SCENES} from './scenes/registry';
 import type {VideoSpec} from '@video-kit/core/spec';
 import {ChannelProvider} from './channels';
@@ -22,15 +23,26 @@ type VideoProps = {
   spec: VideoSpec;
   channel: ChannelProfile;
   renderProfile: FormatId;
+  /**
+   * Overlays the requesting output variant suppresses. A poster wants no
+   * captions or progress bar; a silent loop wants no audio.
+   */
+  overlays?: OverlayToggles;
 };
 
-const VideoBody: React.FC<{spec: VideoSpec}> = ({spec}) => {
+const VideoBody: React.FC<{spec: VideoSpec; overlays: OverlayToggles}> = ({
+  spec,
+  overlays,
+}) => {
   const layout = useLayout();
   const {color} = useTheme();
   const timings = useWordTimings(spec.captionTimings);
   const timedSpec = useResolvedMotionCanvasSpec(spec, timings);
   // Captions default on for vertical cuts, which are overwhelmingly watched muted.
-  const showCaptions = spec.captions ?? !layout.isLandscape;
+  const showCaptions = overlays.captions ?? spec.captions ?? !layout.isLandscape;
+  const showRail = overlays.rail ?? true;
+  const showChrome = overlays.chrome ?? true;
+  const withAudio = overlays.audio ?? true;
 
   return (
     <AbsoluteFill
@@ -59,15 +71,20 @@ const VideoBody: React.FC<{spec: VideoSpec}> = ({spec}) => {
         </Series>
 
         {showCaptions ? <Captions spec={timedSpec} /> : null}
-        <Rail spec={timedSpec} />
-        <Chrome />
-        <AudioMix spec={timedSpec} />
+        {showRail ? <Rail spec={timedSpec} /> : null}
+        {showChrome ? <Chrome /> : null}
+        {withAudio ? <AudioMix spec={timedSpec} /> : null}
       </FontGate>
     </AbsoluteFill>
   );
 };
 
-export const Video: React.FC<VideoProps> = ({spec, channel}) => {
+export const Video: React.FC<VideoProps> = ({
+  spec,
+  channel,
+  renderProfile,
+  overlays = {},
+}) => {
   const locale = spec.editorial?.language ?? 'en-US';
   const language = languageFor(locale);
   const localizedChannel = isIndicLocale(locale)
@@ -85,7 +102,9 @@ export const Video: React.FC<VideoProps> = ({spec, channel}) => {
     : channel;
   return (
     <ChannelProvider channel={localizedChannel}>
-      <VideoBody spec={spec} />
+      <LayoutProvider aspect={renderProfile}>
+        <VideoBody spec={spec} overlays={overlays} />
+      </LayoutProvider>
     </ChannelProvider>
   );
 };

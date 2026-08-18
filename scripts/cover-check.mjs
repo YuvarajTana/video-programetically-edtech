@@ -14,7 +14,8 @@
  */
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {DELIVERIES, positionals} from './deliveries.mjs';
+import {OUTPUT_VARIANTS, variantOutputName} from '@video-kit/core/output';
+import {positionals} from './deliveries.mjs';
 import {decodePng, rgbDistance} from './png-lib.mjs';
 
 const refs = positionals(process.argv.slice(2));
@@ -77,8 +78,11 @@ for (const channel of existsSync(outRoot) ? readdirSync(outRoot) : []) {
   for (const slug of slugs) {
     const ref = `${channel}/${slug}`;
     if (refs.length && !refs.includes(ref) && !refs.includes(slug)) continue;
-    for (const deliveryId of Object.keys(DELIVERIES)) {
-      const coverPath = join(channelDir, slug, deliveryId, 'cover.png');
+    const coverVariants = Object.values(OUTPUT_VARIANTS).filter(
+      (variant) => variant.kind === 'still' && variant.composition === 'cover',
+    );
+    for (const variant of coverVariants) {
+      const coverPath = join(channelDir, slug, variantOutputName(variant).file);
       if (!existsSync(coverPath)) continue;
       checked++;
       const image = decodePng(readFileSync(coverPath));
@@ -111,9 +115,9 @@ for (const channel of existsSync(outRoot) ? readdirSync(outRoot) : []) {
       }
       if (problems.length) {
         failures++;
-        console.log(`× ${ref} ${deliveryId}: ${problems.join('; ')}`);
+        console.log(`× ${ref} ${variant.id}: ${problems.join('; ')}`);
       } else {
-        console.log(`✓ ${ref} ${deliveryId}`);
+        console.log(`✓ ${ref} ${variant.id}`);
       }
     }
   }

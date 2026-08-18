@@ -1,36 +1,10 @@
 /**
- * Load video specs directly from the TypeScript registries without bundling
- * the Remotion project or starting a headless browser.
+ * Load video specs from the catalog package.
  *
- * Node 22.18+ strips type annotations from .ts imports natively; the resolver
- * hook below adds the one thing Node does not do on its own — resolving the
- * project's extensionless relative imports to their .ts files. The registry
- * import chain is pure data (React components are only ever referenced with
- * `import type`), so no JSX has to load.
+ * This used to install a node:module resolve hook to add extensions to the
+ * project's relative imports, because the specs were reached by file path. They
+ * are a package now, so the hook is gone.
  */
-import {existsSync} from 'node:fs';
-import {registerHooks} from 'node:module';
-import {join} from 'node:path';
-import {fileURLToPath, pathToFileURL} from 'node:url';
-
-registerHooks({
-  resolve(specifier, context, nextResolve) {
-    const isRelative = specifier.startsWith('./') || specifier.startsWith('../');
-    const hasExtension = /\.[a-zA-Z]+$/.test(specifier);
-    if (isRelative && !hasExtension && context.parentURL?.startsWith('file:')) {
-      const base = fileURLToPath(new URL(specifier, context.parentURL));
-      for (const candidate of [`${base}.ts`, `${base}.tsx`, join(base, 'index.ts')]) {
-        if (existsSync(candidate)) {
-          return nextResolve(pathToFileURL(candidate).href, context);
-        }
-      }
-    }
-    return nextResolve(specifier, context);
-  },
-});
-
-
-/** Returns [{spec, channel}] for production videos, plus style guides on request. */
 export const loadSpecs = async ({includeStyleGuides = false} = {}) => {
   const [videos, channels] = await Promise.all([
     import('@video-kit/catalog'),

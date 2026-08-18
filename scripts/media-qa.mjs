@@ -1,6 +1,41 @@
 #!/usr/bin/env node
 import {spawnSync} from 'node:child_process';
+import {existsSync} from 'node:fs';
+import {createRequire} from 'node:module';
+import {dirname, join} from 'node:path';
 import {pathToFileURL} from 'node:url';
+
+/**
+ * Prefer a system ffprobe, but fall back to the one Remotion ships with its
+ * compositor. Without the fallback, media QA fails on any machine that renders
+ * fine but has no ffmpeg on PATH.
+ */
+const resolveFfprobe = () => {
+  const system = spawnSync('ffprobe', ['-version'], {encoding: 'utf8'});
+  if (!system.error && system.status === 0) return 'ffprobe';
+
+  const require = createRequire(import.meta.url);
+  for (const pkg of [
+    '@remotion/compositor-linux-x64-gnu',
+    '@remotion/compositor-linux-x64-musl',
+    '@remotion/compositor-linux-arm64-gnu',
+    '@remotion/compositor-linux-arm64-musl',
+    '@remotion/compositor-darwin-arm64',
+    '@remotion/compositor-darwin-x64',
+    '@remotion/compositor-win32-x64-msvc',
+  ]) {
+    try {
+      const binary = join(dirname(require.resolve(`${pkg}/package.json`)), 'ffprobe');
+      if (existsSync(binary)) return binary;
+      if (existsSync(`${binary}.exe`)) return `${binary}.exe`;
+    } catch {
+      // Only the platform's own compositor package is installed.
+    }
+  }
+  return 'ffprobe';
+};
+
+let ffprobePath = null;
 
 const finiteDuration = (value) => {
   const parsed = Number(value);
@@ -68,8 +103,9 @@ export const analyzeMediaProbe = (
 };
 
 export const probeMediaFile = (path) => {
+  ffprobePath ??= resolveFfprobe();
   const result = spawnSync(
-    'ffprobe',
+    ffprobePath,
     [
       '-v',
       'error',

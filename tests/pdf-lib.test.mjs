@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {jpegSize, jpegsToPdf} from '../scripts/pdf-lib.mjs';
+import {jpegSize, jpegsToPdf} from '@video-kit/render-engine/pdf';
 
 // A valid 1×1 white baseline JPEG.
 const TINY_JPEG = Buffer.from(

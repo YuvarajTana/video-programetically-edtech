@@ -1,5 +1,6 @@
 import type {ChannelId, VoiceProfile} from '../channels/types';
 import type {DeliveryId} from '../publishing/types';
+import type {OutputVariantId} from '../output/types';
 import type {Accent} from '../themes/types';
 
 /**
@@ -678,6 +679,11 @@ export type VideoSpec = {
   fps?: number;
   /** Platform packages to produce. Defaults come from the channel profile. */
   deliveries?: DeliveryId[];
+  /**
+   * Explicit output variants. Takes precedence over `deliveries`, which stays
+   * supported as the vocabulary persisted in existing project revisions.
+   */
+  outputs?: OutputVariantId[];
   audience?: {
     ageBand?: string;
     level?: 'beginner' | 'intermediate' | 'advanced';

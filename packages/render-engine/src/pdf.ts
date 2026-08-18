@@ -7,7 +7,7 @@
 const header = '%PDF-1.4\n';
 
 /** Reads width/height from JPEG SOF markers. */
-export const jpegSize = (buffer) => {
+export const jpegSize = (buffer: Buffer): {width: number; height: number} => {
   let offset = 2;
   while (offset < buffer.length - 8) {
     if (buffer[offset] !== 0xff) {
@@ -28,14 +28,16 @@ export const jpegSize = (buffer) => {
 };
 
 /** Builds a PDF where each JPEG buffer becomes one page at its pixel size. */
-export const jpegsToPdf = (jpegs) => {
-  const objects = [];
-  const addObject = (body) => {
+type PdfObject = string | {head: string; stream: Buffer; tail: string};
+
+export const jpegsToPdf = (jpegs: Buffer[]): Buffer => {
+  const objects: PdfObject[] = [];
+  const addObject = (body: PdfObject) => {
     objects.push(body);
     return objects.length; // 1-based object number
   };
 
-  const pageRefs = [];
+  const pageRefs: string[] = [];
   const pagesNumber = 1 + jpegs.length * 3 + 1; // catalog + per-page triples + pages
   const catalog = addObject(`<< /Type /Catalog /Pages ${pagesNumber} 0 R >>`);
 
@@ -47,7 +49,11 @@ export const jpegsToPdf = (jpegs) => {
         `/Length ${jpeg.length} >>\nstream\n`,
       // stream payload appended at serialization time via marker below
     );
-    objects[image - 1] = {head: objects[image - 1], stream: jpeg, tail: '\nendstream'};
+    objects[image - 1] = {
+      head: objects[image - 1] as string,
+      stream: jpeg,
+      tail: '\nendstream',
+    };
     const contentText = `q ${width} 0 0 ${height} 0 0 cm /Im0 Do Q`;
     const content = addObject(
       `<< /Length ${contentText.length} >>\nstream\n${contentText}\nendstream`,
@@ -64,8 +70,8 @@ export const jpegsToPdf = (jpegs) => {
   );
   if (pages !== pagesNumber) throw new Error('pdf object numbering drifted');
 
-  const chunks = [Buffer.from(header)];
-  const offsets = [];
+  const chunks: Buffer[] = [Buffer.from(header)];
+  const offsets: number[] = [];
   let position = chunks[0].length;
   objects.forEach((object, index) => {
     offsets.push(position);

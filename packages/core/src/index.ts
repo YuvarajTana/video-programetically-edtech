@@ -11,6 +11,7 @@ export * from './spec';
 export * from './channels';
 export * from './themes';
 export * from './publishing';
+export * from './output';
 export * from './design/formats';
 export * from './design/tokens';
 export * from './contracts';

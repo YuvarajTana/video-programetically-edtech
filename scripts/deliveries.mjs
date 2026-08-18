@@ -1,51 +1,18 @@
-export const DELIVERIES = {
-  'youtube-long': {
-    id: 'youtube-long',
-    label: 'YouTube 16:9',
-    platform: 'youtube',
-    renderProfile: 'landscape',
-  },
-  'youtube-short': {
-    id: 'youtube-short',
-    label: 'YouTube Short 9:16',
-    platform: 'youtube',
-    renderProfile: 'portrait',
-  },
-  'instagram-reel': {
-    id: 'instagram-reel',
-    label: 'Instagram Reel 9:16',
-    platform: 'instagram',
-    renderProfile: 'portrait',
-  },
-  'instagram-feed': {
-    id: 'instagram-feed',
-    label: 'Instagram Feed 1:1',
-    platform: 'instagram',
-    renderProfile: 'square',
-  },
-  'instagram-carousel': {
-    id: 'instagram-carousel',
-    label: 'Instagram Carousel 4:5',
-    platform: 'instagram',
-    renderProfile: 'carousel',
-    stills: true,
-  },
-};
+/**
+ * CLI helpers. The delivery and format tables used to be hand-copied here and
+ * had already drifted — scripts/formats.mjs was missing the carousel format
+ * that this file referenced. Both now come from @video-kit/core, which is the
+ * only place they are defined.
+ */
+export {DELIVERIES, deliveriesFor} from '@video-kit/core/publishing';
+export {OUTPUT_VARIANTS, variantsFor} from '@video-kit/core/output';
 
-/** Render profiles that only ever ship as still sequences, never as video. */
-export const STILL_PROFILES = new Set(
-  Object.values(DELIVERIES)
-    .filter((delivery) => delivery.stills)
-    .map((delivery) => delivery.renderProfile),
-);
+import {DELIVERIES} from '@video-kit/core/publishing';
 
 export const refOf = (spec) => `${spec.channel}/${spec.slug}`;
 
-export const deliveriesFor = (spec, channel) =>
-  spec.deliveries ?? channel.defaultDeliveries;
-
 export const preferredRenderProfile = (spec, channel) => {
-  const profiles = deliveriesFor(spec, channel).map(
+  const profiles = (spec.deliveries ?? channel.defaultDeliveries).map(
     (deliveryId) => DELIVERIES[deliveryId].renderProfile,
   );
   return profiles.includes('portrait') ? 'portrait' : profiles[0];
@@ -69,14 +36,4 @@ export const positionals = (argv, valueFlags = []) => {
     if (flags.has(arg.slice(2))) index++;
   }
   return values;
-};
-
-export const videoComposition = (composition) => {
-  const parts = composition.id.split('--');
-  return parts.length === 3 && parts[2] !== 'cover';
-};
-
-export const coverComposition = (composition) => {
-  const parts = composition.id.split('--');
-  return parts.length === 4 && parts[3] === 'cover';
 };

@@ -23,7 +23,8 @@
     "./music": "./src/music.ts",
     "./pipeline": "./src/pipeline.ts",
     "./storyboard": "./src/storyboard.ts",
-    "./tts": "./src/tts.ts"
+    "./tts": "./src/tts.ts",
+    "./output": "./src/output/index.ts"
   },
   "dependencies": {
     "zod": "^4.1.5"

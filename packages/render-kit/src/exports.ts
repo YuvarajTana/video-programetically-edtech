@@ -9,7 +9,7 @@
 export {Video} from './Video';
 export {Cover} from './Cover';
 export {RemotionRoot} from './Root';
-export {calculateManagedMetadata} from './managed';
+export {calculateVideoMetadata, calculateCoverMetadata, calculateManagedMetadata} from './managed';
 export {SCENES} from './scenes/registry';
 export {useLayout} from './design/formats';
 export type {Layout} from './design/formats';

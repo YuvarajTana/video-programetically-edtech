@@ -1,10 +1,4 @@
-import {bundle} from '@remotion/bundler';
-import {
-  makeCancelSignal,
-  renderMedia,
-  renderStill,
-  selectComposition,
-} from '@remotion/renderer';
+import {makeCancelSignal} from '@remotion/renderer';
 import {createHash} from 'node:crypto';
 import {
   copyFileSync,
@@ -14,9 +8,12 @@ import {
   statSync,
   writeFileSync,
 } from 'node:fs';
-import {join, relative, resolve, sep} from 'node:path';
+import {dirname, join, relative, resolve, sep} from 'node:path';
 import {spawn, type ChildProcess} from 'node:child_process';
 import {EditableVideoSpecSchema, type JobStage} from '@video-kit/core/contracts';
+import {OUTPUT_VARIANTS, variantsFor} from '@video-kit/core/output';
+import {config, fromRoot, paths} from '@video-kit/core/config';
+import {produceVariants} from '@video-kit/render-engine';
 import {
   buildMasterTimeline,
   type WordTimingFile,
@@ -27,10 +24,6 @@ import {
   fitScenesToDuration,
   scenesExceedNarrationRate,
 } from '@video-kit/core/storyboard';
-import {FORMATS, type FormatId} from '@video-kit/core/design/formats';
-import {MANAGED_COMPOSITION_IDS, type ManagedVideoInput} from '@video-kit/core/managed';
-import {DELIVERIES} from '@video-kit/core/publishing';
-import type {DeliveryId} from '@video-kit/core/publishing';
 import type {VideoSpec} from '@video-kit/core/spec';
 import {StudioRepository} from './db';
 import {LocalAiWorker} from './local-ai';
@@ -131,8 +124,8 @@ const pythonExecutable = () => {
   const requested = process.env.TTS_PYTHON;
   const candidates = [
     requested,
-    resolve('.venv-tts/bin/python3'),
-    resolve('.venv-tts/bin/python'),
+    fromRoot('.venv-tts/bin/python3'),
+    fromRoot('.venv-tts/bin/python'),
     'python3',
   ].filter(Boolean) as string[];
   return candidates[0];
@@ -235,10 +228,10 @@ export class JobRunner {
         return;
       }
       const snapshot = this.repository.getRevision(job.revisionId);
-      const jobRoot = resolve('.video-kit', 'jobs', jobId);
+      const jobRoot = join(paths.jobs(), jobId);
       const artifactRoot = join(jobRoot, 'artifacts');
-      const publicRoot = resolve('public');
-      const generatedRoot = resolve(publicRoot, 'generated', jobId);
+      const publicRoot = paths.public();
+      const generatedRoot = join(paths.generated(), jobId);
       mkdirSync(artifactRoot, {recursive: true});
       mkdirSync(generatedRoot, {recursive: true});
 
@@ -610,7 +603,7 @@ export class JobRunner {
             }),
           )
           .digest('hex');
-        const cacheRoot = resolve('.cache', 'video-kit', 'studio-audio');
+        const cacheRoot = join(paths.cache(), 'studio-audio');
         const cachedAudio = join(cacheRoot, `${cacheKey}.wav`);
         const cachedTimings = join(cacheRoot, `${cacheKey}.json`);
         mkdirSync(cacheRoot, {recursive: true});
@@ -620,7 +613,7 @@ export class JobRunner {
           this.event(jobId, 'tts', 'info', 'Reused the matching cached voice track.', 0.27);
         } else {
           const ttsArguments = [
-            resolve('scripts/local-tts-from-srt.py'),
+            fromRoot('scripts/local-tts-from-srt.py'),
             '--srt',
             captionsPath,
             '--out',
@@ -771,89 +764,49 @@ export class JobRunner {
             : 'No audio track is configured; rendering intentionally silent.',
       );
 
-      this.stage(jobId, 'render', 0.48, 'Rendering every delivery from the mastered composition.');
-      const serveUrl = await bundle({
-        entryPoint: resolve('src/index.ts'),
-        onProgress: () => {},
+      this.stage(
+        jobId,
+        'render',
+        0.48,
+        'Producing every requested output from the mastered composition.',
+      );
+      const variants = variantsFor(spec, snapshot.channel);
+      const renderRoot = join(jobRoot, 'renders');
+      const produced = await produceVariants({
+        spec,
+        channel: snapshot.channel,
+        variants,
+        outDir: renderRoot,
+        browser: {
+          browserExecutable: config.browserExecutable(),
+          chromeMode: config.chromeMode(),
+          concurrency: config.renderConcurrency() ?? null,
+        },
+        cancelSignal: cancellation.cancelSignal,
+        onProgress: (variant, fraction) => {
+          const index = variants.indexOf(variant);
+          const overall =
+            0.5 + ((index + fraction) / Math.max(1, variants.length)) * 0.3;
+          this.repository.updateJob(jobId, {stage: 'render', progress: overall});
+          if (Math.round(fraction * 100) % 10 === 0) this.notify(jobId);
+        },
       });
-      const requestedDeliveries =
-        spec.deliveries ?? snapshot.channel.defaultDeliveries;
-      const profiles = [
-        ...new Set(
-          requestedDeliveries
-            // Stills deliveries (carousels) are not video renders.
-            .filter((deliveryId) => !DELIVERIES[deliveryId].stills)
-            .map((deliveryId) => DELIVERIES[deliveryId].renderProfile),
-        ),
-      ] as FormatId[];
-      for (const [index, profile] of profiles.entries()) {
-        const inputProps: ManagedVideoInput = {
-          spec,
-          channel: snapshot.channel,
-          renderProfile: profile,
-        };
-        const composition = await selectComposition({
-          serveUrl,
-          id: MANAGED_COMPOSITION_IDS[profile],
-          inputProps,
-        });
-        const renderRoot = join(jobRoot, 'renders');
-        mkdirSync(renderRoot, {recursive: true});
-        const output = join(renderRoot, `${profile}.mp4`);
-        await renderMedia({
-          composition,
-          serveUrl,
-          inputProps,
-          codec: 'h264',
-          crf: 18,
-          outputLocation: output,
-          overwrite: true,
-          cancelSignal: cancellation.cancelSignal,
-          concurrency: process.env.RENDER_CONCURRENCY
-            ? Number(process.env.RENDER_CONCURRENCY)
-            : undefined,
-          onProgress: ({progress}) => {
-            const overall =
-              0.5 + ((index + progress) / Math.max(1, profiles.length)) * 0.3;
-            this.repository.updateJob(jobId, {
-              stage: 'render',
-              progress: overall,
-            });
-            if (Math.round(progress * 100) % 10 === 0) this.notify(jobId);
-          },
-        });
-        const thumbnail = join(renderRoot, `${profile}-thumbnail.png`);
-        await renderStill({
-          composition,
-          serveUrl,
-          inputProps,
-          output: thumbnail,
-          frame: Math.min(composition.durationInFrames - 1, composition.fps * 2),
-          overwrite: true,
-          cancelSignal: cancellation.cancelSignal,
-        });
-        for (const deliveryId of requestedDeliveries.filter(
-          (id) => DELIVERIES[id].renderProfile === profile,
-        )) {
-          const packagedVideo = join(artifactRoot, `${deliveryId}.mp4`);
-          const packagedCover = join(artifactRoot, `${deliveryId}-cover.png`);
-          copyFileSync(output, packagedVideo);
-          copyFileSync(thumbnail, packagedCover);
-          this.recordArtifact(
-            jobId,
-            packagedVideo,
-            'video',
-            deliveryId,
-            'video/mp4',
-          );
-          this.recordArtifact(
-            jobId,
-            packagedCover,
-            'cover',
-            deliveryId,
-            'image/png',
-          );
-        }
+
+      // Artifacts are filed under the job's artifact root so downloads keep
+      // working; the delivery id is still written where a variant stands in for
+      // one, so rows created before the variant registry stay comparable.
+      for (const artifact of produced) {
+        const packaged = join(artifactRoot, relative(renderRoot, artifact.path));
+        mkdirSync(dirname(packaged), {recursive: true});
+        copyFileSync(artifact.path, packaged);
+        const variant = OUTPUT_VARIANTS[artifact.variantId];
+        this.recordArtifact(
+          jobId,
+          packaged,
+          artifact.kind,
+          variant?.legacyDeliveryId ?? null,
+          artifact.mimeType,
+        );
       }
 
       this.stage(jobId, 'qa', 0.84, 'Checking duration, streams, audio, and generated artifacts.');
@@ -877,7 +830,7 @@ export class JobRunner {
           await runProcess(
             process.execPath,
             [
-              'scripts/media-qa.mjs',
+              fromRoot('scripts/media-qa.mjs'),
               path,
               '--expected',
               String(expectedDurationSeconds),
@@ -1045,8 +998,8 @@ export class JobRunner {
     mimeType: string,
   ) {
     const resolved = resolve(path);
-    const allowed = resolve('.video-kit', 'jobs', jobId);
-    const generated = resolve('public', 'generated', jobId);
+    const allowed = join(paths.jobs(), jobId);
+    const generated = join(paths.generated(), jobId);
     if (
       resolved !== allowed &&
       !resolved.startsWith(`${allowed}${sep}`) &&

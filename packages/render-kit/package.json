@@ -9,7 +9,7 @@
     "./entry": "./src/index.ts",
     "./scenes": "./src/scenes/registry.ts",
     "./timing": "./src/timing/wordTimings.ts",
-    "./layout": "./src/design/formats.ts"
+    "./layout": "./src/design/formats.tsx"
   },
   "dependencies": {
     "@video-kit/catalog": "1.0.0",

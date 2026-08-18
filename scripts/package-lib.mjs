@@ -1,18 +1,17 @@
 import {createHash} from 'node:crypto';
 import {
-  copyFileSync,
   existsSync,
   mkdirSync,
   readdirSync,
   readFileSync,
-  unlinkSync,
   writeFileSync,
 } from 'node:fs';
 import {join, relative, resolve, sep} from 'node:path';
 import {chaptersFor, toChapterText} from './chapters-lib.mjs';
-import {DELIVERIES} from './deliveries.mjs';
+import {variantOutputName, variantsFor} from '@video-kit/core/output';
 import {assertMediaFile} from './media-qa.mjs';
 import {buildMasterTimeline} from '@video-kit/core/master-timeline';
+import {paths} from '@video-kit/core/config';
 
 const checksum = (value) =>
   createHash('sha256').update(JSON.stringify(value)).digest('hex');
@@ -83,11 +82,10 @@ const descriptionFor = (spec, channel, platform, chapters) => {
 
 export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
   const base = join(outRoot, spec.channel, spec.slug);
-  const deliveries = spec.deliveries ?? channel.defaultDeliveries;
   const files = [];
   const mediaCredits = mediaCreditsFor(spec);
   const chapters = chaptersFor(spec);
-  const publicRoot = resolve('public');
+  const publicRoot = paths.public();
   const requestedWordTimingsSource = spec.captionTimings
     ? resolve(publicRoot, spec.captionTimings)
     : null;
@@ -111,147 +109,92 @@ export const packageSpec = ({spec, channel, outRoot = 'out'}) => {
   const masterTimelinePath = join(base, 'master-timeline.json');
 
   mkdirSync(base, {recursive: true});
+  const variants = variantsFor(spec, channel);
+  const chaptersPath = join(base, 'chapters.txt');
+  const captionsPath = join(base, 'captions.srt');
+  const expectedDurationSeconds =
+    spec.scenes.reduce((total, scene) => total + scene.durationInFrames, 0) /
+    (spec.fps ?? 30);
+  const requireAudio = Boolean(
+    spec.audio || spec.soundtrack?.music || spec.soundtrack?.effects?.length,
+  );
+
+  /** One metadata sidecar per variant, named after it. */
+  const writeVariantMetadata = (variant, platform, hashtags, wantsChapters) => {
+    const name = `${variant.artifact.filenameStem}.metadata.json`;
+    writeFileSync(
+      join(base, name),
+      JSON.stringify(
+        {
+          schemaVersion: 2,
+          channel: spec.channel,
+          variant: variant.id,
+          delivery: variant.legacyDeliveryId ?? null,
+          kind: variant.kind,
+          platform,
+          aspect: variant.aspect,
+          title: spec.title,
+          description: descriptionFor(spec, channel, platform, wantsChapters ? chapters : []),
+          hashtags,
+          handle: channel.handle,
+          mediaCredits,
+          chapters: wantsChapters ? chapters : [],
+        },
+        null,
+        2,
+      ) + '\n',
+    );
+    return name;
+  };
+
   writeFileSync(join(base, 'chapters.txt'), toChapterText(chapters));
   writeFileSync(
     masterTimelinePath,
     JSON.stringify(mastered.timeline, null, 2) + '\n',
   );
 
-  for (const deliveryId of deliveries) {
-    const delivery = DELIVERIES[deliveryId];
-    const deliveryDir = join(base, deliveryId);
-    mkdirSync(deliveryDir, {recursive: true});
+  for (const variant of variants) {
+    const naming = variantOutputName(variant);
+    const platform = variant.platform ?? 'youtube';
+    const hashtags = channel.defaultHashtags[platform] ?? [];
+    const wantsChapters = platform === 'youtube' && chapters.length > 0;
 
-    // Stills deliveries (carousels) package slides + a PDF, not a video.
-    if (delivery.stills) {
-      const slidesDir = join(deliveryDir, 'slides');
-      const slides = existsSync(slidesDir)
-        ? readdirSync(slidesDir).filter((name) => name.endsWith('.jpg')).sort()
-        : [];
-      const pdfPath = join(deliveryDir, 'carousel.pdf');
-      const coverPath = join(deliveryDir, 'cover.png');
-      const hashtags = channel.defaultHashtags[delivery.platform];
-      writeFileSync(
-        join(deliveryDir, 'metadata.json'),
-        JSON.stringify(
-          {
-            schemaVersion: 1,
-            channel: spec.channel,
-            delivery: deliveryId,
-            platform: delivery.platform,
-            title: spec.title,
-            description: descriptionFor(spec, channel, delivery.platform, []),
-            hashtags,
-            handle: channel.handle,
-            mediaCredits,
-            slides: slides.length,
-            chapters: [],
-          },
-          null,
-          2,
-        ) + '\n',
-      );
-      files.push({
-        delivery: deliveryId,
-        platform: delivery.platform,
-        renderProfile: delivery.renderProfile,
-        status:
-          slides.length && existsSync(pdfPath)
-            ? 'ready'
-            : existsSync(coverPath)
-              ? 'cover-only'
-              : 'incomplete',
-        slides: slides.map((name) => relative(base, join(slidesDir, name))),
-        pdf: existsSync(pdfPath) ? relative(base, pdfPath) : null,
-        cover: existsSync(coverPath) ? relative(base, coverPath) : null,
-        metadata: relative(base, join(deliveryDir, 'metadata.json')),
-      });
-      continue;
-    }
+    // Slides live in their own directory; every other kind is a single file.
+    const slidesDir = naming.directory ? join(base, naming.directory) : null;
+    const slides = slidesDir && existsSync(slidesDir)
+      ? readdirSync(slidesDir)
+          .filter((name) => name.endsWith(`.${naming.extension}`))
+          .sort()
+      : [];
+    const filePath = naming.file ? join(base, naming.file) : null;
+    const present = slidesDir ? slides.length > 0 : Boolean(filePath && existsSync(filePath));
 
-    const renderPath = join(base, 'renders', `${delivery.renderProfile}.mp4`);
-    const videoPath = join(deliveryDir, 'video.mp4');
-    const coverPath = join(deliveryDir, 'cover.png');
-    const captionsPath = join(base, 'captions.srt');
-    const packagedCaptionsPath = join(deliveryDir, 'captions.srt');
-    const packagedWordTimingsPath = join(
-      deliveryDir,
-      'captions.words.json',
-    );
-    const packagedMasterTimelinePath = join(deliveryDir, 'master-timeline.json');
-    const packagedChaptersPath = join(deliveryDir, 'chapters.txt');
-    const expectedDurationSeconds =
-      spec.scenes.reduce((total, scene) => total + scene.durationInFrames, 0) /
-      (spec.fps ?? 30);
-    const requireAudio = Boolean(
-      spec.audio || spec.soundtrack?.music || spec.soundtrack?.effects?.length,
-    );
-    const mediaQa = existsSync(renderPath)
-      ? assertMediaFile(renderPath, {expectedDurationSeconds, requireAudio})
-      : null;
-
-    if (existsSync(renderPath)) copyFileSync(renderPath, videoPath);
-    if (existsSync(captionsPath)) copyFileSync(captionsPath, packagedCaptionsPath);
-    if (wordTimingsSource && existsSync(wordTimingsSource)) {
-      copyFileSync(wordTimingsSource, packagedWordTimingsPath);
-    }
-    copyFileSync(masterTimelinePath, packagedMasterTimelinePath);
-    if (delivery.platform === 'youtube' && chapters.length) {
-      copyFileSync(join(base, 'chapters.txt'), packagedChaptersPath);
-    } else if (existsSync(packagedChaptersPath)) {
-      unlinkSync(packagedChaptersPath);
-    }
-
-    const hashtags = channel.defaultHashtags[delivery.platform];
-    const metadata = {
-      schemaVersion: 1,
-      channel: spec.channel,
-      delivery: deliveryId,
-      platform: delivery.platform,
-      title: spec.title,
-      description: descriptionFor(
-        spec,
-        channel,
-        delivery.platform,
-        chapters,
-      ),
-      hashtags,
-      handle: channel.handle,
-      mediaCredits,
-      chapters: delivery.platform === 'youtube' ? chapters : [],
-    };
-    writeFileSync(
-      join(deliveryDir, 'metadata.json'),
-      JSON.stringify(metadata, null, 2) + '\n',
-    );
-
-    files.push({
-      delivery: deliveryId,
-      platform: delivery.platform,
-      renderProfile: delivery.renderProfile,
-      status:
-        existsSync(videoPath) && existsSync(coverPath)
-          ? 'ready'
-          : existsSync(coverPath)
-            ? 'cover-only'
-            : 'incomplete',
-      video: existsSync(videoPath) ? relative(base, videoPath) : null,
-      cover: existsSync(coverPath) ? relative(base, coverPath) : null,
-      captions: existsSync(packagedCaptionsPath)
-        ? relative(base, packagedCaptionsPath)
-        : null,
-      wordTimings: existsSync(packagedWordTimingsPath)
-        ? relative(base, packagedWordTimingsPath)
-        : null,
-      masterTimeline: relative(base, packagedMasterTimelinePath),
-      chapters:
-        delivery.platform === 'youtube' &&
-        existsSync(packagedChaptersPath)
-          ? relative(base, packagedChaptersPath)
+    const entry = {
+      variant: variant.id,
+      delivery: variant.legacyDeliveryId ?? null,
+      kind: variant.kind,
+      platform: variant.platform ?? null,
+      aspect: variant.aspect,
+      status: present ? 'ready' : 'missing',
+      path: slidesDir
+        ? relative(base, slidesDir)
+        : filePath && existsSync(filePath)
+          ? relative(base, filePath)
           : null,
-      metadata: relative(base, join(deliveryDir, 'metadata.json')),
-      qa: mediaQa,
-    });
+      slides: slides.map((name) => relative(base, join(slidesDir, name))),
+    };
+
+    if (variant.kind === 'video' && filePath && existsSync(filePath)) {
+      entry.qa = assertMediaFile(filePath, {expectedDurationSeconds, requireAudio});
+      entry.captions = existsSync(captionsPath) ? relative(base, captionsPath) : null;
+      entry.masterTimeline = relative(base, masterTimelinePath);
+      entry.chapters = wantsChapters ? relative(base, chaptersPath) : null;
+      entry.metadata = writeVariantMetadata(variant, platform, hashtags, wantsChapters);
+    } else if (variant.kind !== 'video') {
+      entry.metadata = writeVariantMetadata(variant, platform, hashtags, false);
+    }
+
+    files.push(entry);
   }
 
   const manifest = {
