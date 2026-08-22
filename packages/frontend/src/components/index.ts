@@ -1,3 +1,4 @@
+export {EditorialNotes} from './EditorialNotes';
 export {Empty} from './Empty';
 export {Metric} from './Metric';
 export {Modal} from './Modal';

@@ -4,7 +4,7 @@ import {LANGUAGES} from '@video-kit/core/languages';
 import type {MotionCanvasElement, Scene, SceneType} from '@video-kit/core/spec';
 import {Suspense, useCallback, useEffect, useState} from 'react';
 import {api} from '../api';
-import {Modal, SceneJsonEditor} from '../components';
+import {EditorialNotes, Modal, SceneJsonEditor} from '../components';
 import {ScenePreview} from '../components/ScenePreviewLazy';
 import {duration, formatTime} from '../lib/format';
 import {navigate} from '../lib/router';
@@ -416,6 +416,11 @@ export const ProjectEditor = ({id, onChanged}: {id: string; onChanged: () => voi
               />
             ))}
           </div>
+          <EditorialNotes
+            spec={spec}
+            channel={resolved.channel}
+            onSelectScene={setSelected}
+          />
         </section>
         <aside className="inspector">
           {currentScene ? (

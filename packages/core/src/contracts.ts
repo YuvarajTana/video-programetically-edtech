@@ -590,7 +590,8 @@ export type JobDetail = JobRecord & {
   events: Array<{
     id: number;
     stage: JobStage;
-    level: 'info' | 'error';
+    /** `warn` is advisory: the stage continues and the job can still succeed. */
+    level: 'info' | 'warn' | 'error';
     message: string;
     progress: number;
     createdAt: string;

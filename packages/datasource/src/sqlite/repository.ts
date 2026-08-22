@@ -1689,7 +1689,7 @@ export class StudioRepository {
     ).map((row) => ({
       id: Number(row.id),
       stage: String(row.stage) as JobStage,
-      level: String(row.level) as 'info' | 'error',
+      level: String(row.level) as 'info' | 'warn' | 'error',
       message: String(row.message),
       progress: Number(row.progress),
       createdAt: String(row.created_at),
@@ -1733,7 +1733,7 @@ export class StudioRepository {
   addJobEvent(
     id: string,
     stage: JobStage,
-    level: 'info' | 'error',
+    level: 'info' | 'warn' | 'error',
     message: string,
     progress: number,
   ) {

@@ -21,8 +21,9 @@ import {
   type ActiveJob,
 } from './jobs/process';
 import {EditableVideoSpecSchema, type JobStage} from '@video-kit/core/contracts';
+import {validateSpec as validateEditorial} from '@video-kit/core/editorial';
 import {OUTPUT_VARIANTS, variantsFor} from '@video-kit/core/output';
-import {config, fromRoot, paths} from '@video-kit/core/config';
+import {config, fromRoot, nodeAssetProbe, paths} from '@video-kit/core/config';
 import {produceVariants} from '@video-kit/render-engine';
 import {
   buildMasterTimeline,
@@ -34,8 +35,12 @@ import {
   scenesExceedNarrationRate,
 } from '@video-kit/core/storyboard';
 import type {VideoSpec} from '@video-kit/core/spec';
+import type {ChannelProfile} from '@video-kit/core/channels';
 import type {Repository} from '@video-kit/datasource';
 import {LocalAiWorker} from './local-ai';
+
+/** A job log is not a lint report — enough to act on, then a pointer. */
+const EDITORIAL_EVENT_LIMIT = 8;
 import {ElevenLabsVoiceProvider} from './elevenlabs';
 import {ChatterboxVoiceWorker} from './local-voice';
 
@@ -94,12 +99,60 @@ export class JobRunner {
   private async event(
     jobId: string,
     stage: JobStage,
-    level: 'info' | 'error',
+    level: 'info' | 'warn' | 'error',
     message: string,
     progress: number,
   ) {
     await this.repository.addJobEvent(jobId, stage, level, message, progress);
     this.notify(jobId);
+  }
+
+  /**
+   * Editorial rules — pacing, scene limits, licensing — at the validate stage.
+   * These only ever ran in the CLI, so a studio project could render with a
+   * 400-WPM narration and nothing would say so.
+   *
+   * Advisory, never fatal, and that is a measurement rather than a preference:
+   * `npm run db:check-editorial` over projects created through the studio
+   * reports an error on every Learn project, because the create form does not
+   * collect ageBand, objective or safetyStatus and the Learn channel requires
+   * all three. Failing those jobs would break every one of them. The fix
+   * belongs in the create form; until then the job says so and continues.
+   */
+  private async reportEditorial(
+    jobId: string,
+    spec: VideoSpec,
+    channel: ChannelProfile,
+  ) {
+    const issues = validateEditorial(spec, channel, {assets: nodeAssetProbe()});
+    if (!issues.length) return;
+    // Errors first — they are the ones worth acting on — but every one of them
+    // is logged at 'warn', because within a job the level says what happened to
+    // the job, and nothing here stops it.
+    const ordered = [
+      ...issues.filter((issue) => issue.severity === 'error'),
+      ...issues.filter((issue) => issue.severity !== 'error'),
+    ];
+    for (const issue of ordered.slice(0, EDITORIAL_EVENT_LIMIT)) {
+      const prefix = issue.severity === 'error' ? 'must fix — ' : '';
+      await this.event(
+        jobId,
+        'validate',
+        'warn',
+        `${prefix}${issue.path}: ${issue.message}`,
+        0.025,
+      );
+    }
+    if (ordered.length > EDITORIAL_EVENT_LIMIT) {
+      await this.event(
+        jobId,
+        'validate',
+        'warn',
+        `… and ${issues.length - EDITORIAL_EVENT_LIMIT} more editorial notes; ` +
+          'run "npm run db:check-editorial" for the full list.',
+        0.025,
+      );
+    }
   }
 
   private async stage(
@@ -153,6 +206,7 @@ export class JobRunner {
 
       await this.stage(jobId, 'validate', 0.02, 'Validating the immutable project revision.');
       let spec: VideoSpec = EditableVideoSpecSchema.parse(snapshot.spec);
+      await this.reportEditorial(jobId, spec, snapshot.channel);
       const approvedScriptPath = join(artifactRoot, 'approved-script.txt');
       writeFileSync(
         approvedScriptPath,

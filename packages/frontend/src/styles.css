@@ -452,6 +452,18 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .timeline-summary button { min-width: 3px; height: 5px; border: 0; border-radius: 9px; background: #343b43; cursor: pointer; }
 .timeline-summary button.active { background: var(--lime); }
 
+/* Editorial notes: advisory, so they sit under the timeline rather than
+   interrupting the edit. Collapsed unless something is an error. */
+.editorial-notes { border-top: 1px solid #1b2025; padding: 0 18px 10px; max-height: 190px; overflow-y: auto; }
+.editorial-notes summary { padding: 9px 0; color: var(--muted); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+.editorial-notes ul { display: grid; gap: 5px; margin: 0 0 4px; padding: 0; list-style: none; }
+.editorial-notes li { display: grid; grid-template-columns: minmax(0, 150px) 1fr; gap: 10px; font-size: 11px; line-height: 1.45; color: var(--muted); }
+.editorial-notes .editorial-path { justify-self: start; padding: 0; border: 0; background: none; font-family: inherit; font-size: 10px; color: #7c8794; text-align: left; word-break: break-all; }
+.editorial-notes button.editorial-path { cursor: pointer; text-decoration: underline dotted; }
+.editorial-notes button.editorial-path:hover { color: var(--lime); }
+.editorial-notes li.warning span:last-child { color: #ffd08a; }
+.editorial-notes li.error span:last-child { color: #ff9e93; }
+
 .inspector .field:first-of-type { margin-top: 15px; }
 .inspector input[type="range"] { padding: 0; accent-color: var(--lime); border: 0; }
 .photo-controls { display: grid; gap: 9px; margin: 14px 15px; padding: 13px; border: 1px solid var(--line); border-radius: 9px; background: #11151a; }
@@ -556,6 +568,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .event-log span { text-transform: uppercase; }
 .event-log p { margin: 0; }
 .event-log .error p { color: #ff9e93; }
+.event-log .warn p { color: #ffd08a; }
 .artifact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .artifact { min-width: 0; display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 8px; color: var(--text); text-decoration: none; padding: 11px; background: #0d1014; }
 .artifact:hover { border-color: #4c5851; }

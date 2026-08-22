@@ -35,7 +35,7 @@ export type JobContext = {
   /** Report something within the current stage. */
   event: (
     stage: JobStage,
-    level: 'info' | 'error',
+    level: 'info' | 'warn' | 'error',
     message: string,
     progress: number,
   ) => Promise<void>;

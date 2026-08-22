@@ -16,7 +16,7 @@
  */
 import {DELIVERIES} from '../publishing/deliveries';
 import type {ChannelProfile} from '../channels/types';
-import type {VideoSpec} from '../spec';
+import type {Scene, VideoSpec} from '../spec';
 
 export type IssueSeverity = 'error' | 'warning';
 
@@ -51,6 +51,55 @@ const words = (text = '') => text.trim().split(/\s+/).filter(Boolean).length;
 
 /** Scenes with no moving mechanism — the retention-leak candidates. */
 const TEXT_LED_SCENES = new Set(['title', 'callout', 'bigStat']);
+
+/**
+ * Roughly how long a labelled row needs to be on screen. One number rather
+ * than ten guessed per type: it is the same order as the 0.35s floor the
+ * kinetic-text rule already uses for a beat of a few words, scaled up because
+ * these rows carry a label and often a value beside it.
+ */
+const MIN_ITEM_SECONDS = 0.8;
+
+/**
+ * Monospace lines wider than this wrap or shrink at the sizes Code.tsx and
+ * Terminal.tsx render at. Not a new limit — it is the one the algorithm rule
+ * already applies to `scene.code.lines`, applied to the same content in the
+ * two scenes that are made of it.
+ */
+const MAX_MONO_LINE = 46;
+
+/**
+ * List-shaped scenes, where the schema caps the count structurally but only
+ * the duration says whether anyone can follow it. Scenes with their own
+ * pacing mechanism are deliberately absent: `code` is scanned as a block and
+ * has focus steps, `arrayViz` has an explicit tempo, and `tokens`,
+ * `kineticText` and `countdown` already carry bespoke rules above.
+ */
+const pacedItems = (scene: Scene): {field: string; count: number} | null => {
+  switch (scene.type) {
+    case 'steps':
+      return {field: 'items', count: scene.items.length};
+    case 'flow':
+      return {field: 'steps', count: scene.steps.length};
+    case 'stats':
+      return {field: 'cards', count: scene.cards.length};
+    case 'flashcards':
+      return {field: 'items', count: scene.items.length};
+    case 'colors':
+      return {field: 'items', count: scene.items.length};
+    case 'terminal':
+      return {field: 'entries', count: scene.entries.length};
+    case 'compare':
+      return {
+        field: 'points',
+        count: scene.left.points.length + scene.right.points.length,
+      };
+    case 'outro':
+      return {field: 'recap', count: scene.recap?.length ?? 0};
+    default:
+      return null;
+  }
+};
 
 const issue = (
   severity: IssueSeverity,
@@ -472,6 +521,44 @@ export const validateSpec = (
         if (element.kind !== 'image') continue;
         checkAsset(element.src ?? '', `${path}.elements[${elementIndex}].src`);
       }
+    }
+
+    const paced = pacedItems(scene);
+    if (paced && paced.count > 0) {
+      const perItem = scene.durationInFrames / fps / paced.count;
+      if (perItem < MIN_ITEM_SECONDS) {
+        add(
+          'warning',
+          `${path}.${paced.field}`,
+          `${paced.count} items get ${perItem.toFixed(1)}s each; ` +
+            `give each row ${MIN_ITEM_SECONDS}s or cut the list`,
+        );
+      }
+    }
+
+    if (scene.type === 'code') {
+      scene.lines.forEach((line, lineIndex) => {
+        if (line.length > MAX_MONO_LINE) {
+          add(
+            'warning',
+            `${path}.lines[${lineIndex}]`,
+            `${line.length} chars will wrap or shrink; keep code lines to ${MAX_MONO_LINE}`,
+          );
+        }
+      });
+    }
+
+    if (scene.type === 'terminal') {
+      scene.entries.forEach((entry, entryIndex) => {
+        const command = entry.cmd ?? '';
+        if (command.length > MAX_MONO_LINE) {
+          add(
+            'warning',
+            `${path}.entries[${entryIndex}].cmd`,
+            `${command.length} chars will wrap or shrink; keep commands to ${MAX_MONO_LINE}`,
+          );
+        }
+      });
     }
   });
 

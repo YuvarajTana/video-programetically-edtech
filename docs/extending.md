@@ -152,10 +152,42 @@ exhaustive `Record<SceneType, …>`, so `tsc` names the missing component, and a
 test asserts the two registries hold the same set.
 
 Two optional extras: add editorial rules (pacing, wording) in
-`packages/cli/src/validation-lib.mjs`, which answers a different question from
+`packages/core/src/editorial/index.ts`, which answers a different question from
 the schema — "is this well-formed" versus "is this good" — and add the scene to
 the channel style guides in `packages/catalog/src/videos/style-guides/` so it
 shows up in visual QA.
+
+## Editorial rules
+
+The schemas say whether a spec is well-formed. `@video-kit/core/editorial` says
+whether it is any good: narration pace against the channel's WPM band, static
+frames held too long, lists whose rows go by faster than they read, monospace
+lines that will wrap, licensing on every asset.
+
+They run in three places, all from the same module:
+
+- the **studio editor**, live, in the notes panel under the timeline;
+- the **job pipeline**, at the `validate` stage, as `warn` events;
+- the **CLI**, where `npm run validate` still fails the build on an error.
+
+The module is isomorphic so the browser can run it. Its one filesystem
+concern — do assets exist, and do they stay inside `public/` — is injected:
+
+```ts
+validateSpec(spec, channel, {assets: nodeAssetProbe()});   // Node
+validateSpec(spec, channel);                               // browser
+```
+
+Without a probe the asset rules are **skipped, not passed**. A browser cannot
+check the filesystem and must not pretend it did.
+
+**Editorial errors never fail a production job.** That is a measurement, not a
+preference: `npm run db:check-editorial` over projects created through the
+studio reports an error on every Learn project, because the create form does
+not collect `ageBand`, `objective` or `safetyStatus` and the Learn channel
+requires all three. Failing those jobs would break every one of them. Before
+you make any rule fatal, run that command and see what it would say about data
+that already exists.
 
 ### Cross-field rules
 
@@ -204,6 +236,8 @@ npm run app:dev             # API + studio with hot reload
 npm run app:dev:all         # datasource + API + studio, three processes
 npm run datasource          # the store on its own, port 4312
 npm run db:migrate          # apply migrations deliberately
+npm run db:check-specs      # stored specs the schemas would now reject
+npm run db:check-editorial  # what the editorial rules say about stored projects
 ```
 
 By default the API runs SQLite in its own process. Set
@@ -213,11 +247,17 @@ service instead; nothing else changes, because both sides implement the same
 
 ## Known rough edges
 
-- **Editorial rules still live apart from the schemas.**
-  `packages/cli/src/validation-lib.mjs` checks pacing and wording for
-  source-controlled specs, which is a different question from "is this
-  well-formed", but it covers only fourteen scene types and does not run on
-  studio projects at all.
+- **The studio's create form does not collect the fields the Learn channel
+  requires.** `audience.ageBand`, `editorial.objective` and
+  `editorial.safetyStatus` are mandatory for Learn videos, and nothing in the
+  studio ever sets them, so every Learn project trips all three editorial
+  errors from the moment it exists. This is why editorial errors are advisory
+  in a job rather than fatal; the fix belongs in the create form.
+- **Half the scene types have no bespoke editorial rule.** Sixteen types now
+  carry one, plus the pacing and monospace-width rules that generalise across
+  the list-shaped scenes. The rest rely on the generic rules — narration rate,
+  static-frame runs, duration bands — which is often enough, but `bigStat`,
+  `callout`, `counting`, `arrayViz` and `title` have nothing type-specific.
 - **`FormatId` still exists** as an alias of `AspectId` in
   `packages/core/src/design/formats.ts`, because `renderProfile` is threaded
   through the studio, the job pipeline and the composition props. It is one
