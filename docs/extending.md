@@ -222,6 +222,14 @@ service instead; nothing else changes, because both sides implement the same
   `packages/core/src/design/formats.ts`, because `renderProfile` is threaded
   through the studio, the job pipeline and the composition props. It is one
   table now, not two, so this is naming debt rather than drift.
+- **`StudioRepository` is one 1,800-line class.** `catalog` and `artifacts` are
+  extracted into `packages/datasource/src/sqlite/domains/`, and the rest stays
+  put deliberately: seven of the eighteen `database.transaction(...)` sites
+  straddle projects/variants/translations, so those 900 lines cannot be
+  separated without unpicking the transactions. Extracting the remainder was
+  measured at +16% total code for no boundary change, because `Repository` is
+  `MaybeAsync<StudioRepository>` dispatched over the wire by flat method name —
+  any split can only ever be delegation behind the same 62 flat methods.
 - **Blob storage assumes a shared filesystem.** The datasource service can run
   on its own port, but job artifacts are written by the backend and recorded by
   the datasource, so both must see the same `.video-kit/`. A remote blob store

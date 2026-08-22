@@ -82,6 +82,43 @@ for (const [name, repository] of adapters) {
   });
 }
 
+for (const [name, repository] of adapters) {
+  test(`${name}: records and reads back an artifact`, async () => {
+    // Methods that delegate to a domain module are own properties rather than
+    // prototype methods, which is a different lookup for both the HTTP
+    // dispatcher and the client proxy.
+    const catalog = await repository.catalog();
+    const created = await repository.createProject({
+      title: `Artifacts ${name}`,
+      categoryId: catalog.categories[0].id,
+      themeId: catalog.themes[0].id,
+      templateId: catalog.templates[0].id,
+      locale: 'en-US',
+      deliveries: ['youtube-long'],
+      script: 'One paragraph.\n\nTwo paragraph.',
+    });
+    const job = await repository.createJob(
+      created.project.id,
+      created.variant.id,
+      false,
+      {},
+    );
+    await repository.addArtifact(job.id, {
+      kind: 'video',
+      deliveryId: 'youtube-long',
+      filename: 'out.mp4',
+      path: '/tmp/out.mp4',
+      mimeType: 'video/mp4',
+      sizeBytes: 12,
+      checksum: 'abc',
+    });
+    const listed = await repository.listArtifacts(job.id);
+    assert.equal(listed.length, 1);
+    assert.equal(listed[0].filename, 'out.mp4');
+    assert.equal(await repository.artifactPath(listed[0].id), '/tmp/out.mp4');
+  });
+}
+
 test('the remote adapter refuses lifecycle methods', async () => {
   assert.throws(() => remote.close(), /not available on a remote datasource/i);
 });

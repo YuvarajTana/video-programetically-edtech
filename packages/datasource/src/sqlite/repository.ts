@@ -1,4 +1,6 @@
 import {parseStoredSpec} from './specs';
+import {artifactsDomain} from './domains/artifacts';
+import {catalogDomain} from './domains/catalog';
 import Database from 'better-sqlite3';
 import {createHash, randomUUID} from 'node:crypto';
 import {
@@ -57,6 +59,8 @@ import {SupportedLocaleSchema} from '@video-kit/core/languages';
 import type {ChannelProfile} from '@video-kit/core/channels';
 import type {VideoSpec} from '@video-kit/core/spec';
 
+type Catalog = ReturnType<typeof catalogDomain>;
+
 const now = () => new Date().toISOString();
 const parse = <T>(value: string) => JSON.parse(value) as T;
 
@@ -79,6 +83,8 @@ export class StudioRepository {
   readonly database: Database.Database;
   readonly storageRoot: string;
   private readonly migrationsDirectory: string;
+  private readonly artifacts: ReturnType<typeof artifactsDomain>;
+  private readonly catalogDomain: Catalog;
 
   constructor(options: string | SqliteRepositoryOptions = {}) {
     const {
@@ -93,6 +99,15 @@ export class StudioRepository {
     this.database = new Database(databasePath);
     this.database.pragma('journal_mode = WAL');
     this.database.pragma('foreign_keys = ON');
+
+    const domain = {
+      database: this.database,
+      storageRoot: this.storageRoot,
+      repository: this,
+    };
+    this.artifacts = artifactsDomain(domain);
+    this.catalogDomain = catalogDomain(domain);
+
     if (autoMigrate) {
       this.migrate();
       this.seed();
@@ -213,205 +228,42 @@ export class StudioRepository {
       .run('The studio stopped while this job was running. Retry it safely.', timestamp, timestamp);
   }
 
-  listThemes(): CatalogTheme[] {
-    return (
-      this.database
-        .prepare(
-          `SELECT t.id, t.label, v.id AS version_id, v.version, v.definition_json
-           FROM themes t
-           JOIN theme_versions v ON v.id = t.active_version_id
-           ORDER BY t.label`,
-        )
-        .all() as Row[]
-    ).map((row) => ({
-      id: String(row.id),
-      label: String(row.label),
-      versionId: String(row.version_id),
-      version: Number(row.version),
-      definition: ThemeDefinitionSchema.parse(parse(String(row.definition_json))),
-    }));
-  }
+  listThemes: Catalog['listThemes'] = (...args) => this.catalogDomain.listThemes(...args);
 
-  listTemplates(): CatalogTemplate[] {
-    return (
-      this.database
-        .prepare(
-          `SELECT t.id, t.label, v.id AS version_id, v.version, v.definition_json
-           FROM templates t
-           JOIN template_versions v ON v.id = t.active_version_id
-           ORDER BY t.label`,
-        )
-        .all() as Row[]
-    ).map((row) => ({
-      id: String(row.id),
-      label: String(row.label),
-      versionId: String(row.version_id),
-      version: Number(row.version),
-      definition: TemplateDefinitionSchema.parse(
-        parse(String(row.definition_json)),
-      ),
-    }));
-  }
+  listTemplates: Catalog['listTemplates'] = (...args) =>
+    this.catalogDomain.listTemplates(...args);
 
-  listCategories(): CategoryDefinition[] {
-    return (
-      this.database
-        .prepare('SELECT definition_json FROM categories ORDER BY id')
-        .all() as Row[]
-    ).map((row) =>
-      CategoryDefinitionSchema.parse(parse(String(row.definition_json))),
-    );
-  }
+  listCategories: Catalog['listCategories'] = (...args) =>
+    this.catalogDomain.listCategories(...args);
 
-  catalog() {
-    return {
-      categories: this.listCategories(),
-      themes: this.listThemes(),
-      templates: this.listTemplates(),
-    };
-  }
+  catalog: Catalog['catalog'] = (...args) => this.catalogDomain.catalog(...args);
 
+  cloneTheme: Catalog['cloneTheme'] = (...args) =>
+    this.catalogDomain.cloneTheme(...args);
+
+  versionTheme: Catalog['versionTheme'] = (...args) =>
+    this.catalogDomain.versionTheme(...args);
+
+  cloneTemplate: Catalog['cloneTemplate'] = (...args) =>
+    this.catalogDomain.cloneTemplate(...args);
+
+  versionTemplate: Catalog['versionTemplate'] = (...args) =>
+    this.catalogDomain.versionTemplate(...args);
+
+  upsertCategory: Catalog['upsertCategory'] = (...args) =>
+    this.catalogDomain.upsertCategory(...args);
+
+  /** Projects legitimately depend on the catalog, so these stay reachable. */
   private theme(id: string) {
-    const theme = this.listThemes().find((entry) => entry.id === id);
-    if (!theme) throw new Error(`Theme "${id}" does not exist.`);
-    return theme;
+    return this.catalogDomain.theme(id);
   }
 
   private template(id: string) {
-    const template = this.listTemplates().find((entry) => entry.id === id);
-    if (!template) throw new Error(`Template "${id}" does not exist.`);
-    return template;
+    return this.catalogDomain.template(id);
   }
 
   private category(id: string) {
-    const category = this.listCategories().find((entry) => entry.id === id);
-    if (!category) throw new Error(`Category "${id}" does not exist.`);
-    return category;
-  }
-
-  cloneTheme(sourceId: string, id: string, label: string) {
-    const source = this.theme(sourceId);
-    const definition = {...source.definition, id};
-    const timestamp = now();
-    const versionId = `${id}-v1`;
-    this.database.transaction(() => {
-      this.database
-        .prepare(
-          `INSERT INTO themes
-            (id, label, active_version_id, created_at, updated_at)
-           VALUES (?, ?, ?, ?, ?)`,
-        )
-        .run(id, label, versionId, timestamp, timestamp);
-      this.database
-        .prepare(
-          `INSERT INTO theme_versions
-            (id, theme_id, version, definition_json, created_at)
-           VALUES (?, ?, 1, ?, ?)`,
-        )
-        .run(versionId, id, JSON.stringify(definition), timestamp);
-    })();
-    return this.theme(id);
-  }
-
-  versionTheme(id: string, definition: ThemeDefinition) {
-    const parsed = ThemeDefinitionSchema.parse({...definition, id});
-    const next = Number(
-      (
-        this.database
-          .prepare(
-            'SELECT COALESCE(MAX(version), 0) AS value FROM theme_versions WHERE theme_id = ?',
-          )
-          .get(id) as Row
-      ).value,
-    ) + 1;
-    const versionId = `${id}-v${next}`;
-    const timestamp = now();
-    this.database.transaction(() => {
-      this.database
-        .prepare(
-          `INSERT INTO theme_versions
-            (id, theme_id, version, definition_json, created_at)
-           VALUES (?, ?, ?, ?, ?)`,
-        )
-        .run(versionId, id, next, JSON.stringify(parsed), timestamp);
-      this.database
-        .prepare(
-          'UPDATE themes SET active_version_id = ?, updated_at = ? WHERE id = ?',
-        )
-        .run(versionId, timestamp, id);
-    })();
-    return this.theme(id);
-  }
-
-  cloneTemplate(sourceId: string, id: string, label: string) {
-    const source = this.template(sourceId);
-    const definition = {...source.definition, id, label};
-    const timestamp = now();
-    const versionId = `${id}-v1`;
-    this.database.transaction(() => {
-      this.database
-        .prepare(
-          `INSERT INTO templates
-            (id, label, active_version_id, created_at, updated_at)
-           VALUES (?, ?, ?, ?, ?)`,
-        )
-        .run(id, label, versionId, timestamp, timestamp);
-      this.database
-        .prepare(
-          `INSERT INTO template_versions
-            (id, template_id, version, definition_json, created_at)
-           VALUES (?, ?, 1, ?, ?)`,
-        )
-        .run(versionId, id, JSON.stringify(definition), timestamp);
-    })();
-    return this.template(id);
-  }
-
-  versionTemplate(id: string, definition: TemplateDefinition) {
-    const parsed = TemplateDefinitionSchema.parse({...definition, id});
-    const next = Number(
-      (
-        this.database
-          .prepare(
-            'SELECT COALESCE(MAX(version), 0) AS value FROM template_versions WHERE template_id = ?',
-          )
-          .get(id) as Row
-      ).value,
-    ) + 1;
-    const versionId = `${id}-v${next}`;
-    const timestamp = now();
-    this.database.transaction(() => {
-      this.database
-        .prepare(
-          `INSERT INTO template_versions
-            (id, template_id, version, definition_json, created_at)
-           VALUES (?, ?, ?, ?, ?)`,
-        )
-        .run(versionId, id, next, JSON.stringify(parsed), timestamp);
-      this.database
-        .prepare(
-          'UPDATE templates SET label = ?, active_version_id = ?, updated_at = ? WHERE id = ?',
-        )
-        .run(parsed.label, versionId, timestamp, id);
-    })();
-    return this.template(id);
-  }
-
-  upsertCategory(definition: CategoryDefinition) {
-    const parsed = CategoryDefinitionSchema.parse(definition);
-    this.theme(parsed.defaultThemeId);
-    this.template(parsed.defaultTemplateId);
-    const timestamp = now();
-    this.database
-      .prepare(
-        `INSERT INTO categories (id, definition_json, created_at, updated_at)
-         VALUES (?, ?, ?, ?)
-         ON CONFLICT(id) DO UPDATE SET
-           definition_json = excluded.definition_json,
-           updated_at = excluded.updated_at`,
-      )
-      .run(parsed.id, JSON.stringify(parsed), timestamp, timestamp);
-    return this.category(parsed.id);
+    return this.catalogDomain.category(id);
   }
 
   listProjects(): ProjectRecord[] {
@@ -1894,59 +1746,17 @@ export class StudioRepository {
       .run(id, stage, level, message.slice(0, 2_000), progress, now());
   }
 
-  addArtifact(
-    jobId: string,
-    artifact: Omit<ArtifactRecord, 'id' | 'jobId' | 'createdAt'> & {path: string},
-  ) {
-    const id = randomUUID();
-    const timestamp = now();
-    this.database
-      .prepare(
-        `INSERT INTO artifacts
-          (id, job_id, kind, delivery_id, filename, path, mime_type,
-           size_bytes, checksum, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      )
-      .run(
-        id,
-        jobId,
-        artifact.kind,
-        artifact.deliveryId,
-        artifact.filename,
-        artifact.path,
-        artifact.mimeType,
-        artifact.sizeBytes,
-        artifact.checksum,
-        timestamp,
-      );
-    return {id, jobId, createdAt: timestamp, ...artifact};
-  }
+  // Artifacts, revisions, jobs, voices and the catalog live in ./domains; the
+  // methods stay flat here because the port is derived from this class and the
+  // HTTP transport dispatches by method name.
+  addArtifact: ReturnType<typeof artifactsDomain>['addArtifact'] = (...args) =>
+    this.artifacts.addArtifact(...args);
 
-  listArtifacts(jobId: string): ArtifactRecord[] {
-    return (
-      this.database
-        .prepare('SELECT * FROM artifacts WHERE job_id = ? ORDER BY created_at')
-        .all(jobId) as Row[]
-    ).map((row) => ({
-      id: String(row.id),
-      jobId: String(row.job_id),
-      kind: String(row.kind),
-      deliveryId: row.delivery_id ? String(row.delivery_id) : null,
-      filename: String(row.filename),
-      mimeType: String(row.mime_type),
-      sizeBytes: Number(row.size_bytes),
-      checksum: String(row.checksum),
-      createdAt: String(row.created_at),
-    }));
-  }
+  listArtifacts: ReturnType<typeof artifactsDomain>['listArtifacts'] = (...args) =>
+    this.artifacts.listArtifacts(...args);
 
-  artifactPath(id: string) {
-    const row = this.database
-      .prepare('SELECT path FROM artifacts WHERE id = ?')
-      .get(id) as Row | undefined;
-    if (!row) throw new Error('Artifact not found.');
-    return String(row.path);
-  }
+  artifactPath: ReturnType<typeof artifactsDomain>['artifactPath'] = (...args) =>
+    this.artifacts.artifactPath(...args);
 
   private mapProject = (row: Row): ProjectRecord => ({
     id: String(row.id),
