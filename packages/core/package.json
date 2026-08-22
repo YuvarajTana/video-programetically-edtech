@@ -24,7 +24,8 @@
     "./pipeline": "./src/pipeline.ts",
     "./storyboard": "./src/storyboard.ts",
     "./tts": "./src/tts.ts",
-    "./output": "./src/output/index.ts"
+    "./output": "./src/output/index.ts",
+    "./editorial": "./src/editorial/index.ts"
   },
   "dependencies": {
     "zod": "^4.1.5"

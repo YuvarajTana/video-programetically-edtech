@@ -7,7 +7,7 @@
  * process: the API, the datasource service, the CLI, and the tests.
  */
 import {existsSync} from 'node:fs';
-import {dirname, isAbsolute, join, resolve} from 'node:path';
+import {dirname, isAbsolute, join, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 /**
@@ -123,3 +123,20 @@ export const config = {
   openAiScriptModel: () => str('OPENAI_SCRIPT_MODEL', 'gpt-5.6-sol'),
   elevenLabsKey: () => process.env.ELEVENLABS_API_KEY,
 } as const;
+
+/**
+ * The filesystem half of the editorial rules in `@video-kit/core/editorial`,
+ * which is isomorphic and so cannot read `public/` itself. `resolve` returns
+ * null rather than a path when a src escapes the asset root, which is how
+ * `../../etc/passwd` is caught before it is ever probed.
+ */
+export const nodeAssetProbe = () => {
+  const root = paths.public();
+  return {
+    resolve: (src: string) => {
+      const candidate = resolve(root, src);
+      return candidate.startsWith(`${root}${sep}`) ? candidate : null;
+    },
+    exists: (path: string) => existsSync(path),
+  };
+};

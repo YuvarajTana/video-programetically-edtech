@@ -8,8 +8,9 @@ export {DELIVERIES, deliveriesFor} from '@video-kit/core/publishing';
 export {OUTPUT_VARIANTS, variantsFor} from '@video-kit/core/output';
 
 import {DELIVERIES} from '@video-kit/core/publishing';
+import {refOf} from '@video-kit/core/editorial';
 
-export const refOf = (spec) => `${spec.channel}/${spec.slug}`;
+export {refOf};
 
 export const preferredRenderProfile = (spec, channel) => {
   const profiles = (spec.deliveries ?? channel.defaultDeliveries).map(

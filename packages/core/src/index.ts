@@ -15,5 +15,6 @@ export * from './output';
 export * from './design/formats';
 export * from './design/tokens';
 export * from './contracts';
+export * from './editorial';
 export {MANAGED_COMPOSITION_IDS, managedDefaults} from './managed';
 export type {ManagedVideoInput} from './managed';
