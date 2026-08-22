@@ -6,6 +6,8 @@
  *   npm run db:migrate -- --db /path/to/video-kit.db
  *   npm run db:check-specs      report stored specs the schema would reject
  *   npm run db:repair-specs     drop unknown fields and fill empty collections
+ *   npm run db:check-editorial  report what the editorial rules say about
+ *                               projects that render fine today
  *
  * Migrations used to run implicitly in the repository constructor, which meant
  * every test and every CLI invocation silently migrated whatever database it
@@ -15,6 +17,8 @@
 import {config, loadEnv} from '@video-kit/core/config';
 import {MIGRATIONS_DIR, StudioRepository} from './sqlite';
 import {checkStoredSpecs, repairStoredSpecs} from './sqlite/specs';
+import {checkStoredEditorial} from './sqlite/editorial';
+import {nodeAssetProbe} from '@video-kit/core/config';
 
 loadEnv();
 
@@ -28,7 +32,13 @@ const flag = (name: string) => {
 const databasePath = flag('db') ?? config.databasePath();
 const migrationsDirectory = flag('migrations') ?? MIGRATIONS_DIR;
 
-const COMMANDS = ['migrate', 'status', 'check-specs', 'repair-specs'];
+const COMMANDS = [
+  'migrate',
+  'status',
+  'check-specs',
+  'repair-specs',
+  'check-editorial',
+];
 if (!COMMANDS.includes(command)) {
   console.error(`unknown command "${command}" (expected: ${COMMANDS.join(', ')})`);
   process.exit(1);
@@ -39,6 +49,18 @@ const repository = new StudioRepository({
   migrationsDirectory,
   autoMigrate: false,
 });
+
+/**
+ * The read-only commands run with autoMigrate off, so they can be pointed at
+ * any database — including one that has never been migrated. Say that plainly
+ * instead of failing with "no such table: projects".
+ */
+const hasSchema = () =>
+  Boolean(
+    repository.database
+      .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='projects'")
+      .get(),
+  );
 
 const applied = () =>
   repository.database
@@ -80,6 +102,11 @@ if (command === 'status') {
     );
   }
 } else if (command === 'check-specs') {
+  if (!hasSchema()) {
+    console.log(`no projects table in ${databasePath}; run "npm run db:migrate" first`);
+    repository.close();
+    process.exit(0);
+  }
   const problems = checkStoredSpecs(repository.database);
   if (!problems.length) {
     console.log('✓ every stored spec parses');
@@ -101,6 +128,32 @@ if (command === 'status') {
     repository.close();
     process.exit(1);
   }
+} else if (command === 'check-editorial') {
+  if (!hasSchema()) {
+    console.log(`no projects table in ${databasePath}; run "npm run db:migrate" first`);
+    repository.close();
+    process.exit(0);
+  }
+  const problems = checkStoredEditorial(repository, {assets: nodeAssetProbe()});
+  const errors = problems.reduce((sum, problem) => sum + problem.errors.length, 0);
+  const warnings = problems.reduce((sum, problem) => sum + problem.warnings.length, 0);
+  if (!problems.length) {
+    console.log('\u2713 every stored project passes the editorial rules');
+  } else {
+    for (const problem of problems) {
+      console.log(`  ${problem.label}  [${problem.variantId}]`);
+      for (const issue of [...problem.errors, ...problem.warnings]) {
+        console.log(
+          `    ${issue.severity.padEnd(7)} ${issue.path}: ${issue.message}`,
+        );
+      }
+    }
+  }
+  console.log(
+    `\n${problems.length} project variant(s) \u00b7 ${errors} error(s) \u00b7 ${warnings} warning(s)`,
+  );
+  // Reporting only. Whether an editorial error may fail a production job is
+  // decided from this number, not the other way round.
 } else if (command === 'repair-specs') {
   const apply = argv.includes('--apply');
   const repairs = repairStoredSpecs(repository.database, {apply});

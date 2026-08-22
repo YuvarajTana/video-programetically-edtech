@@ -44,7 +44,8 @@
     "app:dev:all": "concurrently -k -n data,api,web -c yellow,cyan,magenta \"npm run datasource\" \"npm run dev -w @video-kit/backend\" \"npm run dev -w @video-kit/frontend\"",
     "deps:check": "tsx packages/cli/src/deps-check.mjs",
     "db:check-specs": "npm run check-specs -w @video-kit/datasource",
-    "db:repair-specs": "npm run repair-specs -w @video-kit/datasource"
+    "db:repair-specs": "npm run repair-specs -w @video-kit/datasource",
+    "db:check-editorial": "npm run check-editorial -w @video-kit/datasource"
   },
   "dependencies": {
     "@fastify/multipart": "^9.2.1",
