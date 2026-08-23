@@ -3,17 +3,17 @@ import {mkdtempSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {after, test} from 'node:test';
-import {StudioRepository} from '../server/db';
-import {ingestVoiceSample} from '../server/voice-files';
+import {StudioRepository} from '@video-kit/datasource';
+import {ingestVoiceSample} from '@video-kit/backend/voice-files';
 import {
   CreateVoiceProfileSchema,
   type EditableVideoSpec,
-} from '../shared/contracts';
-import {LANGUAGES, languageFor} from '../shared/languages';
+} from '@video-kit/core/contracts';
+import {LANGUAGES, languageFor} from '@video-kit/core/languages';
 import {
   extractTranslatableFields,
   protectTerms,
-} from '../shared/localization';
+} from '@video-kit/core/localization';
 
 const directory = mkdtempSync(join(tmpdir(), 'video-kit-localization-'));
 after(() => rmSync(directory, {recursive: true, force: true}));
@@ -133,7 +133,7 @@ test('localized variants require review, become stale, and can become master', (
   repository.close();
 });
 
-test('voice enrollment requires own-adult attestation and explicit cloud consent', () => {
+test('voice enrollment requires own-adult attestation and explicit cloud consent', async () => {
   const base = {
     name: 'My voice',
     ownerName: 'Owner',
@@ -171,17 +171,16 @@ test('voice enrollment requires own-adult attestation and explicit cloud consent
   });
   assert.equal(profile.status, 'draft');
   assert.equal(profile.activeVersion?.cloudAllowedAt, null);
-  assert.throws(
-    () =>
-      ingestVoiceSample({
-        repository,
-        profileId: profile.id,
-        purpose: 'reference',
-        locale: 'hi-IN',
-        transcript: 'A sample',
-        mimeType: 'text/plain',
-        data: Buffer.from('not audio'),
-      }),
+  await assert.rejects(
+    ingestVoiceSample({
+      repository,
+      profileId: profile.id,
+      purpose: 'reference',
+      locale: 'hi-IN',
+      transcript: 'A sample',
+      mimeType: 'text/plain',
+      data: Buffer.from('not audio'),
+    }),
     /unsupported audio type/i,
   );
   assert.equal(repository.revokeVoiceProfile(profile.id).status, 'revoked');

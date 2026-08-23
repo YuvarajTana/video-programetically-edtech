@@ -1,0 +1,14 @@
+{
+  "name": "@video-kit/catalog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Source-controlled video specs for the Tech, Learn, and Fun channels. Pure data: no React, no Remotion, so the API and CLI can read the catalog without the renderer.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./videos/*": "./src/videos/*.ts"
+  },
+  "dependencies": {
+    "@video-kit/core": "1.0.0"
+  }
+}

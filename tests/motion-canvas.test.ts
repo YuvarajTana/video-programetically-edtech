@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {EditableVideoSpecSchema} from '../shared/contracts';
-import {MOTION_EXPLAINER_SECONDS} from '../shared/durations';
-import {SCENES} from '../src/scenes/registry';
-import {resolveMotionCanvasTiming} from '../src/timing/wordTimings';
-import {embeddingsMotionExplainer} from '../src/videos/tech/embeddings-motion-explainer';
-import {ragIn60Seconds} from '../src/videos/tech/rag-in-60-seconds';
+import {EditableVideoSpecSchema} from '@video-kit/core/contracts';
+import {MOTION_EXPLAINER_SECONDS} from '@video-kit/core/durations';
+import {SCENES} from '@video-kit/render-kit/scenes';
+import {resolveMotionCanvasTiming} from '@video-kit/render-kit/timing';
+import {embeddingsMotionExplainer} from '@video-kit/catalog/videos/tech/embeddings-motion-explainer';
+import {ragIn60Seconds} from '@video-kit/catalog/videos/tech/rag-in-60-seconds';
 
 test('motion explainer runtimes include the reference thirty-three-second format', () => {
   assert.deepEqual(MOTION_EXPLAINER_SECONDS, [30, 33, 45, 60]);

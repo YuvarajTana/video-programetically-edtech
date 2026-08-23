@@ -84,7 +84,7 @@ or place an API key in frontend code.
 
 Studio data lives under `.video-kit/`; generated render inputs live under
 `public/generated/`. Both are intentionally ignored by Git. Existing videos in
-`src/videos/` appear in the studio as read-only examples and can be cloned into
+`packages/catalog/src/videos/` appear in the studio as read-only examples and can be cloned into
 editable projects without changing their source files.
 
 Every Studio and CLI production now follows one canonical path:
@@ -244,7 +244,7 @@ uploads are rejected.
 
 ## Channels and themes
 
-Channel configuration lives in `src/channels/registry.ts`.
+Channel configuration lives in `packages/core/src/channels/registry.ts`.
 
 | Channel | Default deliveries | Editorial focus |
 | --- | --- | --- |
@@ -252,7 +252,7 @@ Channel configuration lives in `src/channels/registry.ts`.
 | `learn` | YouTube Short + Instagram Reel | age band, objective, review status |
 | `fun` | YouTube Short + Instagram Reel | speed, surprise, loopability |
 
-Themes live in `src/themes/`. Scenes use semantic accent roles:
+Themes live in `packages/core/src/themes/`. Scenes use semantic accent roles:
 
 - `primary`
 - `secondary`
@@ -339,7 +339,7 @@ Each scaffold creates two tracked files:
 
 ```text
 content/scripts/tech/<slug>.md  # timed writing and production brief
-src/videos/tech/<slug>.ts       # render-ready VideoSpec scene structure
+packages/catalog/src/videos/tech/<slug>.ts       # render-ready VideoSpec scene structure
 ```
 
 The source spec is registered automatically. Replace every `TODO:` marker,
@@ -387,7 +387,7 @@ npm run new -- --channel fun --template this-or-that \
   ocean-or-space "Ocean or space?"
 ```
 
-The scaffold is written to `src/videos/<channel>/` and registered in that
+The scaffold is written to `packages/catalog/src/videos/<channel>/` and registered in that
 channel's registry.
 
 Validate before rendering:
@@ -453,7 +453,7 @@ A spec that declares the `instagram-carousel` delivery ships as stills — one
 LinkedIn document posts (validation warns past Instagram's 10-slide cap):
 
 ```bash
-npm run carousel -- tech/my-video
+npm run render -- tech/my-video --variant instagram-carousel-pdf
 ```
 
 Rendered covers can be audited against the Instagram grid crop — content must
@@ -581,20 +581,22 @@ QA stills are written to `out/qa/`.
 
 ## Adding a scene
 
-1. Add the typed scene variant in `src/types.ts`.
-2. Build the component inside `src/scenes/`.
-3. Use `useTheme()` for channel colors and fonts.
-4. Use `useLayout()` for aspect-aware layout.
-5. Register it in `src/scenes/registry.ts`.
-6. Add it to relevant channel style guides.
+1. Add the typed scene variant in `packages/core/src/spec/index.ts` and add it
+   to the `Scene` union.
+2. Add it to `SceneTypeSchema` in `packages/core/src/contracts.ts`.
+3. Add validation rules in `packages/cli/src/validation-lib.mjs`.
+4. Build the component inside `packages/render-kit/src/scenes/`, using
+   `useTheme()` for channel colors and `useLayout()` for aspect-aware layout.
+5. Register it in `packages/render-kit/src/scenes/registry.ts`.
+6. Add it to the relevant channel style guides in `packages/catalog/`.
 
-Structural sizing belongs in `src/design/tokens.ts`; brand color and typography
-belong in `src/themes/`.
+Structural sizing belongs in `packages/core/src/design/tokens.ts`; brand color and typography
+belong in `packages/core/src/themes/`.
 
 ## Voiceover
 
 Narration drives burned captions, SRT cues, and the voiceover cue sheet.
-Channel voice defaults live in `src/channels/registry.ts`. Generate a
+Channel voice defaults live in `packages/core/src/channels/registry.ts`. Generate a
 scene-aligned Kokoro track locally:
 
 ```bash
@@ -826,35 +828,58 @@ ffmpeg -i out/tech/my-video/renders/portrait.mp4 -i vo.mp3 \
 
 ## Project layout
 
+The kit is an npm workspaces monorepo. Each package installs, type-checks and
+runs on its own, and `npm run deps:check` enforces the boundaries between them.
+
 ```text
-src/
-  channels/       channel identity, defaults, editorial policy
-  themes/         Tech, Learn, and Fun visual systems
-  publishing/     delivery-to-render-profile mapping
-  design/         shared size, spacing, layout, and animation tokens
-  components/     shared primitives
-  scenes/         reusable visual scenes
-  videos/
-    tech/          production Tech specs
-    learn/         production Learn specs
-    fun/           production Fun specs
-    style-guides/  non-production visual references
-  Cover.tsx        dedicated platform cover
-  Video.tsx        spec-to-scenes renderer
-  Root.tsx         compositions
-scripts/
-  new-video.mjs
-  validate.mjs
-  render.mjs
-  package.mjs
-  captions.mjs
-  voice.mjs
-  produce.mjs
-  queue.mjs
-  publish.mjs
-  cloud-render.mjs
-  qa.mjs
+packages/
+  core/           domain types, zod contracts, aspects, output variants, config
+                  the dependency leaf; imports no other package
+  catalog/        the source-controlled video specs (tech, learn, fun)
+  render-kit/     Remotion compositions, scenes, themes, layout
+  render-engine/  bundling, and the producers that turn variants into files
+  datasource/     repository port, SQLite adapter, migrations, HTTP service
+  backend/        the Studio API and the production job runner
+  frontend/       the Studio browser app
+  cli/            command-line production, plus the Python voice workers
+public/           shared asset root: Remotion staticFile(), Vite, and the API
+content/          curriculum roadmap and the LLM script-generation context
+docs/             operating.md, extending.md, authoring guides, design notes
+tests/            one suite across all packages
 ```
+
+Three processes can run separately or together:
+
+```bash
+npm run app          # API on 4311, serving the built studio
+npm run app:dev      # API + studio with hot reload
+npm run app:dev:all  # datasource on 4312 + API + studio
+npm run datasource   # the store alone
+```
+
+The API keeps SQLite in its own process by default. Point it at the datasource
+service with `VIDEO_KIT_DATASOURCE=http://127.0.0.1:4312`; both sides implement
+the same repository port, and a contract test runs the same assertions against
+each.
+
+### Adding outputs
+
+Producing a poster, a carousel, a GIF or a PDF is one entry in the output
+variant registry (`packages/core/src/output/variants.ts`) — the CLI, the API,
+the manifest and the studio picker all read it. Render any registered variant
+without editing a spec:
+
+```bash
+npm run render -- tech/selection-sort --variant loop-gif
+npm run render -- tech/selection-sort --variant instagram-carousel-pdf
+```
+
+See [`docs/extending.md`](docs/extending.md) for the full recipes: a new output
+variant, a new aspect ratio, and a new scene type.
+
+[`docs/operating.md`](docs/operating.md) is the runbook — how the three
+processes fit together, the fourteen job stages, where each model runs, the API
+and database, and a symptom-to-fix table for when something breaks.
 
 The broader roadmap and later audio/media/publishing phases are documented in
 [`docs/three-channel-plan.md`](docs/three-channel-plan.md).

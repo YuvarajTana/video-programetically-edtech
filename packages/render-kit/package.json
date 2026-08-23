@@ -1,0 +1,23 @@
+{
+  "name": "@video-kit/render-kit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The Remotion composition tree: scenes, themes, layout, and the spec-to-frames renderer.",
+  "exports": {
+    ".": "./src/exports.ts",
+    "./entry": "./src/index.ts",
+    "./scenes": "./src/scenes/registry.ts",
+    "./timing": "./src/timing/wordTimings.ts",
+    "./layout": "./src/design/formats.tsx"
+  },
+  "dependencies": {
+    "@video-kit/catalog": "1.0.0",
+    "@video-kit/core": "1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.501"
+  }
+}

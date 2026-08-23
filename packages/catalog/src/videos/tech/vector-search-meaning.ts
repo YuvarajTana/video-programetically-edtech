@@ -1,0 +1,120 @@
+import type {VideoSpec} from '@video-kit/core/spec';
+
+export const vectorSearchMeaning: VideoSpec = {
+  channel: 'tech',
+  slug: 'vector-search-meaning',
+  title: 'How vector search finds meaning',
+  template: 'concept-explainer',
+  summary: 'How embeddings turn meaning into coordinates and retrieve the nearest matches.',
+  deliveries: ['youtube-long', 'instagram-reel'],
+  audience: {level: 'beginner'},
+  editorial: {
+    language: 'en',
+    objective: 'Explain embeddings, similarity, and nearest-neighbor retrieval.',
+    sources: [
+      {
+        title: 'OpenAI Vector Stores API reference',
+        url: 'https://platform.openai.com/docs/api-reference/vector-stores',
+      },
+      {
+        title: 'Efficient and robust approximate nearest neighbor search using HNSW',
+      },
+    ],
+  },
+  scenes: [
+    {
+      type: 'title',
+      durationInFrames: 90,
+      kicker: 'AI, visually',
+      title: 'Vector Search',
+      subtitle: 'How software searches by meaning instead of exact words.',
+      narration: 'Vector search finds similar meaning, even when the words differ.',
+    },
+    {
+      type: 'steps',
+      durationInFrames: 240,
+      kicker: 'The whole idea',
+      items: [
+        {label: 'Encode the meaning', detail: 'Text becomes a list of numbers', accent: 'info'},
+        {label: 'Measure similarity', detail: 'Nearby directions mean related ideas', accent: 'primary'},
+        {label: 'Return the neighbors', detail: 'The closest chunks become context', accent: 'success'},
+      ],
+      footnote: 'Meaning becomes geometry.',
+      narration: 'First encode meaning as numbers. Then compare directions and return the nearest stored items.',
+    },
+    {
+      type: 'architecture',
+      durationInFrames: 420,
+      kicker: 'One search',
+      title: 'From question to context',
+      accent: 'success',
+      nodes: [
+        {id: 'query', label: 'Question', sub: 'plain text', col: 0, row: 0, accent: 'info'},
+        {id: 'embed', label: 'Embedding', sub: 'number vector', col: 1, row: 0, accent: 'primary'},
+        {id: 'index', label: 'Vector index', sub: 'stored chunks', col: 2, row: 0, accent: 'secondary'},
+        {id: 'match', label: 'Top matches', sub: 'useful context', col: 2, row: 1, accent: 'success'},
+      ],
+      edges: [
+        {from: 'query', to: 'embed', label: 'encode'},
+        {from: 'embed', to: 'index', label: 'search'},
+        {from: 'index', to: 'match', label: 'rank'},
+      ],
+      reveal: [['query'], ['embed'], ['index'], ['match']],
+      trace: {path: ['query', 'embed', 'index', 'match'], label: 'following one query'},
+      narration: 'The question becomes an embedding. The index compares it with stored chunks, ranks the closest vectors, and returns useful context.',
+    },
+    {
+      type: 'compare',
+      durationInFrames: 240,
+      kicker: 'Why it works',
+      title: 'Words versus meaning',
+      left: {
+        heading: 'Keyword search',
+        points: ['looks for matching terms', 'great for exact names', 'misses paraphrases'],
+        accent: 'attention',
+      },
+      right: {
+        heading: 'Vector search',
+        points: ['compares semantic direction', 'finds related phrasing', 'needs a good embedding'],
+        accent: 'success',
+      },
+      narration: 'Keyword search matches terms. Vector search can connect paraphrases, related concepts, and differently worded questions.',
+    },
+    {
+      type: 'code',
+      durationInFrames: 360,
+      kicker: 'The loop',
+      title: 'Search in five lines',
+      lang: 'python',
+      filename: 'search.py',
+      accent: 'success',
+      lines: [
+        'query_vector = embed(question)',
+        'matches = index.search(query_vector, k=3)',
+        '',
+        'context = "\\n".join(match.text for match in matches)',
+        'answer = model.generate(question, context)',
+      ],
+      focus: [
+        {lines: [1, 2], note: 'Encode once, then ask the index for the nearest neighbors.'},
+        {lines: [4, 5], note: 'The retrieved text becomes grounded context for generation.'},
+      ],
+      narration: 'In code, embed the question, retrieve the nearest chunks, join them as context, and generate the answer.',
+    },
+    {
+      type: 'callout',
+      durationInFrames: 240,
+      text: 'Similarity is direction, not spelling.',
+      attribution: 'the mental model to keep',
+      accent: 'primary',
+      narration: 'The key idea is simple: vector similarity follows direction, not spelling.',
+    },
+    {
+      type: 'outro',
+      durationInFrames: 210,
+      recap: ['question → embedding', 'embedding → nearest chunks', 'chunks → grounded answer'],
+      tagline: 'AI systems, drawn out.',
+      narration: 'Encode the question, find its neighbors, and use them as context.',
+    },
+  ],
+};

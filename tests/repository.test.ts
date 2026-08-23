@@ -4,7 +4,7 @@ import {mkdtempSync, readFileSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {after, test} from 'node:test';
-import {StudioRepository} from '../server/db';
+import {MIGRATIONS_DIR, StudioRepository} from '@video-kit/datasource';
 
 const directory = mkdtempSync(join(tmpdir(), 'video-kit-studio-'));
 after(() => rmSync(directory, {recursive: true, force: true}));
@@ -53,7 +53,7 @@ test('migrations and seeds are idempotent', () => {
 test('an existing version-one database upgrades without losing projects', () => {
   const path = join(directory, 'upgrade.db');
   const database = new Database(path);
-  database.exec(readFileSync('migrations/001_initial.sql', 'utf8'));
+  database.exec(readFileSync(join(MIGRATIONS_DIR, '001_initial.sql'), 'utf8'));
   database
     .prepare(
       'INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)',
@@ -79,7 +79,7 @@ test('long-form migration upgrades untouched built-in catalog records', () => {
     '004_uploaded_narrations.sql',
     '005_narration_usage.sql',
   ]) {
-    database.exec(readFileSync(`migrations/${migration}`, 'utf8'));
+    database.exec(readFileSync(join(MIGRATIONS_DIR, migration), 'utf8'));
     database
       .prepare(
         'INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)',
@@ -168,8 +168,8 @@ test('long-form migration upgrades untouched built-in catalog records', () => {
 test('upgrade keeps the newest valid consent and reference takes active', () => {
   const path = join(directory, 'voice-repair.db');
   const database = new Database(path);
-  database.exec(readFileSync('migrations/001_initial.sql', 'utf8'));
-  database.exec(readFileSync('migrations/002_multilingual_voice.sql', 'utf8'));
+  database.exec(readFileSync(join(MIGRATIONS_DIR, '001_initial.sql'), 'utf8'));
+  database.exec(readFileSync(join(MIGRATIONS_DIR, '002_multilingual_voice.sql'), 'utf8'));
   const timestamp = '2026-08-01T10:00:00.000Z';
   database
     .prepare('INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)')

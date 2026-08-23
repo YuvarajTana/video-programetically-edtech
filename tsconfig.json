@@ -1,16 +1,90 @@
 {
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "tests",
+    "packages/*/src"
+  ],
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
-    "strict": true,
-    "noEmit": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true
-  },
-  "include": ["src", "scripts", "server", "shared", "studio", "tests"]
+    "baseUrl": ".",
+    "paths": {
+      "@video-kit/core": [
+        "./packages/core/src/index.ts"
+      ],
+      "@video-kit/core/*": [
+        "./packages/core/src/*"
+      ],
+      "@video-kit/catalog": [
+        "./packages/catalog/src/index.ts"
+      ],
+      "@video-kit/catalog/*": [
+        "./packages/catalog/src/*"
+      ],
+      "@video-kit/render-kit": [
+        "./packages/render-kit/src/exports.ts"
+      ],
+      "@video-kit/render-kit/entry": [
+        "./packages/render-kit/src/index.ts"
+      ],
+      "@video-kit/render-kit/scenes": [
+        "./packages/render-kit/src/scenes/registry.ts"
+      ],
+      "@video-kit/render-kit/timing": [
+        "./packages/render-kit/src/timing/wordTimings.ts"
+      ],
+      "@video-kit/render-kit/layout": [
+        "./packages/render-kit/src/design/formats.tsx"
+      ],
+      "@video-kit/render-engine": [
+        "./packages/render-engine/src/index.ts"
+      ],
+      "@video-kit/render-engine/pdf": [
+        "./packages/render-engine/src/pdf.ts"
+      ],
+      "@video-kit/datasource": [
+        "./packages/datasource/src/index.ts"
+      ],
+      "@video-kit/datasource/port": [
+        "./packages/datasource/src/port.ts"
+      ],
+      "@video-kit/datasource/sqlite": [
+        "./packages/datasource/src/sqlite/index.ts"
+      ],
+      "@video-kit/datasource/service": [
+        "./packages/datasource/src/http/service.ts"
+      ],
+      "@video-kit/datasource/client": [
+        "./packages/datasource/src/http/client.ts"
+      ],
+      "@video-kit/backend": [
+        "./packages/backend/src/app.ts"
+      ],
+      "@video-kit/backend/script-context": [
+        "./packages/backend/src/script-context.ts"
+      ],
+      "@video-kit/backend/openai-script": [
+        "./packages/backend/src/openai-script.ts"
+      ],
+      "@video-kit/backend/image-files": [
+        "./packages/backend/src/image-files.ts"
+      ],
+      "@video-kit/backend/voice-files": [
+        "./packages/backend/src/voice-files.ts"
+      ],
+      "@video-kit/backend/narration-files": [
+        "./packages/backend/src/narration-files.ts"
+      ],
+      "@video-kit/backend/pipeline": [
+        "./packages/backend/src/pipeline.ts"
+      ],
+      "@video-kit/cli/*": [
+        "./packages/cli/src/*"
+      ],
+      "@video-kit/datasource/specs": [
+        "./packages/datasource/src/sqlite/specs.ts"
+      ],
+      "@video-kit/backend/voice": [
+        "./packages/backend/src/jobs/voice/index.ts"
+      ]
+    }
+  }
 }

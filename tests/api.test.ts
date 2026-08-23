@@ -3,9 +3,9 @@ import {mkdtempSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {after, test} from 'node:test';
-import {createStudioApp} from '../server/app';
-import {StudioRepository} from '../server/db';
-import type {ScriptGenerator} from '../server/openai-script';
+import {createStudioApp} from '@video-kit/backend';
+import {StudioRepository} from '@video-kit/datasource';
+import type {ScriptGenerator} from '@video-kit/backend/openai-script';
 
 const directory = mkdtempSync(join(tmpdir(), 'video-kit-api-'));
 after(() => rmSync(directory, {recursive: true, force: true}));

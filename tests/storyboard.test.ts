@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {DEFAULT_TEMPLATES} from '../shared/defaults';
+import {DEFAULT_TEMPLATES} from '@video-kit/core/defaults';
 import {
   createSpecFromScript,
   scenesExceedNarrationRate,
   splitScript,
-} from '../shared/storyboard';
+} from '@video-kit/core/storyboard';
 
 test('blank-line paragraphs become deterministic template scenes', () => {
   const paragraphs = splitScript(

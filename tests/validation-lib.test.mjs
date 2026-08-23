@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {validateCollection, validateSpec} from '../scripts/validation-lib.mjs';
+import {validateCollection, validateSpec} from '../packages/cli/src/validation-lib.mjs';
 import {errorsOf, makeChannel, makeSpec, warningsOf} from './helpers.mjs';
 
 test('a well-formed spec produces no issues', () => {
@@ -169,6 +169,45 @@ test('sound effect cues must land inside the timeline', () => {
   });
   const issues = validateSpec(spec, makeChannel());
   assert.ok(errorsOf(issues).some((issue) => issue.path.endsWith('startFrame')));
+});
+
+test('a licensed music-led video may intentionally omit narration', () => {
+  const spec = makeSpec({
+    captions: false,
+    soundtrack: {
+      music: {
+        src: 'audio/music/momentum-grid.m4a',
+        credit: 'Video Kit',
+        license: 'original',
+      },
+    },
+  });
+  spec.scenes = spec.scenes.map(({narration: _narration, ...scene}) => scene);
+  const issues = validateSpec(spec, makeChannel());
+  assert.ok(
+    !errorsOf(issues).some((issue) => issue.message.includes('narrated scene')),
+  );
+});
+
+test('a music bed alone does not excuse missing narration', () => {
+  // captions default to true, so a spec that simply forgot its narration also
+  // has music sometimes. Only the deliberate shape — music bed plus captions
+  // off, which is what configureMusicOnlySpec produces — is exempt.
+  const spec = makeSpec({
+    soundtrack: {
+      music: {
+        src: 'audio/music/momentum-grid.m4a',
+        credit: 'Video Kit',
+        license: 'original',
+      },
+    },
+  });
+  spec.scenes = spec.scenes.map(({narration: _narration, ...scene}) => scene);
+  const issues = validateSpec(spec, makeChannel());
+  assert.ok(
+    errorsOf(issues).some((issue) => issue.message.includes('narrated scene')),
+    'music with captions left on was treated as deliberately music-led',
+  );
 });
 
 // ------------------------------------------------------------ collection

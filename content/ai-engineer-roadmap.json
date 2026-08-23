@@ -82,7 +82,7 @@
       "title": "RAG Systems",
       "goal": "Ground model responses in retrievable, attributable, and evaluated knowledge.",
       "topics": [
-        {"id": "rag.fundamentals", "slug": "rag-fundamentals", "title": "How RAG Works", "objective": "Trace ingestion, retrieval, context assembly, and grounded generation.", "level": "intermediate", "recommendedPreset": "reel-concept"},
+        {"id": "rag.fundamentals", "slug": "rag-fundamentals", "title": "How RAG Works", "objective": "Trace ingestion, retrieval, context assembly, and grounded generation.", "level": "intermediate", "recommendedPreset": "youtube-deep-dive"},
         {"id": "rag.chunking", "slug": "rag-chunking-strategies", "title": "RAG Chunking Strategies", "objective": "Choose chunk boundaries, overlap, and metadata for retrieval quality.", "level": "intermediate", "recommendedPreset": "reel-compare"},
         {"id": "rag.vector-databases", "slug": "vector-databases-for-rag", "title": "Vector Databases for RAG", "objective": "Explain indexing, filtering, similarity queries, and persistence.", "level": "intermediate", "recommendedPreset": "reel-concept"},
         {"id": "rag.hybrid-reranking", "slug": "hybrid-search-and-reranking", "title": "Hybrid Search and Reranking", "objective": "Combine lexical and semantic retrieval, then rerank candidates.", "level": "advanced", "recommendedPreset": "youtube-deep-dive"},

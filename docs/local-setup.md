@@ -77,7 +77,7 @@ The first launch downloads Remotion's Chrome Headless Shell automatically
 `*--style-guide--*` compositions preview every scene type in each channel's
 theme.
 
-Fonts are pre-baked into `src/design/fontFaces.ts`, so no font setup is
+Fonts are pre-baked into `packages/render-kit/src/design/fontFaces.ts`, so no font setup is
 needed. Only re-run `npm run fonts` if you swap the faces in `public/fonts/`.
 
 ## 6. Render
@@ -100,7 +100,7 @@ npm run validate -- learn/why-is-rain-wet
 npm run studio          # iterate on the spec visually
 ```
 
-Specs are data files in `src/videos/<channel>/`. Learn videos must declare
+Specs are data files in `packages/catalog/src/videos/<channel>/`. Learn videos must declare
 `audience.ageBand`, `editorial.objective`, and a `safetyStatus` of
 `reviewed`/`approved` before validation passes — that gate is intentional.
 
@@ -149,7 +149,7 @@ The scripts read plain environment variables (there is no dotenv loader), so
 either export them in your shell or use Node's built-in env-file support:
 
 ```bash
-node --env-file=.env scripts/publish.mjs tech/my-video --delivery youtube-short
+node --env-file=.env packages/cli/src/publish.mjs tech/my-video --delivery youtube-short
 ```
 
 Without `--execute`, publish is always a dry run that prints exactly what

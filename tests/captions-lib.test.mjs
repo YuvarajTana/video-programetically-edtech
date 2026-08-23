@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {toSrt, toVoScript} from '../scripts/captions-lib.mjs';
+import {toSrt, toVoScript} from '../packages/cli/src/captions-lib.mjs';
 
 const spec = {
   channel: 'tech',
@@ -49,7 +49,7 @@ test('toVoScript flags lines outside the channel pace band', () => {
 });
 
 test('mediaCreditsFor includes scene images and clips alongside audio', async () => {
-  const {mediaCreditsFor} = await import('../scripts/package-lib.mjs');
+  const {mediaCreditsFor} = await import('../packages/cli/src/package-lib.mjs');
   const credits = mediaCreditsFor({
     soundtrack: {
       music: {src: 'a.wav', credit: 'M', license: 'cc0'},

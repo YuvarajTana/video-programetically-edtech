@@ -1,0 +1,3660 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 300.0,
+  "cues": [
+    {
+      "index": 1,
+      "start": 0.0,
+      "end": 2.8,
+      "text": "Works here. Fails on another machine.",
+      "words": [
+        {
+          "text": "Works",
+          "start": 0.0,
+          "end": 0.4511
+        },
+        {
+          "text": "here.",
+          "start": 0.4511,
+          "end": 0.9253
+        },
+        {
+          "text": "Fails",
+          "start": 0.9253,
+          "end": 1.3764
+        },
+        {
+          "text": "on",
+          "start": 1.3764,
+          "end": 1.6618
+        },
+        {
+          "text": "another",
+          "start": 1.6618,
+          "end": 2.1956
+        },
+        {
+          "text": "machine.",
+          "start": 2.1956,
+          "end": 2.8
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "start": 3.0,
+      "end": 27.625,
+      "text": "Imagine a FastAPI service that needs a specific Python version, exact packages, a system library, environment variables, and MySQL. On your laptop, every piece is installed. On a teammate\u2019s laptop, Python is older, one library is missing, and the database uses different settings. The code is identical, but the environment is not. That mismatch causes slow setup, unpredictable bugs, and failed deployments.",
+      "words": [
+        {
+          "text": "Imagine",
+          "start": 3.0,
+          "end": 3.4606
+        },
+        {
+          "text": "a",
+          "start": 3.4606,
+          "end": 3.6347
+        },
+        {
+          "text": "FastAPI",
+          "start": 3.6347,
+          "end": 4.0953
+        },
+        {
+          "text": "service",
+          "start": 4.0953,
+          "end": 4.5558
+        },
+        {
+          "text": "that",
+          "start": 4.5558,
+          "end": 4.904
+        },
+        {
+          "text": "needs",
+          "start": 4.904,
+          "end": 5.2933
+        },
+        {
+          "text": "a",
+          "start": 5.2933,
+          "end": 5.4673
+        },
+        {
+          "text": "specific",
+          "start": 5.4673,
+          "end": 5.9597
+        },
+        {
+          "text": "Python",
+          "start": 5.9597,
+          "end": 6.3862
+        },
+        {
+          "text": "version,",
+          "start": 6.3862,
+          "end": 6.8815
+        },
+        {
+          "text": "exact",
+          "start": 6.8815,
+          "end": 7.2708
+        },
+        {
+          "text": "packages,",
+          "start": 7.2708,
+          "end": 7.798
+        },
+        {
+          "text": "a",
+          "start": 7.798,
+          "end": 7.9721
+        },
+        {
+          "text": "system",
+          "start": 7.9721,
+          "end": 8.3985
+        },
+        {
+          "text": "library,",
+          "start": 8.3985,
+          "end": 8.8939
+        },
+        {
+          "text": "environment",
+          "start": 8.8939,
+          "end": 9.4713
+        },
+        {
+          "text": "variables,",
+          "start": 9.4713,
+          "end": 10.0284
+        },
+        {
+          "text": "and",
+          "start": 10.0284,
+          "end": 10.3299
+        },
+        {
+          "text": "MySQL.",
+          "start": 10.3299,
+          "end": 10.7801
+        },
+        {
+          "text": "On",
+          "start": 10.7801,
+          "end": 11.0263
+        },
+        {
+          "text": "your",
+          "start": 11.0263,
+          "end": 11.3744
+        },
+        {
+          "text": "laptop,",
+          "start": 11.3744,
+          "end": 11.8357
+        },
+        {
+          "text": "every",
+          "start": 11.8357,
+          "end": 12.2249
+        },
+        {
+          "text": "piece",
+          "start": 12.2249,
+          "end": 12.6142
+        },
+        {
+          "text": "is",
+          "start": 12.6142,
+          "end": 12.8604
+        },
+        {
+          "text": "installed.",
+          "start": 12.8604,
+          "end": 13.4436
+        },
+        {
+          "text": "On",
+          "start": 13.4436,
+          "end": 13.6898
+        },
+        {
+          "text": "a",
+          "start": 13.6898,
+          "end": 13.8638
+        },
+        {
+          "text": "teammate\u2019s",
+          "start": 13.8638,
+          "end": 14.3861
+        },
+        {
+          "text": "laptop,",
+          "start": 14.3861,
+          "end": 14.8473
+        },
+        {
+          "text": "Python",
+          "start": 14.8473,
+          "end": 15.2737
+        },
+        {
+          "text": "is",
+          "start": 15.2737,
+          "end": 15.5199
+        },
+        {
+          "text": "older,",
+          "start": 15.5199,
+          "end": 15.944
+        },
+        {
+          "text": "one",
+          "start": 15.944,
+          "end": 16.2455
+        },
+        {
+          "text": "library",
+          "start": 16.2455,
+          "end": 16.7061
+        },
+        {
+          "text": "is",
+          "start": 16.7061,
+          "end": 16.9523
+        },
+        {
+          "text": "missing,",
+          "start": 16.9523,
+          "end": 17.4477
+        },
+        {
+          "text": "and",
+          "start": 17.4477,
+          "end": 17.7492
+        },
+        {
+          "text": "the",
+          "start": 17.7492,
+          "end": 18.0508
+        },
+        {
+          "text": "database",
+          "start": 18.0508,
+          "end": 18.5431
+        },
+        {
+          "text": "uses",
+          "start": 18.5431,
+          "end": 18.8913
+        },
+        {
+          "text": "different",
+          "start": 18.8913,
+          "end": 19.4136
+        },
+        {
+          "text": "settings.",
+          "start": 19.4136,
+          "end": 19.9669
+        },
+        {
+          "text": "The",
+          "start": 19.9669,
+          "end": 20.2684
+        },
+        {
+          "text": "code",
+          "start": 20.2684,
+          "end": 20.6166
+        },
+        {
+          "text": "is",
+          "start": 20.6166,
+          "end": 20.8628
+        },
+        {
+          "text": "identical,",
+          "start": 20.8628,
+          "end": 21.4198
+        },
+        {
+          "text": "but",
+          "start": 21.4198,
+          "end": 21.7214
+        },
+        {
+          "text": "the",
+          "start": 21.7214,
+          "end": 22.0229
+        },
+        {
+          "text": "environment",
+          "start": 22.0229,
+          "end": 22.6002
+        },
+        {
+          "text": "is",
+          "start": 22.6002,
+          "end": 22.8464
+        },
+        {
+          "text": "not.",
+          "start": 22.8464,
+          "end": 23.2089
+        },
+        {
+          "text": "That",
+          "start": 23.2089,
+          "end": 23.5571
+        },
+        {
+          "text": "mismatch",
+          "start": 23.5571,
+          "end": 24.0494
+        },
+        {
+          "text": "causes",
+          "start": 24.0494,
+          "end": 24.4759
+        },
+        {
+          "text": "slow",
+          "start": 24.4759,
+          "end": 24.824
+        },
+        {
+          "text": "setup,",
+          "start": 24.824,
+          "end": 25.2481
+        },
+        {
+          "text": "unpredictable",
+          "start": 25.2481,
+          "end": 25.8758
+        },
+        {
+          "text": "bugs,",
+          "start": 25.8758,
+          "end": 26.2588
+        },
+        {
+          "text": "and",
+          "start": 26.2588,
+          "end": 26.5603
+        },
+        {
+          "text": "failed",
+          "start": 26.5603,
+          "end": 26.9867
+        },
+        {
+          "text": "deployments.",
+          "start": 26.9867,
+          "end": 27.625
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "start": 29.0,
+      "end": 52.35,
+      "text": "Docker is a platform for building, shipping, and running applications in containers. You describe the environment as code, build it into a standardized image, and start that image as an isolated process. The image carries the app, runtime, libraries, and configuration files it needs. The container still uses the host operating system\u2019s kernel; Docker is not packaging an entire computer.",
+      "words": [
+        {
+          "text": "Docker",
+          "start": 29.0,
+          "end": 29.4224
+        },
+        {
+          "text": "is",
+          "start": 29.4224,
+          "end": 29.6662
+        },
+        {
+          "text": "a",
+          "start": 29.6662,
+          "end": 29.8387
+        },
+        {
+          "text": "platform",
+          "start": 29.8387,
+          "end": 30.3264
+        },
+        {
+          "text": "for",
+          "start": 30.3264,
+          "end": 30.6251
+        },
+        {
+          "text": "building,",
+          "start": 30.6251,
+          "end": 31.1473
+        },
+        {
+          "text": "shipping,",
+          "start": 31.1473,
+          "end": 31.6695
+        },
+        {
+          "text": "and",
+          "start": 31.6695,
+          "end": 31.9682
+        },
+        {
+          "text": "running",
+          "start": 31.9682,
+          "end": 32.4244
+        },
+        {
+          "text": "applications",
+          "start": 32.4244,
+          "end": 33.0218
+        },
+        {
+          "text": "in",
+          "start": 33.0218,
+          "end": 33.2656
+        },
+        {
+          "text": "containers.",
+          "start": 33.2656,
+          "end": 33.8713
+        },
+        {
+          "text": "You",
+          "start": 33.8713,
+          "end": 34.1699
+        },
+        {
+          "text": "describe",
+          "start": 34.1699,
+          "end": 34.6577
+        },
+        {
+          "text": "the",
+          "start": 34.6577,
+          "end": 34.9563
+        },
+        {
+          "text": "environment",
+          "start": 34.9563,
+          "end": 35.5283
+        },
+        {
+          "text": "as",
+          "start": 35.5283,
+          "end": 35.7721
+        },
+        {
+          "text": "code,",
+          "start": 35.7721,
+          "end": 36.1515
+        },
+        {
+          "text": "build",
+          "start": 36.1515,
+          "end": 36.5371
+        },
+        {
+          "text": "it",
+          "start": 36.5371,
+          "end": 36.7809
+        },
+        {
+          "text": "into",
+          "start": 36.7809,
+          "end": 37.1258
+        },
+        {
+          "text": "a",
+          "start": 37.1258,
+          "end": 37.2982
+        },
+        {
+          "text": "standardized",
+          "start": 37.2982,
+          "end": 37.8956
+        },
+        {
+          "text": "image,",
+          "start": 37.8956,
+          "end": 38.3157
+        },
+        {
+          "text": "and",
+          "start": 38.3157,
+          "end": 38.6143
+        },
+        {
+          "text": "start",
+          "start": 38.6143,
+          "end": 38.9999
+        },
+        {
+          "text": "that",
+          "start": 38.9999,
+          "end": 39.3448
+        },
+        {
+          "text": "image",
+          "start": 39.3448,
+          "end": 39.7304
+        },
+        {
+          "text": "as",
+          "start": 39.7304,
+          "end": 39.9742
+        },
+        {
+          "text": "an",
+          "start": 39.9742,
+          "end": 40.2181
+        },
+        {
+          "text": "isolated",
+          "start": 40.2181,
+          "end": 40.7058
+        },
+        {
+          "text": "process.",
+          "start": 40.7058,
+          "end": 41.2224
+        },
+        {
+          "text": "The",
+          "start": 41.2224,
+          "end": 41.5211
+        },
+        {
+          "text": "image",
+          "start": 41.5211,
+          "end": 41.9067
+        },
+        {
+          "text": "carries",
+          "start": 41.9067,
+          "end": 42.3629
+        },
+        {
+          "text": "the",
+          "start": 42.3629,
+          "end": 42.6616
+        },
+        {
+          "text": "app,",
+          "start": 42.6616,
+          "end": 42.9947
+        },
+        {
+          "text": "runtime,",
+          "start": 42.9947,
+          "end": 43.4854
+        },
+        {
+          "text": "libraries,",
+          "start": 43.4854,
+          "end": 44.0372
+        },
+        {
+          "text": "and",
+          "start": 44.0372,
+          "end": 44.3359
+        },
+        {
+          "text": "configuration",
+          "start": 44.3359,
+          "end": 44.9576
+        },
+        {
+          "text": "files",
+          "start": 44.9576,
+          "end": 45.3432
+        },
+        {
+          "text": "it",
+          "start": 45.3432,
+          "end": 45.5871
+        },
+        {
+          "text": "needs.",
+          "start": 45.5871,
+          "end": 46.033
+        },
+        {
+          "text": "The",
+          "start": 46.033,
+          "end": 46.3317
+        },
+        {
+          "text": "container",
+          "start": 46.3317,
+          "end": 46.849
+        },
+        {
+          "text": "still",
+          "start": 46.849,
+          "end": 47.2346
+        },
+        {
+          "text": "uses",
+          "start": 47.2346,
+          "end": 47.5795
+        },
+        {
+          "text": "the",
+          "start": 47.5795,
+          "end": 47.8781
+        },
+        {
+          "text": "host",
+          "start": 47.8781,
+          "end": 48.223
+        },
+        {
+          "text": "operating",
+          "start": 48.223,
+          "end": 48.7403
+        },
+        {
+          "text": "system\u2019s",
+          "start": 48.7403,
+          "end": 49.1966
+        },
+        {
+          "text": "kernel;",
+          "start": 49.1966,
+          "end": 49.6534
+        },
+        {
+          "text": "Docker",
+          "start": 49.6534,
+          "end": 50.0758
+        },
+        {
+          "text": "is",
+          "start": 50.0758,
+          "end": 50.3197
+        },
+        {
+          "text": "not",
+          "start": 50.3197,
+          "end": 50.6184
+        },
+        {
+          "text": "packaging",
+          "start": 50.6184,
+          "end": 51.1357
+        },
+        {
+          "text": "an",
+          "start": 51.1357,
+          "end": 51.3795
+        },
+        {
+          "text": "entire",
+          "start": 51.3795,
+          "end": 51.8019
+        },
+        {
+          "text": "computer.",
+          "start": 51.8019,
+          "end": 52.35
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "start": 53.0,
+      "end": 74.7,
+      "text": "When you type a Docker command, the client sends an API request to the Docker daemon. The daemon builds images and manages containers, networks, and volumes. If an image is missing, Docker can pull it from a registry such as Docker Hub. At runtime, the daemon creates the isolated process, attaches storage and networking, and starts the image\u2019s default command.",
+      "words": [
+        {
+          "text": "When",
+          "start": 53.0,
+          "end": 53.3314
+        },
+        {
+          "text": "you",
+          "start": 53.3314,
+          "end": 53.6184
+        },
+        {
+          "text": "type",
+          "start": 53.6184,
+          "end": 53.9497
+        },
+        {
+          "text": "a",
+          "start": 53.9497,
+          "end": 54.1154
+        },
+        {
+          "text": "Docker",
+          "start": 54.1154,
+          "end": 54.5213
+        },
+        {
+          "text": "command,",
+          "start": 54.5213,
+          "end": 54.9928
+        },
+        {
+          "text": "the",
+          "start": 54.9928,
+          "end": 55.2797
+        },
+        {
+          "text": "client",
+          "start": 55.2797,
+          "end": 55.6856
+        },
+        {
+          "text": "sends",
+          "start": 55.6856,
+          "end": 56.0561
+        },
+        {
+          "text": "an",
+          "start": 56.0561,
+          "end": 56.2904
+        },
+        {
+          "text": "API",
+          "start": 56.2904,
+          "end": 56.5774
+        },
+        {
+          "text": "request",
+          "start": 56.5774,
+          "end": 57.0157
+        },
+        {
+          "text": "to",
+          "start": 57.0157,
+          "end": 57.2501
+        },
+        {
+          "text": "the",
+          "start": 57.2501,
+          "end": 57.537
+        },
+        {
+          "text": "Docker",
+          "start": 57.537,
+          "end": 57.9429
+        },
+        {
+          "text": "daemon.",
+          "start": 57.9429,
+          "end": 58.4067
+        },
+        {
+          "text": "The",
+          "start": 58.4067,
+          "end": 58.6937
+        },
+        {
+          "text": "daemon",
+          "start": 58.6937,
+          "end": 59.0995
+        },
+        {
+          "text": "builds",
+          "start": 59.0995,
+          "end": 59.5054
+        },
+        {
+          "text": "images",
+          "start": 59.5054,
+          "end": 59.9112
+        },
+        {
+          "text": "and",
+          "start": 59.9112,
+          "end": 60.1982
+        },
+        {
+          "text": "manages",
+          "start": 60.1982,
+          "end": 60.6366
+        },
+        {
+          "text": "containers,",
+          "start": 60.6366,
+          "end": 61.1937
+        },
+        {
+          "text": "networks,",
+          "start": 61.1937,
+          "end": 61.6954
+        },
+        {
+          "text": "and",
+          "start": 61.6954,
+          "end": 61.9824
+        },
+        {
+          "text": "volumes.",
+          "start": 61.9824,
+          "end": 62.4788
+        },
+        {
+          "text": "If",
+          "start": 62.4788,
+          "end": 62.7131
+        },
+        {
+          "text": "an",
+          "start": 62.7131,
+          "end": 62.9474
+        },
+        {
+          "text": "image",
+          "start": 62.9474,
+          "end": 63.3179
+        },
+        {
+          "text": "is",
+          "start": 63.3179,
+          "end": 63.5522
+        },
+        {
+          "text": "missing,",
+          "start": 63.5522,
+          "end": 64.0237
+        },
+        {
+          "text": "Docker",
+          "start": 64.0237,
+          "end": 64.4296
+        },
+        {
+          "text": "can",
+          "start": 64.4296,
+          "end": 64.7165
+        },
+        {
+          "text": "pull",
+          "start": 64.7165,
+          "end": 65.0479
+        },
+        {
+          "text": "it",
+          "start": 65.0479,
+          "end": 65.2822
+        },
+        {
+          "text": "from",
+          "start": 65.2822,
+          "end": 65.6136
+        },
+        {
+          "text": "a",
+          "start": 65.6136,
+          "end": 65.7793
+        },
+        {
+          "text": "registry",
+          "start": 65.7793,
+          "end": 66.2479
+        },
+        {
+          "text": "such",
+          "start": 66.2479,
+          "end": 66.5793
+        },
+        {
+          "text": "as",
+          "start": 66.5793,
+          "end": 66.8136
+        },
+        {
+          "text": "Docker",
+          "start": 66.8136,
+          "end": 67.2195
+        },
+        {
+          "text": "Hub.",
+          "start": 67.2195,
+          "end": 67.5644
+        },
+        {
+          "text": "At",
+          "start": 67.5644,
+          "end": 67.7988
+        },
+        {
+          "text": "runtime,",
+          "start": 67.7988,
+          "end": 68.2703
+        },
+        {
+          "text": "the",
+          "start": 68.2703,
+          "end": 68.5572
+        },
+        {
+          "text": "daemon",
+          "start": 68.5572,
+          "end": 68.9631
+        },
+        {
+          "text": "creates",
+          "start": 68.9631,
+          "end": 69.4014
+        },
+        {
+          "text": "the",
+          "start": 69.4014,
+          "end": 69.6884
+        },
+        {
+          "text": "isolated",
+          "start": 69.6884,
+          "end": 70.1571
+        },
+        {
+          "text": "process,",
+          "start": 70.1571,
+          "end": 70.6286
+        },
+        {
+          "text": "attaches",
+          "start": 70.6286,
+          "end": 71.0972
+        },
+        {
+          "text": "storage",
+          "start": 71.0972,
+          "end": 71.5356
+        },
+        {
+          "text": "and",
+          "start": 71.5356,
+          "end": 71.8225
+        },
+        {
+          "text": "networking,",
+          "start": 71.8225,
+          "end": 72.3796
+        },
+        {
+          "text": "and",
+          "start": 72.3796,
+          "end": 72.6666
+        },
+        {
+          "text": "starts",
+          "start": 72.6666,
+          "end": 73.0725
+        },
+        {
+          "text": "the",
+          "start": 73.0725,
+          "end": 73.3594
+        },
+        {
+          "text": "image\u2019s",
+          "start": 73.3594,
+          "end": 73.7653
+        },
+        {
+          "text": "default",
+          "start": 73.7653,
+          "end": 74.2036
+        },
+        {
+          "text": "command.",
+          "start": 74.2036,
+          "end": 74.7
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "start": 78.0,
+      "end": 99.775,
+      "text": "An image and a container are related, but different. The image is an immutable, layered package: a reusable blueprint. A container is one running instance, with runtime settings and a writable layer. Many containers can start from one image. Remove a container, and changes outside persistent storage disappear. The original image remains unchanged and reusable.",
+      "words": [
+        {
+          "text": "An",
+          "start": 78.0,
+          "end": 78.2448
+        },
+        {
+          "text": "image",
+          "start": 78.2448,
+          "end": 78.6319
+        },
+        {
+          "text": "and",
+          "start": 78.6319,
+          "end": 78.9318
+        },
+        {
+          "text": "a",
+          "start": 78.9318,
+          "end": 79.1049
+        },
+        {
+          "text": "container",
+          "start": 79.1049,
+          "end": 79.6242
+        },
+        {
+          "text": "are",
+          "start": 79.6242,
+          "end": 79.9241
+        },
+        {
+          "text": "related,",
+          "start": 79.9241,
+          "end": 80.4167
+        },
+        {
+          "text": "but",
+          "start": 80.4167,
+          "end": 80.7166
+        },
+        {
+          "text": "different.",
+          "start": 80.7166,
+          "end": 81.2965
+        },
+        {
+          "text": "The",
+          "start": 81.2965,
+          "end": 81.5964
+        },
+        {
+          "text": "image",
+          "start": 81.5964,
+          "end": 81.9835
+        },
+        {
+          "text": "is",
+          "start": 81.9835,
+          "end": 82.2283
+        },
+        {
+          "text": "an",
+          "start": 82.2283,
+          "end": 82.4731
+        },
+        {
+          "text": "immutable,",
+          "start": 82.4731,
+          "end": 83.0271
+        },
+        {
+          "text": "layered",
+          "start": 83.0271,
+          "end": 83.4851
+        },
+        {
+          "text": "package:",
+          "start": 83.4851,
+          "end": 83.9778
+        },
+        {
+          "text": "a",
+          "start": 83.9778,
+          "end": 84.1509
+        },
+        {
+          "text": "reusable",
+          "start": 84.1509,
+          "end": 84.6405
+        },
+        {
+          "text": "blueprint.",
+          "start": 84.6405,
+          "end": 85.2205
+        },
+        {
+          "text": "A",
+          "start": 85.2205,
+          "end": 85.3936
+        },
+        {
+          "text": "container",
+          "start": 85.3936,
+          "end": 85.9129
+        },
+        {
+          "text": "is",
+          "start": 85.9129,
+          "end": 86.1578
+        },
+        {
+          "text": "one",
+          "start": 86.1578,
+          "end": 86.4576
+        },
+        {
+          "text": "running",
+          "start": 86.4576,
+          "end": 86.9156
+        },
+        {
+          "text": "instance,",
+          "start": 86.9156,
+          "end": 87.4399
+        },
+        {
+          "text": "with",
+          "start": 87.4399,
+          "end": 87.7861
+        },
+        {
+          "text": "runtime",
+          "start": 87.7861,
+          "end": 88.2442
+        },
+        {
+          "text": "settings",
+          "start": 88.2442,
+          "end": 88.7338
+        },
+        {
+          "text": "and",
+          "start": 88.7338,
+          "end": 89.0337
+        },
+        {
+          "text": "a",
+          "start": 89.0337,
+          "end": 89.2068
+        },
+        {
+          "text": "writable",
+          "start": 89.2068,
+          "end": 89.6964
+        },
+        {
+          "text": "layer.",
+          "start": 89.6964,
+          "end": 90.1441
+        },
+        {
+          "text": "Many",
+          "start": 90.1441,
+          "end": 90.4903
+        },
+        {
+          "text": "containers",
+          "start": 90.4903,
+          "end": 91.0378
+        },
+        {
+          "text": "can",
+          "start": 91.0378,
+          "end": 91.3376
+        },
+        {
+          "text": "start",
+          "start": 91.3376,
+          "end": 91.7247
+        },
+        {
+          "text": "from",
+          "start": 91.7247,
+          "end": 92.071
+        },
+        {
+          "text": "one",
+          "start": 92.071,
+          "end": 92.3708
+        },
+        {
+          "text": "image.",
+          "start": 92.3708,
+          "end": 92.8185
+        },
+        {
+          "text": "Remove",
+          "start": 92.8185,
+          "end": 93.2426
+        },
+        {
+          "text": "a",
+          "start": 93.2426,
+          "end": 93.4157
+        },
+        {
+          "text": "container,",
+          "start": 93.4157,
+          "end": 93.9696
+        },
+        {
+          "text": "and",
+          "start": 93.9696,
+          "end": 94.2695
+        },
+        {
+          "text": "changes",
+          "start": 94.2695,
+          "end": 94.7275
+        },
+        {
+          "text": "outside",
+          "start": 94.7275,
+          "end": 95.1855
+        },
+        {
+          "text": "persistent",
+          "start": 95.1855,
+          "end": 95.733
+        },
+        {
+          "text": "storage",
+          "start": 95.733,
+          "end": 96.191
+        },
+        {
+          "text": "disappear.",
+          "start": 96.191,
+          "end": 96.7709
+        },
+        {
+          "text": "The",
+          "start": 96.7709,
+          "end": 97.0708
+        },
+        {
+          "text": "original",
+          "start": 97.0708,
+          "end": 97.5604
+        },
+        {
+          "text": "image",
+          "start": 97.5604,
+          "end": 97.9475
+        },
+        {
+          "text": "remains",
+          "start": 97.9475,
+          "end": 98.4056
+        },
+        {
+          "text": "unchanged",
+          "start": 98.4056,
+          "end": 98.9249
+        },
+        {
+          "text": "and",
+          "start": 98.9249,
+          "end": 99.2248
+        },
+        {
+          "text": "reusable.",
+          "start": 99.2248,
+          "end": 99.775
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "start": 102.0,
+      "end": 125.95,
+      "text": "A virtual machine includes a full guest operating system above a hypervisor. A container usually runs as an isolated process while sharing the host kernel. That often reduces startup time and overhead, but it is not magic. Containers must match a supported kernel and architecture. On macOS or Windows, Docker Desktop uses a Linux virtual machine behind the scenes to run Linux containers.",
+      "words": [
+        {
+          "text": "A",
+          "start": 102.0,
+          "end": 102.1729
+        },
+        {
+          "text": "virtual",
+          "start": 102.1729,
+          "end": 102.6303
+        },
+        {
+          "text": "machine",
+          "start": 102.6303,
+          "end": 103.0877
+        },
+        {
+          "text": "includes",
+          "start": 103.0877,
+          "end": 103.5767
+        },
+        {
+          "text": "a",
+          "start": 103.5767,
+          "end": 103.7495
+        },
+        {
+          "text": "full",
+          "start": 103.7495,
+          "end": 104.0953
+        },
+        {
+          "text": "guest",
+          "start": 104.0953,
+          "end": 104.4819
+        },
+        {
+          "text": "operating",
+          "start": 104.4819,
+          "end": 105.0005
+        },
+        {
+          "text": "system",
+          "start": 105.0005,
+          "end": 105.424
+        },
+        {
+          "text": "above",
+          "start": 105.424,
+          "end": 105.8106
+        },
+        {
+          "text": "a",
+          "start": 105.8106,
+          "end": 105.9834
+        },
+        {
+          "text": "hypervisor.",
+          "start": 105.9834,
+          "end": 106.5906
+        },
+        {
+          "text": "A",
+          "start": 106.5906,
+          "end": 106.7635
+        },
+        {
+          "text": "container",
+          "start": 106.7635,
+          "end": 107.2822
+        },
+        {
+          "text": "usually",
+          "start": 107.2822,
+          "end": 107.7396
+        },
+        {
+          "text": "runs",
+          "start": 107.7396,
+          "end": 108.0853
+        },
+        {
+          "text": "as",
+          "start": 108.0853,
+          "end": 108.3298
+        },
+        {
+          "text": "an",
+          "start": 108.3298,
+          "end": 108.5743
+        },
+        {
+          "text": "isolated",
+          "start": 108.5743,
+          "end": 109.0633
+        },
+        {
+          "text": "process",
+          "start": 109.0633,
+          "end": 109.5207
+        },
+        {
+          "text": "while",
+          "start": 109.5207,
+          "end": 109.9073
+        },
+        {
+          "text": "sharing",
+          "start": 109.9073,
+          "end": 110.3647
+        },
+        {
+          "text": "the",
+          "start": 110.3647,
+          "end": 110.6641
+        },
+        {
+          "text": "host",
+          "start": 110.6641,
+          "end": 111.0099
+        },
+        {
+          "text": "kernel.",
+          "start": 111.0099,
+          "end": 111.4938
+        },
+        {
+          "text": "That",
+          "start": 111.4938,
+          "end": 111.8396
+        },
+        {
+          "text": "often",
+          "start": 111.8396,
+          "end": 112.2262
+        },
+        {
+          "text": "reduces",
+          "start": 112.2262,
+          "end": 112.6836
+        },
+        {
+          "text": "startup",
+          "start": 112.6836,
+          "end": 113.141
+        },
+        {
+          "text": "time",
+          "start": 113.141,
+          "end": 113.4867
+        },
+        {
+          "text": "and",
+          "start": 113.4867,
+          "end": 113.7862
+        },
+        {
+          "text": "overhead,",
+          "start": 113.7862,
+          "end": 114.3097
+        },
+        {
+          "text": "but",
+          "start": 114.3097,
+          "end": 114.6092
+        },
+        {
+          "text": "it",
+          "start": 114.6092,
+          "end": 114.8537
+        },
+        {
+          "text": "is",
+          "start": 114.8537,
+          "end": 115.0981
+        },
+        {
+          "text": "not",
+          "start": 115.0981,
+          "end": 115.3976
+        },
+        {
+          "text": "magic.",
+          "start": 115.3976,
+          "end": 115.8447
+        },
+        {
+          "text": "Containers",
+          "start": 115.8447,
+          "end": 116.3914
+        },
+        {
+          "text": "must",
+          "start": 116.3914,
+          "end": 116.7371
+        },
+        {
+          "text": "match",
+          "start": 116.7371,
+          "end": 117.1237
+        },
+        {
+          "text": "a",
+          "start": 117.1237,
+          "end": 117.2966
+        },
+        {
+          "text": "supported",
+          "start": 117.2966,
+          "end": 117.8152
+        },
+        {
+          "text": "kernel",
+          "start": 117.8152,
+          "end": 118.2387
+        },
+        {
+          "text": "and",
+          "start": 118.2387,
+          "end": 118.5381
+        },
+        {
+          "text": "architecture.",
+          "start": 118.5381,
+          "end": 119.1975
+        },
+        {
+          "text": "On",
+          "start": 119.1975,
+          "end": 119.442
+        },
+        {
+          "text": "macOS",
+          "start": 119.442,
+          "end": 119.8286
+        },
+        {
+          "text": "or",
+          "start": 119.8286,
+          "end": 120.0731
+        },
+        {
+          "text": "Windows,",
+          "start": 120.0731,
+          "end": 120.565
+        },
+        {
+          "text": "Docker",
+          "start": 120.565,
+          "end": 120.9885
+        },
+        {
+          "text": "Desktop",
+          "start": 120.9885,
+          "end": 121.4459
+        },
+        {
+          "text": "uses",
+          "start": 121.4459,
+          "end": 121.7917
+        },
+        {
+          "text": "a",
+          "start": 121.7917,
+          "end": 121.9645
+        },
+        {
+          "text": "Linux",
+          "start": 121.9645,
+          "end": 122.3511
+        },
+        {
+          "text": "virtual",
+          "start": 122.3511,
+          "end": 122.8085
+        },
+        {
+          "text": "machine",
+          "start": 122.8085,
+          "end": 123.2659
+        },
+        {
+          "text": "behind",
+          "start": 123.2659,
+          "end": 123.6894
+        },
+        {
+          "text": "the",
+          "start": 123.6894,
+          "end": 123.9888
+        },
+        {
+          "text": "scenes",
+          "start": 123.9888,
+          "end": 124.4123
+        },
+        {
+          "text": "to",
+          "start": 124.4123,
+          "end": 124.6568
+        },
+        {
+          "text": "run",
+          "start": 124.6568,
+          "end": 124.9562
+        },
+        {
+          "text": "Linux",
+          "start": 124.9562,
+          "end": 125.3428
+        },
+        {
+          "text": "containers.",
+          "start": 125.3428,
+          "end": 125.95
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "start": 127.0,
+      "end": 153.05,
+      "text": "A Dockerfile is the recipe for an image. FROM selects a Python base image. WORKDIR sets the directory for later instructions. COPY brings in the dependency file. RUN installs packages while the image is being built. A second COPY adds the application code. USER avoids running the app as root, and CMD declares what starts when a container runs. Docker caches unchanged layers, so later builds can reuse earlier work.",
+      "words": [
+        {
+          "text": "A",
+          "start": 127.0,
+          "end": 127.1714
+        },
+        {
+          "text": "Dockerfile",
+          "start": 127.1714,
+          "end": 127.7134
+        },
+        {
+          "text": "is",
+          "start": 127.7134,
+          "end": 127.9557
+        },
+        {
+          "text": "the",
+          "start": 127.9557,
+          "end": 128.2526
+        },
+        {
+          "text": "recipe",
+          "start": 128.2526,
+          "end": 128.6724
+        },
+        {
+          "text": "for",
+          "start": 128.6724,
+          "end": 128.9693
+        },
+        {
+          "text": "an",
+          "start": 128.9693,
+          "end": 129.2116
+        },
+        {
+          "text": "image.",
+          "start": 129.2116,
+          "end": 129.6549
+        },
+        {
+          "text": "FROM",
+          "start": 129.6549,
+          "end": 129.9976
+        },
+        {
+          "text": "selects",
+          "start": 129.9976,
+          "end": 130.4511
+        },
+        {
+          "text": "a",
+          "start": 130.4511,
+          "end": 130.6225
+        },
+        {
+          "text": "Python",
+          "start": 130.6225,
+          "end": 131.0423
+        },
+        {
+          "text": "base",
+          "start": 131.0423,
+          "end": 131.385
+        },
+        {
+          "text": "image.",
+          "start": 131.385,
+          "end": 131.8283
+        },
+        {
+          "text": "WORKDIR",
+          "start": 131.8283,
+          "end": 132.2817
+        },
+        {
+          "text": "sets",
+          "start": 132.2817,
+          "end": 132.6245
+        },
+        {
+          "text": "the",
+          "start": 132.6245,
+          "end": 132.9213
+        },
+        {
+          "text": "directory",
+          "start": 132.9213,
+          "end": 133.4355
+        },
+        {
+          "text": "for",
+          "start": 133.4355,
+          "end": 133.7324
+        },
+        {
+          "text": "later",
+          "start": 133.7324,
+          "end": 134.1156
+        },
+        {
+          "text": "instructions.",
+          "start": 134.1156,
+          "end": 134.7693
+        },
+        {
+          "text": "COPY",
+          "start": 134.7693,
+          "end": 135.112
+        },
+        {
+          "text": "brings",
+          "start": 135.112,
+          "end": 135.5319
+        },
+        {
+          "text": "in",
+          "start": 135.5319,
+          "end": 135.7742
+        },
+        {
+          "text": "the",
+          "start": 135.7742,
+          "end": 136.0711
+        },
+        {
+          "text": "dependency",
+          "start": 136.0711,
+          "end": 136.6131
+        },
+        {
+          "text": "file.",
+          "start": 136.6131,
+          "end": 137.0158
+        },
+        {
+          "text": "RUN",
+          "start": 137.0158,
+          "end": 137.3127
+        },
+        {
+          "text": "installs",
+          "start": 137.3127,
+          "end": 137.7974
+        },
+        {
+          "text": "packages",
+          "start": 137.7974,
+          "end": 138.2822
+        },
+        {
+          "text": "while",
+          "start": 138.2822,
+          "end": 138.6654
+        },
+        {
+          "text": "the",
+          "start": 138.6654,
+          "end": 138.9623
+        },
+        {
+          "text": "image",
+          "start": 138.9623,
+          "end": 139.3455
+        },
+        {
+          "text": "is",
+          "start": 139.3455,
+          "end": 139.5879
+        },
+        {
+          "text": "being",
+          "start": 139.5879,
+          "end": 139.9711
+        },
+        {
+          "text": "built.",
+          "start": 139.9711,
+          "end": 140.4143
+        },
+        {
+          "text": "A",
+          "start": 140.4143,
+          "end": 140.5857
+        },
+        {
+          "text": "second",
+          "start": 140.5857,
+          "end": 141.0055
+        },
+        {
+          "text": "COPY",
+          "start": 141.0055,
+          "end": 141.3483
+        },
+        {
+          "text": "adds",
+          "start": 141.3483,
+          "end": 141.6911
+        },
+        {
+          "text": "the",
+          "start": 141.6911,
+          "end": 141.9879
+        },
+        {
+          "text": "application",
+          "start": 141.9879,
+          "end": 142.5564
+        },
+        {
+          "text": "code.",
+          "start": 142.5564,
+          "end": 142.9591
+        },
+        {
+          "text": "USER",
+          "start": 142.9591,
+          "end": 143.3019
+        },
+        {
+          "text": "avoids",
+          "start": 143.3019,
+          "end": 143.7217
+        },
+        {
+          "text": "running",
+          "start": 143.7217,
+          "end": 144.1752
+        },
+        {
+          "text": "the",
+          "start": 144.1752,
+          "end": 144.472
+        },
+        {
+          "text": "app",
+          "start": 144.472,
+          "end": 144.7689
+        },
+        {
+          "text": "as",
+          "start": 144.7689,
+          "end": 145.0112
+        },
+        {
+          "text": "root,",
+          "start": 145.0112,
+          "end": 145.3883
+        },
+        {
+          "text": "and",
+          "start": 145.3883,
+          "end": 145.6851
+        },
+        {
+          "text": "CMD",
+          "start": 145.6851,
+          "end": 145.982
+        },
+        {
+          "text": "declares",
+          "start": 145.982,
+          "end": 146.4667
+        },
+        {
+          "text": "what",
+          "start": 146.4667,
+          "end": 146.8095
+        },
+        {
+          "text": "starts",
+          "start": 146.8095,
+          "end": 147.2293
+        },
+        {
+          "text": "when",
+          "start": 147.2293,
+          "end": 147.5721
+        },
+        {
+          "text": "a",
+          "start": 147.5721,
+          "end": 147.7435
+        },
+        {
+          "text": "container",
+          "start": 147.7435,
+          "end": 148.2577
+        },
+        {
+          "text": "runs.",
+          "start": 148.2577,
+          "end": 148.6604
+        },
+        {
+          "text": "Docker",
+          "start": 148.6604,
+          "end": 149.0802
+        },
+        {
+          "text": "caches",
+          "start": 149.0802,
+          "end": 149.5
+        },
+        {
+          "text": "unchanged",
+          "start": 149.5,
+          "end": 150.0142
+        },
+        {
+          "text": "layers,",
+          "start": 150.0142,
+          "end": 150.4683
+        },
+        {
+          "text": "so",
+          "start": 150.4683,
+          "end": 150.7107
+        },
+        {
+          "text": "later",
+          "start": 150.7107,
+          "end": 151.0939
+        },
+        {
+          "text": "builds",
+          "start": 151.0939,
+          "end": 151.5137
+        },
+        {
+          "text": "can",
+          "start": 151.5137,
+          "end": 151.8106
+        },
+        {
+          "text": "reuse",
+          "start": 151.8106,
+          "end": 152.1938
+        },
+        {
+          "text": "earlier",
+          "start": 152.1938,
+          "end": 152.6472
+        },
+        {
+          "text": "work.",
+          "start": 152.6472,
+          "end": 153.05
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "start": 155.0,
+      "end": 178.675,
+      "text": "Docker build reads the Dockerfile and produces an image. Docker run asks the daemon to create a container from it. If needed, Docker pulls missing layers, adds a writable filesystem, configures networking, publishes requested ports, attaches volumes, and starts the command. The app is now a normal process inside its isolated environment. When that main process stops, the container stops too.",
+      "words": [
+        {
+          "text": "Docker",
+          "start": 155.0,
+          "end": 155.4182
+        },
+        {
+          "text": "build",
+          "start": 155.4182,
+          "end": 155.8
+        },
+        {
+          "text": "reads",
+          "start": 155.8,
+          "end": 156.1818
+        },
+        {
+          "text": "the",
+          "start": 156.1818,
+          "end": 156.4775
+        },
+        {
+          "text": "Dockerfile",
+          "start": 156.4775,
+          "end": 157.0175
+        },
+        {
+          "text": "and",
+          "start": 157.0175,
+          "end": 157.3132
+        },
+        {
+          "text": "produces",
+          "start": 157.3132,
+          "end": 157.7961
+        },
+        {
+          "text": "an",
+          "start": 157.7961,
+          "end": 158.0376
+        },
+        {
+          "text": "image.",
+          "start": 158.0376,
+          "end": 158.4791
+        },
+        {
+          "text": "Docker",
+          "start": 158.4791,
+          "end": 158.8973
+        },
+        {
+          "text": "run",
+          "start": 158.8973,
+          "end": 159.1931
+        },
+        {
+          "text": "asks",
+          "start": 159.1931,
+          "end": 159.5346
+        },
+        {
+          "text": "the",
+          "start": 159.5346,
+          "end": 159.8303
+        },
+        {
+          "text": "daemon",
+          "start": 159.8303,
+          "end": 160.2485
+        },
+        {
+          "text": "to",
+          "start": 160.2485,
+          "end": 160.49
+        },
+        {
+          "text": "create",
+          "start": 160.49,
+          "end": 160.9082
+        },
+        {
+          "text": "a",
+          "start": 160.9082,
+          "end": 161.0789
+        },
+        {
+          "text": "container",
+          "start": 161.0789,
+          "end": 161.5912
+        },
+        {
+          "text": "from",
+          "start": 161.5912,
+          "end": 161.9326
+        },
+        {
+          "text": "it.",
+          "start": 161.9326,
+          "end": 162.2339
+        },
+        {
+          "text": "If",
+          "start": 162.2339,
+          "end": 162.4753
+        },
+        {
+          "text": "needed,",
+          "start": 162.4753,
+          "end": 162.9277
+        },
+        {
+          "text": "Docker",
+          "start": 162.9277,
+          "end": 163.3459
+        },
+        {
+          "text": "pulls",
+          "start": 163.3459,
+          "end": 163.7277
+        },
+        {
+          "text": "missing",
+          "start": 163.7277,
+          "end": 164.1794
+        },
+        {
+          "text": "layers,",
+          "start": 164.1794,
+          "end": 164.6318
+        },
+        {
+          "text": "adds",
+          "start": 164.6318,
+          "end": 164.9733
+        },
+        {
+          "text": "a",
+          "start": 164.9733,
+          "end": 165.144
+        },
+        {
+          "text": "writable",
+          "start": 165.144,
+          "end": 165.627
+        },
+        {
+          "text": "filesystem,",
+          "start": 165.627,
+          "end": 166.201
+        },
+        {
+          "text": "configures",
+          "start": 166.201,
+          "end": 166.741
+        },
+        {
+          "text": "networking,",
+          "start": 166.741,
+          "end": 167.315
+        },
+        {
+          "text": "publishes",
+          "start": 167.315,
+          "end": 167.8273
+        },
+        {
+          "text": "requested",
+          "start": 167.8273,
+          "end": 168.3395
+        },
+        {
+          "text": "ports,",
+          "start": 168.3395,
+          "end": 168.7554
+        },
+        {
+          "text": "attaches",
+          "start": 168.7554,
+          "end": 169.2383
+        },
+        {
+          "text": "volumes,",
+          "start": 169.2383,
+          "end": 169.7242
+        },
+        {
+          "text": "and",
+          "start": 169.7242,
+          "end": 170.0199
+        },
+        {
+          "text": "starts",
+          "start": 170.0199,
+          "end": 170.4382
+        },
+        {
+          "text": "the",
+          "start": 170.4382,
+          "end": 170.7339
+        },
+        {
+          "text": "command.",
+          "start": 170.7339,
+          "end": 171.2454
+        },
+        {
+          "text": "The",
+          "start": 171.2454,
+          "end": 171.5411
+        },
+        {
+          "text": "app",
+          "start": 171.5411,
+          "end": 171.8369
+        },
+        {
+          "text": "is",
+          "start": 171.8369,
+          "end": 172.0783
+        },
+        {
+          "text": "now",
+          "start": 172.0783,
+          "end": 172.374
+        },
+        {
+          "text": "a",
+          "start": 172.374,
+          "end": 172.5448
+        },
+        {
+          "text": "normal",
+          "start": 172.5448,
+          "end": 172.963
+        },
+        {
+          "text": "process",
+          "start": 172.963,
+          "end": 173.4147
+        },
+        {
+          "text": "inside",
+          "start": 173.4147,
+          "end": 173.833
+        },
+        {
+          "text": "its",
+          "start": 173.833,
+          "end": 174.1287
+        },
+        {
+          "text": "isolated",
+          "start": 174.1287,
+          "end": 174.6116
+        },
+        {
+          "text": "environment.",
+          "start": 174.6116,
+          "end": 175.2377
+        },
+        {
+          "text": "When",
+          "start": 175.2377,
+          "end": 175.5791
+        },
+        {
+          "text": "that",
+          "start": 175.5791,
+          "end": 175.9206
+        },
+        {
+          "text": "main",
+          "start": 175.9206,
+          "end": 176.2621
+        },
+        {
+          "text": "process",
+          "start": 176.2621,
+          "end": 176.7138
+        },
+        {
+          "text": "stops,",
+          "start": 176.7138,
+          "end": 177.1298
+        },
+        {
+          "text": "the",
+          "start": 177.1298,
+          "end": 177.4255
+        },
+        {
+          "text": "container",
+          "start": 177.4255,
+          "end": 177.9377
+        },
+        {
+          "text": "stops",
+          "start": 177.9377,
+          "end": 178.3195
+        },
+        {
+          "text": "too.",
+          "start": 178.3195,
+          "end": 178.675
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "start": 179.0,
+      "end": 204.75,
+      "text": "Now apply Docker to a real project: a FastAPI order service with MySQL. Without Docker, each developer installs Python, compilers, database software, users, passwords, and ports by hand. With Docker, the API gets its own image, MySQL uses its official image, and a Compose file declares how the services connect. The repository now includes an executable description of the application environment.",
+      "words": [
+        {
+          "text": "Now",
+          "start": 179.0,
+          "end": 179.3204
+        },
+        {
+          "text": "apply",
+          "start": 179.3204,
+          "end": 179.734
+        },
+        {
+          "text": "Docker",
+          "start": 179.734,
+          "end": 180.1871
+        },
+        {
+          "text": "to",
+          "start": 180.1871,
+          "end": 180.4487
+        },
+        {
+          "text": "a",
+          "start": 180.4487,
+          "end": 180.6337
+        },
+        {
+          "text": "real",
+          "start": 180.6337,
+          "end": 181.0036
+        },
+        {
+          "text": "project:",
+          "start": 181.0036,
+          "end": 181.53
+        },
+        {
+          "text": "a",
+          "start": 181.53,
+          "end": 181.715
+        },
+        {
+          "text": "FastAPI",
+          "start": 181.715,
+          "end": 182.2044
+        },
+        {
+          "text": "order",
+          "start": 182.2044,
+          "end": 182.618
+        },
+        {
+          "text": "service",
+          "start": 182.618,
+          "end": 183.1074
+        },
+        {
+          "text": "with",
+          "start": 183.1074,
+          "end": 183.4773
+        },
+        {
+          "text": "MySQL.",
+          "start": 183.4773,
+          "end": 183.9557
+        },
+        {
+          "text": "Without",
+          "start": 183.9557,
+          "end": 184.4451
+        },
+        {
+          "text": "Docker,",
+          "start": 184.4451,
+          "end": 184.9352
+        },
+        {
+          "text": "each",
+          "start": 184.9352,
+          "end": 185.3051
+        },
+        {
+          "text": "developer",
+          "start": 185.3051,
+          "end": 185.8601
+        },
+        {
+          "text": "installs",
+          "start": 185.8601,
+          "end": 186.3833
+        },
+        {
+          "text": "Python,",
+          "start": 186.3833,
+          "end": 186.8733
+        },
+        {
+          "text": "compilers,",
+          "start": 186.8733,
+          "end": 187.4653
+        },
+        {
+          "text": "database",
+          "start": 187.4653,
+          "end": 187.9885
+        },
+        {
+          "text": "software,",
+          "start": 187.9885,
+          "end": 188.5486
+        },
+        {
+          "text": "users,",
+          "start": 188.5486,
+          "end": 188.9993
+        },
+        {
+          "text": "passwords,",
+          "start": 188.9993,
+          "end": 189.5912
+        },
+        {
+          "text": "and",
+          "start": 189.5912,
+          "end": 189.9116
+        },
+        {
+          "text": "ports",
+          "start": 189.9116,
+          "end": 190.3252
+        },
+        {
+          "text": "by",
+          "start": 190.3252,
+          "end": 190.5868
+        },
+        {
+          "text": "hand.",
+          "start": 190.5868,
+          "end": 191.0215
+        },
+        {
+          "text": "With",
+          "start": 191.0215,
+          "end": 191.3914
+        },
+        {
+          "text": "Docker,",
+          "start": 191.3914,
+          "end": 191.8815
+        },
+        {
+          "text": "the",
+          "start": 191.8815,
+          "end": 192.2019
+        },
+        {
+          "text": "API",
+          "start": 192.2019,
+          "end": 192.5223
+        },
+        {
+          "text": "gets",
+          "start": 192.5223,
+          "end": 192.8922
+        },
+        {
+          "text": "its",
+          "start": 192.8922,
+          "end": 193.2126
+        },
+        {
+          "text": "own",
+          "start": 193.2126,
+          "end": 193.533
+        },
+        {
+          "text": "image,",
+          "start": 193.533,
+          "end": 193.9836
+        },
+        {
+          "text": "MySQL",
+          "start": 193.9836,
+          "end": 194.3972
+        },
+        {
+          "text": "uses",
+          "start": 194.3972,
+          "end": 194.7672
+        },
+        {
+          "text": "its",
+          "start": 194.7672,
+          "end": 195.0876
+        },
+        {
+          "text": "official",
+          "start": 195.0876,
+          "end": 195.6107
+        },
+        {
+          "text": "image,",
+          "start": 195.6107,
+          "end": 196.0614
+        },
+        {
+          "text": "and",
+          "start": 196.0614,
+          "end": 196.3817
+        },
+        {
+          "text": "a",
+          "start": 196.3817,
+          "end": 196.5667
+        },
+        {
+          "text": "Compose",
+          "start": 196.5667,
+          "end": 197.0561
+        },
+        {
+          "text": "file",
+          "start": 197.0561,
+          "end": 197.4261
+        },
+        {
+          "text": "declares",
+          "start": 197.4261,
+          "end": 197.9493
+        },
+        {
+          "text": "how",
+          "start": 197.9493,
+          "end": 198.2696
+        },
+        {
+          "text": "the",
+          "start": 198.2696,
+          "end": 198.59
+        },
+        {
+          "text": "services",
+          "start": 198.59,
+          "end": 199.1132
+        },
+        {
+          "text": "connect.",
+          "start": 199.1132,
+          "end": 199.6674
+        },
+        {
+          "text": "The",
+          "start": 199.6674,
+          "end": 199.9877
+        },
+        {
+          "text": "repository",
+          "start": 199.9877,
+          "end": 200.5727
+        },
+        {
+          "text": "now",
+          "start": 200.5727,
+          "end": 200.8931
+        },
+        {
+          "text": "includes",
+          "start": 200.8931,
+          "end": 201.4163
+        },
+        {
+          "text": "an",
+          "start": 201.4163,
+          "end": 201.6779
+        },
+        {
+          "text": "executable",
+          "start": 201.6779,
+          "end": 202.2628
+        },
+        {
+          "text": "description",
+          "start": 202.2628,
+          "end": 202.8763
+        },
+        {
+          "text": "of",
+          "start": 202.8763,
+          "end": 203.1379
+        },
+        {
+          "text": "the",
+          "start": 203.1379,
+          "end": 203.4583
+        },
+        {
+          "text": "application",
+          "start": 203.4583,
+          "end": 204.0718
+        },
+        {
+          "text": "environment.",
+          "start": 204.0718,
+          "end": 204.75
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "start": 206.0,
+      "end": 232.325,
+      "text": "In compose dot yaml, the API builds from the Dockerfile and publishes port eight thousand. Its database URL uses the service name D B, because Compose creates a network where services can discover one another. MySQL runs from its image and stores data in a named volume that outlives the container. One command, docker compose up dash dash build, builds the API, creates resources, starts both services, and streams their logs.",
+      "words": [
+        {
+          "text": "In",
+          "start": 206.0,
+          "end": 206.2401
+        },
+        {
+          "text": "compose",
+          "start": 206.2401,
+          "end": 206.6892
+        },
+        {
+          "text": "dot",
+          "start": 206.6892,
+          "end": 206.9832
+        },
+        {
+          "text": "yaml,",
+          "start": 206.9832,
+          "end": 207.3567
+        },
+        {
+          "text": "the",
+          "start": 207.3567,
+          "end": 207.6507
+        },
+        {
+          "text": "API",
+          "start": 207.6507,
+          "end": 207.9448
+        },
+        {
+          "text": "builds",
+          "start": 207.9448,
+          "end": 208.3606
+        },
+        {
+          "text": "from",
+          "start": 208.3606,
+          "end": 208.7001
+        },
+        {
+          "text": "the",
+          "start": 208.7001,
+          "end": 208.9941
+        },
+        {
+          "text": "Dockerfile",
+          "start": 208.9941,
+          "end": 209.531
+        },
+        {
+          "text": "and",
+          "start": 209.531,
+          "end": 209.825
+        },
+        {
+          "text": "publishes",
+          "start": 209.825,
+          "end": 210.3343
+        },
+        {
+          "text": "port",
+          "start": 210.3343,
+          "end": 210.6738
+        },
+        {
+          "text": "eight",
+          "start": 210.6738,
+          "end": 211.0534
+        },
+        {
+          "text": "thousand.",
+          "start": 211.0534,
+          "end": 211.593
+        },
+        {
+          "text": "Its",
+          "start": 211.593,
+          "end": 211.887
+        },
+        {
+          "text": "database",
+          "start": 211.887,
+          "end": 212.3671
+        },
+        {
+          "text": "URL",
+          "start": 212.3671,
+          "end": 212.6612
+        },
+        {
+          "text": "uses",
+          "start": 212.6612,
+          "end": 213.0007
+        },
+        {
+          "text": "the",
+          "start": 213.0007,
+          "end": 213.2947
+        },
+        {
+          "text": "service",
+          "start": 213.2947,
+          "end": 213.7439
+        },
+        {
+          "text": "name",
+          "start": 213.7439,
+          "end": 214.0834
+        },
+        {
+          "text": "D",
+          "start": 214.0834,
+          "end": 214.2531
+        },
+        {
+          "text": "B,",
+          "start": 214.2531,
+          "end": 214.4568
+        },
+        {
+          "text": "because",
+          "start": 214.4568,
+          "end": 214.906
+        },
+        {
+          "text": "Compose",
+          "start": 214.906,
+          "end": 215.3551
+        },
+        {
+          "text": "creates",
+          "start": 215.3551,
+          "end": 215.8043
+        },
+        {
+          "text": "a",
+          "start": 215.8043,
+          "end": 215.974
+        },
+        {
+          "text": "network",
+          "start": 215.974,
+          "end": 216.4232
+        },
+        {
+          "text": "where",
+          "start": 216.4232,
+          "end": 216.8027
+        },
+        {
+          "text": "services",
+          "start": 216.8027,
+          "end": 217.2829
+        },
+        {
+          "text": "can",
+          "start": 217.2829,
+          "end": 217.5769
+        },
+        {
+          "text": "discover",
+          "start": 217.5769,
+          "end": 218.0571
+        },
+        {
+          "text": "one",
+          "start": 218.0571,
+          "end": 218.3511
+        },
+        {
+          "text": "another.",
+          "start": 218.3511,
+          "end": 218.8597
+        },
+        {
+          "text": "MySQL",
+          "start": 218.8597,
+          "end": 219.2393
+        },
+        {
+          "text": "runs",
+          "start": 219.2393,
+          "end": 219.5788
+        },
+        {
+          "text": "from",
+          "start": 219.5788,
+          "end": 219.9183
+        },
+        {
+          "text": "its",
+          "start": 219.9183,
+          "end": 220.2123
+        },
+        {
+          "text": "image",
+          "start": 220.2123,
+          "end": 220.5919
+        },
+        {
+          "text": "and",
+          "start": 220.5919,
+          "end": 220.8859
+        },
+        {
+          "text": "stores",
+          "start": 220.8859,
+          "end": 221.3018
+        },
+        {
+          "text": "data",
+          "start": 221.3018,
+          "end": 221.6413
+        },
+        {
+          "text": "in",
+          "start": 221.6413,
+          "end": 221.8814
+        },
+        {
+          "text": "a",
+          "start": 221.8814,
+          "end": 222.0511
+        },
+        {
+          "text": "named",
+          "start": 222.0511,
+          "end": 222.4307
+        },
+        {
+          "text": "volume",
+          "start": 222.4307,
+          "end": 222.8465
+        },
+        {
+          "text": "that",
+          "start": 222.8465,
+          "end": 223.1861
+        },
+        {
+          "text": "outlives",
+          "start": 223.1861,
+          "end": 223.6662
+        },
+        {
+          "text": "the",
+          "start": 223.6662,
+          "end": 223.9602
+        },
+        {
+          "text": "container.",
+          "start": 223.9602,
+          "end": 224.5289
+        },
+        {
+          "text": "One",
+          "start": 224.5289,
+          "end": 224.823
+        },
+        {
+          "text": "command,",
+          "start": 224.823,
+          "end": 225.306
+        },
+        {
+          "text": "docker",
+          "start": 225.306,
+          "end": 225.7219
+        },
+        {
+          "text": "compose",
+          "start": 225.7219,
+          "end": 226.171
+        },
+        {
+          "text": "up",
+          "start": 226.171,
+          "end": 226.4111
+        },
+        {
+          "text": "dash",
+          "start": 226.4111,
+          "end": 226.7506
+        },
+        {
+          "text": "dash",
+          "start": 226.7506,
+          "end": 227.0901
+        },
+        {
+          "text": "build,",
+          "start": 227.0901,
+          "end": 227.5037
+        },
+        {
+          "text": "builds",
+          "start": 227.5037,
+          "end": 227.9195
+        },
+        {
+          "text": "the",
+          "start": 227.9195,
+          "end": 228.2135
+        },
+        {
+          "text": "API,",
+          "start": 228.2135,
+          "end": 228.5415
+        },
+        {
+          "text": "creates",
+          "start": 228.5415,
+          "end": 228.9906
+        },
+        {
+          "text": "resources,",
+          "start": 228.9906,
+          "end": 229.5339
+        },
+        {
+          "text": "starts",
+          "start": 229.5339,
+          "end": 229.9497
+        },
+        {
+          "text": "both",
+          "start": 229.9497,
+          "end": 230.2892
+        },
+        {
+          "text": "services,",
+          "start": 230.2892,
+          "end": 230.8033
+        },
+        {
+          "text": "and",
+          "start": 230.8033,
+          "end": 231.0973
+        },
+        {
+          "text": "streams",
+          "start": 231.0973,
+          "end": 231.5465
+        },
+        {
+          "text": "their",
+          "start": 231.5465,
+          "end": 231.9261
+        },
+        {
+          "text": "logs.",
+          "start": 231.9261,
+          "end": 232.325
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "start": 236.0,
+      "end": 261.95,
+      "text": "The same image can move through delivery. A developer builds and tests it locally. Continuous integration rebuilds from the Dockerfile, runs tests, tags the image, and pushes it to a registry. A server then pulls that exact image and supplies production configuration at startup. Docker reduces environment drift because testing and deployment use the same packaged application, instead of repeating a long manual installation checklist.",
+      "words": [
+        {
+          "text": "The",
+          "start": 236.0,
+          "end": 236.2988
+        },
+        {
+          "text": "same",
+          "start": 236.2988,
+          "end": 236.6439
+        },
+        {
+          "text": "image",
+          "start": 236.6439,
+          "end": 237.0297
+        },
+        {
+          "text": "can",
+          "start": 237.0297,
+          "end": 237.3285
+        },
+        {
+          "text": "move",
+          "start": 237.3285,
+          "end": 237.6736
+        },
+        {
+          "text": "through",
+          "start": 237.6736,
+          "end": 238.13
+        },
+        {
+          "text": "delivery.",
+          "start": 238.13,
+          "end": 238.6784
+        },
+        {
+          "text": "A",
+          "start": 238.6784,
+          "end": 238.8509
+        },
+        {
+          "text": "developer",
+          "start": 238.8509,
+          "end": 239.3685
+        },
+        {
+          "text": "builds",
+          "start": 239.3685,
+          "end": 239.7911
+        },
+        {
+          "text": "and",
+          "start": 239.7911,
+          "end": 240.09
+        },
+        {
+          "text": "tests",
+          "start": 240.09,
+          "end": 240.4758
+        },
+        {
+          "text": "it",
+          "start": 240.4758,
+          "end": 240.7198
+        },
+        {
+          "text": "locally.",
+          "start": 240.7198,
+          "end": 241.2366
+        },
+        {
+          "text": "Continuous",
+          "start": 241.2366,
+          "end": 241.7822
+        },
+        {
+          "text": "integration",
+          "start": 241.7822,
+          "end": 242.3544
+        },
+        {
+          "text": "rebuilds",
+          "start": 242.3544,
+          "end": 242.8424
+        },
+        {
+          "text": "from",
+          "start": 242.8424,
+          "end": 243.1875
+        },
+        {
+          "text": "the",
+          "start": 243.1875,
+          "end": 243.4863
+        },
+        {
+          "text": "Dockerfile,",
+          "start": 243.4863,
+          "end": 244.0664
+        },
+        {
+          "text": "runs",
+          "start": 244.0664,
+          "end": 244.4115
+        },
+        {
+          "text": "tests,",
+          "start": 244.4115,
+          "end": 244.8318
+        },
+        {
+          "text": "tags",
+          "start": 244.8318,
+          "end": 245.1768
+        },
+        {
+          "text": "the",
+          "start": 245.1768,
+          "end": 245.4756
+        },
+        {
+          "text": "image,",
+          "start": 245.4756,
+          "end": 245.8959
+        },
+        {
+          "text": "and",
+          "start": 245.8959,
+          "end": 246.1948
+        },
+        {
+          "text": "pushes",
+          "start": 246.1948,
+          "end": 246.6174
+        },
+        {
+          "text": "it",
+          "start": 246.6174,
+          "end": 246.8614
+        },
+        {
+          "text": "to",
+          "start": 246.8614,
+          "end": 247.1054
+        },
+        {
+          "text": "a",
+          "start": 247.1054,
+          "end": 247.2779
+        },
+        {
+          "text": "registry.",
+          "start": 247.2779,
+          "end": 247.8263
+        },
+        {
+          "text": "A",
+          "start": 247.8263,
+          "end": 247.9988
+        },
+        {
+          "text": "server",
+          "start": 247.9988,
+          "end": 248.4214
+        },
+        {
+          "text": "then",
+          "start": 248.4214,
+          "end": 248.7665
+        },
+        {
+          "text": "pulls",
+          "start": 248.7665,
+          "end": 249.1523
+        },
+        {
+          "text": "that",
+          "start": 249.1523,
+          "end": 249.4973
+        },
+        {
+          "text": "exact",
+          "start": 249.4973,
+          "end": 249.8831
+        },
+        {
+          "text": "image",
+          "start": 249.8831,
+          "end": 250.2689
+        },
+        {
+          "text": "and",
+          "start": 250.2689,
+          "end": 250.5677
+        },
+        {
+          "text": "supplies",
+          "start": 250.5677,
+          "end": 251.0557
+        },
+        {
+          "text": "production",
+          "start": 251.0557,
+          "end": 251.6013
+        },
+        {
+          "text": "configuration",
+          "start": 251.6013,
+          "end": 252.2234
+        },
+        {
+          "text": "at",
+          "start": 252.2234,
+          "end": 252.4674
+        },
+        {
+          "text": "startup.",
+          "start": 252.4674,
+          "end": 252.9842
+        },
+        {
+          "text": "Docker",
+          "start": 252.9842,
+          "end": 253.4068
+        },
+        {
+          "text": "reduces",
+          "start": 253.4068,
+          "end": 253.8633
+        },
+        {
+          "text": "environment",
+          "start": 253.8633,
+          "end": 254.4355
+        },
+        {
+          "text": "drift",
+          "start": 254.4355,
+          "end": 254.8213
+        },
+        {
+          "text": "because",
+          "start": 254.8213,
+          "end": 255.2778
+        },
+        {
+          "text": "testing",
+          "start": 255.2778,
+          "end": 255.7343
+        },
+        {
+          "text": "and",
+          "start": 255.7343,
+          "end": 256.0331
+        },
+        {
+          "text": "deployment",
+          "start": 256.0331,
+          "end": 256.5787
+        },
+        {
+          "text": "use",
+          "start": 256.5787,
+          "end": 256.8775
+        },
+        {
+          "text": "the",
+          "start": 256.8775,
+          "end": 257.1763
+        },
+        {
+          "text": "same",
+          "start": 257.1763,
+          "end": 257.5214
+        },
+        {
+          "text": "packaged",
+          "start": 257.5214,
+          "end": 258.0094
+        },
+        {
+          "text": "application,",
+          "start": 258.0094,
+          "end": 258.6161
+        },
+        {
+          "text": "instead",
+          "start": 258.6161,
+          "end": 259.0726
+        },
+        {
+          "text": "of",
+          "start": 259.0726,
+          "end": 259.3166
+        },
+        {
+          "text": "repeating",
+          "start": 259.3166,
+          "end": 259.8342
+        },
+        {
+          "text": "a",
+          "start": 259.8342,
+          "end": 260.0067
+        },
+        {
+          "text": "long",
+          "start": 260.0067,
+          "end": 260.3518
+        },
+        {
+          "text": "manual",
+          "start": 260.3518,
+          "end": 260.7744
+        },
+        {
+          "text": "installation",
+          "start": 260.7744,
+          "end": 261.372
+        },
+        {
+          "text": "checklist.",
+          "start": 261.372,
+          "end": 261.95
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "start": 263.0,
+      "end": 289.375,
+      "text": "Docker provides repeatable environments, dependency isolation, faster onboarding, and a consistent delivery unit. It does not secure applications automatically, back up databases, or manage secrets. Pin image versions, scan and update dependencies, run with least privilege, store durable data in volumes, and inject configuration safely. Docker makes the environment explicit and reproducible; disciplined operations make it reliable.",
+      "words": [
+        {
+          "text": "Docker",
+          "start": 263.0,
+          "end": 263.4535
+        },
+        {
+          "text": "provides",
+          "start": 263.4535,
+          "end": 263.9772
+        },
+        {
+          "text": "repeatable",
+          "start": 263.9772,
+          "end": 264.5626
+        },
+        {
+          "text": "environments,",
+          "start": 264.5626,
+          "end": 265.241
+        },
+        {
+          "text": "dependency",
+          "start": 265.241,
+          "end": 265.8265
+        },
+        {
+          "text": "isolation,",
+          "start": 265.8265,
+          "end": 266.4189
+        },
+        {
+          "text": "faster",
+          "start": 266.4189,
+          "end": 266.8724
+        },
+        {
+          "text": "onboarding,",
+          "start": 266.8724,
+          "end": 267.4949
+        },
+        {
+          "text": "and",
+          "start": 267.4949,
+          "end": 267.8156
+        },
+        {
+          "text": "a",
+          "start": 267.8156,
+          "end": 268.0007
+        },
+        {
+          "text": "consistent",
+          "start": 268.0007,
+          "end": 268.5862
+        },
+        {
+          "text": "delivery",
+          "start": 268.5862,
+          "end": 269.1098
+        },
+        {
+          "text": "unit.",
+          "start": 269.1098,
+          "end": 269.5449
+        },
+        {
+          "text": "It",
+          "start": 269.5449,
+          "end": 269.8068
+        },
+        {
+          "text": "does",
+          "start": 269.8068,
+          "end": 270.177
+        },
+        {
+          "text": "not",
+          "start": 270.177,
+          "end": 270.4977
+        },
+        {
+          "text": "secure",
+          "start": 270.4977,
+          "end": 270.9512
+        },
+        {
+          "text": "applications",
+          "start": 270.9512,
+          "end": 271.5926
+        },
+        {
+          "text": "automatically,",
+          "start": 271.5926,
+          "end": 272.2971
+        },
+        {
+          "text": "back",
+          "start": 272.2971,
+          "end": 272.6674
+        },
+        {
+          "text": "up",
+          "start": 272.6674,
+          "end": 272.9292
+        },
+        {
+          "text": "databases,",
+          "start": 272.9292,
+          "end": 273.5217
+        },
+        {
+          "text": "or",
+          "start": 273.5217,
+          "end": 273.7835
+        },
+        {
+          "text": "manage",
+          "start": 273.7835,
+          "end": 274.237
+        },
+        {
+          "text": "secrets.",
+          "start": 274.237,
+          "end": 274.7916
+        },
+        {
+          "text": "Pin",
+          "start": 274.7916,
+          "end": 275.1123
+        },
+        {
+          "text": "image",
+          "start": 275.1123,
+          "end": 275.5263
+        },
+        {
+          "text": "versions,",
+          "start": 275.5263,
+          "end": 276.087
+        },
+        {
+          "text": "scan",
+          "start": 276.087,
+          "end": 276.4573
+        },
+        {
+          "text": "and",
+          "start": 276.4573,
+          "end": 276.7779
+        },
+        {
+          "text": "update",
+          "start": 276.7779,
+          "end": 277.2314
+        },
+        {
+          "text": "dependencies,",
+          "start": 277.2314,
+          "end": 277.9098
+        },
+        {
+          "text": "run",
+          "start": 277.9098,
+          "end": 278.2305
+        },
+        {
+          "text": "with",
+          "start": 278.2305,
+          "end": 278.6008
+        },
+        {
+          "text": "least",
+          "start": 278.6008,
+          "end": 279.0148
+        },
+        {
+          "text": "privilege,",
+          "start": 279.0148,
+          "end": 279.6072
+        },
+        {
+          "text": "store",
+          "start": 279.6072,
+          "end": 280.0212
+        },
+        {
+          "text": "durable",
+          "start": 280.0212,
+          "end": 280.511
+        },
+        {
+          "text": "data",
+          "start": 280.511,
+          "end": 280.8813
+        },
+        {
+          "text": "in",
+          "start": 280.8813,
+          "end": 281.1431
+        },
+        {
+          "text": "volumes,",
+          "start": 281.1431,
+          "end": 281.67
+        },
+        {
+          "text": "and",
+          "start": 281.67,
+          "end": 281.9907
+        },
+        {
+          "text": "inject",
+          "start": 281.9907,
+          "end": 282.4442
+        },
+        {
+          "text": "configuration",
+          "start": 282.4442,
+          "end": 283.1117
+        },
+        {
+          "text": "safely.",
+          "start": 283.1117,
+          "end": 283.63
+        },
+        {
+          "text": "Docker",
+          "start": 283.63,
+          "end": 284.0835
+        },
+        {
+          "text": "makes",
+          "start": 284.0835,
+          "end": 284.4975
+        },
+        {
+          "text": "the",
+          "start": 284.4975,
+          "end": 284.8182
+        },
+        {
+          "text": "environment",
+          "start": 284.8182,
+          "end": 285.4322
+        },
+        {
+          "text": "explicit",
+          "start": 285.4322,
+          "end": 285.9559
+        },
+        {
+          "text": "and",
+          "start": 285.9559,
+          "end": 286.2766
+        },
+        {
+          "text": "reproducible;",
+          "start": 286.2766,
+          "end": 286.9549
+        },
+        {
+          "text": "disciplined",
+          "start": 286.9549,
+          "end": 287.569
+        },
+        {
+          "text": "operations",
+          "start": 287.569,
+          "end": 288.1544
+        },
+        {
+          "text": "make",
+          "start": 288.1544,
+          "end": 288.5247
+        },
+        {
+          "text": "it",
+          "start": 288.5247,
+          "end": 288.7865
+        },
+        {
+          "text": "reliable.",
+          "start": 288.7865,
+          "end": 289.375
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "start": 291.0,
+      "end": 298.325,
+      "text": "Docker turns \u201cworks on my machine\u201d into \u201crun this image.\u201d Build once, configure at runtime, and ship with confidence.",
+      "words": [
+        {
+          "text": "Docker",
+          "start": 291.0,
+          "end": 291.4344
+        },
+        {
+          "text": "turns",
+          "start": 291.4344,
+          "end": 291.8309
+        },
+        {
+          "text": "\u201cworks",
+          "start": 291.8309,
+          "end": 292.2275
+        },
+        {
+          "text": "on",
+          "start": 292.2275,
+          "end": 292.4783
+        },
+        {
+          "text": "my",
+          "start": 292.4783,
+          "end": 292.7291
+        },
+        {
+          "text": "machine\u201d",
+          "start": 292.7291,
+          "end": 293.1983
+        },
+        {
+          "text": "into",
+          "start": 293.1983,
+          "end": 293.553
+        },
+        {
+          "text": "\u201crun",
+          "start": 293.553,
+          "end": 293.8602
+        },
+        {
+          "text": "this",
+          "start": 293.8602,
+          "end": 294.2148
+        },
+        {
+          "text": "image.\u201d",
+          "start": 294.2148,
+          "end": 294.6114
+        },
+        {
+          "text": "Build",
+          "start": 294.6114,
+          "end": 295.0079
+        },
+        {
+          "text": "once,",
+          "start": 295.0079,
+          "end": 295.3981
+        },
+        {
+          "text": "configure",
+          "start": 295.3981,
+          "end": 295.9301
+        },
+        {
+          "text": "at",
+          "start": 295.9301,
+          "end": 296.1809
+        },
+        {
+          "text": "runtime,",
+          "start": 296.1809,
+          "end": 296.6856
+        },
+        {
+          "text": "and",
+          "start": 296.6856,
+          "end": 296.9928
+        },
+        {
+          "text": "ship",
+          "start": 296.9928,
+          "end": 297.3474
+        },
+        {
+          "text": "with",
+          "start": 297.3474,
+          "end": 297.7021
+        },
+        {
+          "text": "confidence.",
+          "start": 297.7021,
+          "end": 298.325
+        }
+      ]
+    }
+  ]
+}

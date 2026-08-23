@@ -2,13 +2,11 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {
   DELIVERIES,
-  coverComposition,
   matchesRef,
   positionals,
   preferredRenderProfile,
   refOf,
-  videoComposition,
-} from '../scripts/deliveries.mjs';
+} from '../packages/cli/src/deliveries.mjs';
 
 const channel = {defaultDeliveries: ['youtube-long', 'instagram-reel']};
 
@@ -44,9 +42,5 @@ test('positionals skips flags and their values', () => {
   );
 });
 
-test('composition id classification', () => {
-  assert.ok(videoComposition({id: 'tech--slug--portrait'}));
-  assert.ok(!videoComposition({id: 'tech--slug--youtube-long--cover'}));
-  assert.ok(coverComposition({id: 'tech--slug--youtube-long--cover'}));
-  assert.ok(!coverComposition({id: 'tech--slug--portrait'}));
-});
+// Composition ids are no longer classified by counting "--" segments; the typed
+// helpers in @video-kit/core/output are covered by tests/output-variants.test.ts.

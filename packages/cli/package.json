@@ -1,0 +1,12 @@
+{
+  "name": "@video-kit/cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Command-line production: scaffolding, validation, rendering, packaging, QA, and publishing.",
+  "dependencies": {
+    "@video-kit/catalog": "1.0.0",
+    "@video-kit/core": "1.0.0",
+    "@video-kit/render-engine": "1.0.0"
+  }
+}

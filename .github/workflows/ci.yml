@@ -13,15 +13,21 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          # Spec loading relies on Node's native TypeScript type stripping (22.18+).
           node-version: '22'
           cache: npm
 
+      # One install at the workspace root links every package. better-sqlite3
+      # is declared by exactly one package so only one native build happens.
       - name: Install dependencies
         run: npm ci
 
       - name: Type check
         run: npm run typecheck
+
+      # tsconfig paths make every package visible to every other, so the
+      # compiler cannot enforce the dependency graph; this does.
+      - name: Package boundaries
+        run: npm run deps:check
 
       - name: Unit tests
         run: npm test

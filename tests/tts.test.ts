@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {narrationForSpeech} from '../shared/tts';
+import {narrationForSpeech} from '@video-kit/core/tts';
 
 test('speech normalization makes common Python tokens pronounceable', () => {
   assert.equal(

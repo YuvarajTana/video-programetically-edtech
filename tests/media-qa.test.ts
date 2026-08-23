@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {analyzeMediaProbe} from '../scripts/media-qa.mjs';
+import {analyzeMediaProbe} from '../packages/cli/src/media-qa.mjs';
 
 test('media QA accepts synchronized audio and video streams', () => {
   const report = analyzeMediaProbe(

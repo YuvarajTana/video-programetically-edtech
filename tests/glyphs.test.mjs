@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readdirSync, readFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {test} from 'node:test';
-import {woff2Coverage} from '../scripts/glyphs-lib.mjs';
+import {woff2Coverage} from '../packages/cli/src/glyphs-lib.mjs';
 
 /**
  * The kit renders ✓ (rail, rows), ✕, →, and ₹ (house cast money). The latin
@@ -32,7 +32,7 @@ test('baked fonts cover every required glyph', () => {
 
 test('every theme font stack lists the fallback faces', () => {
   for (const theme of ['tech', 'learn', 'fun']) {
-    const source = readFileSync(`src/themes/${theme}.ts`, 'utf8');
+    const source = readFileSync(`packages/core/src/themes/${theme}.ts`, 'utf8');
     for (const family of ['Noto Sans Symbols 2', 'Noto Sans Symbols', 'Noto Sans Devanagari']) {
       assert.ok(source.includes(family), `${theme} theme is missing ${family}`);
     }

@@ -10,11 +10,21 @@ node_modules/
 # Build, render, and packaging outputs
 out/
 dist/
+build/
+coverage/
+.nyc_output/
 .remotion/
+.vite/
+.turbo/
 *.tsbuildinfo
+*.lcov
 
 # Caches
 .cache/
+.eslintcache
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
 
 # Local studio / pipeline state (SQLite DB, narrations, voice samples, model cache)
 .video-kit/
@@ -24,29 +34,36 @@ dist/
 venv/
 __pycache__/
 *.py[cod]
-.pytest_cache/
+*.egg-info/
 
 # Runtime-generated public assets (UUID-scoped uploads and previews)
 public/generated/
 
-# Local TTS intermediates are reproducible build artifacts. Keep only the
-# normalized master tracks that production specs reference.
+# Local TTS intermediates. Keep only the normalized master tracks and
+# word timings that production specs reference.
 public/audio/**/clips/
 public/audio/**/*-raw.wav
 public/audio/**/*.pending.wav
 public/audio/**/*.pending.json
 
+# Pre-monorepo leftovers. Canonical source lives in packages/.
+/src/
+/studio/
+/scripts/
+
 # Logs
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # OS and editor
 .DS_Store
 Thumbs.db
+Desktop.ini
 .idea/
 .vscode/
 *.swp
 *.swo
-
-# Music beds are reproducible: npm run music -- <preset> <seconds>
-public/audio/music/
+*.orig

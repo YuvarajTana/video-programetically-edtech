@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {validateSpec} from '../scripts/validation-lib.mjs';
+import {validateSpec} from '../packages/cli/src/validation-lib.mjs';
 import {errorsOf, makeChannel, makeSpec, warningsOf} from './helpers.mjs';
 
 const withScene = (scene) => {
@@ -498,5 +498,76 @@ test('stills deliveries warn when scene count exceeds the slide cap', () => {
   const issues = validateSpec(spec, makeChannel());
   assert.ok(
     warningsOf(issues).some((issue) => issue.message.includes('cap at 10')),
+  );
+});
+
+// ------------------------------------------------- list pacing and line width
+
+test('a list scene warns when its rows go by faster than they read', () => {
+  const crowded = validateSpec(
+    withScene({
+      type: 'steps',
+      durationInFrames: 60, // 2s at 30fps, for six rows
+      items: Array.from({length: 6}, (_, i) => ({label: `Step ${i + 1}`})),
+    }),
+    makeChannel(),
+  );
+  assert.ok(
+    warningsOf(crowded).some((issue) => issue.message.includes('give each row')),
+    'six rows in two seconds was accepted',
+  );
+
+  const roomy = validateSpec(
+    withScene({
+      type: 'steps',
+      durationInFrames: 300, // 10s for the same six rows
+      items: Array.from({length: 6}, (_, i) => ({label: `Step ${i + 1}`})),
+    }),
+    makeChannel(),
+  );
+  assert.deepEqual(
+    warningsOf(roomy).filter((issue) => issue.message.includes('give each row')),
+    [],
+  );
+});
+
+test('both sides of a compare count toward its pacing', () => {
+  // Four points a side is fine over ten seconds and crowded over three.
+  const side = {
+    heading: 'Side',
+    points: ['One', 'Two', 'Three', 'Four'],
+  };
+  const issues = validateSpec(
+    withScene({type: 'compare', durationInFrames: 90, left: side, right: side}),
+    makeChannel(),
+  );
+  assert.ok(
+    warningsOf(issues).some((issue) => issue.message.includes('8 items')),
+    'the two sides were not counted together',
+  );
+});
+
+test('code and terminal lines are held to the same width as algorithm code', () => {
+  const long = 'const somethingRatherLongIndeed = computeTheWholeThing(input);';
+  const code = validateSpec(
+    withScene({type: 'code', durationInFrames: 300, lines: ['ok', long]}),
+    makeChannel(),
+  );
+  assert.ok(
+    warningsOf(code).some((issue) => issue.path === 'scenes[1].lines[1]'),
+    'an over-wide code line was accepted',
+  );
+
+  const terminal = validateSpec(
+    withScene({
+      type: 'terminal',
+      durationInFrames: 300,
+      entries: [{cmd: long, out: ['done']}],
+    }),
+    makeChannel(),
+  );
+  assert.ok(
+    warningsOf(terminal).some((issue) => issue.path === 'scenes[1].entries[0].cmd'),
+    'an over-wide command was accepted',
   );
 });

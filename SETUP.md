@@ -158,11 +158,11 @@ plain environment variables, so run them with Node's env-file support:
 
 ```bash
 # YouTube: OAuth access token, defaults to a private upload
-node --env-file=.env scripts/publish.mjs tech/my-video \
+node --env-file=.env packages/cli/src/publish.mjs tech/my-video \
   --delivery youtube-short --privacy private --execute
 
 # Instagram: Reel must be fetchable from a public HTTPS URL
-node --env-file=.env scripts/publish.mjs tech/my-video \
+node --env-file=.env packages/cli/src/publish.mjs tech/my-video \
   --delivery instagram-reel --video-url https://your-cdn.example/video.mp4 --execute
 ```
 

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {chaptersFor, toChapterText} from '../scripts/chapters-lib.mjs';
+import {chaptersFor, toChapterText} from '../packages/cli/src/chapters-lib.mjs';
 
 const scene = (durationInFrames, extra = {}) => ({
   type: 'steps',

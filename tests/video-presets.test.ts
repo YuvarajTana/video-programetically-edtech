@@ -7,7 +7,7 @@ import {
   presetIds,
   renderScriptTemplate,
   renderVideoSource,
-} from '../scripts/video-presets.mjs';
+} from '../packages/cli/src/video-presets.mjs';
 
 const roadmap = JSON.parse(
   readFileSync('content/ai-engineer-roadmap.json', 'utf8'),

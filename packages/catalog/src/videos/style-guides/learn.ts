@@ -1,0 +1,105 @@
+import type {VideoSpec} from '@video-kit/core/spec';
+
+export const learnStyleGuide: VideoSpec = {
+  channel: 'learn',
+  slug: 'style-guide',
+  title: 'Learn channel reference',
+  template: 'style-guide',
+  kind: 'style-guide',
+  deliveries: ['youtube-short', 'instagram-reel'],
+  captions: false,
+  scenes: [
+    {
+      type: 'title',
+      durationInFrames: 80,
+      kicker: 'Learn it fast',
+      title: 'Why is the sky blue?',
+      subtitle: 'One question. One clear visual answer.',
+    },
+    {
+      type: 'steps',
+      durationInFrames: 110,
+      kicker: 'Three tiny steps',
+      items: [
+        {label: 'Sunlight arrives', detail: 'It contains every color', accent: 'attention'},
+        {label: 'Air scatters blue', detail: 'Short waves bounce around', accent: 'info'},
+        {label: 'We see more blue', detail: 'It reaches us from every direction', accent: 'success'},
+      ],
+      footnote: 'One idea per scene, with friendly language.',
+    },
+    {
+      type: 'quiz',
+      durationInFrames: 150,
+      question: 'Which color scatters most?',
+      options: [
+        {label: 'Red', emoji: '🔴'},
+        {label: 'Blue', emoji: '🔵'},
+        {label: 'Green', emoji: '🟢'},
+      ],
+      answerIndex: 1,
+      explanation: 'Blue waves are short, so air bounces them everywhere.',
+      accent: 'info',
+    },
+    {
+      type: 'colors',
+      durationInFrames: 100,
+      kicker: 'colors',
+      title: 'Red and Blue',
+      items: [
+        {name: 'Red', hex: '#EF3340', example: 'an apple', emoji: '🍎'},
+        {name: 'Blue', hex: '#2F80ED', example: 'a butterfly', emoji: '🦋'},
+      ],
+      prompt: 'Say both colors!',
+    },
+    {
+      type: 'flashcards',
+      durationInFrames: 100,
+      kicker: 'flashcards',
+      title: 'Lion and Elephant',
+      items: [
+        {label: 'Lion', emoji: '🦁', clue: 'has a big mane', color: '#F5A524'},
+        {label: 'Elephant', emoji: '🐘', clue: 'has a long trunk', color: '#7D91AA'},
+      ],
+      prompt: 'Say both animals!',
+    },
+    {
+      type: 'numberLine',
+      durationInFrames: 110,
+      kicker: 'numberLine',
+      title: 'Three plus two',
+      min: 0,
+      max: 10,
+      marks: [
+        {value: 3, label: 'start', accent: 'info'},
+        {value: 5, label: '3 + 2', accent: 'success'},
+      ],
+      jump: {from: 3, to: 5, accent: 'primary'},
+    },
+    {
+      type: 'labeledDiagram',
+      durationInFrames: 110,
+      kicker: 'labeledDiagram',
+      title: 'Parts of a sunflower',
+      emoji: '🌻',
+      labels: [
+        {text: 'Petals', detail: 'catch the light', side: 'left', accent: 'attention'},
+        {text: 'Seeds', detail: 'grow in the middle', side: 'right', accent: 'info'},
+        {text: 'Stem', detail: 'carries the water', side: 'left', accent: 'success'},
+      ],
+      prompt: 'Can you point to each part?',
+    },
+    {
+      type: 'callout',
+      durationInFrames: 80,
+      text: 'Blue light scatters more than red light.',
+      attribution: 'The answer to remember',
+      accent: 'success',
+    },
+    {
+      type: 'outro',
+      durationInFrames: 80,
+      recap: ['sunlight → air', 'blue scatters → blue sky'],
+      tagline: 'Small lesson. Big idea.',
+    },
+  ],
+};

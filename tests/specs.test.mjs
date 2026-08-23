@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {loadSpecs} from '../scripts/spec-loader.mjs';
-import {validateCollection} from '../scripts/validation-lib.mjs';
+import {loadSpecs} from '../packages/cli/src/spec-loader.mjs';
+import {validateCollection} from '../packages/cli/src/validation-lib.mjs';
 
 /**
  * Every registered spec — production and style guide — must validate with zero
