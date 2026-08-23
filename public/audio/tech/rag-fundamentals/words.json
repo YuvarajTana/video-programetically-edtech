@@ -1,0 +1,3792 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 300.0,
+  "cues": [
+    {
+      "index": 1,
+      "start": 0.0,
+      "end": 2.475,
+      "text": "Your private knowledge is missing.",
+      "words": [
+        {
+          "text": "Your",
+          "start": 0.0,
+          "end": 0.4106
+        },
+        {
+          "text": "private",
+          "start": 0.4106,
+          "end": 0.9538
+        },
+        {
+          "text": "knowledge",
+          "start": 0.9538,
+          "end": 1.5696
+        },
+        {
+          "text": "is",
+          "start": 1.5696,
+          "end": 1.86
+        },
+        {
+          "text": "missing.",
+          "start": 1.86,
+          "end": 2.475
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "start": 2.5,
+      "end": 26.525,
+      "text": "A language model answers from patterns learned during training and from the context it receives now. That creates a gap. Your company policies may be private, product documentation may change weekly, and the model may confidently complete an answer when evidence is missing. Constantly retraining for every document update is slow, expensive, and usually the wrong tool. RAG addresses this knowledge gap at runtime.",
+      "words": [
+        {
+          "text": "A",
+          "start": 2.5,
+          "end": 2.6648
+        },
+        {
+          "text": "language",
+          "start": 2.6648,
+          "end": 3.1308
+        },
+        {
+          "text": "model",
+          "start": 3.1308,
+          "end": 3.4993
+        },
+        {
+          "text": "answers",
+          "start": 3.4993,
+          "end": 3.9352
+        },
+        {
+          "text": "from",
+          "start": 3.9352,
+          "end": 4.2648
+        },
+        {
+          "text": "patterns",
+          "start": 4.2648,
+          "end": 4.7308
+        },
+        {
+          "text": "learned",
+          "start": 4.7308,
+          "end": 5.1667
+        },
+        {
+          "text": "during",
+          "start": 5.1667,
+          "end": 5.5704
+        },
+        {
+          "text": "training",
+          "start": 5.5704,
+          "end": 6.0364
+        },
+        {
+          "text": "and",
+          "start": 6.0364,
+          "end": 6.3218
+        },
+        {
+          "text": "from",
+          "start": 6.3218,
+          "end": 6.6513
+        },
+        {
+          "text": "the",
+          "start": 6.6513,
+          "end": 6.9367
+        },
+        {
+          "text": "context",
+          "start": 6.9367,
+          "end": 7.3727
+        },
+        {
+          "text": "it",
+          "start": 7.3727,
+          "end": 7.6057
+        },
+        {
+          "text": "receives",
+          "start": 7.6057,
+          "end": 8.0717
+        },
+        {
+          "text": "now.",
+          "start": 8.0717,
+          "end": 8.4148
+        },
+        {
+          "text": "That",
+          "start": 8.4148,
+          "end": 8.7444
+        },
+        {
+          "text": "creates",
+          "start": 8.7444,
+          "end": 9.1803
+        },
+        {
+          "text": "a",
+          "start": 9.1803,
+          "end": 9.3451
+        },
+        {
+          "text": "gap.",
+          "start": 9.3451,
+          "end": 9.6881
+        },
+        {
+          "text": "Your",
+          "start": 9.6881,
+          "end": 10.0177
+        },
+        {
+          "text": "company",
+          "start": 10.0177,
+          "end": 10.4536
+        },
+        {
+          "text": "policies",
+          "start": 10.4536,
+          "end": 10.9197
+        },
+        {
+          "text": "may",
+          "start": 10.9197,
+          "end": 11.2051
+        },
+        {
+          "text": "be",
+          "start": 11.2051,
+          "end": 11.4381
+        },
+        {
+          "text": "private,",
+          "start": 11.4381,
+          "end": 11.907
+        },
+        {
+          "text": "product",
+          "start": 11.907,
+          "end": 12.3429
+        },
+        {
+          "text": "documentation",
+          "start": 12.3429,
+          "end": 12.937
+        },
+        {
+          "text": "may",
+          "start": 12.937,
+          "end": 13.2224
+        },
+        {
+          "text": "change",
+          "start": 13.2224,
+          "end": 13.626
+        },
+        {
+          "text": "weekly,",
+          "start": 13.626,
+          "end": 14.0626
+        },
+        {
+          "text": "and",
+          "start": 14.0626,
+          "end": 14.348
+        },
+        {
+          "text": "the",
+          "start": 14.348,
+          "end": 14.6334
+        },
+        {
+          "text": "model",
+          "start": 14.6334,
+          "end": 15.0018
+        },
+        {
+          "text": "may",
+          "start": 15.0018,
+          "end": 15.2872
+        },
+        {
+          "text": "confidently",
+          "start": 15.2872,
+          "end": 15.8337
+        },
+        {
+          "text": "complete",
+          "start": 15.8337,
+          "end": 16.2998
+        },
+        {
+          "text": "an",
+          "start": 16.2998,
+          "end": 16.5328
+        },
+        {
+          "text": "answer",
+          "start": 16.5328,
+          "end": 16.9364
+        },
+        {
+          "text": "when",
+          "start": 16.9364,
+          "end": 17.2659
+        },
+        {
+          "text": "evidence",
+          "start": 17.2659,
+          "end": 17.732
+        },
+        {
+          "text": "is",
+          "start": 17.732,
+          "end": 17.965
+        },
+        {
+          "text": "missing.",
+          "start": 17.965,
+          "end": 18.4586
+        },
+        {
+          "text": "Constantly",
+          "start": 18.4586,
+          "end": 18.9797
+        },
+        {
+          "text": "retraining",
+          "start": 18.9797,
+          "end": 19.5007
+        },
+        {
+          "text": "for",
+          "start": 19.5007,
+          "end": 19.7861
+        },
+        {
+          "text": "every",
+          "start": 19.7861,
+          "end": 20.1546
+        },
+        {
+          "text": "document",
+          "start": 20.1546,
+          "end": 20.6206
+        },
+        {
+          "text": "update",
+          "start": 20.6206,
+          "end": 21.0242
+        },
+        {
+          "text": "is",
+          "start": 21.0242,
+          "end": 21.2572
+        },
+        {
+          "text": "slow,",
+          "start": 21.2572,
+          "end": 21.6197
+        },
+        {
+          "text": "expensive,",
+          "start": 21.6197,
+          "end": 22.147
+        },
+        {
+          "text": "and",
+          "start": 22.147,
+          "end": 22.4324
+        },
+        {
+          "text": "usually",
+          "start": 22.4324,
+          "end": 22.8683
+        },
+        {
+          "text": "the",
+          "start": 22.8683,
+          "end": 23.1537
+        },
+        {
+          "text": "wrong",
+          "start": 23.1537,
+          "end": 23.5222
+        },
+        {
+          "text": "tool.",
+          "start": 23.5222,
+          "end": 23.9094
+        },
+        {
+          "text": "RAG",
+          "start": 23.9094,
+          "end": 24.1948
+        },
+        {
+          "text": "addresses",
+          "start": 24.1948,
+          "end": 24.6891
+        },
+        {
+          "text": "this",
+          "start": 24.6891,
+          "end": 25.0187
+        },
+        {
+          "text": "knowledge",
+          "start": 25.0187,
+          "end": 25.513
+        },
+        {
+          "text": "gap",
+          "start": 25.513,
+          "end": 25.7984
+        },
+        {
+          "text": "at",
+          "start": 25.7984,
+          "end": 26.0314
+        },
+        {
+          "text": "runtime.",
+          "start": 26.0314,
+          "end": 26.525
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "start": 27.0,
+      "end": 48.975,
+      "text": "RAG means retrieval-augmented generation. Retrieval finds information relevant to the user\u2019s question. Augmentation places that evidence into the model\u2019s input. Generation uses the question, instructions, and retrieved context to create the answer. Search first, then ask the model to answer with evidence. RAG is an application pattern, not a model setting.",
+      "words": [
+        {
+          "text": "RAG",
+          "start": 27.0,
+          "end": 27.315
+        },
+        {
+          "text": "means",
+          "start": 27.315,
+          "end": 27.7216
+        },
+        {
+          "text": "retrieval-augmented",
+          "start": 27.7216,
+          "end": 28.493
+        },
+        {
+          "text": "generation.",
+          "start": 28.493,
+          "end": 29.1317
+        },
+        {
+          "text": "Retrieval",
+          "start": 29.1317,
+          "end": 29.6772
+        },
+        {
+          "text": "finds",
+          "start": 29.6772,
+          "end": 30.0838
+        },
+        {
+          "text": "information",
+          "start": 30.0838,
+          "end": 30.6869
+        },
+        {
+          "text": "relevant",
+          "start": 30.6869,
+          "end": 31.2012
+        },
+        {
+          "text": "to",
+          "start": 31.2012,
+          "end": 31.4584
+        },
+        {
+          "text": "the",
+          "start": 31.4584,
+          "end": 31.7733
+        },
+        {
+          "text": "user\u2019s",
+          "start": 31.7733,
+          "end": 32.1799
+        },
+        {
+          "text": "question.",
+          "start": 32.1799,
+          "end": 32.7579
+        },
+        {
+          "text": "Augmentation",
+          "start": 32.7579,
+          "end": 33.3878
+        },
+        {
+          "text": "places",
+          "start": 33.3878,
+          "end": 33.8332
+        },
+        {
+          "text": "that",
+          "start": 33.8332,
+          "end": 34.1969
+        },
+        {
+          "text": "evidence",
+          "start": 34.1969,
+          "end": 34.7112
+        },
+        {
+          "text": "into",
+          "start": 34.7112,
+          "end": 35.0749
+        },
+        {
+          "text": "the",
+          "start": 35.0749,
+          "end": 35.3898
+        },
+        {
+          "text": "model\u2019s",
+          "start": 35.3898,
+          "end": 35.8353
+        },
+        {
+          "text": "input.",
+          "start": 35.8353,
+          "end": 36.3055
+        },
+        {
+          "text": "Generation",
+          "start": 36.3055,
+          "end": 36.8805
+        },
+        {
+          "text": "uses",
+          "start": 36.8805,
+          "end": 37.2442
+        },
+        {
+          "text": "the",
+          "start": 37.2442,
+          "end": 37.5592
+        },
+        {
+          "text": "question,",
+          "start": 37.5592,
+          "end": 38.1098
+        },
+        {
+          "text": "instructions,",
+          "start": 38.1098,
+          "end": 38.7761
+        },
+        {
+          "text": "and",
+          "start": 38.7761,
+          "end": 39.0911
+        },
+        {
+          "text": "retrieved",
+          "start": 39.0911,
+          "end": 39.6366
+        },
+        {
+          "text": "context",
+          "start": 39.6366,
+          "end": 40.1177
+        },
+        {
+          "text": "to",
+          "start": 40.1177,
+          "end": 40.3748
+        },
+        {
+          "text": "create",
+          "start": 40.3748,
+          "end": 40.8203
+        },
+        {
+          "text": "the",
+          "start": 40.8203,
+          "end": 41.1352
+        },
+        {
+          "text": "answer.",
+          "start": 41.1352,
+          "end": 41.6443
+        },
+        {
+          "text": "Search",
+          "start": 41.6443,
+          "end": 42.0897
+        },
+        {
+          "text": "first,",
+          "start": 42.0897,
+          "end": 42.5326
+        },
+        {
+          "text": "then",
+          "start": 42.5326,
+          "end": 42.8963
+        },
+        {
+          "text": "ask",
+          "start": 42.8963,
+          "end": 43.2113
+        },
+        {
+          "text": "the",
+          "start": 43.2113,
+          "end": 43.5262
+        },
+        {
+          "text": "model",
+          "start": 43.5262,
+          "end": 43.9328
+        },
+        {
+          "text": "to",
+          "start": 43.9328,
+          "end": 44.19
+        },
+        {
+          "text": "answer",
+          "start": 44.19,
+          "end": 44.6354
+        },
+        {
+          "text": "with",
+          "start": 44.6354,
+          "end": 44.9991
+        },
+        {
+          "text": "evidence.",
+          "start": 44.9991,
+          "end": 45.577
+        },
+        {
+          "text": "RAG",
+          "start": 45.577,
+          "end": 45.892
+        },
+        {
+          "text": "is",
+          "start": 45.892,
+          "end": 46.1491
+        },
+        {
+          "text": "an",
+          "start": 46.1491,
+          "end": 46.4063
+        },
+        {
+          "text": "application",
+          "start": 46.4063,
+          "end": 47.0094
+        },
+        {
+          "text": "pattern,",
+          "start": 47.0094,
+          "end": 47.5269
+        },
+        {
+          "text": "not",
+          "start": 47.5269,
+          "end": 47.8418
+        },
+        {
+          "text": "a",
+          "start": 47.8418,
+          "end": 48.0237
+        },
+        {
+          "text": "model",
+          "start": 48.0237,
+          "end": 48.4303
+        },
+        {
+          "text": "setting.",
+          "start": 48.4303,
+          "end": 48.975
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "start": 49.0,
+      "end": 78.85,
+      "text": "A RAG system has two pipelines. The indexing pipeline runs before users ask questions. It prepares documents and stores searchable representations. The answering pipeline starts when a question arrives. It searches the index, selects passages, builds the model context, and requests an answer. These pipelines can change independently. You can refresh documents without retraining the language model, and improve retrieval without replacing the generator. That separation is one reason RAG is practical.",
+      "words": [
+        {
+          "text": "A",
+          "start": 49.0,
+          "end": 49.174
+        },
+        {
+          "text": "RAG",
+          "start": 49.174,
+          "end": 49.4753
+        },
+        {
+          "text": "system",
+          "start": 49.4753,
+          "end": 49.9015
+        },
+        {
+          "text": "has",
+          "start": 49.9015,
+          "end": 50.2029
+        },
+        {
+          "text": "two",
+          "start": 50.2029,
+          "end": 50.5042
+        },
+        {
+          "text": "pipelines.",
+          "start": 50.5042,
+          "end": 51.0871
+        },
+        {
+          "text": "The",
+          "start": 51.0871,
+          "end": 51.3884
+        },
+        {
+          "text": "indexing",
+          "start": 51.3884,
+          "end": 51.8805
+        },
+        {
+          "text": "pipeline",
+          "start": 51.8805,
+          "end": 52.3726
+        },
+        {
+          "text": "runs",
+          "start": 52.3726,
+          "end": 52.7206
+        },
+        {
+          "text": "before",
+          "start": 52.7206,
+          "end": 53.1468
+        },
+        {
+          "text": "users",
+          "start": 53.1468,
+          "end": 53.5358
+        },
+        {
+          "text": "ask",
+          "start": 53.5358,
+          "end": 53.8372
+        },
+        {
+          "text": "questions.",
+          "start": 53.8372,
+          "end": 54.42
+        },
+        {
+          "text": "It",
+          "start": 54.42,
+          "end": 54.6661
+        },
+        {
+          "text": "prepares",
+          "start": 54.6661,
+          "end": 55.1582
+        },
+        {
+          "text": "documents",
+          "start": 55.1582,
+          "end": 55.6801
+        },
+        {
+          "text": "and",
+          "start": 55.6801,
+          "end": 55.9815
+        },
+        {
+          "text": "stores",
+          "start": 55.9815,
+          "end": 56.4077
+        },
+        {
+          "text": "searchable",
+          "start": 56.4077,
+          "end": 56.9579
+        },
+        {
+          "text": "representations.",
+          "start": 56.9579,
+          "end": 57.6926
+        },
+        {
+          "text": "The",
+          "start": 57.6926,
+          "end": 57.994
+        },
+        {
+          "text": "answering",
+          "start": 57.994,
+          "end": 58.5159
+        },
+        {
+          "text": "pipeline",
+          "start": 58.5159,
+          "end": 59.008
+        },
+        {
+          "text": "starts",
+          "start": 59.008,
+          "end": 59.4342
+        },
+        {
+          "text": "when",
+          "start": 59.4342,
+          "end": 59.7822
+        },
+        {
+          "text": "a",
+          "start": 59.7822,
+          "end": 59.9562
+        },
+        {
+          "text": "question",
+          "start": 59.9562,
+          "end": 60.4483
+        },
+        {
+          "text": "arrives.",
+          "start": 60.4483,
+          "end": 60.9695
+        },
+        {
+          "text": "It",
+          "start": 60.9695,
+          "end": 61.2155
+        },
+        {
+          "text": "searches",
+          "start": 61.2155,
+          "end": 61.7076
+        },
+        {
+          "text": "the",
+          "start": 61.7076,
+          "end": 62.009
+        },
+        {
+          "text": "index,",
+          "start": 62.009,
+          "end": 62.4328
+        },
+        {
+          "text": "selects",
+          "start": 62.4328,
+          "end": 62.8932
+        },
+        {
+          "text": "passages,",
+          "start": 62.8932,
+          "end": 63.4201
+        },
+        {
+          "text": "builds",
+          "start": 63.4201,
+          "end": 63.8462
+        },
+        {
+          "text": "the",
+          "start": 63.8462,
+          "end": 64.1476
+        },
+        {
+          "text": "model",
+          "start": 64.1476,
+          "end": 64.5366
+        },
+        {
+          "text": "context,",
+          "start": 64.5366,
+          "end": 65.0318
+        },
+        {
+          "text": "and",
+          "start": 65.0318,
+          "end": 65.3331
+        },
+        {
+          "text": "requests",
+          "start": 65.3331,
+          "end": 65.8252
+        },
+        {
+          "text": "an",
+          "start": 65.8252,
+          "end": 66.0713
+        },
+        {
+          "text": "answer.",
+          "start": 66.0713,
+          "end": 66.5583
+        },
+        {
+          "text": "These",
+          "start": 66.5583,
+          "end": 66.9474
+        },
+        {
+          "text": "pipelines",
+          "start": 66.9474,
+          "end": 67.4693
+        },
+        {
+          "text": "can",
+          "start": 67.4693,
+          "end": 67.7707
+        },
+        {
+          "text": "change",
+          "start": 67.7707,
+          "end": 68.1969
+        },
+        {
+          "text": "independently.",
+          "start": 68.1969,
+          "end": 68.8851
+        },
+        {
+          "text": "You",
+          "start": 68.8851,
+          "end": 69.1864
+        },
+        {
+          "text": "can",
+          "start": 69.1864,
+          "end": 69.4878
+        },
+        {
+          "text": "refresh",
+          "start": 69.4878,
+          "end": 69.9481
+        },
+        {
+          "text": "documents",
+          "start": 69.9481,
+          "end": 70.4701
+        },
+        {
+          "text": "without",
+          "start": 70.4701,
+          "end": 70.9304
+        },
+        {
+          "text": "retraining",
+          "start": 70.9304,
+          "end": 71.4806
+        },
+        {
+          "text": "the",
+          "start": 71.4806,
+          "end": 71.7819
+        },
+        {
+          "text": "language",
+          "start": 71.7819,
+          "end": 72.274
+        },
+        {
+          "text": "model,",
+          "start": 72.274,
+          "end": 72.6979
+        },
+        {
+          "text": "and",
+          "start": 72.6979,
+          "end": 72.9992
+        },
+        {
+          "text": "improve",
+          "start": 72.9992,
+          "end": 73.4596
+        },
+        {
+          "text": "retrieval",
+          "start": 73.4596,
+          "end": 73.9815
+        },
+        {
+          "text": "without",
+          "start": 73.9815,
+          "end": 74.4418
+        },
+        {
+          "text": "replacing",
+          "start": 74.4418,
+          "end": 74.9638
+        },
+        {
+          "text": "the",
+          "start": 74.9638,
+          "end": 75.2651
+        },
+        {
+          "text": "generator.",
+          "start": 75.2651,
+          "end": 75.848
+        },
+        {
+          "text": "That",
+          "start": 75.848,
+          "end": 76.196
+        },
+        {
+          "text": "separation",
+          "start": 76.196,
+          "end": 76.7462
+        },
+        {
+          "text": "is",
+          "start": 76.7462,
+          "end": 76.9922
+        },
+        {
+          "text": "one",
+          "start": 76.9922,
+          "end": 77.2936
+        },
+        {
+          "text": "reason",
+          "start": 77.2936,
+          "end": 77.7197
+        },
+        {
+          "text": "RAG",
+          "start": 77.7197,
+          "end": 78.0211
+        },
+        {
+          "text": "is",
+          "start": 78.0211,
+          "end": 78.2671
+        },
+        {
+          "text": "practical.",
+          "start": 78.2671,
+          "end": 78.85
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "start": 79.0,
+      "end": 112.725,
+      "text": "During indexing, the application loads documents, cleans them, and splits them into chunks. Good chunk boundaries preserve enough meaning to answer a question without sending an entire manual. Each chunk should retain metadata such as source, title, date, permissions, and version. In a common vector-search design, an embedding model converts each chunk into a numeric vector and stores the vector beside the original text. Keyword or hybrid indexes can also participate. The goal is not vectors for their own sake. The goal is a searchable collection that can return the right evidence.",
+      "words": [
+        {
+          "text": "During",
+          "start": 79.0,
+          "end": 79.3973
+        },
+        {
+          "text": "indexing,",
+          "start": 79.3973,
+          "end": 79.8886
+        },
+        {
+          "text": "the",
+          "start": 79.8886,
+          "end": 80.1695
+        },
+        {
+          "text": "application",
+          "start": 80.1695,
+          "end": 80.7075
+        },
+        {
+          "text": "loads",
+          "start": 80.7075,
+          "end": 81.0703
+        },
+        {
+          "text": "documents,",
+          "start": 81.0703,
+          "end": 81.5893
+        },
+        {
+          "text": "cleans",
+          "start": 81.5893,
+          "end": 81.9867
+        },
+        {
+          "text": "them,",
+          "start": 81.9867,
+          "end": 82.3435
+        },
+        {
+          "text": "and",
+          "start": 82.3435,
+          "end": 82.6245
+        },
+        {
+          "text": "splits",
+          "start": 82.6245,
+          "end": 83.0218
+        },
+        {
+          "text": "them",
+          "start": 83.0218,
+          "end": 83.3463
+        },
+        {
+          "text": "into",
+          "start": 83.3463,
+          "end": 83.6707
+        },
+        {
+          "text": "chunks.",
+          "start": 83.6707,
+          "end": 84.1248
+        },
+        {
+          "text": "Good",
+          "start": 84.1248,
+          "end": 84.4492
+        },
+        {
+          "text": "chunk",
+          "start": 84.4492,
+          "end": 84.8119
+        },
+        {
+          "text": "boundaries",
+          "start": 84.8119,
+          "end": 85.3249
+        },
+        {
+          "text": "preserve",
+          "start": 85.3249,
+          "end": 85.7837
+        },
+        {
+          "text": "enough",
+          "start": 85.7837,
+          "end": 86.181
+        },
+        {
+          "text": "meaning",
+          "start": 86.181,
+          "end": 86.6102
+        },
+        {
+          "text": "to",
+          "start": 86.6102,
+          "end": 86.8396
+        },
+        {
+          "text": "answer",
+          "start": 86.8396,
+          "end": 87.2369
+        },
+        {
+          "text": "a",
+          "start": 87.2369,
+          "end": 87.3992
+        },
+        {
+          "text": "question",
+          "start": 87.3992,
+          "end": 87.858
+        },
+        {
+          "text": "without",
+          "start": 87.858,
+          "end": 88.2871
+        },
+        {
+          "text": "sending",
+          "start": 88.2871,
+          "end": 88.7163
+        },
+        {
+          "text": "an",
+          "start": 88.7163,
+          "end": 88.9457
+        },
+        {
+          "text": "entire",
+          "start": 88.9457,
+          "end": 89.343
+        },
+        {
+          "text": "manual.",
+          "start": 89.343,
+          "end": 89.7972
+        },
+        {
+          "text": "Each",
+          "start": 89.7972,
+          "end": 90.1216
+        },
+        {
+          "text": "chunk",
+          "start": 90.1216,
+          "end": 90.4843
+        },
+        {
+          "text": "should",
+          "start": 90.4843,
+          "end": 90.8816
+        },
+        {
+          "text": "retain",
+          "start": 90.8816,
+          "end": 91.279
+        },
+        {
+          "text": "metadata",
+          "start": 91.279,
+          "end": 91.7378
+        },
+        {
+          "text": "such",
+          "start": 91.7378,
+          "end": 92.0622
+        },
+        {
+          "text": "as",
+          "start": 92.0622,
+          "end": 92.2916
+        },
+        {
+          "text": "source,",
+          "start": 92.2916,
+          "end": 92.7214
+        },
+        {
+          "text": "title,",
+          "start": 92.7214,
+          "end": 93.1165
+        },
+        {
+          "text": "date,",
+          "start": 93.1165,
+          "end": 93.4734
+        },
+        {
+          "text": "permissions,",
+          "start": 93.4734,
+          "end": 94.0438
+        },
+        {
+          "text": "and",
+          "start": 94.0438,
+          "end": 94.3248
+        },
+        {
+          "text": "version.",
+          "start": 94.3248,
+          "end": 94.8107
+        },
+        {
+          "text": "In",
+          "start": 94.8107,
+          "end": 95.0401
+        },
+        {
+          "text": "a",
+          "start": 95.0401,
+          "end": 95.2024
+        },
+        {
+          "text": "common",
+          "start": 95.2024,
+          "end": 95.5997
+        },
+        {
+          "text": "vector-search",
+          "start": 95.5997,
+          "end": 96.1616
+        },
+        {
+          "text": "design,",
+          "start": 96.1616,
+          "end": 96.5914
+        },
+        {
+          "text": "an",
+          "start": 96.5914,
+          "end": 96.8208
+        },
+        {
+          "text": "embedding",
+          "start": 96.8208,
+          "end": 97.3074
+        },
+        {
+          "text": "model",
+          "start": 97.3074,
+          "end": 97.6701
+        },
+        {
+          "text": "converts",
+          "start": 97.6701,
+          "end": 98.129
+        },
+        {
+          "text": "each",
+          "start": 98.129,
+          "end": 98.4534
+        },
+        {
+          "text": "chunk",
+          "start": 98.4534,
+          "end": 98.8161
+        },
+        {
+          "text": "into",
+          "start": 98.8161,
+          "end": 99.1405
+        },
+        {
+          "text": "a",
+          "start": 99.1405,
+          "end": 99.3027
+        },
+        {
+          "text": "numeric",
+          "start": 99.3027,
+          "end": 99.7319
+        },
+        {
+          "text": "vector",
+          "start": 99.7319,
+          "end": 100.1292
+        },
+        {
+          "text": "and",
+          "start": 100.1292,
+          "end": 100.4102
+        },
+        {
+          "text": "stores",
+          "start": 100.4102,
+          "end": 100.8075
+        },
+        {
+          "text": "the",
+          "start": 100.8075,
+          "end": 101.0885
+        },
+        {
+          "text": "vector",
+          "start": 101.0885,
+          "end": 101.4858
+        },
+        {
+          "text": "beside",
+          "start": 101.4858,
+          "end": 101.8832
+        },
+        {
+          "text": "the",
+          "start": 101.8832,
+          "end": 102.1641
+        },
+        {
+          "text": "original",
+          "start": 102.1641,
+          "end": 102.6229
+        },
+        {
+          "text": "text.",
+          "start": 102.6229,
+          "end": 103.0041
+        },
+        {
+          "text": "Keyword",
+          "start": 103.0041,
+          "end": 103.4333
+        },
+        {
+          "text": "or",
+          "start": 103.4333,
+          "end": 103.6627
+        },
+        {
+          "text": "hybrid",
+          "start": 103.6627,
+          "end": 104.06
+        },
+        {
+          "text": "indexes",
+          "start": 104.06,
+          "end": 104.4892
+        },
+        {
+          "text": "can",
+          "start": 104.4892,
+          "end": 104.7702
+        },
+        {
+          "text": "also",
+          "start": 104.7702,
+          "end": 105.0946
+        },
+        {
+          "text": "participate.",
+          "start": 105.0946,
+          "end": 105.6894
+        },
+        {
+          "text": "The",
+          "start": 105.6894,
+          "end": 105.9703
+        },
+        {
+          "text": "goal",
+          "start": 105.9703,
+          "end": 106.2947
+        },
+        {
+          "text": "is",
+          "start": 106.2947,
+          "end": 106.5241
+        },
+        {
+          "text": "not",
+          "start": 106.5241,
+          "end": 106.8051
+        },
+        {
+          "text": "vectors",
+          "start": 106.8051,
+          "end": 107.2343
+        },
+        {
+          "text": "for",
+          "start": 107.2343,
+          "end": 107.5152
+        },
+        {
+          "text": "their",
+          "start": 107.5152,
+          "end": 107.878
+        },
+        {
+          "text": "own",
+          "start": 107.878,
+          "end": 108.1589
+        },
+        {
+          "text": "sake.",
+          "start": 108.1589,
+          "end": 108.5401
+        },
+        {
+          "text": "The",
+          "start": 108.5401,
+          "end": 108.8211
+        },
+        {
+          "text": "goal",
+          "start": 108.8211,
+          "end": 109.1455
+        },
+        {
+          "text": "is",
+          "start": 109.1455,
+          "end": 109.3749
+        },
+        {
+          "text": "a",
+          "start": 109.3749,
+          "end": 109.5371
+        },
+        {
+          "text": "searchable",
+          "start": 109.5371,
+          "end": 110.0501
+        },
+        {
+          "text": "collection",
+          "start": 110.0501,
+          "end": 110.563
+        },
+        {
+          "text": "that",
+          "start": 110.563,
+          "end": 110.8874
+        },
+        {
+          "text": "can",
+          "start": 110.8874,
+          "end": 111.1684
+        },
+        {
+          "text": "return",
+          "start": 111.1684,
+          "end": 111.5657
+        },
+        {
+          "text": "the",
+          "start": 111.5657,
+          "end": 111.8467
+        },
+        {
+          "text": "right",
+          "start": 111.8467,
+          "end": 112.2094
+        },
+        {
+          "text": "evidence.",
+          "start": 112.2094,
+          "end": 112.725
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "start": 113.0,
+      "end": 146.05,
+      "text": "At question time, the application applies access rules so users retrieve only permitted documents. It converts the question into the representation expected by the search system, then runs vector, keyword, or hybrid retrieval. The first search may return many candidates. Metadata filters remove incompatible results, and a reranker can reorder passages by their relevance to the complete question. Finally, the application chooses a small set that fits the model\u2019s context budget. Retrieval quality determines which facts the model is even able to use.",
+      "words": [
+        {
+          "text": "At",
+          "start": 113.0,
+          "end": 113.2435
+        },
+        {
+          "text": "question",
+          "start": 113.2435,
+          "end": 113.7306
+        },
+        {
+          "text": "time,",
+          "start": 113.7306,
+          "end": 114.1095
+        },
+        {
+          "text": "the",
+          "start": 114.1095,
+          "end": 114.4077
+        },
+        {
+          "text": "application",
+          "start": 114.4077,
+          "end": 114.9789
+        },
+        {
+          "text": "applies",
+          "start": 114.9789,
+          "end": 115.4345
+        },
+        {
+          "text": "access",
+          "start": 115.4345,
+          "end": 115.8563
+        },
+        {
+          "text": "rules",
+          "start": 115.8563,
+          "end": 116.2414
+        },
+        {
+          "text": "so",
+          "start": 116.2414,
+          "end": 116.4849
+        },
+        {
+          "text": "users",
+          "start": 116.4849,
+          "end": 116.87
+        },
+        {
+          "text": "retrieve",
+          "start": 116.87,
+          "end": 117.3571
+        },
+        {
+          "text": "only",
+          "start": 117.3571,
+          "end": 117.7015
+        },
+        {
+          "text": "permitted",
+          "start": 117.7015,
+          "end": 118.2181
+        },
+        {
+          "text": "documents.",
+          "start": 118.2181,
+          "end": 118.795
+        },
+        {
+          "text": "It",
+          "start": 118.795,
+          "end": 119.0385
+        },
+        {
+          "text": "converts",
+          "start": 119.0385,
+          "end": 119.5256
+        },
+        {
+          "text": "the",
+          "start": 119.5256,
+          "end": 119.8239
+        },
+        {
+          "text": "question",
+          "start": 119.8239,
+          "end": 120.311
+        },
+        {
+          "text": "into",
+          "start": 120.311,
+          "end": 120.6554
+        },
+        {
+          "text": "the",
+          "start": 120.6554,
+          "end": 120.9537
+        },
+        {
+          "text": "representation",
+          "start": 120.9537,
+          "end": 121.598
+        },
+        {
+          "text": "expected",
+          "start": 121.598,
+          "end": 122.0851
+        },
+        {
+          "text": "by",
+          "start": 122.0851,
+          "end": 122.3286
+        },
+        {
+          "text": "the",
+          "start": 122.3286,
+          "end": 122.6269
+        },
+        {
+          "text": "search",
+          "start": 122.6269,
+          "end": 123.0487
+        },
+        {
+          "text": "system,",
+          "start": 123.0487,
+          "end": 123.505
+        },
+        {
+          "text": "then",
+          "start": 123.505,
+          "end": 123.8494
+        },
+        {
+          "text": "runs",
+          "start": 123.8494,
+          "end": 124.1938
+        },
+        {
+          "text": "vector,",
+          "start": 124.1938,
+          "end": 124.6501
+        },
+        {
+          "text": "keyword,",
+          "start": 124.6501,
+          "end": 125.1401
+        },
+        {
+          "text": "or",
+          "start": 125.1401,
+          "end": 125.3837
+        },
+        {
+          "text": "hybrid",
+          "start": 125.3837,
+          "end": 125.8055
+        },
+        {
+          "text": "retrieval.",
+          "start": 125.8055,
+          "end": 126.3824
+        },
+        {
+          "text": "The",
+          "start": 126.3824,
+          "end": 126.6806
+        },
+        {
+          "text": "first",
+          "start": 126.6806,
+          "end": 127.0657
+        },
+        {
+          "text": "search",
+          "start": 127.0657,
+          "end": 127.4875
+        },
+        {
+          "text": "may",
+          "start": 127.4875,
+          "end": 127.7858
+        },
+        {
+          "text": "return",
+          "start": 127.7858,
+          "end": 128.2076
+        },
+        {
+          "text": "many",
+          "start": 128.2076,
+          "end": 128.552
+        },
+        {
+          "text": "candidates.",
+          "start": 128.552,
+          "end": 129.1569
+        },
+        {
+          "text": "Metadata",
+          "start": 129.1569,
+          "end": 129.644
+        },
+        {
+          "text": "filters",
+          "start": 129.644,
+          "end": 130.0996
+        },
+        {
+          "text": "remove",
+          "start": 130.0996,
+          "end": 130.5214
+        },
+        {
+          "text": "incompatible",
+          "start": 130.5214,
+          "end": 131.1179
+        },
+        {
+          "text": "results,",
+          "start": 131.1179,
+          "end": 131.608
+        },
+        {
+          "text": "and",
+          "start": 131.608,
+          "end": 131.9063
+        },
+        {
+          "text": "a",
+          "start": 131.9063,
+          "end": 132.0785
+        },
+        {
+          "text": "reranker",
+          "start": 132.0785,
+          "end": 132.5656
+        },
+        {
+          "text": "can",
+          "start": 132.5656,
+          "end": 132.8638
+        },
+        {
+          "text": "reorder",
+          "start": 132.8638,
+          "end": 133.3194
+        },
+        {
+          "text": "passages",
+          "start": 133.3194,
+          "end": 133.8065
+        },
+        {
+          "text": "by",
+          "start": 133.8065,
+          "end": 134.0501
+        },
+        {
+          "text": "their",
+          "start": 134.0501,
+          "end": 134.4351
+        },
+        {
+          "text": "relevance",
+          "start": 134.4351,
+          "end": 134.9518
+        },
+        {
+          "text": "to",
+          "start": 134.9518,
+          "end": 135.1953
+        },
+        {
+          "text": "the",
+          "start": 135.1953,
+          "end": 135.4936
+        },
+        {
+          "text": "complete",
+          "start": 135.4936,
+          "end": 135.9806
+        },
+        {
+          "text": "question.",
+          "start": 135.9806,
+          "end": 136.528
+        },
+        {
+          "text": "Finally,",
+          "start": 136.528,
+          "end": 137.018
+        },
+        {
+          "text": "the",
+          "start": 137.018,
+          "end": 137.3163
+        },
+        {
+          "text": "application",
+          "start": 137.3163,
+          "end": 137.8875
+        },
+        {
+          "text": "chooses",
+          "start": 137.8875,
+          "end": 138.3431
+        },
+        {
+          "text": "a",
+          "start": 138.3431,
+          "end": 138.5153
+        },
+        {
+          "text": "small",
+          "start": 138.5153,
+          "end": 138.9004
+        },
+        {
+          "text": "set",
+          "start": 138.9004,
+          "end": 139.1986
+        },
+        {
+          "text": "that",
+          "start": 139.1986,
+          "end": 139.543
+        },
+        {
+          "text": "fits",
+          "start": 139.543,
+          "end": 139.8875
+        },
+        {
+          "text": "the",
+          "start": 139.8875,
+          "end": 140.1857
+        },
+        {
+          "text": "model\u2019s",
+          "start": 140.1857,
+          "end": 140.6076
+        },
+        {
+          "text": "context",
+          "start": 140.6076,
+          "end": 141.0632
+        },
+        {
+          "text": "budget.",
+          "start": 141.0632,
+          "end": 141.5453
+        },
+        {
+          "text": "Retrieval",
+          "start": 141.5453,
+          "end": 142.0619
+        },
+        {
+          "text": "quality",
+          "start": 142.0619,
+          "end": 142.5175
+        },
+        {
+          "text": "determines",
+          "start": 142.5175,
+          "end": 143.0621
+        },
+        {
+          "text": "which",
+          "start": 143.0621,
+          "end": 143.4471
+        },
+        {
+          "text": "facts",
+          "start": 143.4471,
+          "end": 143.8322
+        },
+        {
+          "text": "the",
+          "start": 143.8322,
+          "end": 144.1305
+        },
+        {
+          "text": "model",
+          "start": 144.1305,
+          "end": 144.5155
+        },
+        {
+          "text": "is",
+          "start": 144.5155,
+          "end": 144.7591
+        },
+        {
+          "text": "even",
+          "start": 144.7591,
+          "end": 145.1035
+        },
+        {
+          "text": "able",
+          "start": 145.1035,
+          "end": 145.4479
+        },
+        {
+          "text": "to",
+          "start": 145.4479,
+          "end": 145.6915
+        },
+        {
+          "text": "use.",
+          "start": 145.6915,
+          "end": 146.05
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "start": 146.5,
+      "end": 173.3,
+      "text": "The application builds a prompt from instructions, the question, and passages. An instruction might say: answer only from context, cite the source identifiers, and state when the evidence is insufficient. The retrieved text remains untrusted data, because documents can contain misleading or malicious instructions. Systems separate instructions from evidence, limit what tools the model can call, and keep source identifiers attached so the answer can point back to sources.",
+      "words": [
+        {
+          "text": "The",
+          "start": 146.5,
+          "end": 146.7855
+        },
+        {
+          "text": "application",
+          "start": 146.7855,
+          "end": 147.3323
+        },
+        {
+          "text": "builds",
+          "start": 147.3323,
+          "end": 147.7361
+        },
+        {
+          "text": "a",
+          "start": 147.7361,
+          "end": 147.901
+        },
+        {
+          "text": "prompt",
+          "start": 147.901,
+          "end": 148.3048
+        },
+        {
+          "text": "from",
+          "start": 148.3048,
+          "end": 148.6345
+        },
+        {
+          "text": "instructions,",
+          "start": 148.6345,
+          "end": 149.2386
+        },
+        {
+          "text": "the",
+          "start": 149.2386,
+          "end": 149.5241
+        },
+        {
+          "text": "question,",
+          "start": 149.5241,
+          "end": 150.0234
+        },
+        {
+          "text": "and",
+          "start": 150.0234,
+          "end": 150.3089
+        },
+        {
+          "text": "passages.",
+          "start": 150.3089,
+          "end": 150.8329
+        },
+        {
+          "text": "An",
+          "start": 150.8329,
+          "end": 151.0661
+        },
+        {
+          "text": "instruction",
+          "start": 151.0661,
+          "end": 151.6129
+        },
+        {
+          "text": "might",
+          "start": 151.6129,
+          "end": 151.9815
+        },
+        {
+          "text": "say:",
+          "start": 151.9815,
+          "end": 152.3
+        },
+        {
+          "text": "answer",
+          "start": 152.3,
+          "end": 152.7038
+        },
+        {
+          "text": "only",
+          "start": 152.7038,
+          "end": 153.0335
+        },
+        {
+          "text": "from",
+          "start": 153.0335,
+          "end": 153.3633
+        },
+        {
+          "text": "context,",
+          "start": 153.3633,
+          "end": 153.8324
+        },
+        {
+          "text": "cite",
+          "start": 153.8324,
+          "end": 154.1621
+        },
+        {
+          "text": "the",
+          "start": 154.1621,
+          "end": 154.4477
+        },
+        {
+          "text": "source",
+          "start": 154.4477,
+          "end": 154.8515
+        },
+        {
+          "text": "identifiers,",
+          "start": 154.8515,
+          "end": 155.4312
+        },
+        {
+          "text": "and",
+          "start": 155.4312,
+          "end": 155.7168
+        },
+        {
+          "text": "state",
+          "start": 155.7168,
+          "end": 156.0854
+        },
+        {
+          "text": "when",
+          "start": 156.0854,
+          "end": 156.4151
+        },
+        {
+          "text": "the",
+          "start": 156.4151,
+          "end": 156.7007
+        },
+        {
+          "text": "evidence",
+          "start": 156.7007,
+          "end": 157.167
+        },
+        {
+          "text": "is",
+          "start": 157.167,
+          "end": 157.4001
+        },
+        {
+          "text": "insufficient.",
+          "start": 157.4001,
+          "end": 158.0289
+        },
+        {
+          "text": "The",
+          "start": 158.0289,
+          "end": 158.3144
+        },
+        {
+          "text": "retrieved",
+          "start": 158.3144,
+          "end": 158.809
+        },
+        {
+          "text": "text",
+          "start": 158.809,
+          "end": 159.1387
+        },
+        {
+          "text": "remains",
+          "start": 159.1387,
+          "end": 159.5749
+        },
+        {
+          "text": "untrusted",
+          "start": 159.5749,
+          "end": 160.0695
+        },
+        {
+          "text": "data,",
+          "start": 160.0695,
+          "end": 160.4322
+        },
+        {
+          "text": "because",
+          "start": 160.4322,
+          "end": 160.8684
+        },
+        {
+          "text": "documents",
+          "start": 160.8684,
+          "end": 161.3629
+        },
+        {
+          "text": "can",
+          "start": 161.3629,
+          "end": 161.6485
+        },
+        {
+          "text": "contain",
+          "start": 161.6485,
+          "end": 162.0847
+        },
+        {
+          "text": "misleading",
+          "start": 162.0847,
+          "end": 162.606
+        },
+        {
+          "text": "or",
+          "start": 162.606,
+          "end": 162.8391
+        },
+        {
+          "text": "malicious",
+          "start": 162.8391,
+          "end": 163.3337
+        },
+        {
+          "text": "instructions.",
+          "start": 163.3337,
+          "end": 163.9625
+        },
+        {
+          "text": "Systems",
+          "start": 163.9625,
+          "end": 164.3987
+        },
+        {
+          "text": "separate",
+          "start": 164.3987,
+          "end": 164.865
+        },
+        {
+          "text": "instructions",
+          "start": 164.865,
+          "end": 165.436
+        },
+        {
+          "text": "from",
+          "start": 165.436,
+          "end": 165.7658
+        },
+        {
+          "text": "evidence,",
+          "start": 165.7658,
+          "end": 166.265
+        },
+        {
+          "text": "limit",
+          "start": 166.265,
+          "end": 166.6337
+        },
+        {
+          "text": "what",
+          "start": 166.6337,
+          "end": 166.9634
+        },
+        {
+          "text": "tools",
+          "start": 166.9634,
+          "end": 167.332
+        },
+        {
+          "text": "the",
+          "start": 167.332,
+          "end": 167.6176
+        },
+        {
+          "text": "model",
+          "start": 167.6176,
+          "end": 167.9862
+        },
+        {
+          "text": "can",
+          "start": 167.9862,
+          "end": 168.2717
+        },
+        {
+          "text": "call,",
+          "start": 168.2717,
+          "end": 168.6344
+        },
+        {
+          "text": "and",
+          "start": 168.6344,
+          "end": 168.92
+        },
+        {
+          "text": "keep",
+          "start": 168.92,
+          "end": 169.2497
+        },
+        {
+          "text": "source",
+          "start": 169.2497,
+          "end": 169.6535
+        },
+        {
+          "text": "identifiers",
+          "start": 169.6535,
+          "end": 170.2003
+        },
+        {
+          "text": "attached",
+          "start": 170.2003,
+          "end": 170.6666
+        },
+        {
+          "text": "so",
+          "start": 170.6666,
+          "end": 170.8997
+        },
+        {
+          "text": "the",
+          "start": 170.8997,
+          "end": 171.1853
+        },
+        {
+          "text": "answer",
+          "start": 171.1853,
+          "end": 171.5891
+        },
+        {
+          "text": "can",
+          "start": 171.5891,
+          "end": 171.8746
+        },
+        {
+          "text": "point",
+          "start": 171.8746,
+          "end": 172.2433
+        },
+        {
+          "text": "back",
+          "start": 172.2433,
+          "end": 172.573
+        },
+        {
+          "text": "to",
+          "start": 172.573,
+          "end": 172.8061
+        },
+        {
+          "text": "sources.",
+          "start": 172.8061,
+          "end": 173.3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "start": 173.5,
+      "end": 199.975,
+      "text": "The language model performs inference. It does not update its weights. It reads the context and predicts an answer token by token. The application can return the answer with citations, expose the passages used, or refuse when retrieval found no adequate support. This is why grounded matters: claims should be traceable to evidence. Grounding can reduce unsupported output, but it does not prove that every generated sentence is correct. Verification still matters.",
+      "words": [
+        {
+          "text": "The",
+          "start": 173.5,
+          "end": 173.7791
+        },
+        {
+          "text": "language",
+          "start": 173.7791,
+          "end": 174.2348
+        },
+        {
+          "text": "model",
+          "start": 174.2348,
+          "end": 174.5951
+        },
+        {
+          "text": "performs",
+          "start": 174.5951,
+          "end": 175.0509
+        },
+        {
+          "text": "inference.",
+          "start": 175.0509,
+          "end": 175.5907
+        },
+        {
+          "text": "It",
+          "start": 175.5907,
+          "end": 175.8186
+        },
+        {
+          "text": "does",
+          "start": 175.8186,
+          "end": 176.1408
+        },
+        {
+          "text": "not",
+          "start": 176.1408,
+          "end": 176.4199
+        },
+        {
+          "text": "update",
+          "start": 176.4199,
+          "end": 176.8146
+        },
+        {
+          "text": "its",
+          "start": 176.8146,
+          "end": 177.0937
+        },
+        {
+          "text": "weights.",
+          "start": 177.0937,
+          "end": 177.5764
+        },
+        {
+          "text": "It",
+          "start": 177.5764,
+          "end": 177.8043
+        },
+        {
+          "text": "reads",
+          "start": 177.8043,
+          "end": 178.1646
+        },
+        {
+          "text": "the",
+          "start": 178.1646,
+          "end": 178.4437
+        },
+        {
+          "text": "context",
+          "start": 178.4437,
+          "end": 178.87
+        },
+        {
+          "text": "and",
+          "start": 178.87,
+          "end": 179.1491
+        },
+        {
+          "text": "predicts",
+          "start": 179.1491,
+          "end": 179.6048
+        },
+        {
+          "text": "an",
+          "start": 179.6048,
+          "end": 179.8327
+        },
+        {
+          "text": "answer",
+          "start": 179.8327,
+          "end": 180.2274
+        },
+        {
+          "text": "token",
+          "start": 180.2274,
+          "end": 180.5877
+        },
+        {
+          "text": "by",
+          "start": 180.5877,
+          "end": 180.8156
+        },
+        {
+          "text": "token.",
+          "start": 180.8156,
+          "end": 181.2323
+        },
+        {
+          "text": "The",
+          "start": 181.2323,
+          "end": 181.5114
+        },
+        {
+          "text": "application",
+          "start": 181.5114,
+          "end": 182.0458
+        },
+        {
+          "text": "can",
+          "start": 182.0458,
+          "end": 182.3249
+        },
+        {
+          "text": "return",
+          "start": 182.3249,
+          "end": 182.7196
+        },
+        {
+          "text": "the",
+          "start": 182.7196,
+          "end": 182.9987
+        },
+        {
+          "text": "answer",
+          "start": 182.9987,
+          "end": 183.3934
+        },
+        {
+          "text": "with",
+          "start": 183.3934,
+          "end": 183.7156
+        },
+        {
+          "text": "citations,",
+          "start": 183.7156,
+          "end": 184.2313
+        },
+        {
+          "text": "expose",
+          "start": 184.2313,
+          "end": 184.6259
+        },
+        {
+          "text": "the",
+          "start": 184.6259,
+          "end": 184.905
+        },
+        {
+          "text": "passages",
+          "start": 184.905,
+          "end": 185.3608
+        },
+        {
+          "text": "used,",
+          "start": 185.3608,
+          "end": 185.7153
+        },
+        {
+          "text": "or",
+          "start": 185.7153,
+          "end": 185.9432
+        },
+        {
+          "text": "refuse",
+          "start": 185.9432,
+          "end": 186.3378
+        },
+        {
+          "text": "when",
+          "start": 186.3378,
+          "end": 186.6601
+        },
+        {
+          "text": "retrieval",
+          "start": 186.6601,
+          "end": 187.1435
+        },
+        {
+          "text": "found",
+          "start": 187.1435,
+          "end": 187.5038
+        },
+        {
+          "text": "no",
+          "start": 187.5038,
+          "end": 187.7317
+        },
+        {
+          "text": "adequate",
+          "start": 187.7317,
+          "end": 188.1874
+        },
+        {
+          "text": "support.",
+          "start": 188.1874,
+          "end": 188.6702
+        },
+        {
+          "text": "This",
+          "start": 188.6702,
+          "end": 188.9924
+        },
+        {
+          "text": "is",
+          "start": 188.9924,
+          "end": 189.2203
+        },
+        {
+          "text": "why",
+          "start": 189.2203,
+          "end": 189.4994
+        },
+        {
+          "text": "grounded",
+          "start": 189.4994,
+          "end": 189.9551
+        },
+        {
+          "text": "matters:",
+          "start": 189.9551,
+          "end": 190.4137
+        },
+        {
+          "text": "claims",
+          "start": 190.4137,
+          "end": 190.8084
+        },
+        {
+          "text": "should",
+          "start": 190.8084,
+          "end": 191.2031
+        },
+        {
+          "text": "be",
+          "start": 191.2031,
+          "end": 191.4309
+        },
+        {
+          "text": "traceable",
+          "start": 191.4309,
+          "end": 191.9143
+        },
+        {
+          "text": "to",
+          "start": 191.9143,
+          "end": 192.1422
+        },
+        {
+          "text": "evidence.",
+          "start": 192.1422,
+          "end": 192.6544
+        },
+        {
+          "text": "Grounding",
+          "start": 192.6544,
+          "end": 193.1378
+        },
+        {
+          "text": "can",
+          "start": 193.1378,
+          "end": 193.4168
+        },
+        {
+          "text": "reduce",
+          "start": 193.4168,
+          "end": 193.8115
+        },
+        {
+          "text": "unsupported",
+          "start": 193.8115,
+          "end": 194.346
+        },
+        {
+          "text": "output,",
+          "start": 194.346,
+          "end": 194.7729
+        },
+        {
+          "text": "but",
+          "start": 194.7729,
+          "end": 195.052
+        },
+        {
+          "text": "it",
+          "start": 195.052,
+          "end": 195.2798
+        },
+        {
+          "text": "does",
+          "start": 195.2798,
+          "end": 195.6021
+        },
+        {
+          "text": "not",
+          "start": 195.6021,
+          "end": 195.8812
+        },
+        {
+          "text": "prove",
+          "start": 195.8812,
+          "end": 196.2415
+        },
+        {
+          "text": "that",
+          "start": 196.2415,
+          "end": 196.5638
+        },
+        {
+          "text": "every",
+          "start": 196.5638,
+          "end": 196.9241
+        },
+        {
+          "text": "generated",
+          "start": 196.9241,
+          "end": 197.4075
+        },
+        {
+          "text": "sentence",
+          "start": 197.4075,
+          "end": 197.8632
+        },
+        {
+          "text": "is",
+          "start": 197.8632,
+          "end": 198.0911
+        },
+        {
+          "text": "correct.",
+          "start": 198.0911,
+          "end": 198.5738
+        },
+        {
+          "text": "Verification",
+          "start": 198.5738,
+          "end": 199.132
+        },
+        {
+          "text": "still",
+          "start": 199.132,
+          "end": 199.4923
+        },
+        {
+          "text": "matters.",
+          "start": 199.4923,
+          "end": 199.975
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "start": 200.5,
+      "end": 227.95,
+      "text": "RAG matters because it connects models to private knowledge without placing facts in model weights. The index can be refreshed as information changes. Citations make answers inspectable and auditable. Retrieval, permissions, and source selection give the application more control over what knowledge enters the prompt. Fine-tuning is still useful for changing behavior, style, or task performance. RAG is the better starting point when the main problem is accessing current or proprietary facts.",
+      "words": [
+        {
+          "text": "RAG",
+          "start": 200.5,
+          "end": 200.7798
+        },
+        {
+          "text": "matters",
+          "start": 200.7798,
+          "end": 201.2072
+        },
+        {
+          "text": "because",
+          "start": 201.2072,
+          "end": 201.6346
+        },
+        {
+          "text": "it",
+          "start": 201.6346,
+          "end": 201.8631
+        },
+        {
+          "text": "connects",
+          "start": 201.8631,
+          "end": 202.32
+        },
+        {
+          "text": "models",
+          "start": 202.32,
+          "end": 202.7157
+        },
+        {
+          "text": "to",
+          "start": 202.7157,
+          "end": 202.9441
+        },
+        {
+          "text": "private",
+          "start": 202.9441,
+          "end": 203.3715
+        },
+        {
+          "text": "knowledge",
+          "start": 203.3715,
+          "end": 203.8562
+        },
+        {
+          "text": "without",
+          "start": 203.8562,
+          "end": 204.2836
+        },
+        {
+          "text": "placing",
+          "start": 204.2836,
+          "end": 204.711
+        },
+        {
+          "text": "facts",
+          "start": 204.711,
+          "end": 205.0722
+        },
+        {
+          "text": "in",
+          "start": 205.0722,
+          "end": 205.3007
+        },
+        {
+          "text": "model",
+          "start": 205.3007,
+          "end": 205.6619
+        },
+        {
+          "text": "weights.",
+          "start": 205.6619,
+          "end": 206.1458
+        },
+        {
+          "text": "The",
+          "start": 206.1458,
+          "end": 206.4256
+        },
+        {
+          "text": "index",
+          "start": 206.4256,
+          "end": 206.7869
+        },
+        {
+          "text": "can",
+          "start": 206.7869,
+          "end": 207.0667
+        },
+        {
+          "text": "be",
+          "start": 207.0667,
+          "end": 207.2951
+        },
+        {
+          "text": "refreshed",
+          "start": 207.2951,
+          "end": 207.7797
+        },
+        {
+          "text": "as",
+          "start": 207.7797,
+          "end": 208.0082
+        },
+        {
+          "text": "information",
+          "start": 208.0082,
+          "end": 208.544
+        },
+        {
+          "text": "changes.",
+          "start": 208.544,
+          "end": 209.0279
+        },
+        {
+          "text": "Citations",
+          "start": 209.0279,
+          "end": 209.5126
+        },
+        {
+          "text": "make",
+          "start": 209.5126,
+          "end": 209.8356
+        },
+        {
+          "text": "answers",
+          "start": 209.8356,
+          "end": 210.263
+        },
+        {
+          "text": "inspectable",
+          "start": 210.263,
+          "end": 210.7988
+        },
+        {
+          "text": "and",
+          "start": 210.7988,
+          "end": 211.0786
+        },
+        {
+          "text": "auditable.",
+          "start": 211.0786,
+          "end": 211.6198
+        },
+        {
+          "text": "Retrieval,",
+          "start": 211.6198,
+          "end": 212.1367
+        },
+        {
+          "text": "permissions,",
+          "start": 212.1367,
+          "end": 212.7048
+        },
+        {
+          "text": "and",
+          "start": 212.7048,
+          "end": 212.9846
+        },
+        {
+          "text": "source",
+          "start": 212.9846,
+          "end": 213.3803
+        },
+        {
+          "text": "selection",
+          "start": 213.3803,
+          "end": 213.865
+        },
+        {
+          "text": "give",
+          "start": 213.865,
+          "end": 214.188
+        },
+        {
+          "text": "the",
+          "start": 214.188,
+          "end": 214.4679
+        },
+        {
+          "text": "application",
+          "start": 214.4679,
+          "end": 215.0036
+        },
+        {
+          "text": "more",
+          "start": 215.0036,
+          "end": 215.3267
+        },
+        {
+          "text": "control",
+          "start": 215.3267,
+          "end": 215.7541
+        },
+        {
+          "text": "over",
+          "start": 215.7541,
+          "end": 216.0772
+        },
+        {
+          "text": "what",
+          "start": 216.0772,
+          "end": 216.4003
+        },
+        {
+          "text": "knowledge",
+          "start": 216.4003,
+          "end": 216.8849
+        },
+        {
+          "text": "enters",
+          "start": 216.8849,
+          "end": 217.2806
+        },
+        {
+          "text": "the",
+          "start": 217.2806,
+          "end": 217.5604
+        },
+        {
+          "text": "prompt.",
+          "start": 217.5604,
+          "end": 218.0127
+        },
+        {
+          "text": "Fine-tuning",
+          "start": 218.0127,
+          "end": 218.5235
+        },
+        {
+          "text": "is",
+          "start": 218.5235,
+          "end": 218.752
+        },
+        {
+          "text": "still",
+          "start": 218.752,
+          "end": 219.1132
+        },
+        {
+          "text": "useful",
+          "start": 219.1132,
+          "end": 219.5089
+        },
+        {
+          "text": "for",
+          "start": 219.5089,
+          "end": 219.7887
+        },
+        {
+          "text": "changing",
+          "start": 219.7887,
+          "end": 220.2456
+        },
+        {
+          "text": "behavior,",
+          "start": 220.2456,
+          "end": 220.7348
+        },
+        {
+          "text": "style,",
+          "start": 220.7348,
+          "end": 221.1284
+        },
+        {
+          "text": "or",
+          "start": 221.1284,
+          "end": 221.3568
+        },
+        {
+          "text": "task",
+          "start": 221.3568,
+          "end": 221.6799
+        },
+        {
+          "text": "performance.",
+          "start": 221.6799,
+          "end": 222.2722
+        },
+        {
+          "text": "RAG",
+          "start": 222.2722,
+          "end": 222.552
+        },
+        {
+          "text": "is",
+          "start": 222.552,
+          "end": 222.7805
+        },
+        {
+          "text": "the",
+          "start": 222.7805,
+          "end": 223.0603
+        },
+        {
+          "text": "better",
+          "start": 223.0603,
+          "end": 223.456
+        },
+        {
+          "text": "starting",
+          "start": 223.456,
+          "end": 223.9129
+        },
+        {
+          "text": "point",
+          "start": 223.9129,
+          "end": 224.2741
+        },
+        {
+          "text": "when",
+          "start": 224.2741,
+          "end": 224.5972
+        },
+        {
+          "text": "the",
+          "start": 224.5972,
+          "end": 224.877
+        },
+        {
+          "text": "main",
+          "start": 224.877,
+          "end": 225.2001
+        },
+        {
+          "text": "problem",
+          "start": 225.2001,
+          "end": 225.6275
+        },
+        {
+          "text": "is",
+          "start": 225.6275,
+          "end": 225.856
+        },
+        {
+          "text": "accessing",
+          "start": 225.856,
+          "end": 226.3406
+        },
+        {
+          "text": "current",
+          "start": 226.3406,
+          "end": 226.768
+        },
+        {
+          "text": "or",
+          "start": 226.768,
+          "end": 226.9965
+        },
+        {
+          "text": "proprietary",
+          "start": 226.9965,
+          "end": 227.5322
+        },
+        {
+          "text": "facts.",
+          "start": 227.5322,
+          "end": 227.95
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "start": 228.5,
+      "end": 258.9,
+      "text": "RAG is not a truth machine. Bad documents produce bad evidence. Poor chunking separates facts from explanations. Weak retrieval can miss the correct passage or return something similar. Stale indexes and incorrect permissions create security failures. Even with relevant context, the model can misunderstand, combine claims incorrectly, or ignore instructions. Evaluate retrieval and generation separately: did the system fetch evidence, and did the answer faithfully use it? User usefulness depends on both stages.",
+      "words": [
+        {
+          "text": "RAG",
+          "start": 228.5,
+          "end": 228.8003
+        },
+        {
+          "text": "is",
+          "start": 228.8003,
+          "end": 229.0455
+        },
+        {
+          "text": "not",
+          "start": 229.0455,
+          "end": 229.3458
+        },
+        {
+          "text": "a",
+          "start": 229.3458,
+          "end": 229.5192
+        },
+        {
+          "text": "truth",
+          "start": 229.5192,
+          "end": 229.9069
+        },
+        {
+          "text": "machine.",
+          "start": 229.9069,
+          "end": 230.4263
+        },
+        {
+          "text": "Bad",
+          "start": 230.4263,
+          "end": 230.7266
+        },
+        {
+          "text": "documents",
+          "start": 230.7266,
+          "end": 231.2467
+        },
+        {
+          "text": "produce",
+          "start": 231.2467,
+          "end": 231.7054
+        },
+        {
+          "text": "bad",
+          "start": 231.7054,
+          "end": 232.0057
+        },
+        {
+          "text": "evidence.",
+          "start": 232.0057,
+          "end": 232.5568
+        },
+        {
+          "text": "Poor",
+          "start": 232.5568,
+          "end": 232.9036
+        },
+        {
+          "text": "chunking",
+          "start": 232.9036,
+          "end": 233.394
+        },
+        {
+          "text": "separates",
+          "start": 233.394,
+          "end": 233.9141
+        },
+        {
+          "text": "facts",
+          "start": 233.9141,
+          "end": 234.3018
+        },
+        {
+          "text": "from",
+          "start": 234.3018,
+          "end": 234.6486
+        },
+        {
+          "text": "explanations.",
+          "start": 234.6486,
+          "end": 235.3098
+        },
+        {
+          "text": "Weak",
+          "start": 235.3098,
+          "end": 235.6566
+        },
+        {
+          "text": "retrieval",
+          "start": 235.6566,
+          "end": 236.1767
+        },
+        {
+          "text": "can",
+          "start": 236.1767,
+          "end": 236.477
+        },
+        {
+          "text": "miss",
+          "start": 236.477,
+          "end": 236.8238
+        },
+        {
+          "text": "the",
+          "start": 236.8238,
+          "end": 237.1241
+        },
+        {
+          "text": "correct",
+          "start": 237.1241,
+          "end": 237.5828
+        },
+        {
+          "text": "passage",
+          "start": 237.5828,
+          "end": 238.0415
+        },
+        {
+          "text": "or",
+          "start": 238.0415,
+          "end": 238.2867
+        },
+        {
+          "text": "return",
+          "start": 238.2867,
+          "end": 238.7114
+        },
+        {
+          "text": "something",
+          "start": 238.7114,
+          "end": 239.2316
+        },
+        {
+          "text": "similar.",
+          "start": 239.2316,
+          "end": 239.751
+        },
+        {
+          "text": "Stale",
+          "start": 239.751,
+          "end": 240.1387
+        },
+        {
+          "text": "indexes",
+          "start": 240.1387,
+          "end": 240.5974
+        },
+        {
+          "text": "and",
+          "start": 240.5974,
+          "end": 240.8977
+        },
+        {
+          "text": "incorrect",
+          "start": 240.8977,
+          "end": 241.4178
+        },
+        {
+          "text": "permissions",
+          "start": 241.4178,
+          "end": 241.9929
+        },
+        {
+          "text": "create",
+          "start": 241.9929,
+          "end": 242.4176
+        },
+        {
+          "text": "security",
+          "start": 242.4176,
+          "end": 242.908
+        },
+        {
+          "text": "failures.",
+          "start": 242.908,
+          "end": 243.459
+        },
+        {
+          "text": "Even",
+          "start": 243.459,
+          "end": 243.8058
+        },
+        {
+          "text": "with",
+          "start": 243.8058,
+          "end": 244.1525
+        },
+        {
+          "text": "relevant",
+          "start": 244.1525,
+          "end": 244.6429
+        },
+        {
+          "text": "context,",
+          "start": 244.6429,
+          "end": 245.1363
+        },
+        {
+          "text": "the",
+          "start": 245.1363,
+          "end": 245.4366
+        },
+        {
+          "text": "model",
+          "start": 245.4366,
+          "end": 245.8243
+        },
+        {
+          "text": "can",
+          "start": 245.8243,
+          "end": 246.1246
+        },
+        {
+          "text": "misunderstand,",
+          "start": 246.1246,
+          "end": 246.7844
+        },
+        {
+          "text": "combine",
+          "start": 246.7844,
+          "end": 247.2432
+        },
+        {
+          "text": "claims",
+          "start": 247.2432,
+          "end": 247.6678
+        },
+        {
+          "text": "incorrectly,",
+          "start": 247.6678,
+          "end": 248.2776
+        },
+        {
+          "text": "or",
+          "start": 248.2776,
+          "end": 248.5228
+        },
+        {
+          "text": "ignore",
+          "start": 248.5228,
+          "end": 248.9474
+        },
+        {
+          "text": "instructions.",
+          "start": 248.9474,
+          "end": 249.6087
+        },
+        {
+          "text": "Evaluate",
+          "start": 249.6087,
+          "end": 250.0991
+        },
+        {
+          "text": "retrieval",
+          "start": 250.0991,
+          "end": 250.6193
+        },
+        {
+          "text": "and",
+          "start": 250.6193,
+          "end": 250.9196
+        },
+        {
+          "text": "generation",
+          "start": 250.9196,
+          "end": 251.4678
+        },
+        {
+          "text": "separately:",
+          "start": 251.4678,
+          "end": 252.0508
+        },
+        {
+          "text": "did",
+          "start": 252.0508,
+          "end": 252.3511
+        },
+        {
+          "text": "the",
+          "start": 252.3511,
+          "end": 252.6514
+        },
+        {
+          "text": "system",
+          "start": 252.6514,
+          "end": 253.0761
+        },
+        {
+          "text": "fetch",
+          "start": 253.0761,
+          "end": 253.4638
+        },
+        {
+          "text": "evidence,",
+          "start": 253.4638,
+          "end": 253.9889
+        },
+        {
+          "text": "and",
+          "start": 253.9889,
+          "end": 254.2892
+        },
+        {
+          "text": "did",
+          "start": 254.2892,
+          "end": 254.5895
+        },
+        {
+          "text": "the",
+          "start": 254.5895,
+          "end": 254.8898
+        },
+        {
+          "text": "answer",
+          "start": 254.8898,
+          "end": 255.3145
+        },
+        {
+          "text": "faithfully",
+          "start": 255.3145,
+          "end": 255.8627
+        },
+        {
+          "text": "use",
+          "start": 255.8627,
+          "end": 256.163
+        },
+        {
+          "text": "it?",
+          "start": 256.163,
+          "end": 256.4689
+        },
+        {
+          "text": "User",
+          "start": 256.4689,
+          "end": 256.8157
+        },
+        {
+          "text": "usefulness",
+          "start": 256.8157,
+          "end": 257.3639
+        },
+        {
+          "text": "depends",
+          "start": 257.3639,
+          "end": 257.8227
+        },
+        {
+          "text": "on",
+          "start": 257.8227,
+          "end": 258.0679
+        },
+        {
+          "text": "both",
+          "start": 258.0679,
+          "end": 258.4146
+        },
+        {
+          "text": "stages.",
+          "start": 258.4146,
+          "end": 258.9
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "start": 259.0,
+      "end": 290.675,
+      "text": "A production checklist starts with authoritative sources and versioning. Test chunk sizes and preserve metadata. Compare vector, keyword, and hybrid search. Apply access filters before retrieval, then rerank when measurements justify it. Build an evaluation set with questions, expected evidence, and acceptable answers. Log scores, passages, latency, citations, refusals, and feedback without leaking sensitive content. Monitor changes, because new documents, embedding models, or prompts can alter the pipeline.",
+      "words": [
+        {
+          "text": "A",
+          "start": 259.0,
+          "end": 259.185
+        },
+        {
+          "text": "production",
+          "start": 259.185,
+          "end": 259.77
+        },
+        {
+          "text": "checklist",
+          "start": 259.77,
+          "end": 260.3249
+        },
+        {
+          "text": "starts",
+          "start": 260.3249,
+          "end": 260.7781
+        },
+        {
+          "text": "with",
+          "start": 260.7781,
+          "end": 261.1481
+        },
+        {
+          "text": "authoritative",
+          "start": 261.1481,
+          "end": 261.815
+        },
+        {
+          "text": "sources",
+          "start": 261.815,
+          "end": 262.3045
+        },
+        {
+          "text": "and",
+          "start": 262.3045,
+          "end": 262.6249
+        },
+        {
+          "text": "versioning.",
+          "start": 262.6249,
+          "end": 263.2746
+        },
+        {
+          "text": "Test",
+          "start": 263.2746,
+          "end": 263.6446
+        },
+        {
+          "text": "chunk",
+          "start": 263.6446,
+          "end": 264.0583
+        },
+        {
+          "text": "sizes",
+          "start": 264.0583,
+          "end": 264.4719
+        },
+        {
+          "text": "and",
+          "start": 264.4719,
+          "end": 264.7923
+        },
+        {
+          "text": "preserve",
+          "start": 264.7923,
+          "end": 265.3156
+        },
+        {
+          "text": "metadata.",
+          "start": 265.3156,
+          "end": 265.9035
+        },
+        {
+          "text": "Compare",
+          "start": 265.9035,
+          "end": 266.393
+        },
+        {
+          "text": "vector,",
+          "start": 266.393,
+          "end": 266.8831
+        },
+        {
+          "text": "keyword,",
+          "start": 266.8831,
+          "end": 267.4095
+        },
+        {
+          "text": "and",
+          "start": 267.4095,
+          "end": 267.7299
+        },
+        {
+          "text": "hybrid",
+          "start": 267.7299,
+          "end": 268.1831
+        },
+        {
+          "text": "search.",
+          "start": 268.1831,
+          "end": 268.701
+        },
+        {
+          "text": "Apply",
+          "start": 268.701,
+          "end": 269.1146
+        },
+        {
+          "text": "access",
+          "start": 269.1146,
+          "end": 269.5677
+        },
+        {
+          "text": "filters",
+          "start": 269.5677,
+          "end": 270.0572
+        },
+        {
+          "text": "before",
+          "start": 270.0572,
+          "end": 270.5103
+        },
+        {
+          "text": "retrieval,",
+          "start": 270.5103,
+          "end": 271.1023
+        },
+        {
+          "text": "then",
+          "start": 271.1023,
+          "end": 271.4723
+        },
+        {
+          "text": "rerank",
+          "start": 271.4723,
+          "end": 271.9254
+        },
+        {
+          "text": "when",
+          "start": 271.9254,
+          "end": 272.2954
+        },
+        {
+          "text": "measurements",
+          "start": 272.2954,
+          "end": 272.9362
+        },
+        {
+          "text": "justify",
+          "start": 272.9362,
+          "end": 273.4256
+        },
+        {
+          "text": "it.",
+          "start": 273.4256,
+          "end": 273.752
+        },
+        {
+          "text": "Build",
+          "start": 273.752,
+          "end": 274.1656
+        },
+        {
+          "text": "an",
+          "start": 274.1656,
+          "end": 274.4272
+        },
+        {
+          "text": "evaluation",
+          "start": 274.4272,
+          "end": 275.0122
+        },
+        {
+          "text": "set",
+          "start": 275.0122,
+          "end": 275.3326
+        },
+        {
+          "text": "with",
+          "start": 275.3326,
+          "end": 275.7026
+        },
+        {
+          "text": "questions,",
+          "start": 275.7026,
+          "end": 276.2946
+        },
+        {
+          "text": "expected",
+          "start": 276.2946,
+          "end": 276.8178
+        },
+        {
+          "text": "evidence,",
+          "start": 276.8178,
+          "end": 277.3781
+        },
+        {
+          "text": "and",
+          "start": 277.3781,
+          "end": 277.6985
+        },
+        {
+          "text": "acceptable",
+          "start": 277.6985,
+          "end": 278.2835
+        },
+        {
+          "text": "answers.",
+          "start": 278.2835,
+          "end": 278.8376
+        },
+        {
+          "text": "Log",
+          "start": 278.8376,
+          "end": 279.1581
+        },
+        {
+          "text": "scores,",
+          "start": 279.1581,
+          "end": 279.6482
+        },
+        {
+          "text": "passages,",
+          "start": 279.6482,
+          "end": 280.2084
+        },
+        {
+          "text": "latency,",
+          "start": 280.2084,
+          "end": 280.7348
+        },
+        {
+          "text": "citations,",
+          "start": 280.7348,
+          "end": 281.3268
+        },
+        {
+          "text": "refusals,",
+          "start": 281.3268,
+          "end": 281.887
+        },
+        {
+          "text": "and",
+          "start": 281.887,
+          "end": 282.2075
+        },
+        {
+          "text": "feedback",
+          "start": 282.2075,
+          "end": 282.7307
+        },
+        {
+          "text": "without",
+          "start": 282.7307,
+          "end": 283.2201
+        },
+        {
+          "text": "leaking",
+          "start": 283.2201,
+          "end": 283.7096
+        },
+        {
+          "text": "sensitive",
+          "start": 283.7096,
+          "end": 284.2645
+        },
+        {
+          "text": "content.",
+          "start": 284.2645,
+          "end": 284.8187
+        },
+        {
+          "text": "Monitor",
+          "start": 284.8187,
+          "end": 285.3081
+        },
+        {
+          "text": "changes,",
+          "start": 285.3081,
+          "end": 285.8346
+        },
+        {
+          "text": "because",
+          "start": 285.8346,
+          "end": 286.324
+        },
+        {
+          "text": "new",
+          "start": 286.324,
+          "end": 286.6444
+        },
+        {
+          "text": "documents,",
+          "start": 286.6444,
+          "end": 287.2364
+        },
+        {
+          "text": "embedding",
+          "start": 287.2364,
+          "end": 287.7914
+        },
+        {
+          "text": "models,",
+          "start": 287.7914,
+          "end": 288.2815
+        },
+        {
+          "text": "or",
+          "start": 288.2815,
+          "end": 288.5431
+        },
+        {
+          "text": "prompts",
+          "start": 288.5431,
+          "end": 289.0325
+        },
+        {
+          "text": "can",
+          "start": 289.0325,
+          "end": 289.353
+        },
+        {
+          "text": "alter",
+          "start": 289.353,
+          "end": 289.7666
+        },
+        {
+          "text": "the",
+          "start": 289.7666,
+          "end": 290.087
+        },
+        {
+          "text": "pipeline.",
+          "start": 290.087,
+          "end": 290.675
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "start": 291.0,
+      "end": 299.05,
+      "text": "Prepare knowledge, retrieve evidence, augment context, generate with citations, and evaluate. That is RAG\u2014and why it matters.",
+      "words": [
+        {
+          "text": "Prepare",
+          "start": 291.0,
+          "end": 291.5054
+        },
+        {
+          "text": "knowledge,",
+          "start": 291.5054,
+          "end": 292.1167
+        },
+        {
+          "text": "retrieve",
+          "start": 292.1167,
+          "end": 292.6571
+        },
+        {
+          "text": "evidence,",
+          "start": 292.6571,
+          "end": 293.2356
+        },
+        {
+          "text": "augment",
+          "start": 293.2356,
+          "end": 293.741
+        },
+        {
+          "text": "context,",
+          "start": 293.741,
+          "end": 294.2847
+        },
+        {
+          "text": "generate",
+          "start": 294.2847,
+          "end": 294.825
+        },
+        {
+          "text": "with",
+          "start": 294.825,
+          "end": 295.2071
+        },
+        {
+          "text": "citations,",
+          "start": 295.2071,
+          "end": 295.8184
+        },
+        {
+          "text": "and",
+          "start": 295.8184,
+          "end": 296.1493
+        },
+        {
+          "text": "evaluate.",
+          "start": 296.1493,
+          "end": 296.7565
+        },
+        {
+          "text": "That",
+          "start": 296.7565,
+          "end": 297.1386
+        },
+        {
+          "text": "is",
+          "start": 297.1386,
+          "end": 297.4087
+        },
+        {
+          "text": "RAG\u2014and",
+          "start": 297.4087,
+          "end": 297.8767
+        },
+        {
+          "text": "why",
+          "start": 297.8767,
+          "end": 298.2075
+        },
+        {
+          "text": "it",
+          "start": 298.2075,
+          "end": 298.4777
+        },
+        {
+          "text": "matters.",
+          "start": 298.4777,
+          "end": 299.05
+        }
+      ]
+    }
+  ]
+}

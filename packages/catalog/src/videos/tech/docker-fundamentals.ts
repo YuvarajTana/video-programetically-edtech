@@ -1,0 +1,400 @@
+import type {VideoSpec} from '@video-kit/core/spec';
+
+/**
+ * Five-minute beginner explainer of Docker and the environment-drift problem.
+ *
+ * The scene timeline is exactly 9,000 frames at 30 fps. Narration, captions,
+ * chapters, motion, and audio therefore share one render-time source of truth.
+ */
+export const dockerFundamentals: VideoSpec = {
+  channel: 'tech',
+  slug: 'docker-fundamentals',
+  title: 'What Is Docker? The Problem It Solves—with a Real Example',
+  template: 'long-form-concept-explainer',
+  summary:
+    'A runtime-first explanation of Docker, images, containers, Dockerfiles, Compose, and a practical FastAPI plus MySQL workflow.',
+  fps: 30,
+  deliveries: ['youtube-long'],
+  audience: {level: 'beginner'},
+  captions: true,
+  voice: {speed: 1, maxSpeed: 1},
+  audio: 'audio/tech/docker-fundamentals/master.wav',
+  captionTimings: 'audio/tech/docker-fundamentals/words.json',
+  soundtrack: {
+    music: {
+      src: 'audio/music/quiet-circuit-ambient.m4a',
+      credit: 'Video Kit — Quiet Circuit Ambient',
+      license: 'Original project-generated instrumental',
+      volume: 0.22,
+      loop: false,
+      fadeInFrames: 150,
+      fadeOutFrames: 150,
+    },
+    ducking: {gain: 0.52, attackFrames: 12, releaseFrames: 24},
+  },
+  editorial: {
+    language: 'en-US',
+    objective:
+      'Explain the environment-drift problem Docker addresses, trace image build and container runtime behavior, and demonstrate a practical FastAPI and MySQL application with Compose.',
+    safetyStatus: 'approved',
+    sources: [
+      {
+        title: 'Docker Docs — What is Docker?',
+        url: 'https://docs.docker.com/get-started/docker-overview/',
+      },
+      {
+        title: 'Docker Docs — What is an image?',
+        url: 'https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/',
+      },
+      {
+        title: 'Docker Docs — Writing a Dockerfile',
+        url: 'https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/',
+      },
+      {
+        title: 'Docker Docs — What is Docker Compose?',
+        url: 'https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-docker-compose/',
+      },
+      {
+        title: 'Docker Docs — How Compose works',
+        url: 'https://docs.docker.com/compose/intro/compose-application-model/',
+      },
+    ],
+  },
+  scenes: [
+    {
+      id: 'hook',
+      type: 'title',
+      durationInFrames: 90,
+      kicker: 'Docker fundamentals',
+      title: '“It works on my machine.”',
+      subtitle: 'So why does it fail everywhere else?',
+      narration:
+        'Works here. Fails on another machine.',
+    },
+    {
+      id: 'environment-drift',
+      type: 'compare',
+      durationInFrames: 780,
+      chapterTitle: 'The problem Docker solves',
+      kicker: 'Environment drift',
+      title: 'Same code. Different environment. Different result.',
+      left: {
+        heading: 'Your laptop',
+        points: [
+          'Python 3.13 and exact packages',
+          'Required operating-system library',
+          'MySQL configured on the expected port',
+          'Environment variables already present',
+        ],
+        accent: 'success',
+      },
+      right: {
+        heading: 'Another machine',
+        points: [
+          'Older runtime and package conflicts',
+          'Missing native dependency',
+          'Different database configuration',
+          'Setup steps remembered, not declared',
+        ],
+        accent: 'attention',
+      },
+      narration:
+        'Imagine a FastAPI service that needs a specific Python version, exact packages, a system library, environment variables, and MySQL. On your laptop, every piece is installed. On a teammate’s laptop, Python is older, one library is missing, and the database uses different settings. The code is identical, but the environment is not. That mismatch causes slow setup, unpredictable bugs, and failed deployments.',
+    },
+    {
+      id: 'definition',
+      type: 'flow',
+      durationInFrames: 720,
+      chapterTitle: 'What Docker is',
+      kicker: 'Build · ship · run',
+      title: 'Package the application environment as an image',
+      steps: [
+        {label: 'Describe', detail: 'Dockerfile + application files', accent: 'info'},
+        {label: 'Build', detail: 'Create an immutable image', accent: 'primary'},
+        {label: 'Ship', detail: 'Store the image in a registry', accent: 'attention'},
+        {label: 'Run', detail: 'Start an isolated container', accent: 'success'},
+      ],
+      narration:
+        'Docker is a platform for building, shipping, and running applications in containers. You describe the environment as code, build it into a standardized image, and start that image as an isolated process. The image carries the app, runtime, libraries, and configuration files it needs. The container still uses the host operating system’s kernel; Docker is not packaging an entire computer.',
+    },
+    {
+      id: 'docker-architecture',
+      type: 'architecture',
+      durationInFrames: 750,
+      chapterTitle: 'Docker at runtime',
+      kicker: 'Client-server architecture',
+      title: 'The daemon builds images and runs containers',
+      nodes: [
+        {id: 'developer', label: 'Developer', sub: 'docker commands', col: 0, row: 0, accent: 'info'},
+        {id: 'client', label: 'Docker CLI', sub: 'API client', col: 1, row: 0, accent: 'primary'},
+        {id: 'daemon', label: 'Docker Daemon', sub: 'builds + manages', col: 2, row: 0, accent: 'attention'},
+        {id: 'registry', label: 'Registry', sub: 'stores images', col: 0, row: 1, accent: 'secondary'},
+        {id: 'images', label: 'Local Images', sub: 'immutable layers', col: 1, row: 1, accent: 'primary'},
+        {id: 'containers', label: 'Containers', sub: 'isolated processes', col: 2, row: 1, accent: 'success'},
+      ],
+      edges: [
+        {from: 'developer', to: 'client'},
+        {from: 'client', to: 'daemon', label: 'Docker API'},
+        {from: 'registry', to: 'images', label: 'pull / push'},
+        {from: 'images', to: 'daemon'},
+        {from: 'daemon', to: 'containers', label: 'create + start'},
+      ],
+      reveal: [
+        ['developer', 'client', 'daemon'],
+        ['registry', 'images'],
+        ['containers'],
+      ],
+      trace: {
+        path: ['developer', 'client', 'daemon', 'containers'],
+        label: 'docker run',
+        accent: 'success',
+      },
+      narration:
+        'When you type a Docker command, the client sends an API request to the Docker daemon. The daemon builds images and manages containers, networks, and volumes. If an image is missing, Docker can pull it from a registry such as Docker Hub. At runtime, the daemon creates the isolated process, attaches storage and networking, and starts the image’s default command.',
+    },
+    {
+      id: 'image-versus-container',
+      type: 'motionCanvas',
+      durationInFrames: 720,
+      chapterTitle: 'Images versus containers',
+      style: 'midnight-code',
+      motion: {intensity: 'dynamic', ambient: true},
+      effects: {
+        camera: 'push-in',
+        particles: 'data-stream',
+        glow: 'soft',
+        scanlines: true,
+        vignette: true,
+      },
+      headline: 'One image can start many containers',
+      narration:
+        'An image and a container are related, but different. The image is an immutable, layered package: a reusable blueprint. A container is one running instance, with runtime settings and a writable layer. Many containers can start from one image. Remove a container, and changes outside persistent storage disappear. The original image remains unchanged and reusable.',
+      elements: [
+        {id: 'heading', kind: 'text', text: 'IMAGE ≠ CONTAINER', role: 'headline', x: 50, y: 8, width: 90},
+        {id: 'image', kind: 'shape', shape: 'hexagon', label: 'IMAGE', sublabel: 'read-only layers', x: 22, y: 43, width: 20, height: 25, tone: 'accent', animation: 'breathe'},
+        {id: 'blueprint', kind: 'text', text: 'IMMUTABLE BLUEPRINT', role: 'label', x: 22, y: 65, width: 32},
+        {id: 'container-a', kind: 'shape', shape: 'rounded-square', label: 'CONTAINER A', sublabel: 'running process', x: 55, y: 32, width: 20, height: 18, tone: 'positive', animation: 'float'},
+        {id: 'container-b', kind: 'shape', shape: 'square', label: 'CONTAINER B', sublabel: 'running process', x: 78, y: 32, width: 20, height: 18, tone: 'neutral', animation: 'float'},
+        {id: 'writable-a', kind: 'shape', shape: 'pill', label: 'writable layer', x: 55, y: 53, width: 19, height: 9, tone: 'neutral'},
+        {id: 'writable-b', kind: 'shape', shape: 'pill', label: 'writable layer', x: 78, y: 53, width: 19, height: 9, tone: 'neutral'},
+        {id: 'to-a', kind: 'connector', from: 'image', to: 'container-a', label: 'start', arrow: true},
+        {id: 'to-b', kind: 'connector', from: 'image', to: 'container-b', label: 'start again', arrow: true},
+        {id: 'persistence', kind: 'shape', shape: 'database', label: 'VOLUME', sublabel: 'persistent data', x: 67, y: 74, width: 22, height: 17, tone: 'accent', animation: 'breathe'},
+        {id: 'a-to-volume', kind: 'connector', from: 'container-a', to: 'persistence', label: 'mount', arrow: true},
+        {id: 'b-to-volume', kind: 'connector', from: 'container-b', to: 'persistence', label: 'mount', arrow: true},
+        {id: 'payoff', kind: 'text', text: 'DELETE CONTAINER → IMAGE REMAINS', role: 'payoff', x: 50, y: 91, width: 90},
+      ],
+      actions: [
+        {target: 'heading', type: 'reveal', atFrame: 0, durationFrames: 18},
+        {target: 'image', type: 'reveal', atFrame: 65, durationFrames: 22},
+        {target: 'blueprint', type: 'reveal', atFrame: 125, durationFrames: 18},
+        {target: 'to-a', type: 'travel', atFrame: 190, durationFrames: 45},
+        {target: 'container-a', type: 'reveal', atFrame: 225, durationFrames: 20},
+        {target: 'writable-a', type: 'reveal', atFrame: 270, durationFrames: 18},
+        {target: 'to-b', type: 'travel', atFrame: 320, durationFrames: 45},
+        {target: 'container-b', type: 'reveal', atFrame: 355, durationFrames: 20},
+        {target: 'writable-b', type: 'reveal', atFrame: 400, durationFrames: 18},
+        {target: 'a-to-volume', type: 'draw', atFrame: 455, durationFrames: 28},
+        {target: 'b-to-volume', type: 'draw', atFrame: 475, durationFrames: 28},
+        {target: 'persistence', type: 'reveal', atFrame: 510, durationFrames: 20},
+        {target: 'persistence', type: 'pulse', atFrame: 555, durationFrames: 45},
+        {target: 'payoff', type: 'reveal', atFrame: 635, durationFrames: 22},
+      ],
+    },
+    {
+      id: 'containers-versus-vms',
+      type: 'compare',
+      durationInFrames: 750,
+      chapterTitle: 'Containers versus virtual machines',
+      kicker: 'Different isolation models',
+      title: 'A container is not a miniature virtual machine',
+      left: {
+        heading: 'Container',
+        points: [
+          'Application + dependencies',
+          'Isolated process and filesystem view',
+          'Shares the host kernel',
+          'Often starts with less overhead',
+        ],
+        accent: 'success',
+      },
+      right: {
+        heading: 'Virtual machine',
+        points: [
+          'Application + dependencies',
+          'Full guest operating system',
+          'Virtualized hardware boundary',
+          'Useful for different kernels and stronger separation',
+        ],
+        accent: 'primary',
+      },
+      narration:
+        'A virtual machine includes a full guest operating system above a hypervisor. A container usually runs as an isolated process while sharing the host kernel. That often reduces startup time and overhead, but it is not magic. Containers must match a supported kernel and architecture. On macOS or Windows, Docker Desktop uses a Linux virtual machine behind the scenes to run Linux containers.',
+    },
+    {
+      id: 'dockerfile',
+      type: 'code',
+      durationInFrames: 840,
+      chapterTitle: 'Building an image',
+      kicker: 'The image recipe',
+      title: 'A Dockerfile declares the build, line by line',
+      filename: 'Dockerfile',
+      lang: 'dockerfile',
+      lines: [
+        'FROM python:3.13-slim',
+        'WORKDIR /app',
+        'COPY requirements.txt .',
+        'RUN pip install --no-cache-dir -r requirements.txt',
+        'COPY app ./app',
+        'RUN useradd --create-home appuser',
+        'USER appuser',
+        'CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=8000"]',
+      ],
+      focus: [
+        {lines: [1, 2]},
+        {lines: [3, 4]},
+        {lines: [5, 6, 7]},
+        {lines: [8]},
+      ],
+      narration:
+        'A Dockerfile is the recipe for an image. FROM selects a Python base image. WORKDIR sets the directory for later instructions. COPY brings in the dependency file. RUN installs packages while the image is being built. A second COPY adds the application code. USER avoids running the app as root, and CMD declares what starts when a container runs. Docker caches unchanged layers, so later builds can reuse earlier work.',
+    },
+    {
+      id: 'build-and-run',
+      type: 'terminal',
+      durationInFrames: 720,
+      chapterTitle: 'Starting a container',
+      title: 'Build the image, then create a running instance',
+      host: 'developer@laptop',
+      entries: [
+        {
+          cmd: 'docker build -t orders-api:1.0 .',
+          out: [
+            '[+] Building image layers',
+            '=> naming to orders-api:1.0',
+          ],
+          accent: 'primary',
+        },
+        {
+          cmd: 'docker run --rm -p 8000:8000 orders-api:1.0',
+          out: [
+            'Started server process',
+            'Uvicorn running on http://0.0.0.0:8000',
+          ],
+          accent: 'success',
+        },
+      ],
+      narration:
+        'Docker build reads the Dockerfile and produces an image. Docker run asks the daemon to create a container from it. If needed, Docker pulls missing layers, adds a writable filesystem, configures networking, publishes requested ports, attaches volumes, and starts the command. The app is now a normal process inside its isolated environment. When that main process stops, the container stops too.',
+    },
+    {
+      id: 'real-world-example',
+      type: 'architecture',
+      durationInFrames: 810,
+      chapterTitle: 'Real-world example',
+      kicker: 'FastAPI + MySQL',
+      title: 'Compose connects separate services into one application',
+      nodes: [
+        {id: 'browser', label: 'Browser', sub: 'localhost:8000', col: 0, row: 0, accent: 'info'},
+        {id: 'api', label: 'FastAPI Container', sub: 'orders-api image', col: 1, row: 0, accent: 'primary'},
+        {id: 'db', label: 'MySQL Container', sub: 'mysql:8.4 image', col: 2, row: 0, accent: 'attention'},
+        {id: 'network', label: 'Compose Network', sub: 'service discovery', col: 1, row: 1, accent: 'secondary'},
+        {id: 'volume', label: 'Named Volume', sub: 'persistent database files', col: 2, row: 1, accent: 'success'},
+      ],
+      edges: [
+        {from: 'browser', to: 'api', label: 'published port 8000'},
+        {from: 'api', to: 'db', label: 'db:3306'},
+        {from: 'api', to: 'network'},
+        {from: 'network', to: 'db'},
+        {from: 'db', to: 'volume', label: '/var/lib/mysql'},
+      ],
+      reveal: [
+        ['browser', 'api'],
+        ['network', 'db'],
+        ['volume'],
+      ],
+      trace: {
+        path: ['browser', 'api', 'db', 'volume'],
+        label: 'create order',
+        accent: 'success',
+      },
+      narration:
+        'Now apply Docker to a real project: a FastAPI order service with MySQL. Without Docker, each developer installs Python, compilers, database software, users, passwords, and ports by hand. With Docker, the API gets its own image, MySQL uses its official image, and a Compose file declares how the services connect. The repository now includes an executable description of the application environment.',
+    },
+    {
+      id: 'compose-file',
+      type: 'code',
+      durationInFrames: 900,
+      chapterTitle: 'Declaring the application',
+      kicker: 'Development example',
+      title: 'One Compose file defines services, networking, and storage',
+      filename: 'compose.yaml',
+      lang: 'yaml',
+      lines: [
+        '# .env provides DATABASE_URL and MySQL credentials',
+        'services:',
+        '  api: {build: ., ports: ["8000:8000"], env_file: .env}',
+        '  db:',
+        '    image: mysql:8.4',
+        '    env_file: .env',
+        '    volumes: ["mysql-data:/var/lib/mysql"]',
+        'volumes: {mysql-data: {}}',
+      ],
+      focus: [
+        {lines: [1, 2, 3]},
+        {lines: [4, 5, 6]},
+        {lines: [7, 8]},
+      ],
+      narration:
+        'In compose dot yaml, the API builds from the Dockerfile and publishes port eight thousand. Its database URL uses the service name D B, because Compose creates a network where services can discover one another. MySQL runs from its image and stores data in a named volume that outlives the container. One command, docker compose up dash dash build, builds the API, creates resources, starts both services, and streams their logs.',
+    },
+    {
+      id: 'delivery-flow',
+      type: 'flow',
+      durationInFrames: 810,
+      chapterTitle: 'From laptop to production',
+      kicker: 'The image becomes the delivery unit',
+      title: 'Build, test, publish, pull, run',
+      steps: [
+        {label: 'Develop', detail: 'build and run locally', accent: 'info'},
+        {label: 'Test', detail: 'CI rebuilds and verifies', accent: 'primary'},
+        {label: 'Publish', detail: 'tag and push to a registry', accent: 'attention'},
+        {label: 'Deploy', detail: 'pull the same image', accent: 'secondary'},
+        {label: 'Configure', detail: 'supply production settings at runtime', accent: 'success'},
+      ],
+      narration:
+        'The same image can move through delivery. A developer builds and tests it locally. Continuous integration rebuilds from the Dockerfile, runs tests, tags the image, and pushes it to a registry. A server then pulls that exact image and supplies production configuration at startup. Docker reduces environment drift because testing and deployment use the same packaged application, instead of repeating a long manual installation checklist.',
+    },
+    {
+      id: 'boundaries',
+      type: 'steps',
+      durationInFrames: 840,
+      chapterTitle: 'What Docker does—and does not—solve',
+      kicker: 'Use the tool precisely',
+      items: [
+        {label: 'Repeatability', detail: 'declare runtime and dependencies', accent: 'success'},
+        {label: 'Isolation', detail: 'separate processes, networks, and filesystems', accent: 'primary'},
+        {label: 'Persistence', detail: 'put durable data in managed volumes', accent: 'info'},
+        {label: 'Security', detail: 'scan, patch, and run with least privilege', accent: 'attention'},
+        {label: 'Operations', detail: 'manage secrets, backups, health, and scaling', accent: 'secondary'},
+      ],
+      footnote: 'Containers improve consistency; they do not replace operational discipline.',
+      narration:
+        'Docker provides repeatable environments, dependency isolation, faster onboarding, and a consistent delivery unit. It does not secure applications automatically, back up databases, or manage secrets. Pin image versions, scan and update dependencies, run with least privilege, store durable data in volumes, and inject configuration safely. Docker makes the environment explicit and reproducible; disciplined operations make it reliable.',
+    },
+    {
+      id: 'outro',
+      type: 'outro',
+      durationInFrames: 270,
+      tagline: 'Package the environment. Run the image anywhere compatible.',
+      cta: 'Subscribe for the complete engineering path',
+      recap: [
+        'DOCKERFILE → IMAGE',
+        'IMAGE + CONFIG → CONTAINER',
+        'COMPOSE → MULTI-SERVICE APPLICATION',
+      ],
+      narration:
+        'Docker turns “works on my machine” into “run this image.” Build once, configure at runtime, and ship with confidence.',
+    },
+  ],
+};

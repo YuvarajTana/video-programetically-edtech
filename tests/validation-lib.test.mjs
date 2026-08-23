@@ -171,6 +171,24 @@ test('sound effect cues must land inside the timeline', () => {
   assert.ok(errorsOf(issues).some((issue) => issue.path.endsWith('startFrame')));
 });
 
+test('a licensed music-led video may intentionally omit narration', () => {
+  const spec = makeSpec({
+    captions: false,
+    soundtrack: {
+      music: {
+        src: 'audio/music/momentum-grid.m4a',
+        credit: 'Video Kit',
+        license: 'original',
+      },
+    },
+  });
+  spec.scenes = spec.scenes.map(({narration: _narration, ...scene}) => scene);
+  const issues = validateSpec(spec, makeChannel());
+  assert.ok(
+    !errorsOf(issues).some((issue) => issue.message.includes('narrated scene')),
+  );
+});
+
 // ------------------------------------------------------------ collection
 
 test('validateCollection flags duplicate refs', () => {

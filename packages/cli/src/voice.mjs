@@ -16,10 +16,15 @@ import {
 import {createHash} from 'node:crypto';
 import {dirname, join, parse, resolve, sep} from 'node:path';
 import {spawnSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
 import {positionals} from './deliveries.mjs';
 import {paths} from '@video-kit/core/config';
 
 const argv = process.argv.slice(2);
+const captionsScript = fileURLToPath(new URL('./captions.mjs', import.meta.url));
+const ttsScript = fileURLToPath(
+  new URL('../python/local-tts-from-srt.py', import.meta.url),
+);
 const value = (name) => {
   const index = argv.indexOf(`--${name}`);
   return index === -1 ? null : argv[index + 1];
@@ -131,7 +136,7 @@ const probeDuration = (path) => {
 };
 
 console.log(`· captions ${ref}`);
-run(process.execPath, ['scripts/captions.mjs', ref], {stdio: 'inherit'});
+run(process.execPath, ['--import', 'tsx', captionsScript, ref], {stdio: 'inherit'});
 
 const [channel, slug] = ref.split('/');
 const base = join(paths.out(), channel, slug);
@@ -201,7 +206,7 @@ if (wordTimingsPath) mkdirSync(dirname(wordTimingsPath), {recursive: true});
 
 const srtPath = join(base, 'captions.srt');
 const generatorHash = createHash('sha256')
-  .update(readFileSync('scripts/local-tts-from-srt.py'))
+  .update(readFileSync(ttsScript))
   .digest('hex');
 const cacheKey = createHash('sha256')
   .update(
@@ -368,7 +373,7 @@ console.log(
   `· tts ${voice.model} ${voice.preset} speed=${voice.speed} language=${voice.language}`,
 );
 const ttsArgs = [
-  'scripts/local-tts-from-srt.py',
+  ttsScript,
   '--srt',
   srtPath,
   '--out',

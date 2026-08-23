@@ -1,0 +1,39 @@
+{
+  "title": "Global internet connectivity and mobile broadband traffic, 2015-2025",
+  "source": {
+    "publisher": "International Telecommunication Union",
+    "dataset": "ITU regional and global key ICT indicator aggregates, November 2025",
+    "url": "https://www.itu.int/en/ITU-D/Statistics/Documents/facts/ITU_regional_global_Key_ICT_indicator_aggregates_Nov_2025.xlsx",
+    "notes": "All values are ITU estimates. Display values in the video are rounded; this file preserves the published precision."
+  },
+  "series": {
+    "internetUsersMillions": {
+      "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      "values": [2975, 3288.7, 3538.6, 3817, 4201.3, 4733.3, 5067, 5368.7, 5594, 5804.8, 6047.4]
+    },
+    "activeMobileBroadbandSubscriptionsMillions": {
+      "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      "values": [3306.3, 3888.3, 4744.9, 5269, 5757.3, 6043.8, 6440.5, 6939.4, 7505, 7816.9, 8174.5]
+    },
+    "mobileBroadbandTrafficExabytesPerYear": {
+      "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      "values": [418.6, 562.2, 749.3, 926.7, 1122.9, 1295.4, 1502.4]
+    },
+    "mobileTrafficGigabytesPerSubscriptionPerYear": {
+      "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      "values": [72.7, 93, 116.3, 133.5, 149.6, 165.7, 183.8]
+    }
+  },
+  "derived": {
+    "mobileTrafficGigabytesPerSubscriptionPerMonth": {
+      "method": "Published annual gigabytes per subscription divided by 12",
+      "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      "values": [6.1, 7.8, 9.7, 11.1, 12.5, 13.8, 15.3]
+    },
+    "growth2019To2025Percent": {
+      "internetUsers": 44,
+      "mobileBroadbandTraffic": 259,
+      "trafficPerSubscription": 153
+    }
+  }
+}

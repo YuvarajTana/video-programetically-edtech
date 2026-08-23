@@ -6,7 +6,10 @@ import {selectionSort} from './selection-sort';
 import {vectorSearchMeaning} from './vector-search-meaning';
 import {embeddingsMotionExplainer} from './embeddings-motion-explainer';
 import {ragIn60Seconds} from './rag-in-60-seconds';
+import {ragFundamentals} from './rag-fundamentals';
+import {dockerFundamentals} from './docker-fundamentals';
 import {pythonListsVsGenerators} from './python-lists-vs-generators';
+import {internetDataTrends2015To2025} from './internet-data-trends-2015-2025';
 
 // video-imports
 import {pythonBeforeAiEngineering} from './python-before-ai-engineering';
@@ -21,7 +24,10 @@ export const TECH_VIDEOS: VideoSpec[] = [
   vectorSearchMeaning,
   embeddingsMotionExplainer,
   ragIn60Seconds,
+  ragFundamentals,
+  dockerFundamentals,
   pythonListsVsGenerators,
+  internetDataTrends2015To2025,
   contextVsHarnessEngineering,
   pythonFundamentals,
   pythonBeforeAiEngineering,
