@@ -37,15 +37,48 @@ const RATIOS: Record<AspectId, string> = {
 
 export const aspectRatioLabel = (id: AspectId) => RATIOS[id] ?? ASPECTS[id].label;
 
-/** Human summary of what a set of deliveries will produce. */
-export const describeOutputs = (deliveries: string[]) => {
-  const variants = [
+/**
+ * Every variant a project can ask for, grouped by what it produces.
+ *
+ * Derived from the registry, so a newly registered variant appears in the
+ * picker with no edit here. The delivery checkboxes above cover the five
+ * platform packages; this is what makes the standalone artifacts — poster,
+ * OG card, looping GIF, storyboard sheet — reachable at all, which they were
+ * not while `outputs` was missing from the spec contract.
+ */
+export const VARIANT_GROUPS: {kind: OutputVariant['kind']; label: string; variants: OutputVariant[]}[] =
+  (
+    [
+      ['video', 'Video'],
+      ['still', 'Stills'],
+      ['still-sequence', 'Slide sets'],
+      ['animated-image', 'Animated'],
+      ['document', 'Documents'],
+    ] as const
+  ).map(([kind, label]) => ({
+    kind,
+    label,
+    variants: Object.values(OUTPUT_VARIANTS).filter((variant) => variant.kind === kind),
+  }))
+    .filter((group) => group.variants.length > 0);
+
+/**
+ * What a project produces when it has chosen nothing explicitly. Mirrors
+ * `variantsFor`, which falls back to the deliveries — an empty selection means
+ * "the defaults", never "produce nothing".
+ */
+export const defaultVariantsFor = (deliveries: string[]) =>
+  [
     ...new Set(
       deliveries.flatMap(
         (id) => LEGACY_DELIVERY_VARIANTS[id as keyof typeof LEGACY_DELIVERY_VARIANTS] ?? [],
       ),
     ),
   ].map(variantById);
+
+/** Human summary of what a set of deliveries will produce. */
+export const describeOutputs = (deliveries: string[]) => {
+  const variants = defaultVariantsFor(deliveries);
   const counts = new Map<string, number>();
   for (const variant of variants) {
     counts.set(variant.kind, (counts.get(variant.kind) ?? 0) + 1);

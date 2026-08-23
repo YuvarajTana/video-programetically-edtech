@@ -25,6 +25,17 @@ export {
 } from './spec';
 import {SceneSchema, SceneTypeSchema} from './spec';
 import {LocaleSchema} from './identifiers';
+import {OUTPUT_VARIANTS} from './output/variants';
+
+/**
+ * Built from the registry rather than typed out, so registering a variant
+ * makes it selectable with no edit here — which is the entire premise of the
+ * registry. `deliveries` stays a fixed enum because it is the vocabulary
+ * already persisted in existing project revisions.
+ */
+export const OutputVariantIdSchema = z.enum(
+  Object.keys(OUTPUT_VARIANTS) as [string, ...string[]],
+);
 
 export const EditableVideoSpecSchema = z.object({
   channel: IdentifierSchema,
@@ -35,6 +46,11 @@ export const EditableVideoSpecSchema = z.object({
   summary: z.string().max(1_000).optional(),
   fps: z.number().int().min(12).max(60).default(30),
   deliveries: z.array(DeliverySchema).min(1).max(4),
+  /**
+   * Explicit variants, taking precedence over `deliveries`. Empty or absent
+   * means "whatever the deliveries imply" — see `variantsFor`.
+   */
+  outputs: z.array(OutputVariantIdSchema).max(32).optional(),
   audience: z
     .object({
       ageBand: z.string().max(80).optional(),
@@ -105,8 +121,40 @@ export const EditableVideoSpecSchema = z.object({
     })
     .optional(),
   captions: z.boolean().default(true),
+  /**
+   * Bounds mirror the editorial rule that already checks them, so the schema
+   * and the rule cannot disagree about what a rail may hold.
+   */
+  rail: z
+    .object({stages: z.array(z.string().min(1).max(16)).min(2).max(8)})
+    .optional(),
   scenes: z.array(SceneSchema).min(1).max(250),
 });
+
+/**
+ * The schema and `VideoSpec` describe the same envelope, and nothing used to
+ * hold them together. This schema was hand-written as a subset of the type and
+ * drifted: `outputs` and `rail` were missing from it, so zod silently stripped
+ * them on every save, on every read, and again in the job pipeline before
+ * `variantsFor` could see them. A studio project could therefore never select
+ * an output variant or declare a rail, no matter what the registry offered.
+ *
+ * Compare keys rather than whole types: the two legitimately differ on
+ * optionality, because `fps` carries a default and `deliveries` is required
+ * here while catalog specs omit both and fall back to the channel. Keys are
+ * exactly the thing that drifted.
+ *
+ * `voice` is the one deliberate omission, named here so it stays visible:
+ * studio jobs read the voice profile from `snapshot.channel.voice`, never from
+ * the spec.
+ */
+type SchemaField = keyof z.infer<typeof EditableVideoSpecSchema> | 'voice';
+
+/** Assigning to never[] makes tsc name the offending keys, not just fail. */
+const missingFromSchema: never[] = [] as Exclude<keyof VideoSpec, SchemaField>[];
+const missingFromSpecType: never[] = [] as Exclude<SchemaField, keyof VideoSpec>[];
+void missingFromSchema;
+void missingFromSpecType;
 
 export const ThemeDefinitionSchema = z.object({
   id: IdentifierSchema,

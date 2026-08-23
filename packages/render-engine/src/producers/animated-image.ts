@@ -7,6 +7,15 @@ import {resolveRange} from '../frames';
 import type {Producer} from '../types';
 
 /**
+ * The registry speaks GIF, where a loop count of 0 means forever. Remotion's
+ * `numberOfGifLoops` speaks the opposite dialect: `null` is forever and `0`
+ * means play once, which it hands to ffmpeg as `-loop -1`. Passing our 0
+ * straight through produced a GIF with no NETSCAPE block — a variant called
+ * `loop-gif` that played once and stopped.
+ */
+const toRemotionLoops = (loop: number) => (loop === 0 ? null : loop);
+
+/**
  * Remotion encodes GIFs natively, so a looping clip is a frame range plus a
  * sampling step. `scale` is derived from the variant's maxWidth because a GIF
  * at full 1080 width is unusable in a feed.
@@ -47,7 +56,7 @@ export const animatedImageProducer: Producer = async ({
     outputLocation: output,
     frameRange: [from, to],
     everyNthFrame,
-    numberOfGifLoops: variant.encoding.loop,
+    numberOfGifLoops: toRemotionLoops(variant.encoding.loop),
     scale,
     muted: true,
     overwrite: true,

@@ -4,7 +4,7 @@ import {LANGUAGES} from '@video-kit/core/languages';
 import type {MotionCanvasElement, Scene, SceneType} from '@video-kit/core/spec';
 import {Suspense, useCallback, useEffect, useState} from 'react';
 import {api} from '../api';
-import {EditorialNotes, Modal, SceneJsonEditor} from '../components';
+import {EditorialNotes, Modal, OutputPicker, SceneJsonEditor} from '../components';
 import {ScenePreview} from '../components/ScenePreviewLazy';
 import {duration, formatTime} from '../lib/format';
 import {navigate} from '../lib/router';
@@ -393,6 +393,10 @@ export const ProjectEditor = ({id, onChanged}: {id: string; onChanged: () => voi
               ))}
             </div>
             <span>{format.width} × {format.height}</span>
+            <OutputPicker
+              spec={spec}
+              onChange={(outputs) => setSpec({...spec, outputs})}
+            />
           </div>
           <div className={`player-stage ${profile}`}>
             <Suspense fallback={<div className="player-loading">Loading preview…</div>}>
