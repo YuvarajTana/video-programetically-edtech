@@ -3,6 +3,9 @@
 Three things get added often: a new **output variant**, a new **aspect ratio**,
 and a new **scene type**. Each has one place to start.
 
+For how the system runs, what it depends on, and how to debug it when a job
+fails, see [`operating.md`](./operating.md).
+
 ## The packages
 
 ```

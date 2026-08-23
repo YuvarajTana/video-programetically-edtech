@@ -844,7 +844,7 @@ packages/
   cli/            command-line production, plus the Python voice workers
 public/           shared asset root: Remotion staticFile(), Vite, and the API
 content/          curriculum roadmap and the LLM script-generation context
-docs/             design notes, authoring guides, and docs/extending.md
+docs/             operating.md, extending.md, authoring guides, design notes
 tests/            one suite across all packages
 ```
 
@@ -876,6 +876,10 @@ npm run render -- tech/selection-sort --variant instagram-carousel-pdf
 
 See [`docs/extending.md`](docs/extending.md) for the full recipes: a new output
 variant, a new aspect ratio, and a new scene type.
+
+[`docs/operating.md`](docs/operating.md) is the runbook — how the three
+processes fit together, the fourteen job stages, where each model runs, the API
+and database, and a symptom-to-fix table for when something breaks.
 
 The broader roadmap and later audio/media/publishing phases are documented in
 [`docs/three-channel-plan.md`](docs/three-channel-plan.md).

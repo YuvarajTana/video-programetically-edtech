@@ -86,7 +86,6 @@ export const paths = {
   images: () => fromRoot('public', 'images'),
   content: () => fromRoot('content'),
   scriptContext: () => fromRoot('content', 'script-generation', 'context.json'),
-  migrations: () => fromRoot('migrations'),
   /** Local runtime state: SQLite database, uploads, model cache, job artifacts. */
   managed: () => dirname(config.databasePath()),
   jobs: () => join(dirname(config.databasePath()), 'jobs'),
