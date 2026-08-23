@@ -563,8 +563,26 @@ export const validateSpec = (
   });
 
   if (spec.kind !== 'style-guide') {
-    if (narratedScenes === 0 && spec.channel !== 'fun') {
-      add('error', 'scenes', 'at least one narrated scene is required');
+    /**
+     * A music-led video is a deliberate shape, not a forgotten narration. It
+     * carries a licensed music bed and turns captions off — which is exactly
+     * what `configureMusicOnlySpec` produces for a music-only job, since
+     * captions are derived from narration and there is none to derive from.
+     * Recognising the same signals here stops the rule and the pipeline
+     * disagreeing about what music-led means.
+     *
+     * Requiring both signals matters: music alone would silently accept a spec
+     * whose narration was simply left out, because `captions` defaults to true.
+     */
+    const musicLed = Boolean(spec.soundtrack?.music) && spec.captions === false;
+
+    if (narratedScenes === 0 && spec.channel !== 'fun' && !musicLed) {
+      add(
+        'error',
+        'scenes',
+        'at least one narrated scene is required; a music-led video declares ' +
+          'itself with a licensed soundtrack.music and captions: false',
+      );
     }
 
     const seconds = totalFrames / fps;

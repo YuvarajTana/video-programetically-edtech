@@ -18,7 +18,7 @@
     "./durations": "./src/durations.ts",
     "./languages": "./src/languages.ts",
     "./localization": "./src/localization.ts",
-    "./master-timeline": "./src/master-timeline.mjs",
+    "./master-timeline": "./src/master-timeline.ts",
     "./managed": "./src/managed.ts",
     "./music": "./src/music.ts",
     "./pipeline": "./src/pipeline.ts",
