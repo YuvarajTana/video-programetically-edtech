@@ -62,6 +62,16 @@ To make a variant part of a video's normal output, either name it in the spec's
 `outputs`, or map it from a delivery in `LEGACY_DELIVERY_VARIANTS` if it should
 ship whenever that platform package is requested.
 
+In the studio it appears in the Outputs picker on the editor toolbar with no
+further edit — the picker is derived from the registry, and
+`OutputVariantIdSchema` in `contracts.ts` is built from
+`Object.keys(OUTPUT_VARIANTS)`, so registering it is what makes it selectable.
+
+`outputs` and `deliveries` are not alternatives with equal standing: an
+explicit `outputs` **replaces** the delivery set, and an empty or absent one
+means "whatever the deliveries imply". A picker that treated empty as "produce
+nothing" would silently break every job queued from its initial state.
+
 **Fields worth knowing:**
 
 - `composition` picks which composition renders the frames: `'video'` for the
