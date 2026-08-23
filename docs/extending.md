@@ -247,12 +247,11 @@ service instead; nothing else changes, because both sides implement the same
 
 ## Known rough edges
 
-- **The studio's create form does not collect the fields the Learn channel
-  requires.** `audience.ageBand`, `editorial.objective` and
-  `editorial.safetyStatus` are mandatory for Learn videos, and nothing in the
-  studio ever sets them, so every Learn project trips all three editorial
-  errors from the moment it exists. This is why editorial errors are advisory
-  in a job rather than fatal; the fix belongs in the create form.
+- **Editorial errors are still advisory in a job.** The create form and the
+  project editor now collect the fields a category requires, so a project made
+  today starts clean — but projects created before that still carry the errors
+  until someone opens them. Making the rules fatal is a decision to take from a
+  fresh `npm run db:check-editorial`, not from this note.
 - **Half the scene types have no bespoke editorial rule.** Sixteen types now
   carry one, plus the pacing and monospace-width rules that generalise across
   the list-shaped scenes. The rest rely on the generic rules — narration rate,

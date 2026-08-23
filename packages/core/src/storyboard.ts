@@ -3,6 +3,7 @@ import type {
   EditableVideoSpec,
   TemplateDefinition,
 } from './contracts';
+import {EditableVideoSpecSchema} from './contracts';
 
 export const slugify = (value: string) =>
   value
@@ -151,6 +152,7 @@ export const createSpecFromScript = ({
   deliveries,
   script,
   targetSeconds,
+  editorial,
 }: {
   title: string;
   categoryId: string;
@@ -159,6 +161,15 @@ export const createSpecFromScript = ({
   deliveries: EditableVideoSpec['deliveries'];
   script: string;
   targetSeconds?: number;
+  /**
+   * Fields a category can require. Nothing collected them before, so every
+   * project in a category that requires them was created invalid.
+   */
+  editorial?: {
+    ageBand?: string;
+    objective?: string;
+    safetyStatus?: 'draft' | 'reviewed' | 'approved';
+  };
 }): EditableVideoSpec => {
   const paragraphs = splitScript(script);
   const content = paragraphs.length
@@ -192,7 +203,12 @@ export const createSpecFromScript = ({
     fitScenesToDuration(scenes, targetFrames);
   }
 
-  return {
+  // Parsed rather than cast. This is the one write path that never went
+  // through the schema — `repository.createProject` trusts what comes back —
+  // so a field added here and nowhere else used to persist unnoticed. Safe to
+  // enforce: tests/scene-schemas.test.ts already asserts every scene this
+  // builds parses strictly, for every template.
+  return EditableVideoSpecSchema.parse({
     channel: categoryId,
     slug: slugify(title),
     title,
@@ -200,8 +216,13 @@ export const createSpecFromScript = ({
     summary: content[0],
     fps: 30,
     deliveries,
-    editorial: {language: locale},
+    audience: editorial?.ageBand ? {ageBand: editorial.ageBand} : undefined,
+    editorial: {
+      language: locale,
+      objective: editorial?.objective,
+      safetyStatus: editorial?.safetyStatus,
+    },
     captions: true,
     scenes,
-  } as EditableVideoSpec;
+  });
 };

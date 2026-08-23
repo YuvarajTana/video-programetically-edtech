@@ -51,6 +51,13 @@ export const NewProject = ({
   );
   const [themeId, setThemeId] = useState(first.defaultThemeId);
   const [locale, setLocale] = useState<SupportedLocale>('en-US');
+  // Fields a category can require. Nothing collected them before, so every
+  // project in such a category was created failing its own editorial rules.
+  const [ageBand, setAgeBand] = useState('');
+  const [objective, setObjective] = useState('');
+  const [safetyStatus, setSafetyStatus] = useState<'draft' | 'reviewed' | 'approved'>(
+    'draft',
+  );
   const [deliveries, setDeliveries] = useState<string[]>([
     'youtube-short',
     'instagram-reel',
@@ -161,6 +168,19 @@ export const NewProject = ({
     setReviewed(false);
   };
 
+  /**
+   * Which of the three metadata fields this category insists on. Read off the
+   * category record the form already holds, so a category that turns a flag on
+   * starts collecting the field with no edit here.
+   */
+  const category =
+    catalog.categories.find((item) => item.id === categoryId) ?? catalog.categories[0];
+  const required = {
+    ageBand: Boolean(category.editorial.requiresAgeBand),
+    objective: Boolean(category.editorial.requiresLearningObjective),
+    safetyStatus: Boolean(category.editorial.requiresSafetyReview),
+  };
+
   const changeCategory = (id: string) => {
     const next = catalog.categories.find((item) => item.id === id)!;
     setCategoryId(id);
@@ -225,6 +245,9 @@ export const NewProject = ({
         deliveries: deliveries as CategoryDefinition['defaultDeliveries'],
         script,
         targetSeconds: productionSeconds,
+        ...(required.ageBand && ageBand.trim() ? {ageBand: ageBand.trim()} : {}),
+        ...(required.objective && objective.trim() ? {objective: objective.trim()} : {}),
+        ...(required.safetyStatus ? {safetyStatus} : {}),
       });
       let productionProject = project;
       if (
@@ -767,7 +790,48 @@ export const NewProject = ({
                     ))}
                   </select>
                 </label>
+                {required.ageBand ? (
+                  <label className="field">
+                    <span>Age band</span>
+                    <input
+                      value={ageBand}
+                      placeholder="6–9"
+                      onChange={(event) => setAgeBand(event.target.value)}
+                    />
+                    <small>Required for {category.label} videos.</small>
+                  </label>
+                ) : null}
+                {required.safetyStatus ? (
+                  <label className="field">
+                    <span>Safety review</span>
+                    <select
+                      value={safetyStatus}
+                      onChange={(event) =>
+                        setSafetyStatus(
+                          event.target.value as 'draft' | 'reviewed' | 'approved',
+                        )
+                      }
+                    >
+                      <option value="draft">draft</option>
+                      <option value="reviewed">reviewed</option>
+                      <option value="approved">approved</option>
+                    </select>
+                    <small>Must be reviewed or approved before a job passes cleanly.</small>
+                  </label>
+                ) : null}
               </div>
+              {required.objective ? (
+                <label className="field">
+                  <span>Learning objective</span>
+                  <textarea
+                    rows={2}
+                    value={objective}
+                    placeholder="What a viewer can do afterwards that they could not before."
+                    onChange={(event) => setObjective(event.target.value)}
+                  />
+                  <small>Required for {category.label} videos.</small>
+                </label>
+              ) : null}
               <div className="delivery-row">
                 <span>Outputs</span>
                 {DELIVERY_CHOICES.map(({id: deliveryId, label}) => (

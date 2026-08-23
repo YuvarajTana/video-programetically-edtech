@@ -460,6 +460,18 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .output-picker label small { color: #6c7681; font-size: 9px; white-space: nowrap; }
 .output-picker label.inherited span { color: var(--muted); }
 .output-picker input { accent-color: var(--lime); }
+
+/* Category-required metadata, in the topbar because it belongs to the project
+   rather than to any scene. Opens itself while something required is blank. */
+.project-metadata { position: relative; }
+.project-metadata > summary { display: flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px; border: 1px solid var(--line); border-radius: 7px; background: #101318; color: var(--muted); font-size: 11px; cursor: pointer; list-style: none; }
+.project-metadata > summary::-webkit-details-marker { display: none; }
+.project-metadata > summary small { color: #ffd08a; }
+.project-metadata[open] > summary { color: var(--text); border-color: #33431f; }
+.project-metadata-panel { position: absolute; right: 0; z-index: 20; width: 320px; margin-top: 7px; padding: 13px; border: 1px solid var(--line); border-radius: 9px; background: #11151a; box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
+.project-metadata-panel .field { margin: 0 0 10px; padding: 0; }
+.project-metadata-panel .field:last-child { margin-bottom: 0; }
+.project-metadata-panel textarea { resize: vertical; }
 .player-stage { flex: 1; min-height: 430px; margin: 28px; align-self: center; display: grid; place-items: center; overflow: hidden; border-radius: 8px; box-shadow: 0 24px 80px #000; background: #111; }
 .player-loading { color: #8b8fa3; font-size: 13px; letter-spacing: 0.4px; }
 .player-stage.landscape { width: min(90%, 880px); aspect-ratio: 16 / 9; }

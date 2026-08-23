@@ -6,4 +6,5 @@ export {NavItem} from './NavItem';
 export {OutputPicker} from './OutputPicker';
 export {PageHeader} from './PageHeader';
 export {ProductionPipelineMap} from './ProductionPipelineMap';
+export {ProjectMetadata} from './ProjectMetadata';
 export {SceneJsonEditor} from './SceneJsonEditor';

@@ -260,6 +260,14 @@ export const CreateProjectSchema = z.object({
   deliveries: z.array(DeliverySchema).min(1).max(4),
   script: z.string().max(100_000).default(''),
   targetSeconds: z.number().int().min(10).max(1_800).optional(),
+  /**
+   * Fields a category can require of every video in it. Optional here because
+   * only some categories ask for them; the studio form shows them when the
+   * chosen category's `requires*` flags say so.
+   */
+  ageBand: z.string().max(80).optional(),
+  objective: z.string().max(1_000).optional(),
+  safetyStatus: z.enum(['draft', 'reviewed', 'approved']).optional(),
 });
 
 export const VideoFormatSchema = z.enum(['reel', 'full']);

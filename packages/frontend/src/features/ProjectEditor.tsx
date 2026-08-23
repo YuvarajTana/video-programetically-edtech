@@ -4,7 +4,13 @@ import {LANGUAGES} from '@video-kit/core/languages';
 import type {MotionCanvasElement, Scene, SceneType} from '@video-kit/core/spec';
 import {Suspense, useCallback, useEffect, useState} from 'react';
 import {api} from '../api';
-import {EditorialNotes, Modal, OutputPicker, SceneJsonEditor} from '../components';
+import {
+  EditorialNotes,
+  Modal,
+  OutputPicker,
+  ProjectMetadata,
+  SceneJsonEditor,
+} from '../components';
 import {ScenePreview} from '../components/ScenePreviewLazy';
 import {duration, formatTime} from '../lib/format';
 import {navigate} from '../lib/router';
@@ -282,6 +288,7 @@ export const ProjectEditor = ({id, onChanged}: {id: string; onChanged: () => voi
           <span>{resolved.category.shortLabel} · {resolved.variant.locale} · {formatTime(duration(spec))}</span>
         </div>
         <div className="editor-actions">
+          <ProjectMetadata spec={spec} channel={resolved.channel} onChange={setSpec} />
           <select
             aria-label="Project language"
             className="language-select"

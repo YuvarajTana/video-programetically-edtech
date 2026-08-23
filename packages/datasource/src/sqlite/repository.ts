@@ -289,6 +289,11 @@ export class StudioRepository {
       deliveries: input.deliveries,
       script: input.script,
       targetSeconds: input.targetSeconds,
+      editorial: {
+        ageBand: input.ageBand,
+        objective: input.objective,
+        safetyStatus: input.safetyStatus,
+      },
     });
     const slug = slugify(input.title);
     this.database.transaction(() => {
